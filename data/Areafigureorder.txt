@@ -1,0 +1,39 @@
+Class	Ind	Variable	order
+TPES	Coal|w/o CCS	Prm_Ene_Coa_wo_CCS	1
+TPES	Coal|w/ CCS	Prm_Ene_Coa_w_CCS	2
+TPES	Oil|w/o CCS	Prm_Ene_Oil_wo_CCS	3
+TPES	Oil|w/ CCS	Prm_Ene_Oil_w_CCS	4
+TPES	Gas|w/o CCS	Prm_Ene_Gas_wo_CCS	5
+TPES	Gas|w/ CCS	Prm_Ene_Gas_w_CCS	6
+TPES	Nuclear	Prm_Ene_Nuc	7
+TPES	Hydro	Prm_Ene_Hyd	8
+TPES	Solar	Prm_Ene_Solar	9
+TPES	Wind	Prm_Ene_Win	10
+TPES	Biomass|w/o CCS	Prm_Ene_Bio_wo_CCS	11
+TPES	Biomass|w/ CCS	Prm_Ene_Bio_w_CCS	12
+TPES	Geothermal	Prm_Ene_Geo	13
+Power	Coal|w/o CCS	Sec_Ene_Ele_Coa_wo_CCS	1
+Power	Coal|w/ CCS	Sec_Ene_Ele_Coa_w_CCS	2
+Power	Oil|w/o CCS	Sec_Ene_Ele_Oil_wo_CCS	3
+Power	Oil|w/ CCS	Sec_Ene_Ele_Oil_w_CCS	4
+Power	Gas|w/o CCS	Sec_Ene_Ele_Gas_wo_CCS	5
+Power	Gas|w/ CCS	Sec_Ene_Ele_Gas_w_CCS	6
+Power	Nuclear	Sec_Ene_Ele_Nuc	7
+Power	Hydro	Sec_Ene_Ele_Hyd	8
+Power	Solar	Sec_Ene_Ele_Solar	9
+Power	Wind	Sec_Ene_Ele_Win	10
+Power	Biomass|w/o CCS	Sec_Ene_Ele_Bio_wo_CCS	11
+Power	Biomass|w/ CCS	Sec_Ene_Ele_Bio_w_CCS	12
+Power	Geothermal	Sec_Ene_Ele_Geo	13
+TFC	Solid	Fin_Ene_Solids	1
+TFC	Liquid	Fin_Ene_Liq	2
+TFC	Gas	Fin_Ene_Gas	3
+TFC	Electricity	Fin_Ene_Ele	4
+TFC	Heat	Fin_Ene_Heat	5
+Landuse	Build-up	Lan_Cov_Bui_Are	6
+Landuse	Cropland (for food)	Lan_Cov_Cro_Non_Ene_Cro	1
+Landuse	Forest	Lan_Cov_Frs	2
+Landuse	Pasture	Lan_Cov_Pst	3
+Landuse	Energy Crops	Lan_Cov_Cro_Ene_Cro	4
+Landuse	Other Land	Lan_Cov_Oth_Lan	7
+Landuse	Other Arable Land	Lan_Cov_Oth_Ara_Lan	5

@@ -1,0 +1,5 @@
+Class	Var	Unit
+TPES	Primary energy	EJ/year
+Power	Power generation	EJ/year
+TFC	Final energy	EJ/year
+Landuse	Land use	Mha
