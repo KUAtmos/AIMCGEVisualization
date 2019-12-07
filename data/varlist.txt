@@ -70,6 +70,9 @@ Sec_Ene_Hyd_Coa
 Sec_Ene_Hyd_Gas
 Fin_Ene_Hyd
 Emi_CO2_Ene_and_Ind_Pro
+Emi_CO2
+Emi_CO2_AFO
+Emi_F_G	Emissions|F-Gases	Mt CO2-equiv/yr
 Frc
 Emi_Kyo_Gas
 Prc_Car

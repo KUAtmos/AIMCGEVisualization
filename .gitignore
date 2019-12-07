@@ -4,3 +4,5 @@
 
 /prog/prog.Rproj
 /data/*.gdx
+.Rproj.user
+.RData

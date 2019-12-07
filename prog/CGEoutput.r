@@ -63,10 +63,13 @@ for (i in 1:nrow(varlist)){
     plot.0 <- ggplot() + 
       geom_line(data=allmodel[allmodel$Variable==varlist[i,1] ,c(-2)],aes(x=Y, y = Value , color=SCENARIO),stat="identity") +
       geom_point(data=allmodel[allmodel$Variable==varlist[i,1] ,c(-2)],aes(x=Y, y = Value , color=SCENARIO),shape=1,size=3.0,fill="white") +
-      MyThemeLine+ scale_color_manual(values=linepalette)  +
+      MyThemeLine+ 
       xlab("year") + ylab(varlist[i,3])  +  ggtitle(varlist[i,2]) +
       annotate("segment",x=2005,xend=2100,y=0,yend=0,linetype="dashed",color="grey")+ 
       theme(legend.title=element_blank()) 
+    if(length(scenariomap$SCENARIO)<20){
+      plot.0 <- plot.0 + scale_color_manual(values=linepalette)
+      }
     outname <- paste0(outputdir,"",varlist[i,1],".png")
     ggsave(plot.0, file=outname, dpi = 150, width=7, height=4,limitsize=FALSE)
 #  allplot[[i]] <- plot.1
