@@ -1,4 +1,25 @@
 # This program is AIM/Enduse and CGE Japan coupling analysis
+#----------------------data loading and parameter settings ----------------------*
+options(CRAN="http://cran.md.tsukuba.ac.jp/")
+install.packages("ggplot2", dependencies = TRUE)
+install.packages("RColorBrewer", dependencies = TRUE)
+install.packages("grid", dependencies = TRUE)
+#install.packages("gdxrrw", dependencies = TRUE)
+install.packages("dplyr", dependencies = TRUE)
+install.packages("sp", dependencies = TRUE)
+install.packages("maptools", dependencies = TRUE)
+install.packages("maps", dependencies = TRUE)
+install.packages("ggradar", dependencies = TRUE)
+install.packages("fmsb", dependencies = TRUE)
+install.packages("tidyr", dependencies = TRUE)
+install.packages("stringr", dependencies = TRUE)
+install.packages("rJava", dependencies = TRUE)
+install.packages("Rcpp", dependencies = TRUE)
+install.packages("ReporteRsjars", dependencies = TRUE)
+install.packages("ReporteRs", dependencies = TRUE)
+install.packages("xlsx", dependencies = TRUE)
+install.packages("R2PPT", dependencies = TRUE) #Rtools needs to be installed
+install.packages('RDCOMClient', repos = 'http://www.omegahat.net/R/')
 
 library(gdxrrw)
 library(ggplot2)
@@ -8,6 +29,9 @@ library(tidyr)
 library(maps)
 library(grid)
 library(RColorBrewer)
+library(R2PPT)
+library(RDCOMClient)
+
 OrRdPal <- brewer.pal(9, "OrRd")
 YlGnBupal <- brewer.pal(9, "YlGnBu")
 Redspal <- brewer.pal(9, "Reds")
@@ -37,52 +61,75 @@ MyThemeLine <- theme_bw() +
 #-- data load
 dir.create("../output/")
 outputdir <- c("../output/")
-filename <- c("global_17_emf.gdx")
-linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#FFFF33","#A65628","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f")
+#filename <- c("global_17_emf.gdx")
+file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/JPN_emf.gdx", "../data/JPN_emf.gdx",overwrite = TRUE)
+filename <- c("JPN_emf.gdx")
+linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
 landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
 scenariomap <- read.table("../data/scenariomap.map", sep="\t",header=T, stringsAsFactors=F)
+scenariomap2 <- read.table("../data/scenariomap2.map", sep="\t",header=T, stringsAsFactors=F)
 region <- read.table("../data/region.txt", sep="\t",header=F, stringsAsFactors=F)
 varlist_load <- read.table("../data/varlist.txt", sep="\t",header=F, stringsAsFactors=F)
 varalllist <- read.table("../data/varalllist.txt", sep="\t",header=F, stringsAsFactors=F)
-
 varlist <- left_join(varlist_load,varalllist,by="V1")
-
-CGEload0 <- rgdx.param(paste0('../data/',filename),'EMFtemp1') %>% rename("Value"=EMFtemp1,"Variable"=VEMF) 
-CGEload1 <- CGEload0 %>% left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1]) & REMF %in% region) %>% 
-   select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name")
-allmodel <- CGEload1  
-allmodel$Y <- as.numeric(levels(allmodel$Y))[allmodel$Y]
-
-nalist <- c(varlist,"TPES","POWER","Landuse")
-allplot <- as.list(nalist)
-plotflag <- as.list(nalist)
-
-#for (i in 1:nrow(varlist)){
-for (i in 1:nrow(varlist)){
-  if(length(allmodel[allmodel$Variable==varlist[i,1],c(1)])>0){
-    plot.0 <- ggplot() + 
-      geom_line(data=allmodel[allmodel$Variable==varlist[i,1] ,c(-2)],aes(x=Y, y = Value , color=SCENARIO),stat="identity") +
-      geom_point(data=allmodel[allmodel$Variable==varlist[i,1] ,c(-2)],aes(x=Y, y = Value , color=SCENARIO),shape=1,size=3.0,fill="white") +
-      MyThemeLine+ 
-      xlab("year") + ylab(varlist[i,3])  +  ggtitle(varlist[i,2]) +
-      annotate("segment",x=2005,xend=2100,y=0,yend=0,linetype="dashed",color="grey")+ 
-      theme(legend.title=element_blank()) 
-    if(length(scenariomap$SCENARIO)<20){
-      plot.0 <- plot.0 + scale_color_manual(values=linepalette)
-      }
-    outname <- paste0(outputdir,"",varlist[i,1],".png")
-    ggsave(plot.0, file=outname, dpi = 150, width=7, height=4,limitsize=FALSE)
-#  allplot[[i]] <- plot.1
-  }
-  plotflag[[i]] <- nrow(allmodel[allmodel$Variable==varlist[i,1] ,c(1)])
-}
-
 tpespalette <- c("Coal|w/o CCS"="#000000","Coal|w/ CCS"="#7f878f","Oil|w/o CCS"="#ff2800","Oil|w/ CCS"="#ffd1d1","Gas|w/o CCS"="#9a0079","Gas|w/ CCS"="#c7b2de","Hydro"="#0041ff","Nuclear"="#663300","Solar"="#b4ebfa","Wind"="#ff9900","Biomass|w/o CCS"="#35a16b","Biomass|w/ CCS"="#cbf266","Geothermal"="#edc58f","Other"="#ffff99",
                  "Solid"=pastelpal[1],"Liquid"=pastelpal[2],"Gas"=pastelpal[3],"Electricity"=pastelpal[4],"Heat"=pastelpal[5],
                  "Build-up"=pastelpal[1],"Cropland (for food)"=pastelpal[2],"Forest"=pastelpal[3],"Pasture"=pastelpal[4],"Energy Crops"=pastelpal[5],"Other Land"=pastelpal[6],"Other Arable Land"=pastelpal[7])
 areamap <- read.table("../data/Areafigureorder.txt", sep="\t",header=T, stringsAsFactors=F)
 areamappara <- read.table("../data/Area.map", sep="\t",header=T, stringsAsFactors=F)
-area.0 <- allmodel %>% filter(Variable %in% as.vector(areamap$Variable)) %>% left_join(areamap,by="Variable") %>% ungroup()
+
+#---IAMC tempalte loading
+CGEload0 <- rgdx.param(paste0('../data/',filename),'EMFtemp1') %>% rename("Value"=EMFtemp1,"Variable"=VEMF) %>% mutate(Model="AIM/Hub")
+CGEload1 <- CGEload0 %>% left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1]) & REMF %in% region) %>% 
+   select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name")
+
+#Enduse loading
+EnduseJload0 <- rgdx.param(paste0('../data/AIMEnduse.gdx'),'EMFtemp1') %>% rename("SCENARIO"=i1,"Region"=i2,"Variable"=i3,"Y"=i4,"Value"=value) %>% mutate(Model="AIM/Enduse[Japan]")
+EnduseJload1 <- EnduseJload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
+  select(-SCENARIO) %>% rename(SCENARIO="Name")
+
+EnduseGload0 <- rgdx.param(paste0('../data/AIMEnduseG.gdx'),'IAMC_template') %>% select(-i1) %>% rename("SCENARIO"=i2,"Region"=i3,"Variable"=i4,"Unit"=i5,"Y"=i6,"Value"=value)  %>% mutate(Model="AIM/Enduse[Global]")
+EnduseGload1 <- Enduseload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
+  select(-SCENARIO,-Unit) %>% rename(SCENARIO="Name")
+
+IEAEB0 <- rgdx.param('../data/IEAEBIAMCTempalte.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Variable"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
+  select(Region,Variable,Y,Value,SCENARIO) %>% filter(Region %in% region) %>% mutate(Model="Reference")
+IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
+IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
+
+allmodel0 <- rbind(CGEload1,EnduseGload1,EnduseJload1)  
+allmodel0$Y <- as.numeric(levels(allmodel0$Y))[allmodel0$Y]
+
+allmodel <- rbind(allmodel0,IEAEB1)  
+
+
+nalist <- c(varlist,"TPES","POWER","Landuse")
+allplot <- as.list(nalist)
+plotflag <- as.list(nalist)
+
+#---Line figures
+for (i in 1:nrow(varlist)){
+  if(length(allmodel[allmodel$Variable==varlist[i,1],c(1)])>0){
+    plot.0 <- ggplot() + 
+      geom_line(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"),aes(x=Y, y = Value , color=SCENARIO),stat="identity") +
+      geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"),aes(x=Y, y = Value , color=SCENARIO,shape=Model),size=3.0,fill="white") +
+      MyThemeLine + scale_color_manual(values=linepalette) +
+      xlab("year") + ylab(varlist[i,3])  +  ggtitle(varlist[i,2]) +
+      annotate("segment",x=2005,xend=2050,y=0,yend=0,linetype="dashed",color="grey")+ 
+      theme(legend.title=element_blank()) 
+    if(length(scenariomap$SCENARIO)<20){
+      plot.0 <- plot.0 +
+      geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model=="Reference"),aes(x=Y, y = Value) , color="black",shape=6,size=2.0,fill="grey") 
+    }
+    outname <- paste0(outputdir,"",varlist[i,1],".png")
+    ggsave(plot.0, file=outname, dpi = 150, width=10, height=6,limitsize=FALSE)
+    allplot[[i]] <- plot.0
+  }
+  plotflag[[i]] <- nrow(allmodel[allmodel$Variable==varlist[i,1] ,c(1)])
+}
+
+
+#---Area figures
 plot.1 <- function(){
   plot <- ggplot() + geom_area(data=XX,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
     ylab(ylab1) + xlab(xlab1) +labs(fill="")+ guides(fill=guide_legend(reverse=TRUE)) + MyThemeLine +
@@ -90,12 +137,13 @@ plot.1 <- function(){
           axis.text.x=element_text(angle=0, vjust=0.9, hjust=1, size = 12)) +
     guides(fill=guide_legend(ncol=5))
   plot2 <- plot +facet_wrap(~ SCENARIO) + scale_fill_manual(values=colorpal) + 
-    annotate("segment",x=2005,xend=2100,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')
+    annotate("segment",x=2005,xend=2050,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')
   return(plot2)
 }
 
 for(j in 1:nrow(areamappara)){
-  XX <- area.0 %>% filter(Class==areamappara[j,1]) %>% select(SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
+  XX <- allmodel %>% filter(Variable %in% as.vector(areamap$Variable)) %>% left_join(areamap,by="Variable") %>% ungroup() %>% 
+    filter(Class==areamappara[j,1]) %>% select(SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
   na.omit(XX$Value)
   unit_name <-areamappara[j,3]
   ylab1 <- paste0(areamappara[j,2], " (", unit_name, ")")
@@ -107,3 +155,24 @@ for(j in 1:nrow(areamappara)){
   
 }
 
+#----r2ppt
+#The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
+#If you really needs ppt slide, you first ouptput png and then paste it.
+
+myPPT<-PPT.Init(method="RDCOMClient")
+for (i in 1:nrow(varlist)){
+    if(length(allmodel[allmodel$Variable==varlist[i,1],c(1)])>0){
+    plotdata <- allmodel[allmodel$Variable==varlist[i,1],c(-2)]
+#      win.graph(width=1860, height=1450,pointsize = 1)
+#      print(allplot[[i]])
+      myPPT<-PPT.AddTitleOnlySlide(myPPT,title="Title Only",title.fontsize=40,title.font="Arial")
+#      myPPT<-PPT.AddGraphicstoSlide(myPPT,size= c(10,10,700,350), dev.out.type ='emf' )
+      myPPT<-PPT.AddGraphicstoSlide(myPPT,file=paste0(outputdir,"",varlist[i,1],".png"),size=c(10,10,700,500))
+#      dev.off()
+  }
+}
+myPPT<-PPT.SaveAs(myPPT,file="IEAcomparison.pptx")
+myPPT<-PPT.Close(myPPT)
+rm(myPPT)
+#      savePlot("test.emf",type="emf", device = dev.cur())
+#      myPPT<-PPT.AddGraphicstoSlide(myPPT,file="test.emf",dev.out.type="emf",size=c(10,10,500,350))
