@@ -131,19 +131,23 @@ for (i in 1:nrow(varlist)){
 
 #---Area figures
 plot.1 <- function(){
-  plot <- ggplot() + geom_area(data=XX,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
+  plot <- ggplot() + 
+    geom_area(data=XX,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
     ylab(ylab1) + xlab(xlab1) +labs(fill="")+ guides(fill=guide_legend(reverse=TRUE)) + MyThemeLine +
     theme(legend.position="bottom", text=element_text(size=12),  
           axis.text.x=element_text(angle=0, vjust=0.9, hjust=1, size = 12)) +
     guides(fill=guide_legend(ncol=5))
-  plot2 <- plot +facet_wrap(~ SCENARIO) + scale_fill_manual(values=colorpal) + 
+  plot2 <- plot +facet_wrap(~ SCENARIO,nrow=2) + scale_fill_manual(values=colorpal) + 
     annotate("segment",x=2005,xend=2050,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')
-  return(plot2)
+  plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity")
+    return(plot3)
 }
 
 for(j in 1:nrow(areamappara)){
   XX <- allmodel %>% filter(Variable %in% as.vector(areamap$Variable)) %>% left_join(areamap,by="Variable") %>% ungroup() %>% 
-    filter(Class==areamappara[j,1]) %>% select(SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
+    filter(Class==areamappara[j,1] & Model!="Reference") %>% select(SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
+  XX2 <- allmodel %>% filter(Variable %in% as.vector(areamap$Variable)) %>% left_join(areamap,by="Variable") %>% ungroup() %>% 
+    filter(Class==areamappara[j,1] & Model=="Reference") %>% select(-SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
   na.omit(XX$Value)
   unit_name <-areamappara[j,3]
   ylab1 <- paste0(areamappara[j,2], " (", unit_name, ")")
