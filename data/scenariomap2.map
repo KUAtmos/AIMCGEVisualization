@@ -1,5 +1,5 @@
 SCENARIO	Name
-Baseline	EnduseG_BaU
-Opt_2D	EnduseG_Mit
-Baseline_FullTech	EnduseJ_BaU
-Mitigation_FullTech	EnduseJ_Mit
+Baseline	BaU
+Opt_2D	Mit
+Baseline_FullTech	BaU
+Mitigation_FullTech	Mit

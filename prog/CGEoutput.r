@@ -78,8 +78,8 @@ tpespalette <- c("Coal|w/o CCS"="#000000","Coal|w/ CCS"="#7f878f","Oil|w/o CCS"=
 areamap <- read.table("../data/Areafigureorder.txt", sep="\t",header=T, stringsAsFactors=F)
 areamappara <- read.table("../data/Area.map", sep="\t",header=T, stringsAsFactors=F)
 
-#---IAMC tempalte loading
-CGEload0 <- rgdx.param(paste0('../data/',filename),'EMFtemp1') %>% rename("Value"=EMFtemp1,"Variable"=VEMF) %>% mutate(Model="AIM/Hub")
+#---IAMC tempalte loading and data merge
+CGEload0 <- rgdx.param(paste0('../data/',filename),'EMFtemp1') %>% rename("Value"=EMFtemp1,"Variable"=VEMF)
 CGEload1 <- CGEload0 %>% left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1]) & REMF %in% region) %>% 
    select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name")
 
@@ -95,24 +95,27 @@ EnduseGload1 <- Enduseload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter
 IEAEB0 <- rgdx.param('../data/IEAEBIAMCTempalte.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Variable"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
   select(Region,Variable,Y,Value,SCENARIO) %>% filter(Region %in% region) %>% mutate(Model="Reference")
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
-IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
+IEAEB1 <- filter(IEAEB0,Y<=2010 & Y>=1990)
 
 allmodel0 <- rbind(CGEload1,EnduseGload1,EnduseJload1)  
 allmodel0$Y <- as.numeric(levels(allmodel0$Y))[allmodel0$Y]
 
 allmodel <- rbind(allmodel0,IEAEB1)  
+#---IAMC tempalte loading and data mergeEnd
 
 
-nalist <- c(varlist,"TPES","POWER","Landuse")
+nalist <- c(as.vector(varlist$V1),"TPES","POWER","Landuse","TFC")
 allplot <- as.list(nalist)
 plotflag <- as.list(nalist)
+names(allplot) <- nalist
+names(plotflag) <- nalist
 
 #---Line figures
 for (i in 1:nrow(varlist)){
   if(length(allmodel[allmodel$Variable==varlist[i,1],c(1)])>0){
     plot.0 <- ggplot() + 
-      geom_line(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"),aes(x=Y, y = Value , color=SCENARIO),stat="identity") +
-      geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"),aes(x=Y, y = Value , color=SCENARIO,shape=Model),size=3.0,fill="white") +
+      geom_line(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),group=interaction(SCENARIO,Model)),stat="identity") +
+      geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),shape=Model),size=3.0,fill="white") +
       MyThemeLine + scale_color_manual(values=linepalette) +
       xlab("year") + ylab(varlist[i,3])  +  ggtitle(varlist[i,2]) +
       annotate("segment",x=2005,xend=2050,y=0,yend=0,linetype="dashed",color="grey")+ 
@@ -123,9 +126,9 @@ for (i in 1:nrow(varlist)){
     }
     outname <- paste0(outputdir,"",varlist[i,1],".png")
     ggsave(plot.0, file=outname, dpi = 150, width=10, height=6,limitsize=FALSE)
-    allplot[[i]] <- plot.0
+    allplot[[nalist[i]]] <- plot.0
   }
-  plotflag[[i]] <- nrow(allmodel[allmodel$Variable==varlist[i,1] ,c(1)])
+  plotflag[[nalist[i]]] <- nrow(filter(allmodel,Variable==varlist[i,1]))
 }
 
 
@@ -137,26 +140,32 @@ plot.1 <- function(){
     theme(legend.position="bottom", text=element_text(size=12),  
           axis.text.x=element_text(angle=0, vjust=0.9, hjust=1, size = 12)) +
     guides(fill=guide_legend(ncol=5))
-  plot2 <- plot +facet_wrap(~ SCENARIO,nrow=2) + scale_fill_manual(values=colorpal) + 
+#  plot2 <- plot +facet_wrap(Model ~ SCENARIO,nrow=2) + scale_fill_manual(values=colorpal) + 
+  plot2 <- plot +facet_grid(SCENARIO~Model ) + scale_fill_manual(values=colorpal) + 
     annotate("segment",x=2005,xend=2050,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')
-  plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity")
-    return(plot3)
+  if(nrow(XX2)>=1){
+    plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity")
+  }else{
+    plot3 <- plot2
+  }
+  return(plot3)
 }
 
 for(j in 1:nrow(areamappara)){
   XX <- allmodel %>% filter(Variable %in% as.vector(areamap$Variable)) %>% left_join(areamap,by="Variable") %>% ungroup() %>% 
-    filter(Class==areamappara[j,1] & Model!="Reference") %>% select(SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
+    filter(Class==areamappara[j,1] & Model!="Reference") %>% select(Model,SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
   XX2 <- allmodel %>% filter(Variable %in% as.vector(areamap$Variable)) %>% left_join(areamap,by="Variable") %>% ungroup() %>% 
-    filter(Class==areamappara[j,1] & Model=="Reference") %>% select(-SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
+    filter(Class==areamappara[j,1] & Model=="Reference") %>% select(-SCENARIO,-Model,Ind,Y,Value,order)  %>% arrange(order)
   na.omit(XX$Value)
   unit_name <-areamappara[j,3]
   ylab1 <- paste0(areamappara[j,2], " (", unit_name, ")")
   xlab1 <- areamappara[j,2]
   colorpal <- tpespalette
   plot_TPES.1 <- plot.1()
+  allplot[[areamappara$Class[j]]] <- plot_TPES.1 
   outname <- paste0(outputdir,areamappara[j,1],".png")
   ggsave(plot_TPES.1, file=outname, dpi = 450, width=9, height=6,limitsize=FALSE)
-  
+  plotflag[[areamappara$Class[j]]] <- nrow(XX)  
 }
 
 #----r2ppt
@@ -164,19 +173,19 @@ for(j in 1:nrow(areamappara)){
 #If you really needs ppt slide, you first ouptput png and then paste it.
 
 myPPT<-PPT.Init(method="RDCOMClient")
-for (i in 1:nrow(varlist)){
-    if(length(allmodel[allmodel$Variable==varlist[i,1],c(1)])>0){
-    plotdata <- allmodel[allmodel$Variable==varlist[i,1],c(-2)]
+for (i in 1:length(nalist)){
+    if(plotflag[[nalist[i]]]>0){
 #      win.graph(width=1860, height=1450,pointsize = 1)
 #      print(allplot[[i]])
       myPPT<-PPT.AddTitleOnlySlide(myPPT,title="Title Only",title.fontsize=40,title.font="Arial")
 #      myPPT<-PPT.AddGraphicstoSlide(myPPT,size= c(10,10,700,350), dev.out.type ='emf' )
-      myPPT<-PPT.AddGraphicstoSlide(myPPT,file=paste0(outputdir,"",varlist[i,1],".png"),size=c(10,10,700,500))
+      myPPT<-PPT.AddGraphicstoSlide(myPPT,file=paste0(outputdir,"",nalist[i],".png"),size=c(10,10,700,500))
 #      dev.off()
   }
 }
-myPPT<-PPT.SaveAs(myPPT,file="IEAcomparison.pptx")
+myPPT<-PPT.SaveAs(myPPT,file="../output/IEAcomparison.pptx")
 myPPT<-PPT.Close(myPPT)
 rm(myPPT)
 #      savePlot("test.emf",type="emf", device = dev.cur())
 #      myPPT<-PPT.AddGraphicstoSlide(myPPT,file="test.emf",dev.out.type="emf",size=c(10,10,500,350))
+
