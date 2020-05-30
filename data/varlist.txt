@@ -21,6 +21,20 @@ Fin_Ene_Res_and_Com_Solids
 Fin_Ene_Res_and_Com_SolidsBio
 Fin_Ene_Res_and_Com_SolidsBio_Tra
 Fin_Ene_Res_and_Com_SolidsCoa
+Fin_Ene_Res
+Fin_Ene_Res_Ele
+Fin_Ene_Res_Gas
+Fin_Ene_Res_Liq
+Fin_Ene_Res_Solids
+Fin_Ene_Res_SolidsBio
+Fin_Ene_Res_SolidsCoa
+Fin_Ene_Com
+Fin_Ene_Com_Ele
+Fin_Ene_Com_Gas
+Fin_Ene_Com_Liq
+Fin_Ene_Com_Solids
+Fin_Ene_Com_SolidsBio
+Fin_Ene_Com_SolidsCoa
 Fin_Ene_Solids
 Fin_Ene_SolidsBio
 Fin_Ene_SolidsBio_Tra
@@ -72,7 +86,7 @@ Fin_Ene_Hyd
 Emi_CO2_Ene_and_Ind_Pro
 Emi_CO2
 Emi_CO2_AFO
-Emi_F_G	Emissions|F-Gases	Mt CO2-equiv/yr
+Emi_F_G
 Frc
 Emi_Kyo_Gas
 Prc_Car
