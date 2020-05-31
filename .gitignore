@@ -3,6 +3,6 @@
 /prog/.Rproj.user
 
 /prog/prog.Rproj
-/data/*.gdx
+/modeloutput/*.gdx
 .Rproj.user
 .RData

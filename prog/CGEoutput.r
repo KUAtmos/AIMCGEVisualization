@@ -62,13 +62,14 @@ MyThemeLine <- theme_bw() +
 #-- data load
 dir.create("../output/")
 outputdir <- c("../output/")
-#filename <- c("global_17_emf.gdx")
-file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/JPN_emf.gdx", "../data/JPN_emf.gdx",overwrite = TRUE)
-file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/CHN_emf.gdx", "../data/CHN_emf.gdx",overwrite = TRUE)
-file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/IND_emf.gdx", "../data/IND_emf.gdx",overwrite = TRUE)
-file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/AIMCGE/individual/IEAEB1062CGE/output/IEAEBIAMCTemplate.gdx", "../data/IEAEBIAMCTemplate.gdx",overwrite = TRUE)
-file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/AIMCGE/individual/AIMEnduseG2CGE/data/AIMEnduseG.gdx", "../data/AIMEnduseG.gdx",overwrite = TRUE)
-filename <- c("JPN_emf.gdx")
+#file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/AIMCGE/individual/IEAEB1062CGE/output/IEAEBIAMCTemplate.gdx", "../data/IEAEBIAMCTemplate.gdx",overwrite = TRUE)
+filename <- c("global_17_emf.gdx")
+file.copy("E:/sfujimori/CGE/AIMHubNAGIVATEV2/anls_output/iiasa_database/gdx/global_17_emf.gdx", "../modeloutput/global_17_emf.gdx",overwrite = TRUE)
+#file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/JPN_emf.gdx", "../modeloutput/JPN_emf.gdx",overwrite = TRUE)
+#file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/CHN_emf.gdx", "../modeloutput/CHN_emf.gdx",overwrite = TRUE)
+#file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/IND_emf.gdx", "../modeloutput/IND_emf.gdx",overwrite = TRUE)
+#file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/AIMCGE/individual/AIMEnduseG2CGE/data/AIMEnduseG.gdx", "../modeloutput/AIMEnduseG.gdx",overwrite = TRUE)
+#filename <- c("JPN_emf.gdx")
 linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
 landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
 scenariomap <- read.table("../data/scenariomap.map", sep="\t",header=T, stringsAsFactors=F)
@@ -85,27 +86,31 @@ areamap <- read.table("../data/Areafigureorder.txt", sep="\t",header=T, stringsA
 areamappara <- read.table("../data/Area.map", sep="\t",header=T, stringsAsFactors=F)
 
 #---IAMC tempalte loading and data merge
-#CGEload0 <- rgdx.param(paste0('../data/',filename),'EMFtemp1') 
-CGEload0 <- rbind(rgdx.param(paste0('../data/JPN_emf.gdx'),'EMFtemp1'), rgdx.param(paste0('../data/IND_emf.gdx'),'EMFtemp1'), rgdx.param(paste0('../data/CHN_emf.gdx'),'EMFtemp1'))
+CGEload0 <- rgdx.param(paste0('../modeloutput/',filename),'EMFtemp1') 
+#CGEload0 <- rbind(rgdx.param(paste0('../modeloutput/JPN_emf.gdx'),'EMFtemp1'), rgdx.param(paste0('../modeloutput/IND_emf.gdx'),'EMFtemp1'), rgdx.param(paste0('../modeloutput/CHN_emf.gdx'),'EMFtemp1'))
 CGEload1 <- CGEload0 %>% rename("Value"=EMFtemp1,"Variable"=VEMF) %>% 
   left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1]) & REMF %in% (region$V1)) %>% 
   select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name")
 
 #Enduse loading
-EnduseJload0 <- rgdx.param(paste0('../data/AIMEnduse.gdx'),'EMFtemp1') %>% rename("SCENARIO"=i1,"Region"=i2,"Variable"=i3,"Y"=i4,"Value"=value) %>% mutate(Model="AIM/Enduse[Japan]")
-EnduseJload1 <- EnduseJload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region$V1) %>% 
-  select(-SCENARIO) %>% rename(SCENARIO="Name")
+enduseflag <-0
+if(enduseflag==1){
+  EnduseJload0 <- rgdx.param(paste0('../modeloutput/AIMEnduse.gdx'),'EMFtemp1') %>% rename("SCENARIO"=i1,"Region"=i2,"Variable"=i3,"Y"=i4,"Value"=value) %>% mutate(Model="AIM/Enduse[Japan]")
+  EnduseJload1 <- EnduseJload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region$V1) %>% 
+    select(-SCENARIO) %>% rename(SCENARIO="Name")
 
-EnduseGload0 <- rgdx.param(paste0('../data/AIMEnduseG.gdx'),'IAMC_template') %>% select(-i1) %>% rename("SCENARIO"=i2,"Region"=i3,"Variable"=i4,"Unit"=i5,"Y"=i6,"Value"=value)  %>% mutate(Model="AIM/Enduse[Global]")
-EnduseGload1 <- EnduseGload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region$V1) %>% 
-  select(-SCENARIO,-Unit) %>% rename(SCENARIO="Name")
+  EnduseGload0 <- rgdx.param(paste0('../modeloutput/AIMEnduseG.gdx'),'IAMC_template') %>% select(-i1) %>% rename("SCENARIO"=i2,"Region"=i3,"Variable"=i4,"Unit"=i5,"Y"=i6,"Value"=value)  %>% mutate(Model="AIM/Enduse[Global]")
+  EnduseGload1 <- EnduseGload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region$V1) %>% 
+    select(-SCENARIO,-Unit) %>% rename(SCENARIO="Name")
+}
 
 IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Variable"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
   select(Region,Variable,Y,Value,SCENARIO) %>% filter(Region %in% region$V1) %>% mutate(Model="Reference")
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
 IEAEB1 <- filter(IEAEB0,Y<=2010 & Y>=1990)
 
-allmodel0 <- rbind(CGEload1,EnduseGload1,EnduseJload1)  
+#allmodel0 <- rbind(CGEload1,EnduseGload1,EnduseJload1)  
+allmodel0 <- rbind(CGEload1)  
 allmodel0$Y <- as.numeric(levels(allmodel0$Y))[allmodel0$Y]
 
 allmodel <- rbind(allmodel0,IEAEB1)  
@@ -122,15 +127,18 @@ plotflag <- as.list(nalist)
 names(allplot) <- nalist
 names(plotflag) <- nalist
 
+maxy <- max(allmodel$Y)
+
 #---Line figures
 for (i in 1:nrow(varlist)){
-  if(length(filter(allmodel,Variable==varlist[i,1] & Region==rr))>0){
+  if(nrow(filter(allmodel,Variable==varlist[i,1] & Region==rr))>0){
+    miny <- min(filter(allmodel,Variable==varlist[i,1] & Region==rr)$Y) 
     plot.0 <- ggplot() + 
       geom_line(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),group=interaction(SCENARIO,Model)),stat="identity") +
       geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),shape=Model),size=3.0,fill="white") +
-      MyThemeLine + scale_color_manual(values=linepalette) +
+      MyThemeLine + scale_color_manual(values=linepalette) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
       xlab("year") + ylab(varlist[i,3])  +  ggtitle(varlist[i,2]) +
-      annotate("segment",x=2005,xend=2050,y=0,yend=0,linetype="dashed",color="grey")+ 
+      annotate("segment",x=2005,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
       theme(legend.title=element_blank()) 
     if(length(scenariomap$SCENARIO)<20){
       plot.0 <- plot.0 +
@@ -142,8 +150,6 @@ for (i in 1:nrow(varlist)){
   }
   plotflag[[nalist[i]]] <- nrow(filter(allmodel,Variable==varlist[i,1]))
 }
-
-
 #---Area figures
 plot.1 <- function(){
   plot <- ggplot() + 
@@ -151,10 +157,11 @@ plot.1 <- function(){
     ylab(ylab1) + xlab(xlab1) +labs(fill="")+ guides(fill=guide_legend(reverse=TRUE)) + MyThemeLine +
     theme(legend.position="bottom", text=element_text(size=12),  
           axis.text.x=element_text(angle=0, vjust=0.9, hjust=1, size = 12)) +
-    guides(fill=guide_legend(ncol=5))
+    guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10))
+  
 #  plot2 <- plot +facet_wrap(Model ~ SCENARIO,nrow=2) + scale_fill_manual(values=colorpal) + 
-  plot2 <- plot +facet_grid(SCENARIO~Model ) + scale_fill_manual(values=colorpal) + 
-    annotate("segment",x=2005,xend=2050,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')
+  plot2 <- plot +facet_grid(Model~SCENARIO) + scale_fill_manual(values=colorpal) + 
+    annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')
   if(nrow(XX2)>=1){
     plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity")
   }else{
@@ -168,6 +175,7 @@ for(j in 1:nrow(areamappara)){
     filter(Class==areamappara[j,1] & Model!="Reference"& Region==rr) %>% select(Model,SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
   XX2 <- allmodel %>% filter(Variable %in% as.vector(areamap$Variable)) %>% left_join(areamap,by="Variable") %>% ungroup() %>% 
     filter(Class==areamappara[j,1] & Model=="Reference"& Region==rr) %>% select(-SCENARIO,-Model,Ind,Y,Value,order)  %>% arrange(order)
+  miny <- min(XX$Y,XX2$Y) 
   na.omit(XX$Value)
   unit_name <-areamappara[j,3]
   ylab1 <- paste0(areamappara[j,2], " (", unit_name, ")")
@@ -202,3 +210,5 @@ rm(myPPT)
 #      myPPT<-PPT.AddGraphicstoSlide(myPPT,file="test.emf",dev.out.type="emf",size=c(10,10,500,350))
 
 }
+
+
