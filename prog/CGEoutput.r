@@ -108,7 +108,7 @@ if(enduseflag==1){
 IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Variable"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
   select(Region,Variable,Y,Value,SCENARIO) %>% filter(Region %in% region$V1) %>% mutate(Model="Reference")
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
-IEAEB1 <- filter(IEAEB0,Y<=2010 & Y>=1990)
+IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
 
 #allmodel0 <- rbind(CGEload1,EnduseGload1,EnduseJload1)  
 allmodel0 <- rbind(CGEload1)  

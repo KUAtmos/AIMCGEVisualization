@@ -114,3 +114,9 @@ Agr_Dem
 Agr_Dem_Bio
 Foo_Ene_Sup_Per_Cap
 Yie_Cer
+Agr_Yie_Ene_Cro
+Prc_Prm_Ene_Oil
+Prc_Prm_Ene_Gas
+Prc_Prm_Ene_Coa
+Prc_Sec_Ene_Ele
+
