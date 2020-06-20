@@ -42,6 +42,8 @@ Fin_Ene_SolidsCoa
 Fin_Ene_Tra
 Fin_Ene_Tra_Ele
 Fin_Ene_Tra_Liq
+Fin_Ene_Tra_Liq_Bio
+Fin_Ene_Tra_Liq_Oil
 GDP_MER
 POP
 Sec_Ene

@@ -122,10 +122,10 @@ plot.1 <- function(XX){
     geom_area(data=XX,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
     ylab(ylab1) + xlab(xlab1) +labs(fill="")+ guides(fill=guide_legend(reverse=TRUE)) + MyThemeLine +
     theme(legend.position="bottom", text=element_text(size=12),  
-          axis.text.x=element_text(angle=0, vjust=0.9, hjust=1, size = 12)) +
+          axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, size = 12)) +
     guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10)) +  ggtitle(paste(rr,areamappara$Class[j],sep=" "))
   
-  plot2 <- plot +facet_wrap(Model ~ SCENARIO,ncol=5) + scale_fill_manual(values=colorpal) + 
+  plot2 <- plot +facet_wrap(Model ~ SCENARIO,ncol=4) + scale_fill_manual(values=colorpal) + 
 #  plot2 <- plot +facet_grid(Model~SCENARIO) + scale_fill_manual(values=colorpal) + 
     annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')
   if(nrow(XX2)>=1){
@@ -187,7 +187,7 @@ for(j in 1:nrow(areamappara)){
   plot_TPES.1 <- plot.1(XX)
   allplot[[areamappara$Class[j]]] <- plot_TPES.1 
   outname <- paste0(outputdir,rr,"/png/",areamappara[j,1],".png")
-  ggsave(plot_TPES.1, file=outname, dpi = 450, width=9, height=6,limitsize=FALSE)
+  ggsave(plot_TPES.1, file=outname, dpi = 450, width=9, height=floor(length(unique(XX$SCENARIO))/4)*3,limitsize=FALSE)
   plotflag[[areamappara$Class[j]]] <- nrow(XX)  
 }
 
