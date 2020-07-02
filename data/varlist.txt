@@ -42,6 +42,8 @@ Fin_Ene_SolidsCoa
 Fin_Ene_Tra
 Fin_Ene_Tra_Ele
 Fin_Ene_Tra_Liq
+Fin_Ene_Tra_Liq_Bio
+Fin_Ene_Tra_Liq_Oil
 GDP_MER
 POP
 Sec_Ene
@@ -114,3 +116,9 @@ Agr_Dem
 Agr_Dem_Bio
 Foo_Ene_Sup_Per_Cap
 Yie_Cer
+Agr_Yie_Ene_Cro
+Prc_Prm_Ene_Oil
+Prc_Prm_Ene_Gas
+Prc_Prm_Ene_Coa
+Prc_Sec_Ene_Ele
+

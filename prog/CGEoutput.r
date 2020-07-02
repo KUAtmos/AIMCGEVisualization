@@ -1,9 +1,10 @@
 # This program is AIM/Enduse and CGE Japan coupling analysis
 #----------------------data loading and parameter settings ----------------------*
+if(insflag==1){
 options(CRAN="http://cran.md.tsukuba.ac.jp/")
 install.packages("ggplot2", dependencies = TRUE)
 install.packages("RColorBrewer", dependencies = TRUE)
-install.packages("grid", dependencies = TRUE)
+#install.packages("grid", dependencies = TRUE)
 #install.packages("gdxrrw", dependencies = TRUE)
 install.packages("dplyr", dependencies = TRUE)
 install.packages("sp", dependencies = TRUE)
@@ -20,6 +21,7 @@ install.packages("ReporteRs", dependencies = TRUE)
 install.packages("xlsx", dependencies = TRUE)
 install.packages("R2PPT", dependencies = TRUE) #Rtools needs to be installed
 install.packages('RDCOMClient', repos = 'http://www.omegahat.net/R/')
+}
 
 library(gdxrrw)
 library(ggplot2)
@@ -57,7 +59,6 @@ MyThemeLine <- theme_bw() +
     legend.title = element_text(size = 10),
     axis.ticks.length=unit(-0.15,"cm")
   )
-
 
 #-- data load
 dir.create("../output/")
@@ -107,13 +108,33 @@ if(enduseflag==1){
 IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Variable"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
   select(Region,Variable,Y,Value,SCENARIO) %>% filter(Region %in% region$V1) %>% mutate(Model="Reference")
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
-IEAEB1 <- filter(IEAEB0,Y<=2010 & Y>=1990)
+IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
 
 #allmodel0 <- rbind(CGEload1,EnduseGload1,EnduseJload1)  
 allmodel0 <- rbind(CGEload1)  
 allmodel0$Y <- as.numeric(levels(allmodel0$Y))[allmodel0$Y]
 
 allmodel <- rbind(allmodel0,IEAEB1)  
+
+#---function
+plot.1 <- function(XX){
+  plot <- ggplot() + 
+    geom_area(data=XX,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
+    ylab(ylab1) + xlab(xlab1) +labs(fill="")+ guides(fill=guide_legend(reverse=TRUE)) + MyThemeLine +
+    theme(legend.position="bottom", text=element_text(size=12),  
+          axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, size = 12)) +
+    guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10)) +  ggtitle(paste(rr,areamappara$Class[j],sep=" "))
+  
+  plot2 <- plot +facet_wrap(Model ~ SCENARIO,ncol=4) + scale_fill_manual(values=colorpal) + 
+#  plot2 <- plot +facet_grid(Model~SCENARIO) + scale_fill_manual(values=colorpal) + 
+    annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')
+  if(nrow(XX2)>=1){
+    plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity")
+  }else{
+    plot3 <- plot2
+  }
+  return(plot3)
+}
 
 #---IAMC tempalte loading and data mergeEnd
 for(rr in region$V1){
@@ -137,7 +158,7 @@ for (i in 1:nrow(varlist)){
       geom_line(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),group=interaction(SCENARIO,Model)),stat="identity") +
       geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),shape=Model),size=3.0,fill="white") +
       MyThemeLine + scale_color_manual(values=linepalette) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
-      xlab("year") + ylab(varlist[i,3])  +  ggtitle(varlist[i,2]) +
+      xlab("year") + ylab(varlist[i,3])  +  ggtitle(paste(rr,varlist[i,2],sep=" ")) +
       annotate("segment",x=2005,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
       theme(legend.title=element_blank()) 
     if(length(scenariomap$SCENARIO)<20){
@@ -148,27 +169,9 @@ for (i in 1:nrow(varlist)){
     ggsave(plot.0, file=outname, dpi = 150, width=10, height=6,limitsize=FALSE)
     allplot[[nalist[i]]] <- plot.0
   }
-  plotflag[[nalist[i]]] <- nrow(filter(allmodel,Variable==varlist[i,1]))
+  plotflag[[nalist[i]]] <- nrow(filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr))
 }
 #---Area figures
-plot.1 <- function(){
-  plot <- ggplot() + 
-    geom_area(data=XX,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
-    ylab(ylab1) + xlab(xlab1) +labs(fill="")+ guides(fill=guide_legend(reverse=TRUE)) + MyThemeLine +
-    theme(legend.position="bottom", text=element_text(size=12),  
-          axis.text.x=element_text(angle=0, vjust=0.9, hjust=1, size = 12)) +
-    guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10))
-  
-#  plot2 <- plot +facet_wrap(Model ~ SCENARIO,nrow=2) + scale_fill_manual(values=colorpal) + 
-  plot2 <- plot +facet_grid(Model~SCENARIO) + scale_fill_manual(values=colorpal) + 
-    annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')
-  if(nrow(XX2)>=1){
-    plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity")
-  }else{
-    plot3 <- plot2
-  }
-  return(plot3)
-}
 
 for(j in 1:nrow(areamappara)){
   XX <- allmodel %>% filter(Variable %in% as.vector(areamap$Variable)) %>% left_join(areamap,by="Variable") %>% ungroup() %>% 
@@ -181,10 +184,10 @@ for(j in 1:nrow(areamappara)){
   ylab1 <- paste0(areamappara[j,2], " (", unit_name, ")")
   xlab1 <- areamappara[j,2]
   colorpal <- areapalette
-  plot_TPES.1 <- plot.1()
+  plot_TPES.1 <- plot.1(XX)
   allplot[[areamappara$Class[j]]] <- plot_TPES.1 
   outname <- paste0(outputdir,rr,"/png/",areamappara[j,1],".png")
-  ggsave(plot_TPES.1, file=outname, dpi = 450, width=9, height=6,limitsize=FALSE)
+  ggsave(plot_TPES.1, file=outname, dpi = 450, width=9, height=floor(length(unique(XX$SCENARIO))/4)*3,limitsize=FALSE)
   plotflag[[areamappara$Class[j]]] <- nrow(XX)  
 }
 
@@ -210,5 +213,4 @@ rm(myPPT)
 #      myPPT<-PPT.AddGraphicstoSlide(myPPT,file="test.emf",dev.out.type="emf",size=c(10,10,500,350))
 
 }
-
 
