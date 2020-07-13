@@ -63,14 +63,11 @@ MyThemeLine <- theme_bw() +
 #-- data load
 dir.create("../output/")
 outputdir <- c("../output/")
-#file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/AIMCGE/individual/IEAEB1062CGE/output/IEAEBIAMCTemplate.gdx", "../data/IEAEBIAMCTemplate.gdx",overwrite = TRUE)
-filename <- c("global_17_emf.gdx")
-file.copy("E:/sfujimori/CGE/AIMHubNAGIVATEV2/anls_output/iiasa_database/gdx/global_17_emf.gdx", "../modeloutput/global_17_emf.gdx",overwrite = TRUE)
-#file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/JPN_emf.gdx", "../modeloutput/JPN_emf.gdx",overwrite = TRUE)
-#file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/CHN_emf.gdx", "../modeloutput/CHN_emf.gdx",overwrite = TRUE)
-#file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/IND_emf.gdx", "../modeloutput/IND_emf.gdx",overwrite = TRUE)
-#file.copy("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/AIMCGE/individual/AIMEnduseG2CGE/data/AIMEnduseG.gdx", "../modeloutput/AIMEnduseG.gdx",overwrite = TRUE)
-#filename <- c("JPN_emf.gdx")
+#filename should be "global_17","CHN","JPN"....
+filename <- c("CHN")
+#file.copy(paste0("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/",filename,"_emf.gdx"), paste0("../modeloutput/",filename,"_emf.gdx"),overwrite = TRUE)
+file.copy(paste0("../../anls_output/iiasa_database/gdx/",filename,"_emf.gdx"), paste0("../modeloutput/",filename,"_emf.gdx"),overwrite = TRUE)
+
 linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
 landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
 scenariomap <- read.table("../data/scenariomap.map", sep="\t",header=T, stringsAsFactors=F)
@@ -88,25 +85,27 @@ areamappara <- read.table("../data/Area.map", sep="\t",header=T, stringsAsFactor
 
 #---IAMC tempalte loading and data merge
 CGEload0 <- rgdx.param(paste0('../modeloutput/',filename),'EMFtemp1') 
+Getregion <- as.vector(unique(CGEload0$REMF))
+if(length(Getregion)==1){region <- Getregion}
 #CGEload0 <- rbind(rgdx.param(paste0('../modeloutput/JPN_emf.gdx'),'EMFtemp1'), rgdx.param(paste0('../modeloutput/IND_emf.gdx'),'EMFtemp1'), rgdx.param(paste0('../modeloutput/CHN_emf.gdx'),'EMFtemp1'))
 CGEload1 <- CGEload0 %>% rename("Value"=EMFtemp1,"Variable"=VEMF) %>% 
-  left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1]) & REMF %in% (region$V1)) %>% 
+  left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1]) & REMF %in% region) %>% 
   select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name")
 
 #Enduse loading
 enduseflag <-0
 if(enduseflag==1){
   EnduseJload0 <- rgdx.param(paste0('../modeloutput/AIMEnduse.gdx'),'EMFtemp1') %>% rename("SCENARIO"=i1,"Region"=i2,"Variable"=i3,"Y"=i4,"Value"=value) %>% mutate(Model="AIM/Enduse[Japan]")
-  EnduseJload1 <- EnduseJload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region$V1) %>% 
+  EnduseJload1 <- EnduseJload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
     select(-SCENARIO) %>% rename(SCENARIO="Name")
 
   EnduseGload0 <- rgdx.param(paste0('../modeloutput/AIMEnduseG.gdx'),'IAMC_template') %>% select(-i1) %>% rename("SCENARIO"=i2,"Region"=i3,"Variable"=i4,"Unit"=i5,"Y"=i6,"Value"=value)  %>% mutate(Model="AIM/Enduse[Global]")
-  EnduseGload1 <- EnduseGload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region$V1) %>% 
+  EnduseGload1 <- EnduseGload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
     select(-SCENARIO,-Unit) %>% rename(SCENARIO="Name")
 }
 
 IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Variable"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
-  select(Region,Variable,Y,Value,SCENARIO) %>% filter(Region %in% region$V1) %>% mutate(Model="Reference")
+  select(Region,Variable,Y,Value,SCENARIO) %>% filter(Region %in% region) %>% mutate(Model="Reference")
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
 IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
 
@@ -137,7 +136,7 @@ plot.1 <- function(XX){
 }
 
 #---IAMC tempalte loading and data mergeEnd
-for(rr in region$V1){
+for(rr in region){
   dir.create(paste0("../output/",rr))
   dir.create(paste0("../output/",rr,"/png"))
   dir.create(paste0("../output/",rr,"/ppt"))
@@ -187,7 +186,7 @@ for(j in 1:nrow(areamappara)){
   plot_TPES.1 <- plot.1(XX)
   allplot[[areamappara$Class[j]]] <- plot_TPES.1 
   outname <- paste0(outputdir,rr,"/png/",areamappara[j,1],".png")
-  ggsave(plot_TPES.1, file=outname, dpi = 450, width=9, height=floor(length(unique(XX$SCENARIO))/4)*3,limitsize=FALSE)
+  ggsave(plot_TPES.1, file=outname, dpi = 450, width=9, height=floor(length(unique(XX$SCENARIO))/4)*3+2,limitsize=FALSE)
   plotflag[[areamappara$Class[j]]] <- nrow(XX)  
 }
 

@@ -22,3 +22,6 @@ In /data/ folder, there are input files
 In /modeloutput/ folder, the model output should be included.
 - global_17_emf.gdx : input file
 
+- Location
+This tool can be used Close in the same folder as AIM/CGE,
+but you can also use it in the independent folder.
