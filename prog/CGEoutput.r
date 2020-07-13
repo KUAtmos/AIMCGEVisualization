@@ -64,7 +64,8 @@ MyThemeLine <- theme_bw() +
 dir.create("../output/")
 outputdir <- c("../output/")
 #filename should be "global_17","CHN","JPN"....
-filename <- c("CHN")
+#filename <- c("CHN")
+filename <- c("global_17")
 #file.copy(paste0("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/",filename,"_emf.gdx"), paste0("../modeloutput/",filename,"_emf.gdx"),overwrite = TRUE)
 file.copy(paste0("../../anls_output/iiasa_database/gdx/",filename,"_emf.gdx"), paste0("../modeloutput/",filename,"_emf.gdx"),overwrite = TRUE)
 
@@ -72,7 +73,7 @@ linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8
 landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
 scenariomap <- read.table("../data/scenariomap.map", sep="\t",header=T, stringsAsFactors=F)
 scenariomap2 <- read.table("../data/scenariomap2.map", sep="\t",header=T, stringsAsFactors=F)
-region <- read.table("../data/region.txt", sep="\t",header=F, stringsAsFactors=F)
+region <- as.vector(read.table("../data/region.txt", sep="\t",header=F, stringsAsFactors=F)$V1)
 varlist_load <- read.table("../data/varlist.txt", sep="\t",header=F, stringsAsFactors=F)
 varalllist <- read.table("../data/varalllist.txt", sep="\t",header=F, stringsAsFactors=F)
 varlist <- left_join(varlist_load,varalllist,by="V1")
@@ -84,10 +85,9 @@ areamap <- read.table("../data/Areafigureorder.txt", sep="\t",header=T, stringsA
 areamappara <- read.table("../data/Area.map", sep="\t",header=T, stringsAsFactors=F)
 
 #---IAMC tempalte loading and data merge
-CGEload0 <- rgdx.param(paste0('../modeloutput/',filename),'EMFtemp1') 
+CGEload0 <- rgdx.param(paste0('../modeloutput/',filename,"_emf.gdx"),'EMFtemp1') 
 Getregion <- as.vector(unique(CGEload0$REMF))
 if(length(Getregion)==1){region <- Getregion}
-#CGEload0 <- rbind(rgdx.param(paste0('../modeloutput/JPN_emf.gdx'),'EMFtemp1'), rgdx.param(paste0('../modeloutput/IND_emf.gdx'),'EMFtemp1'), rgdx.param(paste0('../modeloutput/CHN_emf.gdx'),'EMFtemp1'))
 CGEload1 <- CGEload0 %>% rename("Value"=EMFtemp1,"Variable"=VEMF) %>% 
   left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1]) & REMF %in% region) %>% 
   select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name")
