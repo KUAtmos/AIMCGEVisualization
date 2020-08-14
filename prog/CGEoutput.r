@@ -186,7 +186,7 @@ for(j in 1:nrow(areamappara)){
   plot_TPES.1 <- plot.1(XX)
   allplot[[areamappara$Class[j]]] <- plot_TPES.1 
   outname <- paste0(outputdir,rr,"/png/",areamappara[j,1],".png")
-  ggsave(plot_TPES.1, file=outname, dpi = 450, width=9, height=floor(length(unique(XX$SCENARIO))/4)*3+2,limitsize=FALSE)
+  ggsave(plot_TPES.1, file=outname, dpi = 450, width=9, height=floor(length(unique(XX$SCENARIO))/4+1)*3+2,limitsize=FALSE)
   plotflag[[areamappara$Class[j]]] <- nrow(XX)  
 }
 
