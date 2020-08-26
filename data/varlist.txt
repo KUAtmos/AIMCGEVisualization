@@ -3,6 +3,7 @@ Fin_Ene_Ele
 Fin_Ene_Gas
 Fin_Ene_Ind
 Fin_Ene_Ind_Ele
+Fin_Ene_Ind_Ele_Heat
 Fin_Ene_Ind_Gas
 Fin_Ene_Ind_Liq
 Fin_Ene_Ind_Solids
@@ -23,6 +24,7 @@ Fin_Ene_Res_and_Com_SolidsBio_Tra
 Fin_Ene_Res_and_Com_SolidsCoa
 Fin_Ene_Res
 Fin_Ene_Res_Ele
+Fin_Ene_Res_Ele_Heat
 Fin_Ene_Res_Gas
 Fin_Ene_Res_Liq
 Fin_Ene_Res_Solids
@@ -35,6 +37,7 @@ Fin_Ene_Com_Liq
 Fin_Ene_Com_Solids
 Fin_Ene_Com_SolidsBio
 Fin_Ene_Com_SolidsCoa
+Fin_Ene_Com_Ele_Heat
 Fin_Ene_Solids
 Fin_Ene_SolidsBio
 Fin_Ene_SolidsBio_Tra
@@ -121,4 +124,14 @@ Prc_Prm_Ene_Oil
 Prc_Prm_Ene_Gas
 Prc_Prm_Ene_Coa
 Prc_Sec_Ene_Ele
-
+Sec_Ene_Ele_Heat
+Sec_Ene_Ele_Heat_Bio
+Sec_Ene_Ele_Heat_Coa
+Sec_Ene_Ele_Heat_Gas
+Sec_Ene_Ele_Heat_Geo
+Sec_Ene_Ele_Heat_Oil
+Sec_Ene_Ele_Heat_Solar
+Sec_Ene_Ele_Heat_Win
+Fin_Ene_Ele_Heat
+Fin_Ene_Ind_Ele_Heat
+Fin_Ene_Res_and_Com_Ele_Heat

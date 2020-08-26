@@ -62,12 +62,14 @@ MyThemeLine <- theme_bw() +
 
 #-- data load
 dir.create("../output/")
+dir.create("../output/ppt")
 outputdir <- c("../output/")
 #filename should be "global_17","CHN","JPN"....
 #filename <- c("CHN")
 filename <- c("global_17")
 #file.copy(paste0("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/",filename,"_emf.gdx"), paste0("../modeloutput/",filename,"_emf.gdx"),overwrite = TRUE)
 file.copy(paste0("../../anls_output/iiasa_database/gdx/",filename,"_emf.gdx"), paste0("../modeloutput/",filename,"_emf.gdx"),overwrite = TRUE)
+file.copy(paste0("../../AIMCGE/individual/AIMEnduseG2CGE/data/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG.gdx"),overwrite = TRUE)
 
 linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
 landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
@@ -93,24 +95,25 @@ CGEload1 <- CGEload0 %>% rename("Value"=EMFtemp1,"Variable"=VEMF) %>%
   select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name")
 
 #Enduse loading
-enduseflag <-0
+enduseflag <- 1
 if(enduseflag==1){
-  EnduseJload0 <- rgdx.param(paste0('../modeloutput/AIMEnduse.gdx'),'EMFtemp1') %>% rename("SCENARIO"=i1,"Region"=i2,"Variable"=i3,"Y"=i4,"Value"=value) %>% mutate(Model="AIM/Enduse[Japan]")
-  EnduseJload1 <- EnduseJload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
-    select(-SCENARIO) %>% rename(SCENARIO="Name")
+#  EnduseJload0 <- rgdx.param(paste0('../modeloutput/AIMEnduseG.gdx'),'EMFtemp1') %>% rename("SCENARIO"=i1,"Region"=i2,"Variable"=i3,"Y"=i4,"Value"=value) %>% mutate(Model="AIM/Enduse[Japan]")
+#  EnduseJload1 <- EnduseJload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
+#    select(-SCENARIO) %>% rename(SCENARIO="Name")
 
-  EnduseGload0 <- rgdx.param(paste0('../modeloutput/AIMEnduseG.gdx'),'IAMC_template') %>% select(-i1) %>% rename("SCENARIO"=i2,"Region"=i3,"Variable"=i4,"Unit"=i5,"Y"=i6,"Value"=value)  %>% mutate(Model="AIM/Enduse[Global]")
+  EnduseGload0 <- rgdx.param(paste0('../modeloutput/AIMEnduseG.gdx'),'data_all')  %>% rename("SCENARIO"=Sc,"Region"=Sr,"Variable"=Sv,"Y"=Sy,"Value"=data_all)  %>% mutate(Model="AIM/Enduse[Global]")
   EnduseGload1 <- EnduseGload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
-    select(-SCENARIO,-Unit) %>% rename(SCENARIO="Name")
+    select(-SCENARIO) %>% rename(SCENARIO="Name")
 }
 
+file.copy(paste0("../../AIMCGE/individual/IEAEB1062CGE/output/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
 IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Variable"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
   select(Region,Variable,Y,Value,SCENARIO) %>% filter(Region %in% region) %>% mutate(Model="Reference")
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
 IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
 
 #allmodel0 <- rbind(CGEload1,EnduseGload1,EnduseJload1)  
-allmodel0 <- rbind(CGEload1)  
+allmodel0 <- rbind(CGEload1,EnduseGload1)  
 allmodel0$Y <- as.numeric(levels(allmodel0$Y))[allmodel0$Y]
 
 allmodel <- rbind(allmodel0,IEAEB1)  
@@ -136,12 +139,13 @@ plot.1 <- function(XX){
 }
 
 #---IAMC tempalte loading and data mergeEnd
+#region <- c("World")
 for(rr in region){
   dir.create(paste0("../output/",rr))
   dir.create(paste0("../output/",rr,"/png"))
   dir.create(paste0("../output/",rr,"/ppt"))
 
-nalist <- c(as.vector(varlist$V1),"TPES","POWER","Landuse","TFC_fuel","TFC_Sector","TFC_Ind","TFC_Tra","TFC_Res","TFC_Com")
+nalist <- c(as.vector(varlist$V1),"TPES","POWER","Power_heat","Landuse","TFC_fuel","TFC_Sector","TFC_Ind","TFC_Tra","TFC_Res","TFC_Com")
 allplot <- as.list(nalist)
 plotflag <- as.list(nalist)
 names(allplot) <- nalist
@@ -186,30 +190,33 @@ for(j in 1:nrow(areamappara)){
   plot_TPES.1 <- plot.1(XX)
   allplot[[areamappara$Class[j]]] <- plot_TPES.1 
   outname <- paste0(outputdir,rr,"/png/",areamappara[j,1],".png")
-  ggsave(plot_TPES.1, file=outname, dpi = 450, width=9, height=floor(length(unique(XX$SCENARIO))/4)*3+2,limitsize=FALSE)
+  ggsave(plot_TPES.1, file=outname, dpi = 450, width=9, height=floor(length(unique(XX$SCENARIO))/4+1)*3+2,limitsize=FALSE)
   plotflag[[areamappara$Class[j]]] <- nrow(XX)  
 }
 
 #----r2ppt
 #The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
 #If you really needs ppt slide, you first ouptput png and then paste it.
-
-myPPT<-PPT.Init(method="RDCOMClient")
-for (i in 1:length(nalist)){
-    if(plotflag[[nalist[i]]]>0){
-#      win.graph(width=1860, height=1450,pointsize = 1)
-#      print(allplot[[i]])
-      myPPT<-PPT.AddTitleOnlySlide(myPPT,title="Title Only",title.fontsize=40,title.font="Arial")
-#      myPPT<-PPT.AddGraphicstoSlide(myPPT,size= c(10,10,700,350), dev.out.type ='emf' )
-      myPPT<-PPT.AddGraphicstoSlide(myPPT,file=paste0(outputdir,rr,"/png/",nalist[i],".png"),size=c(10,10,700,500))
-#      dev.off()
+pptlist <- c("Fin_Ene","Fin_Ene_Ele_Heat","Fin_Ene_Gas","Fin_Ene_Liq","Fin_Ene_Solids","Fin_Ene_Res","Fin_Ene_Com","Fin_Ene_Tra","Fin_Ene_Ind","Emi_CO2_Ene_and_Ind_Pro","Pol_Cos_GDP_Los_rat","Prc_Car","TPES","Power_heat")
+r2ppt <- 1
+if (r2ppt==1){
+  myPPT<-PPT.Init(method="RDCOMClient")
+  for (i in pptlist){
+      if(plotflag[[i]]>0){
+  #      win.graph(width=1860, height=1450,pointsize = 1)
+  #      print(allplot[[i]])
+        myPPT<-PPT.AddTitleOnlySlide(myPPT,title="Title Only",title.fontsize=40,title.font="Arial")
+  #      myPPT<-PPT.AddGraphicstoSlide(myPPT,size= c(10,10,700,350), dev.out.type ='emf' )
+        myPPT<-PPT.AddGraphicstoSlide(myPPT,file=paste0(outputdir,rr,"/png/",i,".png"),size=c(10,10,700,500))
+  #      dev.off()
+    }
   }
-}
-myPPT<-PPT.SaveAs(myPPT,file=paste0("../output/",rr,"/ppt/",rr,"comparison.pptx"))
-myPPT<-PPT.Close(myPPT)
-rm(myPPT)
+  myPPT<-PPT.SaveAs(myPPT,file=paste0("../output/",rr,"/ppt/",rr,"comparison.pptx"))
+  myPPT<-PPT.Close(myPPT)
+  rm(myPPT)
 #      savePlot("test.emf",type="emf", device = dev.cur())
 #      myPPT<-PPT.AddGraphicstoSlide(myPPT,file="test.emf",dev.out.type="emf",size=c(10,10,500,350))
+}
 
 }
 

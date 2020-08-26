@@ -25,6 +25,19 @@ Power	Wind	Sec_Ene_Ele_Win	10
 Power	Biomass|w/o CCS	Sec_Ene_Ele_Bio_wo_CCS	11
 Power	Biomass|w/ CCS	Sec_Ene_Ele_Bio_w_CCS	12
 Power	Geothermal	Sec_Ene_Ele_Geo	13
+Power_heat	Coal|w/o CCS	Sec_Ene_Ele_Heat_Coa_wo_CCS	1
+Power_heat	Coal|w/ CCS	Sec_Ene_Ele_Heat_Coa_w_CCS	2
+Power_heat	Oil|w/o CCS	Sec_Ene_Ele_Oil_wo_CCS	3
+Power_heat	Oil|w/ CCS	Sec_Ene_Ele_Oil_w_CCS	4
+Power_heat	Gas|w/o CCS	Sec_Ene_Ele_Heat_Gas_wo_CCS	5
+Power_heat	Gas|w/ CCS	Sec_Ene_Ele_Heat_Gas_w_CCS	6
+Power_heat	Nuclear	Sec_Ene_Ele_Heat_Nuc	7
+Power_heat	Hydro	Sec_Ene_Ele_Hyd	8
+Power_heat	Solar	Sec_Ene_Ele_Solar	9
+Power_heat	Wind	Sec_Ene_Ele_Win	10
+Power_heat	Biomass|w/o CCS	Sec_Ene_Ele_Heat_Bio_wo_CCS	11
+Power_heat	Biomass|w/ CCS	Sec_Ene_Ele_Heat_Bio_w_CCS	12
+Power_heat	Geothermal	Sec_Ene_Ele_Heat_Geo	13
 TFC_fuel	Solid	Fin_Ene_Solids	1
 TFC_fuel	Liquid	Fin_Ene_Liq	2
 TFC_fuel	Gas	Fin_Ene_Gas	3

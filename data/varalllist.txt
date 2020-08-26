@@ -1,10 +1,10 @@
 Emi_CO2_Ene_and_Ind_Pro	Emissions|CO2|Energy and Industrial Processes	Mt CO2/yr
 Fin_Ene	Final Energy	EJ/yr
-GDP_MER	GDP|MER	billion US$2005/yr
+GDP_MER	GDP|MER	billion US$2010/yr
 POP	Population	Million
-Prc_Car	Price|Carbon	US$2005/t CO2
-Prc_Prm_Ene_Oil	Price|Primary Energy|Oil	US$2005/GJ
-Prc_Sec_Ene_Ele	Price|Secondary Energy|Electricity	US$2005/GJ
+Prc_Car	Price|Carbon	US$2010/t CO2
+Prc_Prm_Ene_Oil	Price|Primary Energy|Oil	US$2010/GJ
+Prc_Sec_Ene_Ele	Price|Secondary Energy|Electricity	US$2010/GJ
 Prm_Ene	Primary Energy	EJ/yr
 Prm_Ene_Bio	Primary Energy|Biomass	EJ/yr
 Prm_Ene_Coa	Primary Energy|Coal	EJ/yr
@@ -25,14 +25,14 @@ Sec_Ene_Ele_Nuc	Secondary Energy|Electricity|Nuclear	EJ/yr
 Sec_Ene_Ele_Oil	Secondary Energy|Electricity|Oil	EJ/yr
 Sec_Ene_Ele_Oth	Secondary Energy|Electricity|Other	EJ/yr
 Sec_Ene_Liq	Secondary Energy|Liquids	EJ/yr
-Pol_Cos_Add_Tot_Ene_Sys_Cos	Policy Cost|Additional Total Energy System Cost	billion US$2005/yr
-Pol_Cos_Are_und_MAC_Cur	Policy Cost|Area under MAC Curve	billion US$2005/yr
-Pol_Cos_Cns_Los	Policy Cost|Consumption Loss	billion US$2005/yr
-Pol_Cos_Equ_Var	Policy Cost|Equivalent Variation	billion US$2005/yr
-Pol_Cos_GDP_Los	Policy Cost|GDP Loss	billion US$2005/yr
-Pol_Cos_Oth	Policy Cost|Other	billion US$2005/yr
+Pol_Cos_Add_Tot_Ene_Sys_Cos	Policy Cost|Additional Total Energy System Cost	billion US$2010/yr
+Pol_Cos_Are_und_MAC_Cur	Policy Cost|Area under MAC Curve	billion US$2010/yr
+Pol_Cos_Cns_Los	Policy Cost|Consumption Loss	billion US$2010/yr
+Pol_Cos_Equ_Var	Policy Cost|Equivalent Variation	billion US$2010/yr
+Pol_Cos_GDP_Los	Policy Cost|GDP Loss	billion US$2010/yr
+Pol_Cos_Oth	Policy Cost|Other	billion US$2010/yr
 Cnc_CO2	Concentration|CO2	ppm
-CNS	Consumption	billion US$2005/yr
+CNS	Consumption	billion US$2010/yr
 Car_Seq_CCS	Carbon Sequestration|CCS	Mt CO2/yr
 Emi_F_G	Emissions|F-Gases	Mt CO2-equiv/yr
 Fin_Ene_Ele	Final Energy|Electricity	EJ/yr
@@ -74,13 +74,13 @@ Fin_Ene_Tra_Oth	Final Energy|Transportation|Other	EJ/yr
 Frc	Forcing	W/m2
 Frc_AN3	Forcing|AN3A	W/m2
 Frc_CO2	Forcing|CO2	W/m2
-GDP_PPP	GDP|PPP	billion US$2005/yr
-Inv_Ene_Dem_Eff_and_Dec	Investment|Energy Demand|Efficiency and Decarbonization	billion US$2005/yr
-Inv_Ene_Dem_Ind_Eff_and_Dec	Investment|Energy Demand|Industry|Efficiency and Decarbonization	billion US$2005/yr
-Inv_Ene_Dem_Res_and_Com_Eff_and_Dec	Investment|Energy Demand|Residential and Commercial|Efficiency and Decarbonization	billion US$2005/yr
-Inv_Ene_Dem_Tra_Eff_and_Dec	Investment|Energy Demand|Transportation|Efficiency and Decarbonization	billion US$2005/yr
-Inv_Ene_Sup	Investment|Energy Supply	billion US$2005/yr
-Inv_Ene_Sup_Ele	Investment|Energy Supply|Electricity	billion US$2005/yr
+GDP_PPP	GDP|PPP	billion US$2010/yr
+Inv_Ene_Dem_Eff_and_Dec	Investment|Energy Demand|Efficiency and Decarbonization	billion US$2010/yr
+Inv_Ene_Dem_Ind_Eff_and_Dec	Investment|Energy Demand|Industry|Efficiency and Decarbonization	billion US$2010/yr
+Inv_Ene_Dem_Res_and_Com_Eff_and_Dec	Investment|Energy Demand|Residential and Commercial|Efficiency and Decarbonization	billion US$2010/yr
+Inv_Ene_Dem_Tra_Eff_and_Dec	Investment|Energy Demand|Transportation|Efficiency and Decarbonization	billion US$2010/yr
+Inv_Ene_Sup	Investment|Energy Supply	billion US$2010/yr
+Inv_Ene_Sup_Ele	Investment|Energy Supply|Electricity	billion US$2010/yr
 Lan_Cov	Land Cover	million ha
 Lan_Cov_Bui_Are	Land Cover|Built-up Area	million ha
 Lan_Cov_Cro	Land Cover|Cropland	million ha
@@ -96,10 +96,10 @@ Lan_Cov_Oth_Ara_Lan	Land Cover|Other Arable Land	million ha
 Lan_Cov_Oth_Lan	Land Cover|Other Land	million ha
 Lan_Cov_Oth_Nat_Lan	Land Cover|Other Natural Land	million ha
 Lan_Cov_Pst	Land Cover|Pasture	million ha
-Prc_Prm_Ene_Bio	Price|Primary Energy|Biomass	US$2005/GJ
-Prc_Prm_Ene_Coa	Price|Primary Energy|Coal	US$2005/GJ
-Prc_Prm_Ene_Gas	Price|Primary Energy|Gas	US$2005/GJ
-Prc_Sec_Ene_Liq_Bio	Price|Secondary Energy|Liquids|Biomass	US$2005/GJ
+Prc_Prm_Ene_Bio	Price|Primary Energy|Biomass	US$2010/GJ
+Prc_Prm_Ene_Coa	Price|Primary Energy|Coal	US$2010/GJ
+Prc_Prm_Ene_Gas	Price|Primary Energy|Gas	US$2010/GJ
+Prc_Sec_Ene_Liq_Bio	Price|Secondary Energy|Liquids|Biomass	US$2010/GJ
 Prc_Agr_NonEneCro_and_Liv_Ind	Price|Agriculture|Non-Energy Crops and Livestock|Index	Index (2005 = 1)
 Prc_Agr_NonEneCro_Ind	Price|Agriculture|Non-Energy Crops|Index	Index (2005 = 1)
 Prm_Ene_Bio_1st_Gen	Primary Energy|Biomass|1st Generation	EJ/yr
@@ -233,8 +233,8 @@ Sec_Ene_Liq_Bio_w_CCS	Secondary Energy|Liquids|Biomass|w/ CCS	EJ/yr
 Sec_Ene_Liq_Bio_wo_CCS	Secondary Energy|Liquids|Biomass|w/o CCS	EJ/yr
 Sec_Ene_SolidsBio	Secondary Energy|Solids|Biomass	EJ/yr
 Sec_Ene_SolidsCoa	Secondary Energy|Solids|Coal	EJ/yr
-Trd_All	Trade|All	billion US$2005/yr
-Trd_Emi_All_Val	Trade|Emissions Allowances|Value	billion US$2005/yr
+Trd_All	Trade|All	billion US$2010/yr
+Trd_Emi_All_Val	Trade|Emissions Allowances|Value	billion US$2010/yr
 Trd_Emi_All_Vol	Trade|Emissions Allowances|Volume	Mt CO2-equiv/yr
 Trd_Prm_Ene_Bio_Vol	Trade|Primary Energy|Biomass|Volume	EJ/yr
 Trd_Sec_Ene_Solidsand_Liq_Bio_Vol	Trade|Secondary Energy|Solids and Liquids|Biomass|Volume	EJ/yr
@@ -275,46 +275,46 @@ Frs_Dem_Rou_Ind_Rou	Forestry Demand|Roundwood|Industrial Roundwood	million m3/yr
 Frs_Pro_Rou	Forestry Production|Roundwood	million m3/yr
 Frs_Pro_Rou_Woo_Fue	Forestry Production|Roundwood|Wood Fuel	million m3/yr
 Frs_Pro_Rou_Ind_Rou	Forestry Production|Roundwood|Industrial Roundwood	million m3/yr
-LCO_Ele_Coa_w_CCS	LCOE|Electricity|Coal|w/ CCS	US$2005/MWh
-LCO_Ele_Coa_wo_CCS	LCOE|Electricity|Coal|w/o CCS	US$2005/MWh
-LCO_Ele_Gas_w_CCS	LCOE|Electricity|Gas|w/ CCS	US$2005/MWh
-LCO_Ele_Gas_wo_CCS	LCOE|Electricity|Gas|w/o CCS	US$2005/MWh
-LCO_Ele_Nuc	LCOE|Electricity|Nuclear	US$2005/MWh
-LCO_Ele_NonBioRen	LCOE|Electricity|Non-Biomass Renewables	US$2005/MWh
-LCO_Ele_SolarMar	LCOE|Electricity|Solar|Marginal	US$2005/MWh
-LCO_Ele_SolarAve	LCOE|Electricity|Solar|Average	US$2005/MWh
-LCO_Ele_SolarCSP_Ave	LCOE|Electricity|Solar|CSP|Average	US$2005/MWh
-LCO_Ele_SolarCSP_Mar	LCOE|Electricity|Solar|CSP|Marginal	US$2005/MWh
-LCO_Ele_SolarPV_Ave	LCOE|Electricity|Solar|PV|Average	US$2005/MWh
-LCO_Ele_SolarPV_Mar	LCOE|Electricity|Solar|PV|Marginal	US$2005/MWh
-LCO_Ele_Win_Mar	LCOE|Electricity|Wind|Marginal	US$2005/MWh
-LCO_Ele_Win_Ave	LCOE|Electricity|Wind|Average	US$2005/MWh
-LCO_Ele_Win_Ons_Mar	LCOE|Electricity|Wind|Onshore|Marginal	US$2005/MWh
-LCO_Ele_Win_Ons_Ave	LCOE|Electricity|Wind|Onshore|Average	US$2005/MWh
-LCO_Ele_Win_Off_Mar	LCOE|Electricity|Wind|Offshore|Marginal	US$2005/MWh
-LCO_Ele_Win_Off_Ave	LCOE|Electricity|Wind|Offshore|Average	US$2005/MWh
-LCO_Ele_Bio_w_CCS	LCOE|Electricity|Biomass|w/ CCS	US$2005/MWh
-LCO_Ele_Bio_wo_CCS	LCOE|Electricity|Biomass|w/o CCS	US$2005/MWh
-Ful_LCO_Ele_Coa_w_CCS	Full LCOE|Electricity|Coal|w/ CCS	US$2005/MWh
-Ful_LCO_Ele_Coa_wo_CCS	Full LCOE|Electricity|Coal|w/o CCS	US$2005/MWh
-Ful_LCO_Ele_Gas_w_CCS	Full LCOE|Electricity|Gas|w/ CCS	US$2005/MWh
-Ful_LCO_Ele_Gas_wo_CCS	Full LCOE|Electricity|Gas|w/o CCS	US$2005/MWh
-Ful_LCO_Ele_Nuc	Full LCOE|Electricity|Nuclear	US$2005/MWh
-Ful_LCO_Ele_NonBioRen	Full LCOE|Electricity|Non-Biomass Renewables	US$2005/MWh
-Ful_LCO_Ele_SolarMar	Full LCOE|Electricity|Solar|Marginal	US$2005/MWh
-Ful_LCO_Ele_SolarAve	Full LCOE|Electricity|Solar|Average	US$2005/MWh
-Ful_LCO_Ele_SolarCSP_Ave	Full LCOE|Electricity|Solar|CSP|Average	US$2005/MWh
-Ful_LCO_Ele_SolarCSP_Mar	Full LCOE|Electricity|Solar|CSP|Marginal	US$2005/MWh
-Ful_LCO_Ele_SolarPV_Ave	Full LCOE|Electricity|Solar|PV|Average	US$2005/MWh
-Ful_LCO_Ele_SolarPV_Mar	Full LCOE|Electricity|Solar|PV|Marginal	US$2005/MWh
-Ful_LCO_Ele_Win_Mar	Full LCOE|Electricity|Wind|Marginal	US$2005/MWh
-Ful_LCO_Ele_Win_Ave	Full LCOE|Electricity|Wind|Average	US$2005/MWh
-Ful_LCO_Ele_Win_Ons_Mar	Full LCOE|Electricity|Wind|Onshore|Marginal	US$2005/MWh
-Ful_LCO_Ele_Win_Ons_Ave	Full LCOE|Electricity|Wind|Onshore|Average	US$2005/MWh
-Ful_LCO_Ele_Win_Off_Mar	Full LCOE|Electricity|Wind|Offshore|Marginal	US$2005/MWh
-Ful_LCO_Ele_Win_Off_Ave	Full LCOE|Electricity|Wind|Offshore|Average	US$2005/MWh
-Ful_LCO_Ele_Bio_w_CCS	Full LCOE|Electricity|Biomass|w/ CCS	US$2005/MWh
-Ful_LCO_Ele_Bio_wo_CCS	Full LCOE|Electricity|Biomass|w/o CCS	US$2005/MWh
+LCO_Ele_Coa_w_CCS	LCOE|Electricity|Coal|w/ CCS	US$2010/MWh
+LCO_Ele_Coa_wo_CCS	LCOE|Electricity|Coal|w/o CCS	US$2010/MWh
+LCO_Ele_Gas_w_CCS	LCOE|Electricity|Gas|w/ CCS	US$2010/MWh
+LCO_Ele_Gas_wo_CCS	LCOE|Electricity|Gas|w/o CCS	US$2010/MWh
+LCO_Ele_Nuc	LCOE|Electricity|Nuclear	US$2010/MWh
+LCO_Ele_NonBioRen	LCOE|Electricity|Non-Biomass Renewables	US$2010/MWh
+LCO_Ele_SolarMar	LCOE|Electricity|Solar|Marginal	US$2010/MWh
+LCO_Ele_SolarAve	LCOE|Electricity|Solar|Average	US$2010/MWh
+LCO_Ele_SolarCSP_Ave	LCOE|Electricity|Solar|CSP|Average	US$2010/MWh
+LCO_Ele_SolarCSP_Mar	LCOE|Electricity|Solar|CSP|Marginal	US$2010/MWh
+LCO_Ele_SolarPV_Ave	LCOE|Electricity|Solar|PV|Average	US$2010/MWh
+LCO_Ele_SolarPV_Mar	LCOE|Electricity|Solar|PV|Marginal	US$2010/MWh
+LCO_Ele_Win_Mar	LCOE|Electricity|Wind|Marginal	US$2010/MWh
+LCO_Ele_Win_Ave	LCOE|Electricity|Wind|Average	US$2010/MWh
+LCO_Ele_Win_Ons_Mar	LCOE|Electricity|Wind|Onshore|Marginal	US$2010/MWh
+LCO_Ele_Win_Ons_Ave	LCOE|Electricity|Wind|Onshore|Average	US$2010/MWh
+LCO_Ele_Win_Off_Mar	LCOE|Electricity|Wind|Offshore|Marginal	US$2010/MWh
+LCO_Ele_Win_Off_Ave	LCOE|Electricity|Wind|Offshore|Average	US$2010/MWh
+LCO_Ele_Bio_w_CCS	LCOE|Electricity|Biomass|w/ CCS	US$2010/MWh
+LCO_Ele_Bio_wo_CCS	LCOE|Electricity|Biomass|w/o CCS	US$2010/MWh
+Ful_LCO_Ele_Coa_w_CCS	Full LCOE|Electricity|Coal|w/ CCS	US$2010/MWh
+Ful_LCO_Ele_Coa_wo_CCS	Full LCOE|Electricity|Coal|w/o CCS	US$2010/MWh
+Ful_LCO_Ele_Gas_w_CCS	Full LCOE|Electricity|Gas|w/ CCS	US$2010/MWh
+Ful_LCO_Ele_Gas_wo_CCS	Full LCOE|Electricity|Gas|w/o CCS	US$2010/MWh
+Ful_LCO_Ele_Nuc	Full LCOE|Electricity|Nuclear	US$2010/MWh
+Ful_LCO_Ele_NonBioRen	Full LCOE|Electricity|Non-Biomass Renewables	US$2010/MWh
+Ful_LCO_Ele_SolarMar	Full LCOE|Electricity|Solar|Marginal	US$2010/MWh
+Ful_LCO_Ele_SolarAve	Full LCOE|Electricity|Solar|Average	US$2010/MWh
+Ful_LCO_Ele_SolarCSP_Ave	Full LCOE|Electricity|Solar|CSP|Average	US$2010/MWh
+Ful_LCO_Ele_SolarCSP_Mar	Full LCOE|Electricity|Solar|CSP|Marginal	US$2010/MWh
+Ful_LCO_Ele_SolarPV_Ave	Full LCOE|Electricity|Solar|PV|Average	US$2010/MWh
+Ful_LCO_Ele_SolarPV_Mar	Full LCOE|Electricity|Solar|PV|Marginal	US$2010/MWh
+Ful_LCO_Ele_Win_Mar	Full LCOE|Electricity|Wind|Marginal	US$2010/MWh
+Ful_LCO_Ele_Win_Ave	Full LCOE|Electricity|Wind|Average	US$2010/MWh
+Ful_LCO_Ele_Win_Ons_Mar	Full LCOE|Electricity|Wind|Onshore|Marginal	US$2010/MWh
+Ful_LCO_Ele_Win_Ons_Ave	Full LCOE|Electricity|Wind|Onshore|Average	US$2010/MWh
+Ful_LCO_Ele_Win_Off_Mar	Full LCOE|Electricity|Wind|Offshore|Marginal	US$2010/MWh
+Ful_LCO_Ele_Win_Off_Ave	Full LCOE|Electricity|Wind|Offshore|Average	US$2010/MWh
+Ful_LCO_Ele_Bio_w_CCS	Full LCOE|Electricity|Biomass|w/ CCS	US$2010/MWh
+Ful_LCO_Ele_Bio_wo_CCS	Full LCOE|Electricity|Biomass|w/o CCS	US$2010/MWh
 Cap_Ele	Capacity|Electricity	GW
 Cap_Ele_Hyd	Capacity|Electricity|Hydro	GW
 Cap_Ele_SolarCSP	Capacity|Electricity|Solar|CSP	GW
@@ -354,7 +354,7 @@ AGMIP_PAS_CONS	AGMIP|PAS|CONS	1000 t
 AGMIP_PAS_OTHU	AGMIP|PAS|OTHU	1000 t
 AGMIP_PAS_YILD	AGMIP|PAS|YILD	t/ha
 AGMIP_ALL_CALO	AGMIP|ALL|CALO	kcal/cap/day
-AGMIP_ALL_GDPT	AGMIP|ALL|GDPT	billion US$2005
+AGMIP_ALL_GDPT	AGMIP|ALL|GDPT	billion US$2010
 AGMIP_ALL_POPT	AGMIP|ALL|POPT	Million
 AGMIP_WHT_Area	AGMIP|WHT|Area	1000 ha
 AGMIP_WHT_Prod	AGMIP|WHT|Prod	1000 t
@@ -492,33 +492,33 @@ Agr_Dem_Cro_Fee	Agricultural Demand|Crops|Feed	million t DM/yr
 Agr_Dem_Liv_Fee	Agricultural Demand|Livestock|Feed	million t DM/yr
 Yie_Oil	Yield|Oilcrops	million t DM/yr
 Yie_Sug	Yield|Sugarcrops	t DM/ha/yr
-Inv_All	Investment|All	billion US$2005/yr
-Inv_RnD	Investment|RnD	billion US$2005/yr
-Inv_RnD_Ene_Sup	Investment|RnD|Energy Supply	billion US$2005/yr
-Inv_Ene_Sup_Ele_Fos	Investment|Energy Supply|Electricity|Fossil	billion US$2005/yr
-Inv_Ene_Sup_Ele_Non	Investment|Energy Supply|Electricity|Non-fossil	billion US$2005/yr
-Inv_Ene_Sup_Ele_Oth	Investment|Energy Supply|Electricity|Other	billion US$2005/yr
-Inv_Ene_Sup_Ele_Tra_and_Dis	Investment|Energy Supply|Electricity|Transmission and Distribution	billion US$2005/yr
-Inv_Ene_Sup_Ele_Ele_Sto	Investment|Energy Supply|Electricity|Electricity Storage	billion US$2005/yr
-Inv_Ene_Sup_Ext_Fos	Investment|Energy Supply|Extraction|Fossil	billion US$2005/yr
-Inv_Ene_Sup_Ext_Bio	Investment|Energy Supply|Extraction|Bioenergy	billion US$2005/yr
-Inv_Ene_Sup_Ext_Ura	Investment|Energy Supply|Extraction|Uranium	billion US$2005/yr
-Inv_Ene_Sup_Hyd	Investment|Energy Supply|Hydrogen	billion US$2005/yr
-Inv_Ene_Sup_Hyd_Fos	Investment|Energy Supply|Hydrogen|Fossil	billion US$2005/yr
-Inv_Ene_Sup_Hyd_Ren	Investment|Energy Supply|Hydrogen|Renewable	billion US$2005/yr
-Inv_Ene_Sup_Hyd_Oth	Investment|Energy Supply|Hydrogen|Other	billion US$2005/yr
-Inv_Ene_Sup_Liq	Investment|Energy Supply|Liquids	billion US$2005/yr
-Inv_Ene_Sup_Heat	Investment|Energy Supply|Heat	billion US$2005/yr
-Inv_Ene_Sup_CO2_Tra_and_Sto	Investment|Energy Supply|CO2 Transport and Storage	billion US$2005/yr
-Inv_Ene_Sup_Oth	Investment|Energy Supply|Other	billion US$2005/yr
-Inv_Ene_Dem	Investment|Energy Demand	billion US$2005/yr
-LCO_Liq_Coa_w_CCS	LCOE|Liquids|Coal|w/ CCS	US$2005/MWh
-LCO_Liq_Coa_wo_CCS	LCOE|Liquids|Coal|w/o CCS	US$2005/MWh
-LCO_Liq_Oil	LCOE|Liquids|Oil	US$2005/MWh
-LCO_Liq_Bio_w_CCS	LCOE|Liquids|Biomass|w/ CCS	US$2005/MWh
-LCO_Liq_Bio_wo_CCS	LCOE|Liquids|Biomass|w/o CCS	US$2005/MWh
-LCO_Ele_Bio_w_CCS_w_Car_Prc	LCOE|Electricity|Biomass|w/ CCS|w/ Carbon Price	US$2005/MWh
-LCO_Ele_Coa_w_CCS_w_Car_Prc	LCOE|Electricity|Coal|w/ CCS|w/ Carbon Price	US$2005/MWh
+Inv_All	Investment|All	billion US$2010/yr
+Inv_RnD	Investment|RnD	billion US$2010/yr
+Inv_RnD_Ene_Sup	Investment|RnD|Energy Supply	billion US$2010/yr
+Inv_Ene_Sup_Ele_Fos	Investment|Energy Supply|Electricity|Fossil	billion US$2010/yr
+Inv_Ene_Sup_Ele_Non	Investment|Energy Supply|Electricity|Non-fossil	billion US$2010/yr
+Inv_Ene_Sup_Ele_Oth	Investment|Energy Supply|Electricity|Other	billion US$2010/yr
+Inv_Ene_Sup_Ele_Tra_and_Dis	Investment|Energy Supply|Electricity|Transmission and Distribution	billion US$2010/yr
+Inv_Ene_Sup_Ele_Ele_Sto	Investment|Energy Supply|Electricity|Electricity Storage	billion US$2010/yr
+Inv_Ene_Sup_Ext_Fos	Investment|Energy Supply|Extraction|Fossil	billion US$2010/yr
+Inv_Ene_Sup_Ext_Bio	Investment|Energy Supply|Extraction|Bioenergy	billion US$2010/yr
+Inv_Ene_Sup_Ext_Ura	Investment|Energy Supply|Extraction|Uranium	billion US$2010/yr
+Inv_Ene_Sup_Hyd	Investment|Energy Supply|Hydrogen	billion US$2010/yr
+Inv_Ene_Sup_Hyd_Fos	Investment|Energy Supply|Hydrogen|Fossil	billion US$2010/yr
+Inv_Ene_Sup_Hyd_Ren	Investment|Energy Supply|Hydrogen|Renewable	billion US$2010/yr
+Inv_Ene_Sup_Hyd_Oth	Investment|Energy Supply|Hydrogen|Other	billion US$2010/yr
+Inv_Ene_Sup_Liq	Investment|Energy Supply|Liquids	billion US$2010/yr
+Inv_Ene_Sup_Heat	Investment|Energy Supply|Heat	billion US$2010/yr
+Inv_Ene_Sup_CO2_Tra_and_Sto	Investment|Energy Supply|CO2 Transport and Storage	billion US$2010/yr
+Inv_Ene_Sup_Oth	Investment|Energy Supply|Other	billion US$2010/yr
+Inv_Ene_Dem	Investment|Energy Demand	billion US$2010/yr
+LCO_Liq_Coa_w_CCS	LCOE|Liquids|Coal|w/ CCS	US$2010/MWh
+LCO_Liq_Coa_wo_CCS	LCOE|Liquids|Coal|w/o CCS	US$2010/MWh
+LCO_Liq_Oil	LCOE|Liquids|Oil	US$2010/MWh
+LCO_Liq_Bio_w_CCS	LCOE|Liquids|Biomass|w/ CCS	US$2010/MWh
+LCO_Liq_Bio_wo_CCS	LCOE|Liquids|Biomass|w/o CCS	US$2010/MWh
+LCO_Ele_Bio_w_CCS_w_Car_Prc	LCOE|Electricity|Biomass|w/ CCS|w/ Carbon Price	US$2010/MWh
+LCO_Ele_Coa_w_CCS_w_Car_Prc	LCOE|Electricity|Coal|w/ CCS|w/ Carbon Price	US$2010/MWh
 Cum_Cap_Ele_Win	Cumulative Capacity|Electricity|Wind	GW
 Cum_Cap_Ele_Solar	Cumulative Capacity|Electricity|Solar	GW
 Cum_Cap_Ele_Coa_w_CCS	Cumulative Capacity|Electricity|Coal|w/ CCS	GW
@@ -560,10 +560,10 @@ Cap_Ele_Oth	Capacity|Electricity|Other	GW
 Lan_Cov_Cro_Cer	Land Cover|Cropland|Cereals	million Ha/yr
 Agr_Pro_Cro_NonEneCer	Agricultural Production|Crops|Non-Energy|Cereals	Mt/yr
 Cap_Add_Ele	Capacity Additions|Electricity	GW
-New_Cap_Ele_Gas_CC_w_CCS	New Capacity|Electricity|Gas|CC|w/ CCS	GW
-New_Cap_Ele_Gas_CC_wo_CCS	New Capacity|Electricity|Gas|CC|w/o CCS	GW
-New_Cap_Ele_Gas_CT_w_CCS	New Capacity|Electricity|Gas|CT|w/ CCS	GW
-New_Cap_Ele_Gas_CT_wo_CCS	New Capacity|Electricity|Gas|CT|w/o CCS	GW
+Cap_Add_Ele_Gas_CC_w_CCS	Capacity Additions|Electricity|Gas|CC|w/ CCS	GW
+Cap_Add_Ele_Gas_CC_wo_CCS	Capacity Additions|Electricity|Gas|CC|w/o CCS	GW
+Cap_Add_Ele_Gas_CT_w_CCS	Capacity Additions|Electricity|Gas|CT|w/ CCS	GW
+Cap_Add_Ele_Gas_CT_wo_CCS	Capacity Additions|Electricity|Gas|CT|w/o CCS	GW
 Frc_Aer_Clo_Ind	Forcing|Aerosol|Cloud Indirect	W/m2
 Frc_Aer_Bla_and_Org_Car	Forcing|Aerosol|Black and Organic Carbon	W/m2
 Frc_Tro_Ozo	Forcing|Tropospheric Ozone	W/m2
@@ -597,36 +597,36 @@ Fin_Ene_Oth_Sec_SolidsBio_Tra	Final Energy|Other Sector|Solids|Biomass|Tradition
 Emi_CO2_Dir_and_Ind_Ind	Emissions|CO2|Direct and Indirect|Industry	Mt CO2/yr
 Emi_CO2_Dir_and_Ind_Res_and_Com	Emissions|CO2|Direct and Indirect|Residential and Commercial	Mt CO2/yr
 Emi_CO2_Dir_and_Ind_Tra	Emissions|CO2|Direct and Indirect|Transportation	Mt CO2/yr
-Emi_CO2_Dir_and_Ind_Oth	Emissions|CO2|Direct and Indirect|Other Sector	Mt CO2/yr
+Emi_CO2_Dir_and_Ind_Oth	Emissions|CO2|Direct and Indirect|Other?Sector	Mt CO2/yr
 Frc_Tot_for_Tar	Forcing|Total for Target	W/m2
-Prc_Sec_Ene_Liq_Oil	Price|Secondary Energy|Liquids|Oil	US$2005/GJ
-Prc_Sec_Ene_Gas_Nat_Gas	Price|Secondary Energy|Gases|Natural Gas	US$2005/GJ
-Prc_Sec_Ene_SolidsCoa	Price|Secondary Energy|Solids|Coal	US$2005/GJ
-Prc_Sec_Ene_SolidsBio	Price|Secondary Energy|Solids|Biomass	US$2005/GJ
-Prc_Sec_Ene_Solidsand_Liq_Bio	Price|Secondary Energy|Solids and Liquids|Biomass	US$2005/GJ
-Prc_Sec_Ene_Hyd	Price|Secondary Energy|Hydrogen	US$2005/GJ
-Prc_Sec_Ene_Fos_Syn	Price|Secondary Energy|Fossil Synfuels	US$2005/GJ
-Prc_Sec_Ene_Liq_Oil_wo_car_pri	Price|Secondary Energy|Liquids|Oil (w/o carbon price)	US$2005/GJ
-Prc_Sec_Ene_Gas_Nat_Gas_wo_car_pri	Price|Secondary Energy|Gases|Natural Gas (w/o carbon price)	US$2005/GJ
-Prc_Sec_Ene_SolidsCoa_wo_car_pri	Price|Secondary Energy|Solids|Coal (w/o carbon price)	US$2005/GJ
-Prc_Sec_Ene_Solidsand_Liq_Bio_wo_car_pri	Price|Secondary Energy|Solids and Liquids|Biomass (w/o carbon price)	US$2005/GJ
-Prc_Sec_Ene_Ele_wo_car_pri	Price|Secondary Energy|Electricity (w/o carbon price)	US$2005/GJ
-Prc_Sec_Ene_Hyd_wo_car_pri	Price|Secondary Energy|Hydrogen (w/o carbon price)	US$2005/GJ
-Prc_Sec_Ene_Fos_Syn_wo_car_pri	Price|Secondary Energy|Fossil Synfuels (w/o carbon price)	US$2005/GJ
-Trd_Prm_Ene_Coa_Val	Trade|Primary Energy|Coal|Value	billion US$2005/yr
-Trd_Prm_Ene_Gas_Val	Trade|Primary Energy|Gas|Value	billion US$2005/yr
-Trd_Prm_Ene_Oil_Val	Trade|Primary Energy|Oil|Value	billion US$2005/yr
-Trd_Prm_Ene_Bio_Val	Trade|Primary Energy|Biomass|Value	billion US$2005/yr
-Trd_Ura_Val	Trade|Uranium|Value	billion US$2005/yr
-Trd_Sec_Ene_Liq_Oil_Val	Trade|Secondary Energy|Liquids|Oil|Value	billion US$2005/yr
-Trd_Sec_Ene_Liq_Coa_Val	Trade|Secondary Energy|Liquids|Coal|Value	billion US$2005/yr
-Trd_Sec_Ene_Liq_Gas_Val	Trade|Secondary Energy|Liquids|Gas|Value	billion US$2005/yr
-Trd_Sec_Ene_Hyd_Val	Trade|Secondary Energy|Hydrogen|Value	billion US$2005/yr
-Trd_Sec_Ene_Solidsand_Liq_Bio_Val	Trade|Secondary Energy|Solids and Liquids|Biomass|Value	billion US$2005/yr
-Trd_Sec_Ene_Liq_Bio_Val	Trade|Secondary Energy|Liquids|Biomass|Value	billion US$2005/yr
-Trd_Sec_Ene_SolidsBio_Val	Trade|Secondary Energy|Solids|Biomass|Value	billion US$2005/yr
-Trd_Sec_Ene_Ele_Val	Trade|Secondary Energy|Electricity|Value	billion US$2005/yr
-Trd_Sec_Ene_Oth_Val	Trade|Secondary Energy|Other|Value	billion US$2005/yr
+Prc_Sec_Ene_Liq_Oil	Price|Secondary Energy|Liquids|Oil	US$2010/GJ
+Prc_Sec_Ene_Gas_Nat_Gas	Price|Secondary Energy|Gases|Natural Gas	US$2010/GJ
+Prc_Sec_Ene_SolidsCoa	Price|Secondary Energy|Solids|Coal	US$2010/GJ
+Prc_Sec_Ene_SolidsBio	Price|Secondary Energy|Solids|Biomass	US$2010/GJ
+Prc_Sec_Ene_Solidsand_Liq_Bio	Price|Secondary Energy|Solids and Liquids|Biomass	US$2010/GJ
+Prc_Sec_Ene_Hyd	Price|Secondary Energy|Hydrogen	US$2010/GJ
+Prc_Sec_Ene_Fos_Syn	Price|Secondary Energy|Fossil Synfuels	US$2010/GJ
+Prc_Sec_Ene_Liq_Oil_wo_car_pri	Price|Secondary Energy|Liquids|Oil (w/o carbon price)	US$2010/GJ
+Prc_Sec_Ene_Gas_Nat_Gas_wo_car_pri	Price|Secondary Energy|Gases|Natural Gas (w/o carbon price)	US$2010/GJ
+Prc_Sec_Ene_SolidsCoa_wo_car_pri	Price|Secondary Energy|Solids|Coal (w/o carbon price)	US$2010/GJ
+Prc_Sec_Ene_Solidsand_Liq_Bio_wo_car_pri	Price|Secondary Energy|Solids and Liquids|Biomass (w/o carbon price)	US$2010/GJ
+Prc_Sec_Ene_Ele_wo_car_pri	Price|Secondary Energy|Electricity (w/o carbon price)	US$2010/GJ
+Prc_Sec_Ene_Hyd_wo_car_pri	Price|Secondary Energy|Hydrogen (w/o carbon price)	US$2010/GJ
+Prc_Sec_Ene_Fos_Syn_wo_car_pri	Price|Secondary Energy|Fossil Synfuels (w/o carbon price)	US$2010/GJ
+Trd_Prm_Ene_Coa_Val	Trade|Primary Energy|Coal|Value	billion US$2010/yr
+Trd_Prm_Ene_Gas_Val	Trade|Primary Energy|Gas|Value	billion US$2010/yr
+Trd_Prm_Ene_Oil_Val	Trade|Primary Energy|Oil|Value	billion US$2010/yr
+Trd_Prm_Ene_Bio_Val	Trade|Primary Energy|Biomass|Value	billion US$2010/yr
+Trd_Ura_Val	Trade|Uranium|Value	billion US$2010/yr
+Trd_Sec_Ene_Liq_Oil_Val	Trade|Secondary Energy|Liquids|Oil|Value	billion US$2010/yr
+Trd_Sec_Ene_Liq_Coa_Val	Trade|Secondary Energy|Liquids|Coal|Value	billion US$2010/yr
+Trd_Sec_Ene_Liq_Gas_Val	Trade|Secondary Energy|Liquids|Gas|Value	billion US$2010/yr
+Trd_Sec_Ene_Hyd_Val	Trade|Secondary Energy|Hydrogen|Value	billion US$2010/yr
+Trd_Sec_Ene_Solidsand_Liq_Bio_Val	Trade|Secondary Energy|Solids and Liquids|Biomass|Value	billion US$2010/yr
+Trd_Sec_Ene_Liq_Bio_Val	Trade|Secondary Energy|Liquids|Biomass|Value	billion US$2010/yr
+Trd_Sec_Ene_SolidsBio_Val	Trade|Secondary Energy|Solids|Biomass|Value	billion US$2010/yr
+Trd_Sec_Ene_Ele_Val	Trade|Secondary Energy|Electricity|Value	billion US$2010/yr
+Trd_Sec_Ene_Oth_Val	Trade|Secondary Energy|Other|Value	billion US$2010/yr
 Trd_Ura_Mas	Trade|Uranium|Mass	ktU/yr
 Trd_Sec_Ene_Liq_Oil_Vol	Trade|Secondary Energy|Liquids|Oil|Volume	EJ/yr
 Trd_Sec_Ene_Liq_Coa_Vol	Trade|Secondary Energy|Liquids|Coal|Volume	EJ/yr
@@ -636,9 +636,9 @@ Trd_Sec_Ene_Liq_Bio_Vol	Trade|Secondary Energy|Liquids|Biomass|Volume	EJ/yr
 Trd_Sec_Ene_SolidsBio_Vol	Trade|Secondary Energy|Solids|Biomass|Volume	EJ/yr
 Trd_Sec_Ene_Oth_Vol	Trade|Secondary Energy|Other|Volume	EJ/yr
 Int_Rat_Rea	Interest Rate|Real	%
-Res_Ave_Ext_Cos_Coa	Resource|Average Extraction Cost|Coal	US$2005/GJ
-Res_Ave_Ext_Cos_Oil	Resource|Average Extraction Cost|Oil	US$2005/GJ
-Res_Ave_Ext_Cos_Gas	Resource|Average Extraction Cost|Gas	US$2005/GJ
+Res_Ave_Ext_Cos_Coa	Resource|Average Extraction Cost|Coal	US$2010/GJ
+Res_Ave_Ext_Cos_Oil	Resource|Average Extraction Cost|Oil	US$2010/GJ
+Res_Ave_Ext_Cos_Gas	Resource|Average Extraction Cost|Gas	US$2010/GJ
 Res_Ave_Ext_Cos_Ura	Resource|Average Extraction Cost|Uranium	$/kgU
 Emi_CF4	Emissions|CF4	kt CF4/yr
 Emi_C2F6	Emissions|C2F6	kt C2F6/yr
@@ -716,7 +716,7 @@ Trd_Dep_Coa_gra	Trade Dependency|Coarse grain	-
 NOx_Emi_Its_GDP	NOx Emission Intensity|GDP	NOx kg/US$
 Sul_Emi_Its_GDP	Sulfur Emission Intensity|GDP	Sulfur kg/US$
 Fin_Ene_per_cap	Final Energy per capita	GJ/capita
-GDP_per_cap	GDP per capita	1000US$2005/capita
+GDP_per_cap	GDP per capita	1000US$2010/capita
 Sec_ind_sha	Secondary industry share	%
 Ter_ind_sha	Tertiary industry share	%
 Prm_ind_sha	Primary industry share	%
@@ -1917,19 +1917,10 @@ Val_Add_ind_Ene	Value Added|industry|Energy	billion US$2010/yr OR local currency
 Val_Add_ind_Man	Value Added|industry|Manufacturing	billion US$2010/yr OR local currency/yr
 Val_Add_ind_Ene_Int	Value Added|industry|Energy Intensive	billion US$2010/yr OR local currency/yr
 Pol_Cos_Wel_Cha	Policy Cost|Welfare Change	billion US$2010/yr OR local currency/yr
-Emi_CO2_Ene_Dem_Res_and_Com	Emissions|CO2|Energy|Demand|Residential and Commercial	Mt CO2/yr
 Emi_CO2_Ene_Dem_Tra_Fre	Emissions|CO2|Energy|Demand|Transportation|Freight	Mt CO2/yr
 Emi_CO2_Ene_Dem_Tra_Pss	Emissions|CO2|Energy|Demand|Transportation|Passenger	Mt CO2/yr
 Emi_CO2_Ene_Sup_Oth_Sec	Emissions|CO2|Energy|Supply|Other Sector	Mt CO2/yr
-Emi_BC_Ene_Dem_Res_and_Com	Emissions|BC|Energy|Demand|Residential and Commercial	Mt BC/yr
-Emi_CH4_Ene_Dem_Res_and_Com	Emissions|CH4|Energy|Demand|Residential and Commercial	Mt CH4/yr
-Emi_CO_Ene_Dem_Res_and_Com	Emissions|CO|Energy|Demand|Residential and Commercial	Mt CO/yr
-Emi_NH3_Ene_Dem_Res_and_Com	Emissions|NH3|Energy|Demand|Residential and Commercial	Mt NH3/yr
-Emi_NOx_Ene_Dem_Res_and_Com	Emissions|NOx|Energy|Demand|Residential and Commercial	Mt NO2/yr
-Emi_OC_Ene_Dem_Res_and_Com	Emissions|OC|Energy|Demand|Residential and Commercial	Mt OC/yr
 Emi_PFC	Emissions|PFC	kt CF4-equiv/yr
-Emi_Sul_Ene_Dem_Res_and_Com	Emissions|Sulfur|Energy|Demand|Residential and Commercial	Mt SO2/yr
-Emi_VOC_Ene_Dem_Res_and_Com	Emissions|VOC|Energy|Demand|Residential and Commercial	Mt VOC/yr
 Emp	Employment	Million
 Une	Unemployment	Million
 Une_Rat	Unemployment|Rate	%
@@ -2531,19 +2522,19 @@ Car_Seq_CCS_Fos_Ind_Pro	Carbon Sequestration|CCS|Fossil|Industrial Processes	Mt 
 Emi_CO2_FFI_Cum	Emissions|CO2|Fossil Fuels and Industry|Cumulative	Mt CO2
 Emi_CO2_Lan_Use_Flo_Neg_Seq	Emissions|CO2|Land Use|Flows|Negative (Sequestration)	Mt CO2
 Emi_CO2_Lan_Use_Flo_Pos_Emi	Emissions|CO2|Land Use|Flows|Positive (Emission)	Mt CO2
-OM_Cos_Var_Ele_Bio_w_CCS	OM Cost|Variable|Electricity|Biomass|w/ CCS	US$2005/GJ
-OM_Cos_Var_Ele_Bio_wo_CCS	OM Cost|Variable|Electricity|Biomass|w/o CCS	US$2005/GJ
-OM_Cos_Var_Ele_Coa_w_CCS	OM Cost|Variable|Electricity|Coal|w/ CCS	US$2005/GJ
-OM_Cos_Var_Ele_Coa_wo_CCS	OM Cost|Variable|Electricity|Coal|w/o CCS	US$2005/GJ
-OM_Cos_Var_Ele_Gas_w_CCS	OM Cost|Variable|Electricity|Gas|w/ CCS	US$2005/GJ
-OM_Cos_Var_Ele_Gas_wo_CCS	OM Cost|Variable|Electricity|Gas|w/o CCS	US$2005/GJ
-OM_Cos_Var_Ele_Geo	OM Cost|Variable|Electricity|Geothermal	US$2005/GJ
-OM_Cos_Var_Ele_Hyd	OM Cost|Variable|Electricity|Hydro	US$2005/GJ
-OM_Cos_Var_Ele_Nuc	OM Cost|Variable|Electricity|Nuclear	US$2005/GJ
-OM_Cos_Var_Ele_PV	OM Cost|Variable|Electricity|PV	US$2005/GJ
-OM_Cos_Var_Ele_Win	OM Cost|Variable|Electricity|Wind	US$2005/GJ
-OM_Cos_Var_Ele_Win_Off	OM Cost|Variable|Electricity|Wind|Offshore	US$2005/GJ
-OM_Cos_Var_Ele_Win_Ons	OM Cost|Variable|Electricity|Wind|Onshore	US$2005/GJ
+OM_Cos_Var_Ele_Bio_w_CCS	OM Cost|Variable|Electricity|Biomass|w/ CCS	US$2010/GJ
+OM_Cos_Var_Ele_Bio_wo_CCS	OM Cost|Variable|Electricity|Biomass|w/o CCS	US$2010/GJ
+OM_Cos_Var_Ele_Coa_w_CCS	OM Cost|Variable|Electricity|Coal|w/ CCS	US$2010/GJ
+OM_Cos_Var_Ele_Coa_wo_CCS	OM Cost|Variable|Electricity|Coal|w/o CCS	US$2010/GJ
+OM_Cos_Var_Ele_Gas_w_CCS	OM Cost|Variable|Electricity|Gas|w/ CCS	US$2010/GJ
+OM_Cos_Var_Ele_Gas_wo_CCS	OM Cost|Variable|Electricity|Gas|w/o CCS	US$2010/GJ
+OM_Cos_Var_Ele_Geo	OM Cost|Variable|Electricity|Geothermal	US$2010/GJ
+OM_Cos_Var_Ele_Hyd	OM Cost|Variable|Electricity|Hydro	US$2010/GJ
+OM_Cos_Var_Ele_Nuc	OM Cost|Variable|Electricity|Nuclear	US$2010/GJ
+OM_Cos_Var_Ele_PV	OM Cost|Variable|Electricity|PV	US$2010/GJ
+OM_Cos_Var_Ele_Win	OM Cost|Variable|Electricity|Wind	US$2010/GJ
+OM_Cos_Var_Ele_Win_Off	OM Cost|Variable|Electricity|Wind|Offshore	US$2010/GJ
+OM_Cos_Var_Ele_Win_Ons	OM Cost|Variable|Electricity|Wind|Onshore	US$2010/GJ
 Lan_Cov_Cro_Non_Ene_Cro	Land Cover|Cropland|Non-Energy Crops	million ha
 Fin_Ene_Res_Liq_Oil	Final Energy|Residential|Liquids|Oil	EJ/yr
 Fin_Ene_Res_Liq_Bio	Final Energy|Residential|Liquids|Biomass	EJ/yr
@@ -2582,16 +2573,16 @@ Prm_Ene_Bio_Liq_w_CCS	Primary Energy|Biomass|Liquids|w/ CCS	EJ/yr
 Prm_Ene_Bio_Liq_wo_CCS	Primary Energy|Biomass|Liquids|w/o CCS	EJ/yr
 Prm_Ene_Bio_Oth_Fee	Primary Energy|Biomass|Other Feedstock	EJ/yr
 Prm_Ene_Bio_Solids	Primary Energy|Biomass|Solids	EJ/yr
-Prc_Prm_Ene_Bio_Del	Price|Primary Energy|Biomass|Delivered	US$2005/GJ
-Prc_Prm_Ene_Bio_Far	Price|Primary Energy|Biomass|Farmgate	US$2005/GJ
-Cap_Cos_Liq_Bio_Oth_wo_CCS	Capital Cost|Liquids|Biomass|Other|w/o CCS	US$2005/kW
-Cap_Cos_Liq_Bio_Oth_w_CCS	Capital Cost|Liquids|Biomass|Other|w/ CCS	US$2005/kW
-Cap_Cos_Liq_Bio_Con_Eth_wo_CCS	Capital Cost|Liquids|Biomass|Conventional Ethanol|w/o CCS	US$2005/kW
-Cap_Cos_Liq_Bio_Con_Eth_w_CCS	Capital Cost|Liquids|Biomass|Conventional Ethanol|w/ CCS	US$2005/kW
-Cap_Cos_Liq_Bio_Cel_Non_wo_CCS	Capital Cost|Liquids|Biomass|Cellulosic Nondiesel|w/o CCS	US$2005/kW
-Cap_Cos_Liq_Bio_Cel_Non_w_CCS	Capital Cost|Liquids|Biomass|Cellulosic Nondiesel|w/ CCS	US$2005/kW
-Cap_Cos_Liq_Bio_Bio_wo_CCS	Capital Cost|Liquids|Biomass|Biodiesel|w/o CCS	US$2005/kW
-Cap_Cos_Liq_Bio_Bio_w_CCS	Capital Cost|Liquids|Biomass|Biodiesel|w/ CCS	US$2005/kW
+Prc_Prm_Ene_Bio_Del	Price|Primary Energy|Biomass|Delivered	US$2010/GJ
+Prc_Prm_Ene_Bio_Far	Price|Primary Energy|Biomass|Farmgate	US$2010/GJ
+Cap_Cos_Liq_Bio_Oth_wo_CCS	Capital Cost|Liquids|Biomass|Other|w/o CCS	US$2010/kW
+Cap_Cos_Liq_Bio_Oth_w_CCS	Capital Cost|Liquids|Biomass|Other|w/ CCS	US$2010/kW
+Cap_Cos_Liq_Bio_Con_Eth_wo_CCS	Capital Cost|Liquids|Biomass|Conventional Ethanol|w/o CCS	US$2010/kW
+Cap_Cos_Liq_Bio_Con_Eth_w_CCS	Capital Cost|Liquids|Biomass|Conventional Ethanol|w/ CCS	US$2010/kW
+Cap_Cos_Liq_Bio_Cel_Non_wo_CCS	Capital Cost|Liquids|Biomass|Cellulosic Nondiesel|w/o CCS	US$2010/kW
+Cap_Cos_Liq_Bio_Cel_Non_w_CCS	Capital Cost|Liquids|Biomass|Cellulosic Nondiesel|w/ CCS	US$2010/kW
+Cap_Cos_Liq_Bio_Bio_wo_CCS	Capital Cost|Liquids|Biomass|Biodiesel|w/o CCS	US$2010/kW
+Cap_Cos_Liq_Bio_Bio_w_CCS	Capital Cost|Liquids|Biomass|Biodiesel|w/ CCS	US$2010/kW
 Eff_Liq_Bio_Oth_wo_CCS	Efficiency|Liquids|Biomass|Other|w/o CCS	-
 Eff_Liq_Bio_Oth_w_CCS	Efficiency|Liquids|Biomass|Other|w/ CCS	-
 Eff_Liq_Bio_Con_Eth_wo_CCS	Efficiency|Liquids|Biomass|Conventional Ethanol|w/o CCS	-
@@ -2600,22 +2591,22 @@ Eff_Liq_Bio_Cel_Non_wo_CCS	Efficiency|Liquids|Biomass|Cellulosic Nondiesel|w/o C
 Eff_Liq_Bio_Cel_Non_w_CCS	Efficiency|Liquids|Biomass|Cellulosic Nondiesel|w/ CCS	-
 Eff_Liq_Bio_Bio_wo_CCS	Efficiency|Liquids|Biomass|Biodiesel|w/o CCS	-
 Eff_Liq_Bio_Bio_w_CCS	Efficiency|Liquids|Biomass|Biodiesel|w/ CCS	-
-OM_Cos_Fix_Liq_Bio_Oth_wo_CCS	OM Cost|Fixed|Liquids|Biomass|Other|w/o CCS	US$2005/GJ
-OM_Cos_Fix_Liq_Bio_Oth_w_CCS	OM Cost|Fixed|Liquids|Biomass|Other|w/ CCS	US$2005/GJ
-OM_Cos_Fix_Liq_Bio_Con_Eth_wo_CCS	OM Cost|Fixed|Liquids|Biomass|Conventional Ethanol|w/o CCS	US$2005/GJ
-OM_Cos_Fix_Liq_Bio_Con_Eth_w_CCS	OM Cost|Fixed|Liquids|Biomass|Conventional Ethanol|w/ CCS	US$2005/GJ
-OM_Cos_Fix_Liq_Bio_Cel_Non_wo_CCS	OM Cost|Fixed|Liquids|Biomass|Cellulosic Nondiesel|w/o CCS	US$2005/GJ
-OM_Cos_Fix_Liq_Bio_Cel_Non_w_CCS	OM Cost|Fixed|Liquids|Biomass|Cellulosic Nondiesel|w/ CCS	US$2005/GJ
-OM_Cos_Fix_Liq_Bio_Bio_wo_CCS	OM Cost|Fixed|Liquids|Biomass|Biodiesel|w/o CCS	US$2005/GJ
-OM_Cos_Fix_Liq_Bio_Bio_w_CCS	OM Cost|Fixed|Liquids|Biomass|Biodiesel|w/ CCS	US$2005/GJ
-OM_Cos_Var_Liq_Bio_Oth_wo_CCS	OM Cost|Variable|Liquids|Biomass|Other|w/o CCS	US$2005/GJ
-OM_Cos_Var_Liq_Bio_Oth_w_CCS	OM Cost|Variable|Liquids|Biomass|Other|w/ CCS	US$2005/GJ
-OM_Cos_Var_Liq_Bio_Con_Eth_wo_CCS	OM Cost|Variable|Liquids|Biomass|Conventional Ethanol|w/o CCS	US$2005/GJ
-OM_Cos_Var_Liq_Bio_Con_Eth_w_CCS	OM Cost|Variable|Liquids|Biomass|Conventional Ethanol|w/ CCS	US$2005/GJ
-OM_Cos_Var_Liq_Bio_Cel_Non_wo_CCS	OM Cost|Variable|Liquids|Biomass|Cellulosic Nondiesel|w/o CCS	US$2005/GJ
-OM_Cos_Var_Liq_Bio_Cel_Non_w_CCS	OM Cost|Variable|Liquids|Biomass|Cellulosic Nondiesel|w/ CCS	US$2005/GJ
-OM_Cos_Var_Liq_Bio_Bio_wo_CCS	OM Cost|Variable|Liquids|Biomass|Biodiesel|w/o CCS	US$2005/GJ
-OM_Cos_Var_Liq_Bio_Bio_w_CCS	OM Cost|Variable|Liquids|Biomass|Biodiesel|w/ CCS	US$2005/GJ
+OM_Cos_Fix_Liq_Bio_Oth_wo_CCS	OM Cost|Fixed|Liquids|Biomass|Other|w/o CCS	US$2010/GJ
+OM_Cos_Fix_Liq_Bio_Oth_w_CCS	OM Cost|Fixed|Liquids|Biomass|Other|w/ CCS	US$2010/GJ
+OM_Cos_Fix_Liq_Bio_Con_Eth_wo_CCS	OM Cost|Fixed|Liquids|Biomass|Conventional Ethanol|w/o CCS	US$2010/GJ
+OM_Cos_Fix_Liq_Bio_Con_Eth_w_CCS	OM Cost|Fixed|Liquids|Biomass|Conventional Ethanol|w/ CCS	US$2010/GJ
+OM_Cos_Fix_Liq_Bio_Cel_Non_wo_CCS	OM Cost|Fixed|Liquids|Biomass|Cellulosic Nondiesel|w/o CCS	US$2010/GJ
+OM_Cos_Fix_Liq_Bio_Cel_Non_w_CCS	OM Cost|Fixed|Liquids|Biomass|Cellulosic Nondiesel|w/ CCS	US$2010/GJ
+OM_Cos_Fix_Liq_Bio_Bio_wo_CCS	OM Cost|Fixed|Liquids|Biomass|Biodiesel|w/o CCS	US$2010/GJ
+OM_Cos_Fix_Liq_Bio_Bio_w_CCS	OM Cost|Fixed|Liquids|Biomass|Biodiesel|w/ CCS	US$2010/GJ
+OM_Cos_Var_Liq_Bio_Oth_wo_CCS	OM Cost|Variable|Liquids|Biomass|Other|w/o CCS	US$2010/GJ
+OM_Cos_Var_Liq_Bio_Oth_w_CCS	OM Cost|Variable|Liquids|Biomass|Other|w/ CCS	US$2010/GJ
+OM_Cos_Var_Liq_Bio_Con_Eth_wo_CCS	OM Cost|Variable|Liquids|Biomass|Conventional Ethanol|w/o CCS	US$2010/GJ
+OM_Cos_Var_Liq_Bio_Con_Eth_w_CCS	OM Cost|Variable|Liquids|Biomass|Conventional Ethanol|w/ CCS	US$2010/GJ
+OM_Cos_Var_Liq_Bio_Cel_Non_wo_CCS	OM Cost|Variable|Liquids|Biomass|Cellulosic Nondiesel|w/o CCS	US$2010/GJ
+OM_Cos_Var_Liq_Bio_Cel_Non_w_CCS	OM Cost|Variable|Liquids|Biomass|Cellulosic Nondiesel|w/ CCS	US$2010/GJ
+OM_Cos_Var_Liq_Bio_Bio_wo_CCS	OM Cost|Variable|Liquids|Biomass|Biodiesel|w/o CCS	US$2010/GJ
+OM_Cos_Var_Liq_Bio_Bio_w_CCS	OM Cost|Variable|Liquids|Biomass|Biodiesel|w/ CCS	US$2010/GJ
 Sec_Ene_Liq_Bio_Cel	Secondary Energy|Liquids|Biomass|Cellulosic Nondiesel	EJ/yr
 Sec_Ene_Liq_Bio_Cel_w_CCS	Secondary Energy|Liquids|Biomass|Cellulosic Nondiesel|w/ CCS	EJ/yr
 Sec_Ene_Liq_Bio_Cel_wo_CCS	Secondary Energy|Liquids|Biomass|Cellulosic Nondiesel|w/o CCS	EJ/yr
@@ -2625,19 +2616,903 @@ Sec_Ene_Liq_Bio_Con_Eth_wo_CCS	Secondary Energy|Liquids|Biomass|Conventional Eth
 Sec_Ene_Liq_Bio_Non	Secondary Energy|Liquids|Biomass|Non-Cellulosic	EJ/yr
 Sec_Ene_Liq_Bio_Oth_w_CCS	Secondary Energy|Liquids|Biomass|Other|w/ CCS	EJ/yr
 Sec_Ene_Liq_Bio_Oth_wo_CCS	Secondary Energy|Liquids|Biomass|Other|w/o CCS	EJ/yr
-OM_Cos_Var_Liq_Bio_wo_CCS	OM Cost|Variable|Liquids|Biomass|w/o CCS	US$2005/GJ
-OM_Cos_Var_Liq_Bio_w_CCS	OM Cost|Variable|Liquids|Biomass|w/ CCS	US$2005/GJ
-OM_Cos_Var_Liq_Oil_CCS	OM Cost|Variable|Liquids|Oil	US$2005/GJ
+OM_Cos_Var_Liq_Bio_wo_CCS	OM Cost|Variable|Liquids|Biomass|w/o CCS	US$2010/GJ
+OM_Cos_Var_Liq_Bio_w_CCS	OM Cost|Variable|Liquids|Biomass|w/ CCS	US$2010/GJ
+OM_Cos_Var_Liq_Oil	OM Cost|Variable|Liquids|Oil	US$2010/GJ
 Wat_Bip_Cns_Agr	Water Biophysical Consumption for Agriculture	km3/yr
 Fin_Ene_Liq_Bio	Final Energy|Liquids|Biomass	EJ/yr
 Fin_Ene_Ind_Liq_Bio	Final Energy|Industry|Liquids|Biomass	EJ/yr
 Fin_Ene_Ind_Liq_Oil	Final Energy|Industry|Liquids|Oil	EJ/yr
 Fin_Ene_Liq_Oil	Final Energy|Liquids|Oil	EJ/yr
-Val_Add_Ser	Value added|Service sector	billion US$2005/yr
-Val_Add_I_S	Value added|Iron Steel	billion US$2005/yr
-Val_Add_Non_Fer_Met	Value added|non-ferrous metals	billion US$2005/yr
-Val_Add_Che	Value added|chemical ind	billion US$2005/yr
-Val_Add_Pul_Pap	Value added|pulp and paper	billion US$2005/yr
-Val_Add_Non_Met_Min	Value added|non metallic minerals	billion US$2005/yr
-Val_Add_Oth_Ind	Value added|other ind	billion US$2005/yr
-Val_Add_Agr	Value added|Agriculture	billion US$2005/yr
+Val_Add_Ser	Value added|Service sector	billion US$2010/yr
+Val_Add_I_S	Value added|Iron Steel	billion US$2010/yr
+Val_Add_Non_Fer_Met	Value added|non-ferrous metals	billion US$2010/yr
+Val_Add_Che	Value added|chemical ind	billion US$2010/yr
+Val_Add_Pul_Pap	Value added|pulp and paper	billion US$2010/yr
+Val_Add_Non_Met_Min	Value added|non metallic minerals	billion US$2010/yr
+Val_Add_Oth_Ind	Value added|other ind	billion US$2010/yr
+Out_Ser	Outputs|Service sector	billion US$2010/yr
+Out_I_S	Outputs|Iron Steel	billion US$2010/yr
+Out_Non_Fer_Met	Outputs|non-ferrous metals	billion US$2010/yr
+Out_Che	Outputs|chemical ind	billion US$2010/yr
+Out_Pul_Pap	Outputs|pulp and paper	billion US$2010/yr
+Out_Non_Met_Min	Outputs|non metallic minerals	billion US$2010/yr
+Out_Oth_Ind	Outputs|other ind	billion US$2010/yr
+Out_Agr	Outputs|Agriculture	billion US$2010/yr
+Pol_Cos_Equ_Var_rat	Policy Cost|Equivalent Variation|Rate	%/yr
+Emi_CO2_Cum	Emissions|CO2|Cumulative	Mt CO2
+Fod_Wst	Food Waste	Mt/yr
+Fod_Wst_Con	Food Waste|Consumption	Mt/yr
+Fod_Wst_Fpr	Food Waste|Food process	Mt/yr
+Fod_Wst_Dis	Food Waste|Distribution	Mt/yr
+Fod_Wst_Pro	Food Waste|Production	Mt/yr
+Fod_Wst_Pos_Sto	Food Waste|Postharvest handling and storage 	Mt/yr
+Pop_Wat_Sca	Population|Water Scarcity	Million
+Ene_Sec_Ind_SWI	Energy Security Index|Shanon Wieber Index	-
+Ene_Sec_Ind_Tra_dep	Energy Security Index|Trade Dependency	-
+Pop_Mor_AP	Population|Mortality|Air Pollution	Million
+Pop_Mor_AP_Ozo	Population|Mortality|Air Pollution|Ozone	Million
+Pop_Mor_AP_PM25	Population|Mortality|Air Pollution|PM2.5	Million
+Bid_Hab_Cha_Rat	Biodiversity|Habitat Change Rate	-
+Bid_Mea_Spe_Ric	Biodiversity|mean species richness	species (per grid)
+Rev_gov_Tax_Car_Tax	Revenue|government|Tax|Carbon Tax	billion US$2010/yr OR local currency
+Rev_gov_Tax_Car_Tax_per_GDP	Revenue|government|Tax|Carbon Tax per GDP	-
+GINI	Gini	-
+Rev_gov_Tax_Car_Tax_per_GDP_PPP	Revenue|government|Tax|Carbon Tax per GDP	-
+Prm_Ene_Bio_Mod_w_CCS	Primary Energy|Biomass|Modern|w/ CCS	EJ/yr
+Prm_Ene_Bio_Mod_wo_CCS	Primary Energy|Biomass|Modern|w/o CCS	EJ/yr
+Sec_Ene_Ele_Heat	Secondary Energy|Electricity and Heat	EJ/yr
+Sec_Ene_Ele_Heat_Bio	Secondary Energy|Electricity and Heat|Biomass	EJ/yr
+Sec_Ene_Ele_Heat_Coa	Secondary Energy|Electricity and Heat|Coal	EJ/yr
+Sec_Ene_Ele_Heat_Gas	Secondary Energy|Electricity and Heat|Gas	EJ/yr
+Sec_Ene_Ele_Heat_NonBioRen	Secondary Energy|Electricity and Heat|Non-Biomass Renewables	EJ/yr
+Sec_Ene_Ele_Heat_Nuc	Secondary Energy|Electricity and Heat|Nuclear	EJ/yr
+Sec_Ene_Ele_Heat_Oil	Secondary Energy|Electricity and Heat|Oil	EJ/yr
+Sec_Ene_Ele_Heat_Oth	Secondary Energy|Electricity and Heat|Other	EJ/yr
+Sec_Ene_Ele_Heat_Bio_w_CCS	Secondary Energy|Electricity and Heat|Biomass|w/ CCS	EJ/yr
+Sec_Ene_Ele_Heat_Bio_wo_CCS	Secondary Energy|Electricity and Heat|Biomass|w/o CCS	EJ/yr
+Sec_Ene_Ele_Heat_Coa_w_CCS	Secondary Energy|Electricity and Heat|Coal|w/ CCS	EJ/yr
+Sec_Ene_Ele_Heat_Coa_wo_CCS	Secondary Energy|Electricity and Heat|Coal|w/o CCS	EJ/yr
+Sec_Ene_Ele_Heat_Gas_w_CCS	Secondary Energy|Electricity and Heat|Gas|w/ CCS	EJ/yr
+Sec_Ene_Ele_Heat_Gas_wo_CCS	Secondary Energy|Electricity and Heat|Gas|w/o CCS	EJ/yr
+Sec_Ene_Ele_Heat_Geo	Secondary Energy|Electricity and Heat|Geothermal	EJ/yr
+Sec_Ene_Ele_Heat_Hyd	Secondary Energy|Electricity and Heat|Hydro	EJ/yr
+Sec_Ene_Ele_Heat_Oil_w_CCS	Secondary Energy|Electricity and Heat|Oil|w/ CCS	EJ/yr
+Sec_Ene_Ele_Heat_Oil_wo_CCS	Secondary Energy|Electricity and Heat|Oil|w/o CCS	EJ/yr
+Sec_Ene_Ele_Heat_Solar	Secondary Energy|Electricity and Heat|Solar	EJ/yr
+Sec_Ene_Ele_Heat_Win	Secondary Energy|Electricity and Heat|Wind	EJ/yr
+Sec_Ene_Ele_Heat_Oce	Secondary Energy|Electricity and Heat|Ocean	EJ/yr
+Sec_Ene_Ele_Heat_SolarCSP	Secondary Energy|Electricity and Heat|Solar|CSP	EJ/yr
+Sec_Ene_Ele_Heat_SolarPV	Secondary Energy|Electricity and Heat|Solar|PV	EJ/yr
+Sec_Ene_Ele_Heat_Win_Off	Secondary Energy|Electricity and Heat|Wind|Offshore	EJ/yr
+Sec_Ene_Ele_Heat_Win_Ons	Secondary Energy|Electricity and Heat|Wind|Onshore	EJ/yr
+Sec_Ene_Ele_Heat_Fos	Secondary Energy|Electricity and Heat|Fossil	EJ/yr
+Sec_Ene_Ele_Heat_Fos_w_CCS	Secondary Energy|Electricity and Heat|Fossil|w/ CCS	EJ/yr
+Sec_Ene_Ele_Heat_Fos_wo_CCS	Secondary Energy|Electricity and Heat|Fossil|w/o CCS	EJ/yr
+Fin_Ene_Ele_Heat	Final Energy|Electricity and Heat	EJ/yr
+Fin_Ene_Tra_Ele_Heat	Final Energy|Transportation|Electricity and Heat	EJ/yr
+Fin_Ene_Ind_Ele_Heat	Final Energy|Industry|Electricity and Heat	EJ/yr
+Fin_Ene_Res_and_Com_Ele_Heat	Final Energy|Residential and Commercial|Electricity and Heat	EJ/yr
+Ene_Ser_Tra_Pss_Int_Avi	Energy Service|Transportation|Passenger|International Aviation	bn pkm/yr
+Fin_Ene_Bui_Res_and_Com	Final Energy|Buildings	EJ/yr
+Fin_Ene_Bui_Res_and_Com_Ele	Final Energy|Buildings|Electricity	EJ/yr
+Fin_Ene_Bui_Res_and_Com_Gas	Final Energy|Buildings|Gases	EJ/yr
+Fin_Ene_Bui_Res_and_Com_Heat	Final Energy|Buildings|Heat	EJ/yr
+Fin_Ene_Bui_Res_and_Com_Hyd	Final Energy|Buildings|Hydrogen	EJ/yr
+Fin_Ene_Bui_Res_and_Com_Liq	Final Energy|Buildings|Liquids	EJ/yr
+Fin_Ene_Bui_Res_and_Com_Oth	Final Energy|Buildings|Other	EJ/yr
+Fin_Ene_Bui_Res_and_Com_Solids	Final Energy|Buildings|Solids	EJ/yr
+Fin_Ene_Bui_Res_and_Com_SolidsBio	Final Energy|Buildings|Solids|Biomass	EJ/yr
+Fin_Ene_Bui_Res_and_Com_SolidsCoa	Final Energy|Buildings|Solids|Coal	EJ/yr
+Fin_Ene_Bui_Res_and_Com_Spa_Heating	Final Energy|Buildings|Space Heating	EJ/yr
+Fin_Ene_Bui_Res_and_Com_SolidsBio_Tra	Final Energy|Buildings|Solids|Biomass|Traditional	EJ/yr
+Fin_Ene_Bui_Res_and_Com_Liq_Oil	Final Energy|Buildings|Residential and Commercial|Liquids|Oil	EJ/yr
+Fin_Ene_Bui_Res_and_Com_Liq_Bio	Final Energy|Buildings|Residential and Commercial|Liquids|Biomass	EJ/yr
+Fin_Ene_Bui_Res_and_Com_Gas_Nat_gas	Final Energy|Buildings|Residential and Commercial|Gases|Natural gas	EJ/yr
+Fin_Ene_Bui_Res_and_Com_Lig	Final Energy|Buildings|Residential and Commercial|Lighting	EJ/yr
+Fin_Ene_Bui_Res_and_Com_Heating	Final Energy|Buildings|Residential and Commercial|Heating	EJ/yr
+Fin_Ene_Bui_Res_and_Com_Coo	Final Energy|Buildings|Residential and Commercial|Cooling	EJ/yr
+Fin_Ene_Bui_Res_and_Com_App	Final Energy|Buildings|Residential and Commercial|Appliances	EJ/yr
+Fin_Ene_Bui_Res	Final Energy|Buildings|Residential	EJ/yr
+Fin_Ene_Bui_Com	Final Energy|Buildings|Commercial	EJ/yr
+Emi_BC_Ene_Dem_Bui_Com	Emissions|BC|Energy|Demand|Buildings|Commercial	EJ/yr
+Emi_BC_Ene_Dem_Bui_Res	Emissions|BC|Energy|Demand|Buildings|Residential	EJ/yr
+Emi_BC_Ene_Dem_Bui_Agg___Res_and_Com	Emissions|BC|Energy|Demand|Buildings	EJ/yr
+Emi_CH4_Ene_Dem_Bui_Com	Emissions|CH4|Energy|Demand|Buildings|Commercial	EJ/yr
+Emi_CH4_Ene_Dem_Bui_Res	Emissions|CH4|Energy|Demand|Buildings|Residential	EJ/yr
+Emi_CH4_Ene_Dem_Bui_Agg___Res_and_Com	Emissions|CH4|Energy|Demand|Buildings	EJ/yr
+Emi_CO_Ene_Dem_Bui_Com	Emissions|CO|Energy|Demand|Buildings|Commercial	EJ/yr
+Emi_CO_Ene_Dem_Bui_Res	Emissions|CO|Energy|Demand|Buildings|Residential	EJ/yr
+Emi_CO_Ene_Dem_Bui_Agg___Res_and_Com	Emissions|CO|Energy|Demand|Buildings	EJ/yr
+Emi_CO2_Ene_Dem_Bui_Com	Emissions|CO2|Energy|Demand|Buildings|Commercial	EJ/yr
+Emi_CO2_Ene_Dem_Bui_Res	Emissions|CO2|Energy|Demand|Buildings|Residential	EJ/yr
+Emi_CO2_Ene_Dem_Bui_Agg___Res_and_Com	Emissions|CO2|Energy|Demand|Buildings	EJ/yr
+Emi_N2O_Ene_Dem_Bui_Com	Emissions|N2O|Energy|Demand|Buildings|Commercial	EJ/yr
+Emi_N2O_Ene_Dem_Bui_Res	Emissions|N2O|Energy|Demand|Buildings|Residential	EJ/yr
+Emi_N2O_Ene_Dem_Bui_Agg___Res_and_Com	Emissions|N2O|Energy|Demand|Buildings	EJ/yr
+Emi_NH3_Ene_Dem_Bui_Com	Emissions|NH3|Energy|Demand|Buildings|Commercial	EJ/yr
+Emi_NH3_Ene_Dem_Bui_Res	Emissions|NH3|Energy|Demand|Buildings|Residential	EJ/yr
+Emi_NH3_Ene_Dem_Bui_Agg___Res_and_Com	Emissions|NH3|Energy|Demand|Buildings	EJ/yr
+Emi_NOx_Ene_Dem_Bui_Com	Emissions|NOx|Energy|Demand|Buildings|Commercial	EJ/yr
+Emi_NOx_Ene_Dem_Bui_Res	Emissions|NOx|Energy|Demand|Buildings|Residential	EJ/yr
+Emi_NOx_Ene_Dem_Bui_Agg___Res_and_Com	Emissions|NOx|Energy|Demand|Buildings	EJ/yr
+Emi_OC_Ene_Dem_Bui_Com	Emissions|OC|Energy|Demand|Buildings|Commercial	EJ/yr
+Emi_OC_Ene_Dem_Bui_Res	Emissions|OC|Energy|Demand|Buildings|Residential	EJ/yr
+Emi_OC_Ene_Dem_Bui_Agg___Res_and_Com	Emissions|OC|Energy|Demand|Buildings	EJ/yr
+Emi_Sul_Ene_Dem_Bui_Com	Emissions|Sulfur|Energy|Demand|Buildings|Commercial	EJ/yr
+Emi_Sul_Ene_Dem_Bui_Res	Emissions|Sulfur|Energy|Demand|Buildings|Residential	EJ/yr
+Emi_Sul_Ene_Dem_Bui_Agg___Res_and_Com	Emissions|Sulfur|Energy|Demand|Buildings	EJ/yr
+Emi_VOC_Ene_Dem_Bui_Com	Emissions|VOC|Energy|Demand|Buildings|Commercial	EJ/yr
+Emi_VOC_Ene_Dem_Bui_Res	Emissions|VOC|Energy|Demand|Buildings|Residential	EJ/yr
+Emi_VOC_Ene_Dem_Bui_Agg___Res_and_Com	Emissions|VOC|Energy|Demand|Buildings	EJ/yr
+Fin_Ene_Bui_Com_Ele	Final Energy|Buildings|Commercial|Electricity	EJ/yr
+Fin_Ene_Bui_Com_Gas	Final Energy|Buildings|Commercial|Gases	EJ/yr
+Fin_Ene_Bui_Com_Heat	Final Energy|Buildings|Commercial|Heat	EJ/yr
+Fin_Ene_Bui_Com_Hyd	Final Energy|Buildings|Commercial|Hydrogen	EJ/yr
+Fin_Ene_Bui_Com_Liq	Final Energy|Buildings|Commercial|Liquids	EJ/yr
+Fin_Ene_Bui_Com_Oth	Final Energy|Buildings|Commercial|Other	EJ/yr
+Fin_Ene_Bui_Com_Solids	Final Energy|Buildings|Commercial|Solids	EJ/yr
+Fin_Ene_Bui_Res_Ele	Final Energy|Buildings|Residential|Electricity	EJ/yr
+Fin_Ene_Bui_Res_Gas	Final Energy|Buildings|Residential|Gases	EJ/yr
+Fin_Ene_Bui_Res_Heat	Final Energy|Buildings|Residential|Heat	EJ/yr
+Fin_Ene_Bui_Res_Hyd	Final Energy|Buildings|Residential|Hydrogen	EJ/yr
+Fin_Ene_Bui_Res_Liq	Final Energy|Buildings|Residential|Liquids	EJ/yr
+Fin_Ene_Bui_Res_Oth	Final Energy|Buildings|Residential|Other	EJ/yr
+Fin_Ene_Bui_Res_Solids	Final Energy|Buildings|Residential|Solids	EJ/yr
+Fin_Ene_Bui_Res_Liq_Oil	Final Energy|Buildings|Residential|Liquids|Oil	EJ/yr
+Fin_Ene_Bui_Res_Liq_Bio	Final Energy|Buildings|Residential|Liquids|Biomass	EJ/yr
+Fin_Ene_Bui_Res_SolidsBio	Final Energy|Buildings|Residential|Solids|Biomass	EJ/yr
+Fin_Ene_Bui_Res_SolidsCoa	Final Energy|Buildings|Residential|Solids|Coal	EJ/yr
+Fin_Ene_Bui_Com_SolidsBio	Final Energy|Buildings|Commercial|Solids|Biomass	EJ/yr
+Fin_Ene_Bui_Com_SolidsCoa	Final Energy|Buildings|Commercial|Solids|Coal	EJ/yr
+Fin_Ene_Bui_Com_Liq_Oil	Final Energy|Buildings|Commercial|Liquids|Oil	EJ/yr
+Fin_Ene_Bui_Com_Liq_Bio	Final Energy|Buildings|Commercial|Liquids|Biomass	EJ/yr
+Fin_Ene_Bui_Res_SolidsBio_Tra	Final Energy|Buildings|Residential|Solids|Biomass|Traditional	EJ/yr
+Fin_Ene_Bui_Com_SolidsBio_Tra	Final Energy|Buildings|Commercial|Solids|Biomass|Traditional	EJ/yr
+Emi_BC_Ene_Dem_Res_and_Com	Emissions|BC|Energy|Demand|Residential and Commercial	Mt BC/yr
+Emi_CH4_Ene_Dem_Res_and_Com	Emissions|CH4|Energy|Demand|Residential and Commercial	Mt CH4/yr
+Emi_CO_Ene_Dem_Res_and_Com	Emissions|CO|Energy|Demand|Residential and Commercial	Mt CO/yr
+Emi_CO2_Ene_Dem_Res_and_Com	Emissions|CO2|Energy|Demand|Residential and Commercial	Mt CO2/yr
+Emi_N2O_Ene_Dem_Res_and_Com	Emissions|N2O|Energy|Demand|Residential and Commercial	kt N2O/yr
+Emi_NH3_Ene_Dem_Res_and_Com	Emissions|NH3|Energy|Demand|Residential and Commercial	Mt NH3/yr
+Emi_NOx_Ene_Dem_Res_and_Com	Emissions|NOx|Energy|Demand|Residential and Commercial	Mt NOx/yr
+Emi_OC_Ene_Dem_Res_and_Com	Emissions|OC|Energy|Demand|Residential and Commercial	Mt OC/yr
+Emi_Sul_Ene_Dem_Res_and_Com	Emissions|Sulfur|Energy|Demand|Residential and Commercial	Mt SO2/yr
+Emi_VOC_Ene_Dem_Res_and_Com	Emissions|VOC|Energy|Demand|Residential and Commercial	Mt VOC/yr
+Agr_Dem_Cro	Agricultural Demand|Crops	million t DM/yr
+Agr_Dem_Cro_Ene	Agricultural Demand|Crops|Energy	million t DM/yr
+Agr_Dem_Cro_Ene_1st_gen	Agricultural Demand|Crops|Energy|1st generation	million t DM/yr
+Agr_Dem_Cro_Ene_2nd_gen	Agricultural Demand|Crops|Energy|2nd generation	million t DM/yr
+Agr_Dem_Liv	Agricultural Demand|Livestock	million t DM/yr
+Cap_Tra_Avi_Fre	Capacity|Transportation|Aviation|Freight	billion tkm/yr
+Cap_Tra_Avi_Pss	Capacity|Transportation|Aviation|Passenger	billion pkm/yr
+Cap_Tra_Mar_Fre	Capacity|Transportation|Maritime|Freight	billion tkm/yr
+Cap_Tra_Mar_Pss	Capacity|Transportation|Maritime|Passenger	billion pkm/yr
+Cap_Tra_Rai_Fre	Capacity|Transportation|Rail|Freight	billion tkm/yr
+Cap_Tra_Rai_Pss	Capacity|Transportation|Rail|Passenger	billion pkm/yr
+Cap_Tra_Roa_Fre	Capacity|Transportation|Road|Freight	billion tkm/yr
+Cap_Tra_Roa_Pss	Capacity|Transportation|Road|Passenger	billion pkm/yr
+Car_Its_Pro_Cem	Carbon Intensity|Production|Cement	Mt CO2-equiv/Mt
+Car_Its_Pro_Cem_Fos_Ene_Dem_Ind	Carbon Intensity|Production|Cement|Fossil|Energy|Demand|Industry	Mt CO2-equiv/Mt
+Car_Its_Pro_Cem_Ind_Pro	Carbon Intensity|Production|Cement|Industrial Processes	Mt CO2-equiv/Mt
+Car_Its_Pro_Che	Carbon Intensity|Production|Chemicals	Mt CO2-equiv/Mt
+Car_Its_Pro_Che_Amm	Carbon Intensity|Production|Chemicals|Ammonia	Mt CO2-equiv/Mt
+Car_Its_Pro_Che_Amm_Fos_Ene_Dem_Ind	Carbon Intensity|Production|Chemicals|Ammonia|Fossil|Energy|Demand|Industry	Mt CO2-equiv/Mt
+Car_Its_Pro_Che_Amm_Ind_Pro	Carbon Intensity|Production|Chemicals|Ammonia|Industrial Processes	Mt CO2-equiv/Mt
+Car_Its_Pro_Che_Fos_Ene_Dem_Ind	Carbon Intensity|Production|Chemicals|Fossil|Energy|Demand|Industry	Mt CO2-equiv/Mt
+Car_Its_Pro_Che_Hig_val_che	Carbon Intensity|Production|Chemicals|High value chemicals	Mt CO2-equiv/Mt
+Car_Its_Pro_Che_Hig_val_che_Fos_Ene_Dem_Ind	Carbon Intensity|Production|Chemicals|High value chemicals|Fossil|Energy|Demand|Industry	Mt CO2-equiv/Mt
+Car_Its_Pro_Che_Hig_val_che_Ind_Pro	Carbon Intensity|Production|Chemicals|High value chemicals|Industrial Processes	Mt CO2-equiv/Mt
+Car_Its_Pro_Che_Ind_Pro	Carbon Intensity|Production|Chemicals|Industrial Processes	Mt CO2-equiv/Mt
+Car_Its_Pro_Che_Met	Carbon Intensity|Production|Chemicals|Methanol	Mt CO2-equiv/Mt
+Car_Its_Pro_Che_Met_Fos_Ene_Dem_Ind	Carbon Intensity|Production|Chemicals|Methanol|Fossil|Energy|Demand|Industry	Mt CO2-equiv/Mt
+Car_Its_Pro_Che_Met_Ind_Pro	Carbon Intensity|Production|Chemicals|Methanol|Industrial Processes	Mt CO2-equiv/Mt
+Car_Its_Pro_Che_Oth	Carbon Intensity|Production|Chemicals|Other	Mt CO2-equiv/Mt
+Car_Its_Pro_Che_Oth_Fos_Ene_Dem_Ind	Carbon Intensity|Production|Chemicals|Other|Fossil|Energy|Demand|Industry	Mt CO2-equiv/Mt
+Car_Its_Pro_Che_Oth_Ind_Pro	Carbon Intensity|Production|Chemicals|Other|Industrial Processes	Mt CO2-equiv/Mt
+Car_Its_Pro_Non_met	Carbon Intensity|Production|Non-ferrous metals	Mt CO2-equiv/Mt
+Car_Its_Pro_Non_met_Fos_Ene_Dem_Ind	Carbon Intensity|Production|Non-ferrous metals|Fossil|Energy|Demand|Industry	Mt CO2-equiv/Mt
+Car_Its_Pro_Non_met_Ind_Pro	Carbon Intensity|Production|Non-ferrous metals|Industrial Processes	Mt CO2-equiv/Mt
+Car_Its_Pro_Oth	Carbon Intensity|Production|Other	Mt CO2-equiv/Mt
+Car_Its_Pro_Oth_Fos_Ene_Dem_Ind	Carbon Intensity|Production|Other|Fossil|Energy|Demand|Industry	Mt CO2-equiv/Mt
+Car_Its_Pro_Oth_Ind_Pro	Carbon Intensity|Production|Other|Industrial Processes	Mt CO2-equiv/Mt
+Car_Its_Pro_Pla	Carbon Intensity|Production|Plastics	Mt CO2-equiv/Mt
+Car_Its_Pro_Pla_Fos_Ene_Dem_Ind	Carbon Intensity|Production|Plastics|Fossil|Energy|Demand|Industry	Mt CO2-equiv/Mt
+Car_Its_Pro_Pla_Ind_Pro	Carbon Intensity|Production|Plastics|Industrial Processes	Mt CO2-equiv/Mt
+Car_Its_Pro_Pul_and_Pap	Carbon Intensity|Production|Pulp and Paper	Mt CO2-equiv/Mt
+Car_Its_Pro_Pul_and_Pap_Fos_Ene_Dem_Ind	Carbon Intensity|Production|Pulp and Paper|Fossil|Energy|Demand|Industry	Mt CO2-equiv/Mt
+Car_Its_Pro_Pul_and_Pap_Ind_Pro	Carbon Intensity|Production|Pulp and Paper|Industrial Processes	Mt CO2-equiv/Mt
+Car_Its_Pro_Ste	Carbon Intensity|Production|Steel	Mt CO2-equiv/Mt
+Car_Its_Pro_Ste_Fos_Ene_Dem_Ind	Carbon Intensity|Production|Steel|Fossil|Energy|Demand|Industry	Mt CO2-equiv/Mt
+Car_Its_Pro_Ste_Ind_Pro	Carbon Intensity|Production|Steel|Industrial Processes	Mt CO2-equiv/Mt
+Car_Seq_Fee	Carbon Sequestration|Feedstocks	Mt CO2/yr
+Car_Seq_Fee_Bio	Carbon Sequestration|Feedstocks|Biomass	Mt CO2/yr
+Car_Seq_Fee_Fos	Carbon Sequestration|Feedstocks|Fossil	Mt CO2/yr
+Car_Seq_Lan_Use_Oth	Carbon Sequestration|Land Use|Other	Mt CO2/yr
+Car_Uti_CCS_Bio_Ind	Carbon Utilization|CCS|Biomass|Industry	Mt CO2/yr
+Car_Uti_CCS_Fos_Ind	Carbon Utilization|CCS|Fossil|Industry	Mt CO2/yr
+Car_Uti_CCS_Ind	Carbon Utilization|CCS|Industry	Mt CO2/yr
+Cns	Consumption	billion US$2010/yr
+Dis_rat_Eco	Discount rate|Economy	%
+Dis_rat_Ele	Discount rate|Electricity	%
+Dis_rat_Ene_Sup	Discount rate|Energy Supply	%
+Dis_rat_Ind	Discount rate|Industry	%
+Dis_rat_Mob	Discount rate|Mobility	%
+Dis_rat_Res_and_Com	Discount rate|Residential and Commercial	%
+Dis_rat_Soc	Discount rate|Social	%
+Dis_rat_Tra_Inf	Discount rate|Transport Infrastructure	%
+Eco_Fre	Ecotoxicity|Freshwater	Mt 1,4-DCB-eq
+Eco_Fre_Ele	Ecotoxicity|Freshwater|Electricity	Mt 1,4-DCB-eq
+Eco_Mar	Ecotoxicity|Marine	Mt 1,4-DCB-eq
+Eco_Mar_Ele	Ecotoxicity|Marine|Electricity	Mt 1,4-DCB-eq
+Eff_Frc	Effective Forcing	W/m2
+Eff_Frc_Aer	Effective Forcing|Aerosol	W/m2
+Eff_Frc_Aer_BC	Effective Forcing|Aerosol|BC	W/m2
+Eff_Frc_Aer_Bla_and_Org_Car	Effective Forcing|Aerosol|Black and Organic Carbon	W/m2
+Eff_Frc_Aer_Clo_Ind	Effective Forcing|Aerosol|Cloud Indirect	W/m2
+Eff_Frc_Aer_OC	Effective Forcing|Aerosol|OC	W/m2
+Eff_Frc_Aer_Oth	Effective Forcing|Aerosol|Other	W/m2
+Eff_Frc_Aer_Sul_Dir	Effective Forcing|Aerosol|Sulfate Direct	W/m2
+Eff_Frc_Alb_Cha_and_Min_Dus	Effective Forcing|Albedo Change and Mineral Dust	W/m2
+Eff_Frc_CH4	Effective Forcing|CH4	W/m2
+Eff_Frc_CO2	Effective Forcing|CO2	W/m2
+Eff_Frc_F-G	Effective Forcing|F-Gases	W/m2
+Eff_Frc_Kyo_Gas	Effective Forcing|Kyoto Gases	W/m2
+Eff_Frc_Mon_Gas	Effective Forcing|Montreal Gases	W/m2
+Eff_Frc_N2O	Effective Forcing|N2O	W/m2
+Eff_Frc_Oth	Effective Forcing|Other	W/m2
+Eff_Frc_Tro_Ozo	Effective Forcing|Tropospheric Ozone	W/m2
+Emi_BC_Ene_Dem_Res_and_Com_Com	Emissions|BC|Energy|Demand|Residential and Commercial|Commercial	Mt BC/yr
+Emi_BC_Ene_Dem_Res_and_Com_Res	Emissions|BC|Energy|Demand|Residential and Commercial|Residential	Mt BC/yr
+Emi_BC_Ene_Dem_Tra_Fre	Emissions|BC|Energy|Demand|Transportation|Freight	Mt BC/yr
+Emi_BC_Ene_Dem_Tra_Pss	Emissions|BC|Energy|Demand|Transportation|Passenger	Mt BC/yr
+Emi_C2F	Emissions|C2F6	kt C2F6/yr
+Emi_C2F_AFO	Emissions|C2F6|AFOLU	kt C2F6/yr
+Emi_C2F_AFO_Agr	Emissions|C2F6|AFOLU|Agriculture	kt C2F6/yr
+Emi_C2F_AFO_Lan	Emissions|C2F6|AFOLU|Land	kt C2F6/yr
+Emi_C2F_Ene	Emissions|C2F6|Energy	kt C2F6/yr
+Emi_C2F_Ind_Pro	Emissions|C2F6|Industrial Processes	kt C2F6/yr
+Emi_C2F_Was	Emissions|C2F6|Waste	kt C2F6/yr
+Emi_CF4_AFO	Emissions|CF4|AFOLU	kt CF4/yr
+Emi_CF4_AFO_Agr	Emissions|CF4|AFOLU|Agriculture	kt CF4/yr
+Emi_CF4_AFO_Lan	Emissions|CF4|AFOLU|Land	kt CF4/yr
+Emi_CF4_Ene	Emissions|CF4|Energy	kt CF4/yr
+Emi_CF4_Ind_Pro	Emissions|CF4|Industrial Processes	kt CF4/yr
+Emi_CF4_Was	Emissions|CF4|Waste	kt CF4/yr
+Emi_CFC	Emissions|CFC	Mt CO2-equiv/yr
+Emi_CFC_AFO	Emissions|CFC|AFOLU	Mt CO2-equiv/yr
+Emi_CFC_AFO_Agr	Emissions|CFC|AFOLU|Agriculture	Mt CO2-equiv/yr
+Emi_CFC_AFO_Lan	Emissions|CFC|AFOLU|Land	Mt CO2-equiv/yr
+Emi_CFC_Ene	Emissions|CFC|Energy	Mt CO2-equiv/yr
+Emi_CFC_Ind_Pro	Emissions|CFC|Industrial Processes	Mt CO2-equiv/yr
+Emi_CFC_Was	Emissions|CFC|Waste	Mt CO2-equiv/yr
+Emi_CH4_Ene_Dem_Res_and_Com_Com	Emissions|CH4|Energy|Demand|Residential and Commercial|Commercial	Mt CH4/yr
+Emi_CH4_Ene_Dem_Res_and_Com_Res	Emissions|CH4|Energy|Demand|Residential and Commercial|Residential	Mt CH4/yr
+Emi_CH4_Ene_Dem_Tra_Fre	Emissions|CH4|Energy|Demand|Transportation|Freight	Mt CH4/yr
+Emi_CH4_Ene_Dem_Tra_Pss	Emissions|CH4|Energy|Demand|Transportation|Passenger	Mt CH4/yr
+Emi_CH4_Ind_Pro_Che_Amm	Emissions|CH4|Industrial Processes|Chemicals|Ammonia	Mt CH4/yr
+Emi_CH4_Ind_Pro_Che_Hig_val_che	Emissions|CH4|Industrial Processes|Chemicals|High value chemicals	Mt CH4/yr
+Emi_CH4_Ind_Pro_Che_Met	Emissions|CH4|Industrial Processes|Chemicals|Methanol	Mt CH4/yr
+Emi_CH4_Ind_Pro_Che_Oth	Emissions|CH4|Industrial Processes|Chemicals|Other	Mt CH4/yr
+Emi_CH4_Ind_Pro_Non_met	Emissions|CH4|Industrial Processes|Non-ferrous metals	Mt CH4/yr
+Emi_CH4_Ind_Pro_Oth	Emissions|CH4|Industrial Processes|Other	Mt CH4/yr
+Emi_CH4_Ind_Pro_Pla	Emissions|CH4|Industrial Processes|Plastics	Mt CH4/yr
+Emi_CH4_Ind_Pro_Pul_and_Pap	Emissions|CH4|Industrial Processes|Pulp and Paper	Mt CH4/yr
+Emi_CH4_Ind_Pro_Ste	Emissions|CH4|Industrial Processes|Steel	Mt CH4/yr
+Emi_CO_Ene_Dem_Res_and_Com_Com	Emissions|CO|Energy|Demand|Residential and Commercial|Commercial	Mt CO/yr
+Emi_CO_Ene_Dem_Res_and_Com_Res	Emissions|CO|Energy|Demand|Residential and Commercial|Residential	Mt CO/yr
+Emi_CO_Ene_Dem_Tra_Fre	Emissions|CO|Energy|Demand|Transportation|Freight	Mt CO/yr
+Emi_CO_Ene_Dem_Tra_Pss	Emissions|CO|Energy|Demand|Transportation|Passenger	Mt CO/yr
+Emi_CO2_Ene_Dem_Ind_Cem	Emissions|CO2|Energy|Demand|Industry|Cement	Mt CO2/yr
+Emi_CO2_Ene_Dem_Ind_Che_Amm	Emissions|CO2|Energy|Demand|Industry|Chemicals|Ammonia	Mt CO2/yr
+Emi_CO2_Ene_Dem_Ind_Che_Hig_val_che	Emissions|CO2|Energy|Demand|Industry|Chemicals|High value chemicals	Mt CO2/yr
+Emi_CO2_Ene_Dem_Ind_Che_Met	Emissions|CO2|Energy|Demand|Industry|Chemicals|Methanol	Mt CO2/yr
+Emi_CO2_Ene_Dem_Ind_Che_Oth	Emissions|CO2|Energy|Demand|Industry|Chemicals|Other	Mt CO2/yr
+Emi_CO2_Ene_Dem_Ind_Non_met	Emissions|CO2|Energy|Demand|Industry|Non-ferrous metals	Mt CO2/yr
+Emi_CO2_Ene_Dem_Ind_Pla	Emissions|CO2|Energy|Demand|Industry|Plastics	Mt CO2/yr
+Emi_CO2_Ene_Dem_Ind_Ste	Emissions|CO2|Energy|Demand|Industry|Steel	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Com	Emissions|CO2|Energy|Demand|Residential and Commercial|Commercial	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Com_Edu	Emissions|CO2|Energy|Demand|Residential and Commercial|Commercial|Education	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Com_Hea	Emissions|CO2|Energy|Demand|Residential and Commercial|Commercial|Health	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Com_Heating	Emissions|CO2|Energy|Demand|Residential and Commercial|Commercial|Heating	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Com_HeatingCok	Emissions|CO2|Energy|Demand|Residential and Commercial|Commercial|Heating|Cooking	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Com_HeatingSpa	Emissions|CO2|Energy|Demand|Residential and Commercial|Commercial|Heating|Space	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Com_HeatingWat	Emissions|CO2|Energy|Demand|Residential and Commercial|Commercial|Heating|Water	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Com_Hot	Emissions|CO2|Energy|Demand|Residential and Commercial|Commercial|Hotels	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Com_Ind_and_trd	Emissions|CO2|Energy|Demand|Residential and Commercial|Commercial|Industrial & trade	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Com_Off	Emissions|CO2|Energy|Demand|Residential and Commercial|Commercial|Offices	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Com_Res	Emissions|CO2|Energy|Demand|Residential and Commercial|Commercial|Restaurant	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Res	Emissions|CO2|Energy|Demand|Residential and Commercial|Residential	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Res_Heating	Emissions|CO2|Energy|Demand|Residential and Commercial|Residential|Heating	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Res_HeatingCok	Emissions|CO2|Energy|Demand|Residential and Commercial|Residential|Heating|Cooking	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Res_HeatingSpa	Emissions|CO2|Energy|Demand|Residential and Commercial|Residential|Heating|Space	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Res_HeatingWat	Emissions|CO2|Energy|Demand|Residential and Commercial|Residential|Heating|Water	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Res_Mul	Emissions|CO2|Energy|Demand|Residential and Commercial|Residential|Multi-family	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Res_Sin_fam	Emissions|CO2|Energy|Demand|Residential and Commercial|Residential|Single family	Mt CO2/yr
+Emi_CO2_Ene_Dem_Res_and_Com_Res_Slu	Emissions|CO2|Energy|Demand|Residential and Commercial|Residential|Slum	Mt CO2/yr
+Emi_CO2_Ene_Dem_Tra_Avi_Fre	Emissions|CO2|Energy|Demand|Transportation|Aviation|Freight	Mt CO2/yr
+Emi_CO2_Ene_Dem_Tra_Avi_Pss	Emissions|CO2|Energy|Demand|Transportation|Aviation|Passenger	Mt CO2/yr
+Emi_CO2_Ene_Dem_Tra_Mar	Emissions|CO2|Energy|Demand|Transportation|Maritime	Mt CO2/yr
+Emi_CO2_Ene_Dem_Tra_Mar_Fre	Emissions|CO2|Energy|Demand|Transportation|Maritime|Freight	Mt CO2/yr
+Emi_CO2_Ene_Dem_Tra_Mar_Pss	Emissions|CO2|Energy|Demand|Transportation|Maritime|Passenger	Mt CO2/yr
+Emi_CO2_Ene_Dem_Tra_Rai_Fre	Emissions|CO2|Energy|Demand|Transportation|Rail|Freight	Mt CO2/yr
+Emi_CO2_Ene_Dem_Tra_Rai_Pss	Emissions|CO2|Energy|Demand|Transportation|Rail|Passenger	Mt CO2/yr
+Emi_CO2_Ene_Dem_Tra_Roa_Fre	Emissions|CO2|Energy|Demand|Transportation|Road|Freight	Mt CO2/yr
+Emi_CO2_Ene_Dem_Tra_Roa_Pss	Emissions|CO2|Energy|Demand|Transportation|Road|Passenger	Mt CO2/yr
+Emi_CO2_Ene_Dem_Tra_Roa_Pss_2Wa	Emissions|CO2|Energy|Demand|Transportation|Road|Passenger|2W&3W	Mt CO2/yr
+Emi_CO2_Ene_Dem_Tra_Roa_Pss_Bus	Emissions|CO2|Energy|Demand|Transportation|Road|Passenger|Bus	Mt CO2/yr
+Emi_CO2_Ene_Dem_Tra_Roa_Pss_LDV	Emissions|CO2|Energy|Demand|Transportation|Road|Passenger|LDV	Mt CO2/yr
+Emi_CO2_Ind_Pro_Cem	Emissions|CO2|Industrial Processes|Cement	Mt CO2/yr
+Emi_CO2_Ind_Pro_Che_Amm	Emissions|CO2|Industrial Processes|Chemicals|Ammonia	Mt CO2/yr
+Emi_CO2_Ind_Pro_Che_Hig_val_che	Emissions|CO2|Industrial Processes|Chemicals|High value chemicals	Mt CO2/yr
+Emi_CO2_Ind_Pro_Che_Met	Emissions|CO2|Industrial Processes|Chemicals|Methanol	Mt CO2/yr
+Emi_CO2_Ind_Pro_Che_Oth	Emissions|CO2|Industrial Processes|Chemicals|Other	Mt CO2/yr
+Emi_CO2_Ind_Pro_Non_met	Emissions|CO2|Industrial Processes|Non-ferrous metals	Mt CO2/yr
+Emi_CO2_Ind_Pro_Oth	Emissions|CO2|Industrial Processes|Other	Mt CO2/yr
+Emi_CO2_Ind_Pro_Pla	Emissions|CO2|Industrial Processes|Plastics	Mt CO2/yr
+Emi_CO2_Ind_Pro_Pul_and_Pap	Emissions|CO2|Industrial Processes|Pulp and Paper	Mt CO2/yr
+Emi_CO2_Ind_Pro_Ste	Emissions|CO2|Industrial Processes|Steel	Mt CO2/yr
+Emi_F-G	Emissions|F-Gases	Mt CO2-equiv/yr
+Emissions_HFC_AFOLU	Emissions|HFC|AFOLU	Mt CO2-equiv/yr
+Emissions_HFC_AFOLU_Agriculture	Emissions|HFC|AFOLU|Agriculture	Mt CO2-equiv/yr
+Emissions_HFC_AFOLU_Land	Emissions|HFC|AFOLU|Land	Mt CO2-equiv/yr
+Emissions_HFC_Energy	Emissions|HFC|Energy	Mt CO2-equiv/yr
+Emissions_HFC_HFC43-10	Emissions|HFC|HFC43-10	kt HFC43-10/yr
+Emissions_HFC_Industrial_Processes	Emissions|HFC|Industrial Processes	Mt CO2-equiv/yr
+Emissions_HFC_Industrial_Processes_Chemicals	Emissions|HFC|Industrial Processes|Chemicals	kt HFC134a-equiv/yr
+Emissions_HFC_Industrial_Processes_Other	Emissions|HFC|Industrial Processes|Other	kt HFC134a-equiv/yr
+Emissions_HFC_Waste	Emissions|HFC|Waste	Mt CO2-equiv/yr
+Emi_N2O_Ene_Dem_Res_and_Com_Com	Emissions|N2O|Energy|Demand|Residential and Commercial|Commercial	kt N2O/yr
+Emi_N2O_Ene_Dem_Res_and_Com_Res	Emissions|N2O|Energy|Demand|Residential and Commercial|Residential	kt N2O/yr
+Emi_N2O_Ene_Dem_Tra_Fre	Emissions|N2O|Energy|Demand|Transportation|Freight	kt N2O/yr
+Emi_N2O_Ene_Dem_Tra_Pss	Emissions|N2O|Energy|Demand|Transportation|Passenger	kt N2O/yr
+Emi_N2O_Ind_Pro_Non_met	Emissions|N2O|Industrial Processes|Non-ferrous metals	kt N2O/yr
+Emi_N2O_Ind_Pro_Oth	Emissions|N2O|Industrial Processes|Other	kt N2O/yr
+Emi_N2O_Ind_Pro_Pla	Emissions|N2O|Industrial Processes|Plastics	kt N2O/yr
+Emi_N2O_Ind_Pro_Ste	Emissions|N2O|Industrial Processes|Steel	kt N2O/yr
+Emi_NH3_Ene_Dem_Res_and_Com_Com	Emissions|NH3|Energy|Demand|Residential and Commercial|Commercial	Mt NH3/yr
+Emi_NH3_Ene_Dem_Res_and_Com_Res	Emissions|NH3|Energy|Demand|Residential and Commercial|Residential	Mt NH3/yr
+Emi_NH3_Ene_Dem_Tra_Fre	Emissions|NH3|Energy|Demand|Transportation|Freight	Mt NH3/yr
+Emi_NH3_Ene_Dem_Tra_Pss	Emissions|NH3|Energy|Demand|Transportation|Passenger	Mt NH3/yr
+Emi_NOx_Ene_Dem_Res_and_Com_Com	Emissions|NOx|Energy|Demand|Residential and Commercial|Commercial	Mt NO2/yr
+Emi_NOx_Ene_Dem_Res_and_Com_Res	Emissions|NOx|Energy|Demand|Residential and Commercial|Residential	Mt NO2/yr
+Emi_NOx_Ene_Dem_Tra_Fre	Emissions|NOx|Energy|Demand|Transportation|Freight	Mt NO2/yr
+Emi_NOx_Ene_Dem_Tra_Pss	Emissions|NOx|Energy|Demand|Transportation|Passenger	Mt NO2/yr
+Emi_OC_Ene_Dem_Res_and_Com_Com	Emissions|OC|Energy|Demand|Residential and Commercial|Commercial	Mt CO2/yr
+Emi_OC_Ene_Dem_Res_and_Com_Res	Emissions|OC|Energy|Demand|Residential and Commercial|Residential	Mt CO2/yr
+Emi_OC_Ene_Dem_Tra_Fre	Emissions|OC|Energy|Demand|Transportation|Freight	Mt OC/yr
+Emi_OC_Ene_Dem_Tra_Pss	Emissions|OC|Energy|Demand|Transportation|Passenger	Mt OC/yr
+Emi_PFC_C2F	Emissions|PFC|C2F6	kt C2F6/yr
+Emi_PFC_C6F	Emissions|PFC|C6F14	kt C6F14/yr
+Emi_PFC_CF4	Emissions|PFC|CF4	kt CF4/yr
+Emi_PFC_Ind_Pro	Emissions|PFC|Industrial Processes	kt CF4-equiv/yr
+Emi_PFC_Ind_Pro_Non_met	Emissions|PFC|Industrial Processes|Non-ferrous metals	kt CF4-equiv/yr
+Emi_PFC_Ind_Pro_Oth	Emissions|PFC|Industrial Processes|Other	kt CF4-equiv/yr
+Emi_PFC_Ind_Pro_Ste	Emissions|PFC|Industrial Processes|Steel	kt CF4-equiv/yr
+Emi_PM2	Emissions|PM2.5	Mt PM2.5
+Emi_SF6_AFO	Emissions|SF6|AFOLU	kt SF6/yr
+Emi_SF6_AFO_Agr	Emissions|SF6|AFOLU|Agriculture	kt SF6/yr
+Emi_SF6_AFO_Lan	Emissions|SF6|AFOLU|Land	kt SF6/yr
+Emi_SF6_Ene	Emissions|SF6|Energy	kt SF6/yr
+Emi_SF6_Ind_Pro	Emissions|SF6|Industrial Processes	kt SF6/yr
+Emi_SF6_Ind_Pro_Che	Emissions|SF6|Industrial Processes|Chemicals	kt SF6/yr
+Emi_SF6_Ind_Pro_Non_met	Emissions|SF6|Industrial Processes|Non-ferrous metals	kt SF6/yr
+Emi_SF6_Ind_Pro_Oth	Emissions|SF6|Industrial Processes|Other	kt SF6/yr
+Emi_SF6_Ind_Pro_Ste	Emissions|SF6|Industrial Processes|Steel	kt SF6/yr
+Emi_SF6_Was	Emissions|SF6|Waste	kt SF6/yr
+Emi_Sul_Ene_Dem_Res_and_Com_Com	Emissions|Sulfur|Energy|Demand|Residential and Commercial|Commercial	Mt SO2/yr
+Emi_Sul_Ene_Dem_Res_and_Com_Res	Emissions|Sulfur|Energy|Demand|Residential and Commercial|Residential	Mt SO2/yr
+Emi_Sul_Ene_Dem_Tra_Fre	Emissions|Sulfur|Energy|Demand|Transportation|Freight	Mt SO2/yr
+Emi_Sul_Ene_Dem_Tra_Pss	Emissions|Sulfur|Energy|Demand|Transportation|Passenger	Mt SO2/yr
+Emi_VOC_Ene_Dem_Res_and_Com_Com	Emissions|VOC|Energy|Demand|Residential and Commercial|Commercial	Mt VOC/yr
+Emi_VOC_Ene_Dem_Res_and_Com_Res	Emissions|VOC|Energy|Demand|Residential and Commercial|Residential	Mt VOC/yr
+Emi_VOC_Ene_Dem_Tra_Fre	Emissions|VOC|Energy|Demand|Transportation|Freight	Mt VOC/yr
+Emi_VOC_Ene_Dem_Tra_Pss	Emissions|VOC|Energy|Demand|Transportation|Passenger	Mt VOC/yr
+Emp_Ind	Employment|Industry	million
+Emp_Ind_Ene	Employment|Industry|Energy 	million
+Emp_Ind_Ene_Int	Employment|Industry|Energy Intensive	million
+Emp_Ind_Man	Employment|Industry|Manufacturing	million
+Emp_Ski	Employment|Skilled	million
+Emp_Uns	Employment|Unskilled	million
+Emp_Uns_Rat	Employment|Unskilled|Rate	%
+Ene_Ser_Res_and_Com_Com_Edu_Con	Energy Service|Residential and Commercial|Commercial|Education|Construction	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Edu_Con_cos	Energy Service|Residential and Commercial|Commercial|Education|Construction cost	US$2010/m2
+Ene_Ser_Res_and_Com_Com_Edu_Con_rat	Energy Service|Residential and Commercial|Commercial|Education|Construction rate	%/yr
+Ene_Ser_Res_and_Com_Com_Edu_Flo_spa	Energy Service|Residential and Commercial|Commercial|Education|Floor space	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Edu_Ren_cos	Energy Service|Residential and Commercial|Commercial|Education|Renovation cost	US$2010/m2
+Ene_Ser_Res_and_Com_Com_Edu_Ren_rat	Energy Service|Residential and Commercial|Commercial|Education|Renovation rate	%/yr
+Ene_Ser_Res_and_Com_Com_Flo_Spa	Energy Service|Residential and Commercial|Commercial|Floor Space	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Hea_Con	Energy Service|Residential and Commercial|Commercial|Health|Construction	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Hea_Con_cos	Energy Service|Residential and Commercial|Commercial|Health|Construction cost	US$2010/m2
+Ene_Ser_Res_and_Com_Com_Hea_Con_rat	Energy Service|Residential and Commercial|Commercial|Health|Construction rate	%/yr
+Ene_Ser_Res_and_Com_Com_Hea_Flo_spa	Energy Service|Residential and Commercial|Commercial|Health|Floor space	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Hea_Ren_cos	Energy Service|Residential and Commercial|Commercial|Health|Renovation cost	US$2010/m2
+Ene_Ser_Res_and_Com_Com_Hea_Ren_rat	Energy Service|Residential and Commercial|Commercial|Health|Renovation rate	%/yr
+Ene_Ser_Res_and_Com_Com_Hot_Con	Energy Service|Residential and Commercial|Commercial|Hotels|Construction	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Hot_Con_cos	Energy Service|Residential and Commercial|Commercial|Hotels|Construction cost	US$2010/m2
+Ene_Ser_Res_and_Com_Com_Hot_Con_rat	Energy Service|Residential and Commercial|Commercial|Hotels|Construction rate	%/yr
+Ene_Ser_Res_and_Com_Com_Hot_Flo_spa	Energy Service|Residential and Commercial|Commercial|Hotels|Floor space	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Hot_Ren_cos	Energy Service|Residential and Commercial|Commercial|Hotels|Renovation cost	US$2010/m2
+Ene_Ser_Res_and_Com_Com_Hot_Ren_rat	Energy Service|Residential and Commercial|Commercial|Hotels|Renovation rate	%/yr
+Ene_Ser_Res_and_Com_Com_Ind_and_trd_Con	Energy Service|Residential and Commercial|Commercial|Industrial & trade|Construction	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Ind_and_trd_Con_cos	Energy Service|Residential and Commercial|Commercial|Industrial & trade|Construction cost	US$2010/m2
+Ene_Ser_Res_and_Com_Com_Ind_and_trd_Con_rat	Energy Service|Residential and Commercial|Commercial|Industrial & trade|Construction rate	%/yr
+Ene_Ser_Res_and_Com_Com_Ind_and_trd_Flo_spa	Energy Service|Residential and Commercial|Commercial|Industrial & trade|Floor space	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Ind_and_trd_Ren_cos	Energy Service|Residential and Commercial|Commercial|Industrial & trade|Renovation cost	US$2010/m2
+Ene_Ser_Res_and_Com_Com_Ind_and_trd_Ren_rat	Energy Service|Residential and Commercial|Commercial|Industrial & trade|Renovation rate	%/yr
+Ene_Ser_Res_and_Com_Com_Off_Con	Energy Service|Residential and Commercial|Commercial|Offices|Construction	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Off_Con_cos	Energy Service|Residential and Commercial|Commercial|Offices|Construction cost	US$2010/m2
+Ene_Ser_Res_and_Com_Com_Off_Con_rat	Energy Service|Residential and Commercial|Commercial|Offices|Construction rate	%/yr
+Ene_Ser_Res_and_Com_Com_Off_Flo_spa	Energy Service|Residential and Commercial|Commercial|Offices|Floor space	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Off_Ren_cos	Energy Service|Residential and Commercial|Commercial|Offices|Renovation cost	US$2010/m2
+Ene_Ser_Res_and_Com_Com_Off_Ren_rat	Energy Service|Residential and Commercial|Commercial|Offices|Renovation rate	%/yr
+Ene_Ser_Res_and_Com_Com_Res_Con	Energy Service|Residential and Commercial|Commercial|Restaurant|Construction	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Res_Con_cos	Energy Service|Residential and Commercial|Commercial|Restaurant|Construction cost	US$2010/m2
+Ene_Ser_Res_and_Com_Com_Res_Con_rat	Energy Service|Residential and Commercial|Commercial|Restaurant|Construction rate	%/yr
+Ene_Ser_Res_and_Com_Com_Res_Flo_spa	Energy Service|Residential and Commercial|Commercial|Restaurant|Floor space	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Res_Ren_cos	Energy Service|Residential and Commercial|Commercial|Restaurant|Renovation cost	US$2010/m2
+Ene_Ser_Res_and_Com_Com_Res_Ren_rat	Energy Service|Residential and Commercial|Commercial|Restaurant|Renovation rate	%/yr
+Ene_Ser_Res_and_Com_Con_rat	Energy Service|Residential and Commercial|Construction rate	%/yr
+Ene_Ser_Res_and_Com_Ren_rat	Energy Service|Residential and Commercial|Renovation rate	%/yr
+Ene_Ser_Res_and_Com_Ren_cos	Energy Service|Residential and Commercial|Renovation cost	US$2010/m2
+Ene_Ser_Res_and_Com_Con_cos	Energy Service|Residential and Commercial|Construction cost	US$2010/m2
+Ene_Ser_Res_and_Com_Con	Energy Service|Residential and Commercial|Construction	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Ren_cos	Energy Service|Residential and Commercial|Commercial|Renovation cost	US$2010/m2
+Ene_Ser_Res_and_Com_Com_Con_cos	Energy Service|Residential and Commercial|Commercial|Construction cost	US$2010/m2
+Ene_Ser_Res_and_Com_Com_Con	Energy Service|Residential and Commercial|Commercial|Construction	bn m2/yr
+Ene_Ser_Res_and_Com_Com_Con_rat	Energy Service|Residential and Commercial|Commercial|Construction rate	%/yr
+Ene_Ser_Res_and_Com_Com_Ren_rat	Energy Service|Residential and Commercial|Commercial|Renovation rate	%/yr
+Ene_Ser_Res_and_Com_Res_Ren_cos	Energy Service|Residential and Commercial|Residential|Renovation cost	US$2010/m2
+Ene_Ser_Res_and_Com_Res_Con_cos	Energy Service|Residential and Commercial|Residential|Construction cost	US$2010/m2
+Ene_Ser_Res_and_Com_Res_Con	Energy Service|Residential and Commercial|Residential|Construction	bn m2/yr
+Ene_Ser_Res_and_Com_Res_Con_rat	Energy Service|Residential and Commercial|Residential|Construction rate	%/yr
+Ene_Ser_Res_and_Com_Res_Ren_rat	Energy Service|Residential and Commercial|Residential|Renovation rate	%/yr
+Ene_Ser_Res_and_Com_Res_Flo_Spa	Energy Service|Residential and Commercial|Residential|Floor Space	bn m2/yr
+Ene_Ser_Res_and_Com_Res_Mul_Con	Energy Service|Residential and Commercial|Residential|Multi-family|Construction	bn m2/yr
+Ene_Ser_Res_and_Com_Res_Mul_Con_cos	Energy Service|Residential and Commercial|Residential|Multi-family|Construction cost	US$2010/m2
+Ene_Ser_Res_and_Com_Res_Mul_Con_rat	Energy Service|Residential and Commercial|Residential|Multi-family|Construction rate	%/yr
+Ene_Ser_Res_and_Com_Res_Mul_Flo_spa	Energy Service|Residential and Commercial|Residential|Multi-family|Floor space	bn m2/yr
+Ene_Ser_Res_and_Com_Res_Mul_Ren_cos	Energy Service|Residential and Commercial|Residential|Multi-family|Renovation cost	US$2010/m2
+Ene_Ser_Res_and_Com_Res_Mul_Ren_rat	Energy Service|Residential and Commercial|Residential|Multi-family|Renovation rate	%/yr
+Ene_Ser_Res_and_Com_Res_Sin_fam_Con	Energy Service|Residential and Commercial|Residential|Single family|Construction	bn m2/yr
+Ene_Ser_Res_and_Com_Res_Sin_fam_Con_cos	Energy Service|Residential and Commercial|Residential|Single family|Construction cost	US$2010/m2
+Ene_Ser_Res_and_Com_Res_Sin_fam_Con_rat	Energy Service|Residential and Commercial|Residential|Single family|Construction rate	%/yr
+Ene_Ser_Res_and_Com_Res_Sin_fam_Flo_spa	Energy Service|Residential and Commercial|Residential|Single family|Floor space	bn m2/yr
+Ene_Ser_Res_and_Com_Res_Sin_fam_Ren_cos	Energy Service|Residential and Commercial|Residential|Single family|Renovation cost	US$2010/m2
+Ene_Ser_Res_and_Com_Res_Sin_fam_Ren_rat	Energy Service|Residential and Commercial|Residential|Single family|Renovation rate	%/yr
+Ene_Ser_Res_and_Com_Res_Slu_Con	Energy Service|Residential and Commercial|Residential|Slum|Construction	bn m2/yr
+Ene_Ser_Res_and_Com_Res_Slu_Con_cos	Energy Service|Residential and Commercial|Residential|Slum|Construction cost	US$2010/m2
+Ene_Ser_Res_and_Com_Res_Slu_Con_rat	Energy Service|Residential and Commercial|Residential|Slum|Construction rate	%/yr
+Ene_Ser_Res_and_Com_Res_Slu_Flo_spa	Energy Service|Residential and Commercial|Residential|Slum|Floor space	bn m2/yr
+Ene_Ser_Res_and_Com_Res_Slu_Ren_cos	Energy Service|Residential and Commercial|Residential|Slum|Renovation cost	US$2010/m2
+Ene_Ser_Res_and_Com_Res_Slu_Ren_rat	Energy Service|Residential and Commercial|Residential|Slum|Renovation rate	%/yr
+Ene_Ser_Tra_Avi	Energy Service|Transportation|Aviation	bn vkm/yr
+Ene_Ser_Tra_Nav	Energy Service|Transportation|Navigation	bn vkm/yr
+Ene_Ser_Tra_Rai	Energy Service|Transportation|Rail	bn vkm/yr
+Ene_Ser_Tra_Roa	Energy Service|Transportation|Road	bn vkm/yr
+Eut_Mar	Eutrophication|Marine	Tg N-eq/yr
+Eut_Mar_Ele	Eutrophication|Marine|Electricity	Tg N-eq/yr
+Exp_hou_Ind	Expenditure|household|Industry	billion US$2010/yr
+Exp_hou_Ser_Tel	Expenditure|household|Services|Telecommunications	billion US$2010/yr
+Exp_hou_Ser_Wat_and_san	Expenditure|household|Services|Water & sanitation	billion US$2010/yr
+Exp_Ind	Export|Industry	billion US$2010/yr
+Exp_Ind_Ene	Export|Industry|Energy	billion US$2010/yr
+Exp_Ind_Ene_Int	Export|Industry|Energy Intensive	billion US$2010/yr
+Exp_Ind_Man	Export|Industry|Manufacturing	billion US$2010/yr
+Fer_use_Nit_Ino	Fertilizer use|Nitrogen|Inorganic	Tg N/yr
+Fer_use_Nit_Org	Fertilizer use|Nitrogen|Organic	Tg N/yr
+Fer_use_Pho_Ino	Fertilizer use|Phosphorous|Inorganic	Tg P/yr
+Fer_use_Pho_Org	Fertilizer use|Phosphorous|Organic	Tg P/yr
+Fer_use_Pot_Ino	Fertilizer use|Potassium|Inorganic	Tg K2O/yr
+Fer_use_Pot_Org	Fertilizer use|Potassium|Organic	Tg K2O/yr
+Fin_Ene_exc_fee_Ind	Final Energy (excl. feedstocks)|Industry	EJ/yr
+Fin_Ene_exc_fee_Ind_Ele	Final Energy (excl. feedstocks)|Industry|Electricity	EJ/yr
+Fin_Ene_exc_fee_Ind_Gas	Final Energy (excl. feedstocks)|Industry|Gases	EJ/yr
+Fin_Ene_exc_fee_Ind_Gas_BioEne	Final Energy (excl. feedstocks)|Industry|Gases|Bioenergy	EJ/yr
+Fin_Ene_exc_fee_Ind_Gas_Fos	Final Energy (excl. feedstocks)|Industry|Gases|Fossil	EJ/yr
+Fin_Ene_exc_fee_Ind_Gas_Hyd_syn	Final Energy (excl. feedstocks)|Industry|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_exc_fee_Ind_Heat	Final Energy (excl. feedstocks)|Industry|Heat	EJ/yr
+Fin_Ene_exc_fee_Ind_Hyd	Final Energy (excl. feedstocks)|Industry|Hydrogen	EJ/yr
+Fin_Ene_exc_fee_Ind_Liq	Final Energy (excl. feedstocks)|Industry|Liquids	EJ/yr
+Fin_Ene_exc_fee_Ind_Liq_BioEne	Final Energy (excl. feedstocks)|Industry|Liquids|Bioenergy	EJ/yr
+Fin_Ene_exc_fee_Ind_Liq_Fos	Final Energy (excl. feedstocks)|Industry|Liquids|Fossil	EJ/yr
+Fin_Ene_exc_fee_Ind_Liq_Hyd_syn	Final Energy (excl. feedstocks)|Industry|Liquids|Hydrogen synfuel	EJ/yr
+Fin_Ene_exc_fee_Ind_Oth	Final Energy (excl. feedstocks)|Industry|Other	EJ/yr
+Fin_Ene_exc_fee_Ind_Solids	Final Energy (excl. feedstocks)|Industry|Solids	EJ/yr
+Fin_Ene_exc_fee_Ind_SolidsBioEne	Final Energy (excl. feedstocks)|Industry|Solids|Bioenergy	EJ/yr
+Fin_Ene_exc_fee_Ind_SolidsFos	Final Energy (excl. feedstocks)|Industry|Solids|Fossil	EJ/yr
+Fin_Ene_Ind_Cem_Ele	Final Energy|Industry|Cement|Electricity	EJ/yr
+Fin_Ene_Ind_Cem_Gas	Final Energy|Industry|Cement|Gases	EJ/yr
+Fin_Ene_Ind_Cem_Gas_BioEne	Final Energy|Industry|Cement|Gases|Bioenergy	EJ/yr
+Fin_Ene_Ind_Cem_Gas_Fos	Final Energy|Industry|Cement|Gases|Fossil	EJ/yr
+Fin_Ene_Ind_Cem_Gas_Hyd_syn	Final Energy|Industry|Cement|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Cem_Heat	Final Energy|Industry|Cement|Heat	EJ/yr
+Fin_Ene_Ind_Cem_Hyd	Final Energy|Industry|Cement|Hydrogen	EJ/yr
+Fin_Ene_Ind_Cem_Liq	Final Energy|Industry|Cement|Liquids	EJ/yr
+Fin_Ene_Ind_Cem_Liq_BioEne	Final Energy|Industry|Cement|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Cem_Liq_Fos	Final Energy|Industry|Cement|Liquids|Fossil	EJ/yr
+Fin_Ene_Ind_Cem_Liq_Hyd_syn	Final Energy|Industry|Cement|Liquids|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Cem_Oth	Final Energy|Industry|Cement|Other	EJ/yr
+Fin_Ene_Ind_Cem_Solids	Final Energy|Industry|Cement|Solids	EJ/yr
+Fin_Ene_Ind_Cem_SolidsBioEne	Final Energy|Industry|Cement|Solids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Cem_SolidsFos	Final Energy|Industry|Cement|Solids|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Amm_Ele	Final Energy|Industry|Chemicals|Ammonia|Electricity	EJ/yr
+Fin_Ene_Ind_Che_Amm_Gas	Final Energy|Industry|Chemicals|Ammonia|Gases	EJ/yr
+Fin_Ene_Ind_Che_Amm_Gas_BioEne	Final Energy|Industry|Chemicals|Ammonia|Gases|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_Amm_Gas_Fos	Final Energy|Industry|Chemicals|Ammonia|Gases|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Amm_Gas_Hyd_syn	Final Energy|Industry|Chemicals|Ammonia|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Che_Amm_Heat	Final Energy|Industry|Chemicals|Ammonia|Heat	EJ/yr
+Fin_Ene_Ind_Che_Amm_Hyd	Final Energy|Industry|Chemicals|Ammonia|Hydrogen	EJ/yr
+Fin_Ene_Ind_Che_Amm_Liq	Final Energy|Industry|Chemicals|Ammonia|Liquids	EJ/yr
+Fin_Ene_Ind_Che_Amm_Liq_BioEne	Final Energy|Industry|Chemicals|Ammonia|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_Amm_Liq_Fos	Final Energy|Industry|Chemicals|Ammonia|Liquids|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Amm_Liq_Hyd_syn	Final Energy|Industry|Chemicals|Ammonia|Liquids|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Che_Amm_Oth	Final Energy|Industry|Chemicals|Ammonia|Other	EJ/yr
+Fin_Ene_Ind_Che_Amm_Solids	Final Energy|Industry|Chemicals|Ammonia|Solids	EJ/yr
+Fin_Ene_Ind_Che_Amm_SolidsBioEne	Final Energy|Industry|Chemicals|Ammonia|Solids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_Amm_SolidsFos	Final Energy|Industry|Chemicals|Ammonia|Solids|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Ele	Final Energy|Industry|Chemicals|Electricity	EJ/yr
+Fin_Ene_Ind_Che_Gas	Final Energy|Industry|Chemicals|Gases	EJ/yr
+Fin_Ene_Ind_Che_Gas_BioEne	Final Energy|Industry|Chemicals|Gases|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_Gas_Fos	Final Energy|Industry|Chemicals|Gases|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Gas_Hyd_syn	Final Energy|Industry|Chemicals|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Che_Heat	Final Energy|Industry|Chemicals|Heat	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_Ele	Final Energy|Industry|Chemicals|High value chemicals|Electricity	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_Gas	Final Energy|Industry|Chemicals|High value chemicals|Gases	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_Gas_BioEne	Final Energy|Industry|Chemicals|High value chemicals|Gases|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_Gas_Fos	Final Energy|Industry|Chemicals|High value chemicals|Gases|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_Gas_Hyd_syn	Final Energy|Industry|Chemicals|High value chemicals|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_Heat	Final Energy|Industry|Chemicals|High value chemicals|Heat	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_Hyd	Final Energy|Industry|Chemicals|High value chemicals|Hydrogen	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_Liq	Final Energy|Industry|Chemicals|High value chemicals|Liquids	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_Liq_BioEne	Final Energy|Industry|Chemicals|High value chemicals|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_Liq_Fos	Final Energy|Industry|Chemicals|High value chemicals|Liquids|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_Liq_Hyd_syn	Final Energy|Industry|Chemicals|High value chemicals|Liquids|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_Oth	Final Energy|Industry|Chemicals|High value chemicals|Other	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_Solids	Final Energy|Industry|Chemicals|High value chemicals|Solids	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_SolidsBioEne	Final Energy|Industry|Chemicals|High value chemicals|Solids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_Hig_val_che_SolidsFos	Final Energy|Industry|Chemicals|High value chemicals|Solids|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Hyd	Final Energy|Industry|Chemicals|Hydrogen	EJ/yr
+Fin_Ene_Ind_Che_Liq	Final Energy|Industry|Chemicals|Liquids	EJ/yr
+Fin_Ene_Ind_Che_Liq_BioEne	Final Energy|Industry|Chemicals|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_Liq_Fos	Final Energy|Industry|Chemicals|Liquids|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Liq_Hyd_syn	Final Energy|Industry|Chemicals|Liquids|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Che_Met_Ele	Final Energy|Industry|Chemicals|Methanol|Electricity	EJ/yr
+Fin_Ene_Ind_Che_Met_Gas	Final Energy|Industry|Chemicals|Methanol|Gases	EJ/yr
+Fin_Ene_Ind_Che_Met_Gas_BioEne	Final Energy|Industry|Chemicals|Methanol|Gases|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_Met_Gas_Fos	Final Energy|Industry|Chemicals|Methanol|Gases|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Met_Gas_Hyd_syn	Final Energy|Industry|Chemicals|Methanol|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Che_Met_Heat	Final Energy|Industry|Chemicals|Methanol|Heat	EJ/yr
+Fin_Ene_Ind_Che_Met_Hyd	Final Energy|Industry|Chemicals|Methanol|Hydrogen	EJ/yr
+Fin_Ene_Ind_Che_Met_Liq	Final Energy|Industry|Chemicals|Methanol|Liquids	EJ/yr
+Fin_Ene_Ind_Che_Met_Liq_BioEne	Final Energy|Industry|Chemicals|Methanol|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_Met_Liq_Fos	Final Energy|Industry|Chemicals|Methanol|Liquids|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Met_Liq_Hyd_syn	Final Energy|Industry|Chemicals|Methanol|Liquids|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Che_Met_Oth	Final Energy|Industry|Chemicals|Methanol|Other	EJ/yr
+Fin_Ene_Ind_Che_Met_Solids	Final Energy|Industry|Chemicals|Methanol|Solids	EJ/yr
+Fin_Ene_Ind_Che_Met_SolidsBioEne	Final Energy|Industry|Chemicals|Methanol|Solids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_Met_SolidsFos	Final Energy|Industry|Chemicals|Methanol|Solids|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Oth	Final Energy|Industry|Chemicals|Other	EJ/yr
+Fin_Ene_Ind_Che_Oth_Ele	Final Energy|Industry|Chemicals|Other|Electricity	EJ/yr
+Fin_Ene_Ind_Che_Oth_Gas	Final Energy|Industry|Chemicals|Other|Gases	EJ/yr
+Fin_Ene_Ind_Che_Oth_Gas_BioEne	Final Energy|Industry|Chemicals|Other|Gases|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_Oth_Gas_Fos	Final Energy|Industry|Chemicals|Other|Gases|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Oth_Gas_Hyd_syn	Final Energy|Industry|Chemicals|Other|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Che_Oth_Heat	Final Energy|Industry|Chemicals|Other|Heat	EJ/yr
+Fin_Ene_Ind_Che_Oth_Hyd	Final Energy|Industry|Chemicals|Other|Hydrogen	EJ/yr
+Fin_Ene_Ind_Che_Oth_Liq	Final Energy|Industry|Chemicals|Other|Liquids	EJ/yr
+Fin_Ene_Ind_Che_Oth_Liq_BioEne	Final Energy|Industry|Chemicals|Other|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_Oth_Liq_Fos	Final Energy|Industry|Chemicals|Other|Liquids|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Oth_Liq_Hyd_syn	Final Energy|Industry|Chemicals|Other|Liquids|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Che_Oth_Oth	Final Energy|Industry|Chemicals|Other|Other	EJ/yr
+Fin_Ene_Ind_Che_Oth_Solids	Final Energy|Industry|Chemicals|Other|Solids	EJ/yr
+Fin_Ene_Ind_Che_Oth_SolidsBioEne	Final Energy|Industry|Chemicals|Other|Solids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_Oth_SolidsFos	Final Energy|Industry|Chemicals|Other|Solids|Fossil	EJ/yr
+Fin_Ene_Ind_Che_Solids	Final Energy|Industry|Chemicals|Solids	EJ/yr
+Fin_Ene_Ind_Che_SolidsBioEne	Final Energy|Industry|Chemicals|Solids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Che_SolidsFos	Final Energy|Industry|Chemicals|Solids|Fossil	EJ/yr
+Fin_Ene_Ind_Gas_BioEne	Final Energy|Industry|Gases|Bioenergy	EJ/yr
+Fin_Ene_Ind_Gas_Fos	Final Energy|Industry|Gases|Fossil	EJ/yr
+Fin_Ene_Ind_Gas_Hyd_syn	Final Energy|Industry|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Liq_BioEne	Final Energy|Industry|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Liq_Fos	Final Energy|Industry|Liquids|Fossil	EJ/yr
+Fin_Ene_Ind_Liq_Hyd_syn	Final Energy|Industry|Liquids|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Non_met_Ele	Final Energy|Industry|Non-ferrous metals|Electricity	EJ/yr
+Fin_Ene_Ind_Non_met_Gas	Final Energy|Industry|Non-ferrous metals|Gases	EJ/yr
+Fin_Ene_Ind_Non_met_Gas_BioEne	Final Energy|Industry|Non-ferrous metals|Gases|Bioenergy	EJ/yr
+Fin_Ene_Ind_Non_met_Gas_Fos	Final Energy|Industry|Non-ferrous metals|Gases|Fossil	EJ/yr
+Fin_Ene_Ind_Non_met_Gas_Hyd_syn	Final Energy|Industry|Non-ferrous metals|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Non_met_Heat	Final Energy|Industry|Non-ferrous metals|Heat	EJ/yr
+Fin_Ene_Ind_Non_met_Hyd	Final Energy|Industry|Non-ferrous metals|Hydrogen	EJ/yr
+Fin_Ene_Ind_Non_met_Liq	Final Energy|Industry|Non-ferrous metals|Liquids	EJ/yr
+Fin_Ene_Ind_Non_met_Liq_BioEne	Final Energy|Industry|Non-ferrous metals|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Non_met_Liq_Fos	Final Energy|Industry|Non-ferrous metals|Liquids|Fossil	EJ/yr
+Fin_Ene_Ind_Non_met_Liq_Hyd_syn	Final Energy|Industry|Non-ferrous metals|Liquids|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Non_met_Oth	Final Energy|Industry|Non-ferrous metals|Other	EJ/yr
+Fin_Ene_Ind_Non_met_Solids	Final Energy|Industry|Non-ferrous metals|Solids	EJ/yr
+Fin_Ene_Ind_Non_met_SolidsBioEne	Final Energy|Industry|Non-ferrous metals|Solids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Non_met_SolidsFos	Final Energy|Industry|Non-ferrous metals|Solids|Fossil	EJ/yr
+Fin_Ene_Ind_Oth_Ele	Final Energy|Industry|Other|Electricity	EJ/yr
+Fin_Ene_Ind_Oth_Gas	Final Energy|Industry|Other|Gases	EJ/yr
+Fin_Ene_Ind_Oth_Gas_BioEne	Final Energy|Industry|Other|Gases|Bioenergy	EJ/yr
+Fin_Ene_Ind_Oth_Gas_Fos	Final Energy|Industry|Other|Gases|Fossil	EJ/yr
+Fin_Ene_Ind_Oth_Gas_Hyd_syn	Final Energy|Industry|Other|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Oth_Heat	Final Energy|Industry|Other|Heat	EJ/yr
+Fin_Ene_Ind_Oth_Hyd	Final Energy|Industry|Other|Hydrogen	EJ/yr
+Fin_Ene_Ind_Oth_Liq	Final Energy|Industry|Other|Liquids	EJ/yr
+Fin_Ene_Ind_Oth_Liq_BioEne	Final Energy|Industry|Other|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Oth_Liq_Fos	Final Energy|Industry|Other|Liquids|Fossil	EJ/yr
+Fin_Ene_Ind_Oth_Liq_Hyd_syn	Final Energy|Industry|Other|Liquids|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Oth_Oth	Final Energy|Industry|Other|Other	EJ/yr
+Fin_Ene_Ind_Oth_Solids	Final Energy|Industry|Other|Solids	EJ/yr
+Fin_Ene_Ind_Oth_SolidsBioEne	Final Energy|Industry|Other|Solids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Oth_SolidsFos	Final Energy|Industry|Other|Solids|Fossil	EJ/yr
+Fin_Ene_Ind_Pla_Ele	Final Energy|Industry|Plastics|Electricity	EJ/yr
+Fin_Ene_Ind_Pla_Gas	Final Energy|Industry|Plastics|Gases	EJ/yr
+Fin_Ene_Ind_Pla_Gas_BioEne	Final Energy|Industry|Plastics|Gases|Bioenergy	EJ/yr
+Fin_Ene_Ind_Pla_Gas_Fos	Final Energy|Industry|Plastics|Gases|Fossil	EJ/yr
+Fin_Ene_Ind_Pla_Gas_Hyd_syn	Final Energy|Industry|Plastics|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Pla_Heat	Final Energy|Industry|Plastics|Heat	EJ/yr
+Fin_Ene_Ind_Pla_Hyd	Final Energy|Industry|Plastics|Hydrogen	EJ/yr
+Fin_Ene_Ind_Pla_Liq	Final Energy|Industry|Plastics|Liquids	EJ/yr
+Fin_Ene_Ind_Pla_Liq_BioEne	Final Energy|Industry|Plastics|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Pla_Liq_Fos	Final Energy|Industry|Plastics|Liquids|Fossil	EJ/yr
+Fin_Ene_Ind_Pla_Liq_Hyd_syn	Final Energy|Industry|Plastics|Liquids|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Pla_Oth	Final Energy|Industry|Plastics|Other	EJ/yr
+Fin_Ene_Ind_Pla_Solids	Final Energy|Industry|Plastics|Solids	EJ/yr
+Fin_Ene_Ind_Pla_SolidsBioEne	Final Energy|Industry|Plastics|Solids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Pla_SolidsFos	Final Energy|Industry|Plastics|Solids|Fossil	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_Ele	Final Energy|Industry|Pulp and Paper|Electricity	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_Gas	Final Energy|Industry|Pulp and Paper|Gases	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_Gas_BioEne	Final Energy|Industry|Pulp and Paper|Gases|Bioenergy	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_Gas_Fos	Final Energy|Industry|Pulp and Paper|Gases|Fossil	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_Gas_Hyd_syn	Final Energy|Industry|Pulp and Paper|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_Heat	Final Energy|Industry|Pulp and Paper|Heat	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_Hyd	Final Energy|Industry|Pulp and Paper|Hydrogen	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_Liq	Final Energy|Industry|Pulp and Paper|Liquids	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_Liq_BioEne	Final Energy|Industry|Pulp and Paper|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_Liq_Fos	Final Energy|Industry|Pulp and Paper|Liquids|Fossil	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_Liq_Hyd_syn	Final Energy|Industry|Pulp and Paper|Liquids|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_Oth	Final Energy|Industry|Pulp and Paper|Other	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_Solids	Final Energy|Industry|Pulp and Paper|Solids	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_SolidsBioEne	Final Energy|Industry|Pulp and Paper|Solids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Pul_and_Pap_SolidsFos	Final Energy|Industry|Pulp and Paper|Solids|Fossil	EJ/yr
+Fin_Ene_Ind_Ste_Ele	Final Energy|Industry|Steel|Electricity	EJ/yr
+Fin_Ene_Ind_Ste_Gas	Final Energy|Industry|Steel|Gases	EJ/yr
+Fin_Ene_Ind_Ste_Gas_BioEne	Final Energy|Industry|Steel|Gases|Bioenergy	EJ/yr
+Fin_Ene_Ind_Ste_Gas_Fos	Final Energy|Industry|Steel|Gases|Fossil	EJ/yr
+Fin_Ene_Ind_Ste_Gas_Hyd_syn	Final Energy|Industry|Steel|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Ste_Heat	Final Energy|Industry|Steel|Heat	EJ/yr
+Fin_Ene_Ind_Ste_Hyd	Final Energy|Industry|Steel|Hydrogen	EJ/yr
+Fin_Ene_Ind_Ste_Liq	Final Energy|Industry|Steel|Liquids	EJ/yr
+Fin_Ene_Ind_Ste_Liq_BioEne	Final Energy|Industry|Steel|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Ste_Liq_Fos	Final Energy|Industry|Steel|Liquids|Fossil	EJ/yr
+Fin_Ene_Ind_Ste_Liq_Hyd_syn	Final Energy|Industry|Steel|Liquids|Hydrogen synfuel	EJ/yr
+Fin_Ene_Ind_Ste_Oth	Final Energy|Industry|Steel|Other	EJ/yr
+Fin_Ene_Ind_Ste_Solids	Final Energy|Industry|Steel|Solids	EJ/yr
+Fin_Ene_Ind_Ste_SolidsBioEne	Final Energy|Industry|Steel|Solids|Bioenergy	EJ/yr
+Fin_Ene_Ind_Ste_SolidsFos	Final Energy|Industry|Steel|Solids|Fossil	EJ/yr
+Fin_Ene_Res_and_Com_Com	Final Energy|Residential and Commercial|Commercial	EJ/yr
+Fin_Ene_Res_and_Com_Com_App	Final Energy|Residential and Commercial|Commercial|Appliances	EJ/yr
+Fin_Ene_Res_and_Com_Com_Col	Final Energy|Residential and Commercial|Commercial|Cooling	EJ/yr
+Fin_Ene_Res_and_Com_Com_Ele	Final Energy|Residential and Commercial|Commercial|Electricity	EJ/yr
+Fin_Ene_Res_and_Com_Com_Gas	Final Energy|Residential and Commercial|Commercial|Gases	EJ/yr
+Fin_Ene_Res_and_Com_Com_Heat	Final Energy|Residential and Commercial|Commercial|Heat	EJ/yr
+Fin_Ene_Res_and_Com_Com_Heating	Final Energy|Residential and Commercial|Commercial|Heating	EJ/yr
+Fin_Ene_Res_and_Com_Com_HeatingCok	Final Energy|Residential and Commercial|Commercial|Heating|Cooking	EJ/yr
+Fin_Ene_Res_and_Com_Com_HeatingSpa	Final Energy|Residential and Commercial|Commercial|Heating|Space	EJ/yr
+Fin_Ene_Res_and_Com_Com_HeatingWat	Final Energy|Residential and Commercial|Commercial|Heating|Water	EJ/yr
+Fin_Ene_Res_and_Com_Com_Hyd	Final Energy|Residential and Commercial|Commercial|Hydrogen	EJ/yr
+Fin_Ene_Res_and_Com_Com_Lig	Final Energy|Residential and Commercial|Commercial|Lighting	EJ/yr
+Fin_Ene_Res_and_Com_Com_Liq	Final Energy|Residential and Commercial|Commercial|Liquids	EJ/yr
+Fin_Ene_Res_and_Com_Com_Ofi_equ	Final Energy|Residential and Commercial|Commercial|Ofice equipment	EJ/yr
+Fin_Ene_Res_and_Com_Com_Oth	Final Energy|Residential and Commercial|Commercial|Other	EJ/yr
+Fin_Ene_Res_and_Com_Com_Solids	Final Energy|Residential and Commercial|Commercial|Solids	EJ/yr
+Fin_Ene_Res_and_Com_Com_SolidsBio	Final Energy|Residential and Commercial|Commercial|Solids|Biomass	EJ/yr
+Fin_Ene_Res_and_Com_Com_SolidsBio_Tra	Final Energy|Residential and Commercial|Commercial|Solids|Biomass|Traditional	EJ/yr
+Fin_Ene_Res_and_Com_Com_SolidsCoa	Final Energy|Residential and Commercial|Commercial|Solids|Coal	EJ/yr
+Fin_Ene_Res_and_Com_Com_Wat_Des	Final Energy|Residential and Commercial|Commercial|Water|Desalination	EJ/yr
+Fin_Ene_Res_and_Com_Com_Wat_Gro_Ext	Final Energy|Residential and Commercial|Commercial|Water|Groundwater Extraction	EJ/yr
+Fin_Ene_Res_and_Com_Com_Wat_Sur_Wat_Ext	Final Energy|Residential and Commercial|Commercial|Water|Surface Water Extraction	EJ/yr
+Fin_Ene_Res_and_Com_Com_Wat_Tra	Final Energy|Residential and Commercial|Commercial|Water|Transfer	EJ/yr
+Fin_Ene_Res_and_Com_Col	Final Energy|Residential and Commercial|Cooling	EJ/yr
+Fin_Ene_Res_and_Com_HeatingCok	Final Energy|Residential and Commercial|Heating|Cooking	EJ/yr
+Fin_Ene_Res_and_Com_HeatingSpa	Final Energy|Residential and Commercial|Heating|Space	EJ/yr
+Fin_Ene_Res_and_Com_HeatingWat	Final Energy|Residential and Commercial|Heating|Water	EJ/yr
+Fin_Ene_Res_and_Com_Ofi_equ	Final Energy|Residential and Commercial|Ofice equipment	EJ/yr
+Fin_Ene_Res_and_Com_Res	Final Energy|Residential and Commercial|Residential	EJ/yr
+Fin_Ene_Res_and_Com_Res_App	Final Energy|Residential and Commercial|Residential|Appliances	EJ/yr
+Fin_Ene_Res_and_Com_Res_Col	Final Energy|Residential and Commercial|Residential|Cooling	EJ/yr
+Fin_Ene_Res_and_Com_Res_Ele	Final Energy|Residential and Commercial|Residential|Electricity	EJ/yr
+Fin_Ene_Res_and_Com_Res_Gas	Final Energy|Residential and Commercial|Residential|Gases	EJ/yr
+Fin_Ene_Res_and_Com_Res_Heat	Final Energy|Residential and Commercial|Residential|Heat	EJ/yr
+Fin_Ene_Res_and_Com_Res_Heating	Final Energy|Residential and Commercial|Residential|Heating	EJ/yr
+Fin_Ene_Res_and_Com_Res_HeatingCok	Final Energy|Residential and Commercial|Residential|Heating|Cooking	EJ/yr
+Fin_Ene_Res_and_Com_Res_HeatingSpa	Final Energy|Residential and Commercial|Residential|Heating|Space	EJ/yr
+Fin_Ene_Res_and_Com_Res_HeatingWat	Final Energy|Residential and Commercial|Residential|Heating|Water	EJ/yr
+Fin_Ene_Res_and_Com_Res_Hyd	Final Energy|Residential and Commercial|Residential|Hydrogen	EJ/yr
+Fin_Ene_Res_and_Com_Res_Lig	Final Energy|Residential and Commercial|Residential|Lighting	EJ/yr
+Fin_Ene_Res_and_Com_Res_Liq	Final Energy|Residential and Commercial|Residential|Liquids	EJ/yr
+Fin_Ene_Res_and_Com_Res_Ofi_equ	Final Energy|Residential and Commercial|Residential|Ofice equipment	EJ/yr
+Fin_Ene_Res_and_Com_Res_Oth	Final Energy|Residential and Commercial|Residential|Other	EJ/yr
+Fin_Ene_Res_and_Com_Res_Solids	Final Energy|Residential and Commercial|Residential|Solids	EJ/yr
+Fin_Ene_Res_and_Com_Res_SolidsBio	Final Energy|Residential and Commercial|Residential|Solids|Biomass	EJ/yr
+Fin_Ene_Res_and_Com_Res_SolidsBio_Tra	Final Energy|Residential and Commercial|Residential|Solids|Biomass|Traditional	EJ/yr
+Fin_Ene_Res_and_Com_Res_SolidsCoa	Final Energy|Residential and Commercial|Residential|Solids|Coal	EJ/yr
+Fin_Ene_Tra_Avi_Fre	Final Energy|Transportation|Aviation|Freight	EJ/yr
+Fin_Ene_Tra_Avi_Pss	Final Energy|Transportation|Aviation|Passenger	EJ/yr
+Fin_Ene_Tra_Fre_Gas_BioEne	Final Energy|Transportation|Freight|Gases|Bioenergy	EJ/yr
+Fin_Ene_Tra_Fre_Gas_Fos	Final Energy|Transportation|Freight|Gases|Fossil	EJ/yr
+Fin_Ene_Tra_Fre_Liq_BioEne	Final Energy|Transportation|Freight|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Tra_Fre_Liq_Fos_syn	Final Energy|Transportation|Freight|Liquids|Fossil synfuel	EJ/yr
+Fin_Ene_Tra_Gas_BioEne	Final Energy|Transportation|Gases|Bioenergy	EJ/yr
+Fin_Ene_Tra_Gas_Fos	Final Energy|Transportation|Gases|Fossil	EJ/yr
+Fin_Ene_Tra_Liq_BioEne	Final Energy|Transportation|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Tra_Liq_Fos_syn	Final Energy|Transportation|Liquids|Fossil synfuel	EJ/yr
+Fin_Ene_Tra_Mar	Final Energy|Transportation|Maritime	EJ/yr
+Fin_Ene_Tra_Pss_Gas_BioEne	Final Energy|Transportation|Passenger|Gases|Bioenergy	EJ/yr
+Fin_Ene_Tra_Pss_Gas_Fos	Final Energy|Transportation|Passenger|Gases|Fossil	EJ/yr
+Fin_Ene_Tra_Pss_Liq_BioEne	Final Energy|Transportation|Passenger|Liquids|Bioenergy	EJ/yr
+Fin_Ene_Tra_Pss_Liq_Fos_syn	Final Energy|Transportation|Passenger|Liquids|Fossil synfuel	EJ/yr
+Fin_Ene_Tra_Rai_Fre	Final Energy|Transportation|Rail|Freight	EJ/yr
+Fin_Ene_Tra_Rai_Pss	Final Energy|Transportation|Rail|Passenger	EJ/yr
+Fin_Ene_Tra_Roa_Fre	Final Energy|Transportation|Road|Freight	EJ/yr
+Fin_Ene_Tra_Roa_Fre_Ele	Final Energy|Transportation|Road|Freight|Electric	EJ/yr
+Fin_Ene_Tra_Roa_Fre_FC	Final Energy|Transportation|Road|Freight|FC	EJ/yr
+Fin_Ene_Tra_Roa_Fre_ICE	Final Energy|Transportation|Road|Freight|ICE	EJ/yr
+Fin_Ene_Tra_Roa_Pss	Final Energy|Transportation|Road|Passenger	EJ/yr
+Fin_Ene_Tra_Roa_Pss_2Wa	Final Energy|Transportation|Road|Passenger|2W&3W	EJ/yr
+Fin_Ene_Tra_Roa_Pss_Bus	Final Energy|Transportation|Road|Passenger|Bus	EJ/yr
+Fin_Ene_Tra_Roa_Pss_LDV	Final Energy|Transportation|Road|Passenger|LDV	EJ/yr
+GIN	GINI	-
+Hum_Tox	Human Toxicity	Mt 1,4-DCB-eq
+Hum_Tox_Ele	Human Toxicity|Electricity	Mt 1,4-DCB-eq
+Imp_Ind	Import|Industry	billion US$2010/yr
+Imp_Ind_Ene	Import|Industry|Energy	billion US$2010/yr
+Imp_Ind_Ene_Int	Import|Industry|Energy Intensive	billion US$2010/yr
+Imp_Ind_Man	Import|Industry|Manufacturing	billion US$2010/yr
+Inc_LQ2	Income|LQ25	US$2010/capita
+Inc_Med	Income|Median	US$2010/capita
+Inv_Ene_Dem_Tra_Fre_Avi	Investment|Energy Demand|Transportation|Freight|Aviation	billion US$2010/yr
+Inv_Ene_Dem_Tra_Fre_Rai	Investment|Energy Demand|Transportation|Freight|Railways	billion US$2010/yr
+Inv_Ene_Dem_Tra_Pss_Avi	Investment|Energy Demand|Transportation|Passenger|Aviation	billion US$2010/yr
+Inv_Ene_Dem_Tra_Pss_Rai	Investment|Energy Demand|Transportation|Passenger|Railways	billion US$2010/yr
+Inv_Ene_Sup_Ext_BioEne	Investment|Energy Supply|Extraction|Bioenergy	billion US$2010/yr
+Inv_Ene_Sup_Hyd_Bio	Investment|Energy Supply|Hydrogen|Biomass	billion US$2010/yr
+Inv_Ene_Sup_Hyd_Ele	Investment|Energy Supply|Hydrogen|Electricity	billion US$2010/yr
+Inv_Inf_Ind_Gre	Investment|Infrastructure|Industry|Green	billion US$2010/yr
+Inv_Inf_Ind_Non	Investment|Infrastructure|Industry|Non-Green	billion US$2010/yr
+Inv_Inf_Tra_Avi	Investment|Infrastructure|Transportation|Aviation	billion US$2010/yr
+Inv_Inf_Tra_Mar	Investment|Infrastructure|Transportation|Maritime	billion US$2010/yr
+Inv_Inf_Tra_Rai	Investment|Infrastructure|Transportation|Rail	billion US$2010/yr
+Inv_Inf_Tra_Roa	Investment|Infrastructure|Transportation|Road	billion US$2010/yr
+Inv_Inf_Wat_Col	Investment|Infrastructure|Water|Cooling	billion US$2010/yr
+Lan_Cov_Cro_Ene_Cro_1st_gen	Land Cover|Cropland|Energy Crops|1st generation	million ha
+Lan_Cov_Cro_Ene_Cro_2nd_gen	Land Cover|Cropland|Energy Crops|2nd generation	million ha
+Lan_Cov_Frs_Sec	Land Cover|Forest|Secondary	million ha
+Mat_rec_Cem	Material recycling|Cement	Mt/year
+Mat_rec_Che	Material recycling|Chemicals	Mt/year
+Mat_rec_Che_Amm	Material recycling|Chemicals|Ammonia	Mt/year
+Mat_rec_Che_Hig_val_che	Material recycling|Chemicals|High value chemicals	Mt/year
+Mat_rec_Che_Met	Material recycling|Chemicals|Methanol	Mt/year
+Mat_rec_Che_Oth	Material recycling|Chemicals|Other	Mt/year
+Mat_rec_Non_met	Material recycling|Non-ferrous metals	Mt/year
+Mat_rec_Oth	Material recycling|Other	Mt/year
+Mat_rec_Pla	Material recycling|Plastics	Mt/year
+Mat_rec_Pul_and_Pap	Material recycling|Pulp and Paper	Mt/year
+Mat_rec_Ste	Material recycling|Steel	Mt/year
+Pol_Cos_GDP_Los_wo_tra	Policy Cost|GDP Loss|w/o transfers  	billion US$2010/yr
+Pop	Population	million
+Pop_Cle_coo_Acc	Population|Clean cooking Access	million
+Pop_Dem_rig	Population|Democratic rights	million
+Pop_Ele_Acc	Population|Electricity Access	million
+Pop_Ext_pov	Population|Extreme poverty	million
+Pop_Fem	Population|Female	million
+Pop_Fra	Population|Fragility	million
+Pop_Hea_Ser_Acc	Population|Health Services Access	million
+Pop_Hom	Population|Homeless	million
+Pop_Inf_set	Population|Informal settlements	million
+Pop_Mal	Population|Male	million
+Pop_Malnourishment	Population|Malnourishment	million
+Pop_Prm_edu	Population|Primary education	million
+Pop_Prm_rel	Population|Primary relationships	million
+Pop_Pub_tra_Acc	Population|Public transport Access	million
+Pop_Rel_pov	Population|Relative poverty	million
+Pop_Rel_on_Sol_Fue	Population|Relying on Solid Fuels	million
+Pop_Sec_edu	Population|Secondary education	million
+Pop_sub_acc	Population|substandard accommodation	million
+Pop_Ter_edu	Population|Tertiary education	million
+Pop_Urb_Sha	Population|Urban|Share	%
+Pre_Dea_PM2	Premature Deaths|PM2.5	million
+Prc_Agr_Liv_Ind	Price|Agriculture|Livestock|Index	Index (2010 = 1)
+Prc_Agr_Ric_Ind	Price|Agriculture|Rice|Index	Index (2010 = 1)
+Prc_Fin_Ene_Res_and_Com_Res_Ele	Price|Final Energy|Residential and Commercial|Residential|Electricity	US$2010/GJ
+Prc_Fin_Ene_Res_and_Com_Res_Gas_Nat_Gas	Price|Final Energy|Residential and Commercial|Residential|Gases|Natural Gas	US$2010/GJ
+Prc_Fin_Ene_Res_and_Com_Res_Liq_Bio	Price|Final Energy|Residential and Commercial|Residential|Liquids|Biomass	US$2010/GJ
+Prc_Fin_Ene_Res_and_Com_Res_Liq_Oil	Price|Final Energy|Residential and Commercial|Residential|Liquids|Oil	US$2010/GJ
+Prc_Fin_Ene_Res_and_Com_Res_SolidsBio	Price|Final Energy|Residential and Commercial|Residential|Solids|Biomass	US$2010/GJ
+Prc_Fin_Ene_Res_and_Com_Res_SolidsCoa	Price|Final Energy|Residential and Commercial|Residential|Solids|Coal	US$2010/GJ
+Prc_Fin_Ene_Tra_Ele	Price|Final Energy|Transportation|Electricity	US$2010/GJ
+Prc_Fin_Ene_Tra_Gas	Price|Final Energy|Transportation|Gases	US$2010/GJ
+Prc_Fin_Ene_Tra_Gas_BioEne	Price|Final Energy|Transportation|Gases|Bioenergy	US$2010/GJ
+Prc_Fin_Ene_Tra_Gas_Fos	Price|Final Energy|Transportation|Gases|Fossil	US$2010/GJ
+Prc_Fin_Ene_Tra_Hyd	Price|Final Energy|Transportation|Hydrogen	US$2010/GJ
+Prc_Fin_Ene_Tra_Liq	Price|Final Energy|Transportation|Liquids	US$2010/GJ
+Prc_Fin_Ene_Tra_Liq_BioEne	Price|Final Energy|Transportation|Liquids|Bioenergy	US$2010/GJ
+Prc_Fin_Ene_Tra_Liq_Fos	Price|Final Energy|Transportation|Liquids|Fossil	US$2010/GJ
+Prc_Fin_Ene_Tra_Liq_Hyd_syn	Price|Final Energy|Transportation|Liquids|Hydrogen synfuel	US$2010/GJ
+Prc_Ind_Cem	Price|Industry|Cement	US$2010/Mt
+Prc_Ind_Che	Price|Industry|Chemicals	US$2010/Mt
+Prc_Ind_Che_Amm	Price|Industry|Chemicals|Ammonia	US$2010/Mt
+Prc_Ind_Che_Hig_val_che	Price|Industry|Chemicals|High value chemicals	US$2010/Mt
+Prc_Ind_Che_Met	Price|Industry|Chemicals|Methanol	US$2010/Mt
+Prc_Ind_Che_Oth	Price|Industry|Chemicals|Other	US$2010/Mt
+Prc_Ind_Non_met	Price|Industry|Non-ferrous metals	US$2010/Mt
+Prc_Ind_Oth	Price|Industry|Other	US$2010/Mt
+Prc_Ind_Pla	Price|Industry|Plastics	US$2010/Mt
+Prc_Ind_Pul_and_Pap	Price|Industry|Pulp and Paper	US$2010/Mt
+Prc_Ind_Ste	Price|Industry|Steel	US$2010/Mt
+Prm_Ene_Coa_Hyd	Primary Energy|Coal|Hydrogen	EJ/yr
+Prm_Ene_Coa_Solids	Primary Energy|Coal|Solids	EJ/yr
+Prm_Ene_Gas_Gas	Primary Energy|Gas|Gases	EJ/yr
+Prm_Ene_Gas_Hyd	Primary Energy|Gas|Hydrogen	EJ/yr
+Prm_Ene_Gas_Solids	Primary Energy|Gas|Solids	EJ/yr
+Prm_Ene_NonBioRenGeo	Primary Energy|Non-Biomass Renewables|Geothermal	EJ/yr
+Prm_Ene_NonBioRenHyd	Primary Energy|Non-Biomass Renewables|Hydro	EJ/yr
+Prm_Ene_NonBioRenOce	Primary Energy|Non-Biomass Renewables|Ocean	EJ/yr
+Prm_Ene_NonBioRenSolar	Primary Energy|Non-Biomass Renewables|Solar	EJ/yr
+Prm_Ene_NonBioRenWin	Primary Energy|Non-Biomass Renewables|Wind	EJ/yr
+Prm_Ene_Oil_Gas	Primary Energy|Oil|Gases	EJ/yr
+Prm_Ene_Oil_Hyd	Primary Energy|Oil|Hydrogen	EJ/yr
+Prm_Ene_Oil_Liq	Primary Energy|Oil|Liquids	EJ/yr
+Prm_Ene_Oil_Solids	Primary Energy|Oil|Solids	EJ/yr
+Pro_Che_Oth	Production|Chemicals|Other	Mt/year
+Res_Ext_Coa	Resource|Extraction|Coal	EJ/yr
+Res_Ext_Fos	Resource|Extraction|Fossil	EJ/yr
+Res_Ext_Gas	Resource|Extraction|Gas	EJ/yr
+Res_Ext_Min	Resource|Extraction|Mineral	EJ/yr
+Res_Ext_Oil	Resource|Extraction|Oil	EJ/yr
+Res_Use_Min	Resource|Use|Mineral	Mt Fe-eq
+Res_Use_Min_Ele	Resource|Use|Mineral|Electricity	Mt Fe-eq
+Spe_Ene_Cns_Pro_Cem	Specific Energy Consumption|Production|Cement	MJ/t
+Spe_Ene_Cns_Pro_Che	Specific Energy Consumption|Production|Chemicals	MJ/t
+Spe_Ene_Cns_Pro_Che_Amm	Specific Energy Consumption|Production|Chemicals|Ammonia	MJ/t
+Spe_Ene_Cns_Pro_Che_Hig_val_che	Specific Energy Consumption|Production|Chemicals|High value chemicals	MJ/t
+Spe_Ene_Cns_Pro_Che_Met	Specific Energy Consumption|Production|Chemicals|Methanol	MJ/t
+Spe_Ene_Cns_Pro_Che_Oth	Specific Energy Consumption|Production|Chemicals|Other	MJ/t
+Spe_Ene_Cns_Pro_Non_met	Specific Energy Consumption|Production|Non-ferrous metals	MJ/t
+Spe_Ene_Cns_Pro_Oth	Specific Energy Consumption|Production|Other	MJ/t
+Spe_Ene_Cns_Pro_Pla	Specific Energy Consumption|Production|Plastics	MJ/t
+Spe_Ene_Cns_Pro_Pul_and_Pap	Specific Energy Consumption|Production|Pulp and Paper	MJ/t
+Spe_Ene_Cns_Pro_Ste	Specific Energy Consumption|Production|Steel	MJ/t
+Tra_Sto_Avi	Transport|Stock|Aviation	million vehicles
+Tra_Sto_Avi_Fre	Transport|Stock|Aviation|Freight	million vehicles
+Tra_Sto_Avi_Pss	Transport|Stock|Aviation|Passenger	million vehicles
+Tra_Sto_Mar	Transport|Stock|Maritime	million vehicles
+Tra_Sto_Mar_Fre	Transport|Stock|Maritime|Freight	million vehicles
+Tra_Sto_Rai	Transport|Stock|Rail	million vehicles
+Tra_Sto_Rai_Fre	Transport|Stock|Rail|Freight	million vehicles
+Tra_Sto_Rai_Pss	Transport|Stock|Rail|Passenger	million vehicles
+Tra_Sto_Roa	Transport|Stock|Road	million vehicles
+Tra_Sto_Roa_Fre	Transport|Stock|Road|Freight	million vehicles
+Tra_Sto_Roa_Pss	Transport|Stock|Road|Passenger	million vehicles
+Tra_Sto_Roa_Pss_2Wa	Transport|Stock|Road|Passenger|2W&3W	million vehicles
+Tra_Sto_Roa_Pss_Bus	Transport|Stock|Road|Passenger|Bus	million vehicles
+Tra_Sto_Roa_Pss_LDV	Transport|Stock|Road|Passenger|LDV	million vehicles
+Tru_In_oth	Trust|In others	%
+Tru_In_pol	Trust|In politicians	%
+Val_Add_Ind	Value Added|Industry	billion US$2010/yr
+Val_Add_Ind_Ene	Value Added|Industry|Energy	billion US$2010/yr
+Val_Add_Ind_Ene_Int	Value Added|Industry|Energy Intensive	billion US$2010/yr
+Val_Add_Ind_Man	Value Added|Industry|Manufacturing	billion US$2010/yr
+Val_Add_Ind_Sha_of_ene_cos	Value Added|Industry|Share of energy costs	%
+Val_Add_Res_and_Com_Com	Value Added|Residential and Commercial|Commercial	billion US$2010/yr
+Wat_Cns_Ele_wo_Hyd	Water Consumption|Electricity w/o Hydro	km3/yr
+Wat_Cns_Ele_Col_Pon	Water Consumption|Electricity|Cooling Pond	km3/yr
+Wat_Cns_Ele_Dry_Col	Water Consumption|Electricity|Dry Cooling	km3/yr
+Wat_Cns_Ele_Sea_Col	Water Consumption|Electricity|Sea Cooling	km3/yr
+Wat_The_Pol_Ele_Sea_Col	Water Thermal Pollution|Electricity|Sea Cooling	EJ/yr
+Wat_Wit_Ele_Col_Pon	Water Withdrawal|Electricity|Cooling Pond	km3/yr
+Wat_Wit_Ele_Dry_Col	Water Withdrawal|Electricity|Dry Cooling	km3/yr
+Wat_Wit_Ele_Sea_Col	Water Withdrawal|Electricity|Sea Cooling	km3/yr
+Yie_BioEne2nd_gen	Yield|Bioenergy|2nd generation	t DM/ha/yr
