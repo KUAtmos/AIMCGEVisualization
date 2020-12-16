@@ -72,6 +72,8 @@ file.copy(paste0("../../anls_output/iiasa_database/gdx/",filename,"_emf.gdx"), p
 file.copy(paste0("../../AIMCGE/individual/AIMEnduseG2CGE/data/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG.gdx"),overwrite = TRUE)
 
 linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
+linepalette <- c("Baseline"="#4DAF4A","GlobalOptimalZero"="#FF7F00","NDC+Zero"="#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
+
 landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
 scenariomap <- read.table("../data/scenariomap.map", sep="\t",header=T, stringsAsFactors=F)
 scenariomap2 <- read.table("../data/scenariomap2.map", sep="\t",header=T, stringsAsFactors=F)
@@ -95,7 +97,7 @@ CGEload1 <- CGEload0 %>% rename("Value"=EMFtemp1,"Variable"=VEMF) %>%
   select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name")
 
 #Enduse loading
-enduseflag <- 1
+enduseflag <- 0
 if(enduseflag==1){
 #  EnduseJload0 <- rgdx.param(paste0('../modeloutput/AIMEnduseG.gdx'),'EMFtemp1') %>% rename("SCENARIO"=i1,"Region"=i2,"Variable"=i3,"Y"=i4,"Value"=value) %>% mutate(Model="AIM/Enduse[Japan]")
 #  EnduseJload1 <- EnduseJload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
@@ -113,7 +115,11 @@ IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
 IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
 
 #allmodel0 <- rbind(CGEload1,EnduseGload1,EnduseJload1)  
-allmodel0 <- rbind(CGEload1,EnduseGload1)  
+if(enduseflag==1){
+  allmodel0 <- rbind(CGEload1,EnduseGload1)  
+}else{
+  allmodel0 <- rbind(CGEload1)  
+}
 allmodel0$Y <- as.numeric(levels(allmodel0$Y))[allmodel0$Y]
 
 allmodel <- rbind(allmodel0,IEAEB1)  

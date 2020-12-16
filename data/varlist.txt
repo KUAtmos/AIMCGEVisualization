@@ -135,3 +135,6 @@ Sec_Ene_Ele_Heat_Win
 Fin_Ene_Ele_Heat
 Fin_Ene_Ind_Ele_Heat
 Fin_Ene_Res_and_Com_Ele_Heat
+Tem_Glo_Mea
+Emi_CH4
+Emi_N2O
