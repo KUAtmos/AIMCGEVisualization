@@ -68,7 +68,7 @@ outputdir <- c("../output/")
 #filename <- c("CHN")
 filename <- c("global_17")
 #file.copy(paste0("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/",filename,"_emf.gdx"), paste0("../modeloutput/",filename,"_emf.gdx"),overwrite = TRUE)
-file.copy(paste0("../../anls_output/iiasa_database/gdx/",filename,"_emf.gdx"), paste0("../modeloutput/",filename,"_emf.gdx"),overwrite = TRUE)
+file.copy(paste0("../../anls_output/iiasa_database/gdx/",filename,"_IAMC.gdx"), paste0("../modeloutput/",filename,"_emf.gdx"),overwrite = TRUE)
 file.copy(paste0("../../AIMCGE/individual/AIMEnduseG2CGE/data/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG.gdx"),overwrite = TRUE)
 
 linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
@@ -87,10 +87,10 @@ areamap <- read.table("../data/Areafigureorder.txt", sep="\t",header=T, stringsA
 areamappara <- read.table("../data/Area.map", sep="\t",header=T, stringsAsFactors=F)
 
 #---IAMC tempalte loading and data merge
-CGEload0 <- rgdx.param(paste0('../modeloutput/',filename,"_emf.gdx"),'EMFtemp1') 
+CGEload0 <- rgdx.param(paste0('../modeloutput/',filename,"_emf.gdx"),'IAMC_Template') 
 Getregion <- as.vector(unique(CGEload0$REMF))
 if(length(Getregion)==1){region <- Getregion}
-CGEload1 <- CGEload0 %>% rename("Value"=EMFtemp1,"Variable"=VEMF) %>% 
+CGEload1 <- CGEload0 %>% rename("Value"=IAMC_template,"Variable"=VEMF) %>% 
   left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1]) & REMF %in% region) %>% 
   select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name")
 
