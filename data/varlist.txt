@@ -1,140 +1,145 @@
-Fin_Ene
-Fin_Ene_Ele
-Fin_Ene_Gas
-Fin_Ene_Ind
-Fin_Ene_Ind_Ele
-Fin_Ene_Ind_Ele_Heat
-Fin_Ene_Ind_Gas
-Fin_Ene_Ind_Liq
-Fin_Ene_Ind_Solids
-Fin_Ene_Ind_SolidsBio
-Fin_Ene_Ind_SolidsCoa
-Fin_Ene_Liq
-Fin_Ene_NonEneUse
-Fin_Ene_NonEneUse_Coa
-Fin_Ene_NonEneUse_Gas
-Fin_Ene_NonEneUse_Oil
-Fin_Ene_Res_and_Com
-Fin_Ene_Res_and_Com_Ele
-Fin_Ene_Res_and_Com_Gas
-Fin_Ene_Res_and_Com_Liq_Oil
-Fin_Ene_Res_and_Com_Solids
-Fin_Ene_Res_and_Com_SolidsBio
-Fin_Ene_Res_and_Com_SolidsBio_Tra
-Fin_Ene_Res_and_Com_SolidsCoa
-Fin_Ene_Res
-Fin_Ene_Res_Ele
-Fin_Ene_Res_Ele_Heat
-Fin_Ene_Res_Gas
-Fin_Ene_Res_Liq
-Fin_Ene_Res_Solids
-Fin_Ene_Res_SolidsBio
-Fin_Ene_Res_SolidsCoa
-Fin_Ene_Com
-Fin_Ene_Com_Ele
-Fin_Ene_Com_Gas
-Fin_Ene_Com_Liq
-Fin_Ene_Com_Solids
-Fin_Ene_Com_SolidsBio
-Fin_Ene_Com_SolidsCoa
-Fin_Ene_Com_Ele_Heat
-Fin_Ene_Solids
-Fin_Ene_SolidsBio
-Fin_Ene_SolidsBio_Tra
-Fin_Ene_SolidsCoa
-Fin_Ene_Tra
-Fin_Ene_Tra_Ele
-Fin_Ene_Tra_Liq
-Fin_Ene_Tra_Liq_Bio
-Fin_Ene_Tra_Liq_Oil
-GDP_MER
-POP
-Sec_Ene
-Sec_Ene_Ele
-Sec_Ene_Ele_Bio
-Sec_Ene_Ele_Bio_wo_CCS
-Sec_Ene_Ele_Coa
-Sec_Ene_Ele_Coa_wo_CCS
-Sec_Ene_Ele_Fos
-Sec_Ene_Ele_Fos_wo_CCS
-Sec_Ene_Ele_Gas
-Sec_Ene_Ele_Gas_wo_CCS
-Sec_Ene_Ele_Geo
-Sec_Ene_Ele_Hyd
-Sec_Ene_Ele_NonBioRen
-Sec_Ene_Ele_Nuc
-Sec_Ene_Ele_Oil
-Sec_Ene_Ele_Oil_wo_CCS
-Sec_Ene_Ele_Solar
-Sec_Ene_Ele_SolarPV
-Sec_Ene_Ele_Win
-Sec_Ene_Ele_Win_Ons
-Sec_Ene_Gas
-Sec_Ene_Gas_Nat_Gas
-Sec_Ene_Liq
-Sec_Ene_Liq_Bio
-Sec_Ene_Liq_Bio_wo_CCS
-Sec_Ene_Liq_Coa
-Sec_Ene_Liq_Coa_wo_CCS
-Sec_Ene_Liq_Fos
-Sec_Ene_Liq_Fos_wo_CCS
-Sec_Ene_Liq_Gas
-Sec_Ene_Liq_Gas_wo_CCS
-Sec_Ene_Liq_Oil
-Sec_Ene_Solids
-Sec_Ene_SolidsBio
-Sec_Ene_SolidsCoa
-Sec_Ene_Hyd_Bio
-Sec_Ene_Hyd_Coa
-Sec_Ene_Hyd_Gas
-Fin_Ene_Hyd
-Emi_CO2_Ene_and_Ind_Pro
-Emi_CO2
-Emi_CO2_AFO
-Emi_F_G
-Frc
-Emi_Kyo_Gas
-Prc_Car
-Pol_Cos_GDP_Los_rat
-Pop_Ris_of_Hun
-Prm_Ene
-Prm_Ene_Bio
-Prm_Ene_Coa
-Prm_Ene_Gas
-Prm_Ene_Nuc
-Prm_Ene_Oil
-Prm_Ene_Bio_w_CCS
-Prm_Ene_Bio_wo_CCS
-Prm_Ene_Coa_w_CCS
-Prm_Ene_Coa_wo_CCS
-Prm_Ene_Gas_w_CCS
-Prm_Ene_Gas_wo_CCS
-Prm_Ene_Geo
-Prm_Ene_Hyd
-Prm_Ene_Oil_w_CCS
-Prm_Ene_Oil_wo_CCS
-Prm_Ene_Solar
-Prm_Ene_Win
-Agr_Dem
-Agr_Dem_Bio
-Foo_Ene_Sup_Per_Cap
-Yie_Cer
-Agr_Yie_Ene_Cro
-Prc_Prm_Ene_Oil
-Prc_Prm_Ene_Gas
-Prc_Prm_Ene_Coa
-Prc_Sec_Ene_Ele
-Sec_Ene_Ele_Heat
-Sec_Ene_Ele_Heat_Bio
-Sec_Ene_Ele_Heat_Coa
-Sec_Ene_Ele_Heat_Gas
-Sec_Ene_Ele_Heat_Geo
-Sec_Ene_Ele_Heat_Oil
-Sec_Ene_Ele_Heat_Solar
-Sec_Ene_Ele_Heat_Win
-Fin_Ene_Ele_Heat
-Fin_Ene_Ind_Ele_Heat
-Fin_Ene_Res_and_Com_Ele_Heat
-Tem_Glo_Mea
-Emi_CH4
-Emi_N2O
+Pol_Cos_Cns_Los_rat	1
+Fin_Ene	1
+Fin_Ene_Ele	1
+Fin_Ene_Gas	1
+Fin_Ene_Ind	1
+Fin_Ene_Ind_Ele	2
+Fin_Ene_Ind_Ele_Heat	2
+Fin_Ene_Ind_Gas	2
+Fin_Ene_Ind_Liq	2
+Fin_Ene_Ind_Solids	2
+Fin_Ene_Ind_SolidsBio	2
+Fin_Ene_Ind_SolidsCoa	2
+Fin_Ene_Liq	1
+Fin_Ene_NonEneUse	2
+Fin_Ene_NonEneUse_Coa	2
+Fin_Ene_NonEneUse_Gas	2
+Fin_Ene_NonEneUse_Oil	2
+Fin_Ene_Res_and_Com	1
+Fin_Ene_Res_and_Com_Ele	2
+Fin_Ene_Res_and_Com_Gas	2
+Fin_Ene_Res_and_Com_Liq_Oil	2
+Fin_Ene_Res_and_Com_Solids	2
+Fin_Ene_Res_and_Com_SolidsBio	2
+Fin_Ene_Res_and_Com_SolidsBio_Tra	2
+Fin_Ene_Res_and_Com_SolidsCoa	2
+Fin_Ene_Res	1
+Fin_Ene_Res_Ele	2
+Fin_Ene_Res_Ele_Heat	2
+Fin_Ene_Res_Gas	2
+Fin_Ene_Res_Liq	2
+Fin_Ene_Res_Solids	2
+Fin_Ene_Res_SolidsBio	2
+Fin_Ene_Res_SolidsCoa	2
+Fin_Ene_Com	1
+Fin_Ene_Com_Ele	2
+Fin_Ene_Com_Gas	2
+Fin_Ene_Com_Liq	2
+Fin_Ene_Com_Solids	2
+Fin_Ene_Com_SolidsBio	2
+Fin_Ene_Com_SolidsCoa	2
+Fin_Ene_Com_Ele_Heat	2
+Fin_Ene_Solids	1
+Fin_Ene_SolidsBio	1
+Fin_Ene_SolidsBio_Tra	2
+Fin_Ene_SolidsCoa	1
+Fin_Ene_Tra	1
+Fin_Ene_Tra_Ele	2
+Fin_Ene_Tra_Liq	2
+Fin_Ene_Tra_Liq_Bio	2
+Fin_Ene_Tra_Liq_Oil	2
+GDP_MER	1
+POP	1
+Tem_Glo_Mea	1
+Sec_Ene	1
+Sec_Ene_Ele	1
+Sec_Ene_Ele_Bio	2
+Sec_Ene_Ele_Bio_wo_CCS	2
+Sec_Ene_Ele_Coa	2
+Sec_Ene_Ele_Coa_wo_CCS	2
+Sec_Ene_Ele_Fos	2
+Sec_Ene_Ele_Fos_wo_CCS	2
+Sec_Ene_Ele_Gas	2
+Sec_Ene_Ele_Gas_wo_CCS	2
+Sec_Ene_Ele_Geo	2
+Sec_Ene_Ele_Hyd	2
+Sec_Ene_Ele_NonBioRen	2
+Sec_Ene_Ele_Nuc	2
+Sec_Ene_Ele_Oil	2
+Sec_Ene_Ele_Oil_wo_CCS	2
+Sec_Ene_Ele_Solar	2
+Sec_Ene_Ele_SolarPV	2
+Sec_Ene_Ele_Win	2
+Sec_Ene_Ele_Win_Ons	2
+Sec_Ene_Gas	1
+Sec_Ene_Gas_Nat_Gas	2
+Sec_Ene_Liq	1
+Sec_Ene_Liq_Bio	1
+Sec_Ene_Liq_Bio_wo_CCS	2
+Sec_Ene_Liq_Coa	2
+Sec_Ene_Liq_Coa_wo_CCS	2
+Sec_Ene_Liq_Fos	2
+Sec_Ene_Liq_Fos_wo_CCS	2
+Sec_Ene_Liq_Gas	2
+Sec_Ene_Liq_Gas_wo_CCS	2
+Sec_Ene_Liq_Oil	1
+Sec_Ene_Solids	1
+Sec_Ene_SolidsBio	1
+Sec_Ene_SolidsCoa	1
+Sec_Ene_Hyd_Bio	2
+Sec_Ene_Hyd_Coa	2
+Sec_Ene_Hyd_Gas	2
+Fin_Ene_Hyd	1
+Emi_CO2_Ene_and_Ind_Pro	1
+Emi_CO2	1
+Emi_CO2_AFO	1
+Emi_F_G	1
+Frc	1
+Emi_Kyo_Gas	1
+Prc_Car	1
+Pol_Cos_GDP_Los_rat	1
+Pop_Ris_of_Hun	1
+Prm_Ene	1
+Prm_Ene_Bio	1
+Prm_Ene_Coa	1
+Prm_Ene_Gas	1
+Prm_Ene_Nuc	1
+Prm_Ene_Oil	1
+Prm_Ene_Bio_w_CCS	1
+Prm_Ene_Bio_wo_CCS	1
+Prm_Ene_Coa_w_CCS	1
+Prm_Ene_Coa_wo_CCS	1
+Prm_Ene_Gas_w_CCS	1
+Prm_Ene_Gas_wo_CCS	1
+Prm_Ene_Geo	1
+Prm_Ene_Hyd	1
+Prm_Ene_Oil_w_CCS	1
+Prm_Ene_Oil_wo_CCS	1
+Prm_Ene_Solar	1
+Prm_Ene_Win	1
+Agr_Dem	1
+Agr_Dem_Bio	1
+Foo_Ene_Sup_Per_Cap	1
+Yie_Cer	1
+Agr_Yie_Ene_Cro	1
+Prc_Prm_Ene_Oil	1
+Prc_Prm_Ene_Gas	1
+Prc_Prm_Ene_Coa	1
+Prc_Sec_Ene_Ele	1
+Sec_Ene_Ele_Heat	2
+Sec_Ene_Ele_Heat_Bio	2
+Sec_Ene_Ele_Heat_Coa	2
+Sec_Ene_Ele_Heat_Gas	2
+Sec_Ene_Ele_Heat_Geo	2
+Sec_Ene_Ele_Heat_Oil	2
+Sec_Ene_Ele_Heat_Solar	2
+Sec_Ene_Ele_Heat_Win	2
+Fin_Ene_Ele_Heat	1
+Fin_Ene_Ind_Ele_Heat	2
+Fin_Ene_Res_and_Com_Ele_Heat	2
+Tem_Glo_Mea	1
+Emi_CH4	1
+Emi_N2O	1
+Emi_VOC	1
+Emi_NH3	1
+Emi_NOx	1

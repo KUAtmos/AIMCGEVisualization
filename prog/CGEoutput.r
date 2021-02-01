@@ -144,19 +144,20 @@ plot.1 <- function(XX){
 
 #---IAMC tempalte loading and data mergeEnd
 #region <- c("World")
-for(rr in region){
-  dir.create(paste0("../output/",rr))
-  dir.create(paste0("../output/",rr,"/png"))
-  dir.create(paste0("../output/",rr,"/ppt"))
-
 nalist <- c(as.vector(varlist$V1),"TPES","POWER","Power_heat","Landuse","TFC_fuel","TFC_Sector","TFC_Ind","TFC_Tra","TFC_Res","TFC_Com")
 allplot <- as.list(nalist)
 plotflag <- as.list(nalist)
 names(allplot) <- nalist
 names(plotflag) <- nalist
 
-maxy <- max(allmodel$Y)
 
+for(rr in region){
+  dir.create(paste0("../output/",rr))
+  dir.create(paste0("../output/",rr,"/png"))
+  dir.create(paste0("../output/",rr,"/pngdet"))
+  dir.create(paste0("../output/",rr,"/ppt"))
+  maxy <- max(allmodel$Y)
+  
 #---Line figures
 for (i in 1:nrow(varlist)){
   if(nrow(filter(allmodel,Variable==varlist[i,1] & Region==rr))>0){
@@ -165,14 +166,18 @@ for (i in 1:nrow(varlist)){
       geom_line(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),group=interaction(SCENARIO,Model)),stat="identity") +
       geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),shape=Model),size=3.0,fill="white") +
       MyThemeLine + scale_color_manual(values=linepalette) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
-      xlab("year") + ylab(varlist[i,3])  +  ggtitle(paste(rr,varlist[i,2],sep=" ")) +
+      xlab("year") + ylab(varlist[i,4])  +  ggtitle(paste(rr,varlist[i,3],sep=" ")) +
       annotate("segment",x=2005,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
       theme(legend.title=element_blank()) 
     if(length(scenariomap$SCENARIO)<20){
       plot.0 <- plot.0 +
       geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model=="Reference"& Region==rr),aes(x=Y, y = Value) , color="black",shape=6,size=2.0,fill="grey") 
     }
-    outname <- paste0(outputdir,rr,"/png/",varlist[i,1],".png")
+    if(varlist[i,2]==1){
+      outname <- paste0(outputdir,rr,"/png/",varlist[i,1],".png")
+    }else{
+      outname <- paste0(outputdir,rr,"/pngdet/",varlist[i,1],".png")
+    }
     ggsave(plot.0, file=outname, dpi = 150, width=10, height=6,limitsize=FALSE)
     allplot[[nalist[i]]] <- plot.0
   }
@@ -184,7 +189,8 @@ for(j in 1:nrow(areamappara)){
   XX <- allmodel %>% filter(Variable %in% as.vector(areamap$Variable)) %>% left_join(areamap,by="Variable") %>% ungroup() %>% 
     filter(Class==areamappara[j,1] & Model!="Reference"& Region==rr) %>% select(Model,SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
   XX2 <- allmodel %>% filter(Variable %in% as.vector(areamap$Variable)) %>% left_join(areamap,by="Variable") %>% ungroup() %>% 
-    filter(Class==areamappara[j,1] & Model=="Reference"& Region==rr) %>% select(-SCENARIO,-Model,Ind,Y,Value,order)  %>% arrange(order)
+    filter(Class==areamappara[j,1] & Model=="Reference"& Region==rr) %>% select(-SCENARIO,-Model,Ind,Y,Value,order)  %>% arrange(order)%>%
+    filter(Y>=2015)
   miny <- min(XX$Y,XX2$Y) 
   na.omit(XX$Value)
   unit_name <-areamappara[j,3]
@@ -202,7 +208,7 @@ for(j in 1:nrow(areamappara)){
 #The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
 #If you really needs ppt slide, you first ouptput png and then paste it.
 pptlist <- c("Fin_Ene","Fin_Ene_Ele_Heat","Fin_Ene_Gas","Fin_Ene_Liq","Fin_Ene_Solids","Fin_Ene_Res","Fin_Ene_Com","Fin_Ene_Tra","Fin_Ene_Ind","Emi_CO2_Ene_and_Ind_Pro","Pol_Cos_GDP_Los_rat","Prc_Car","TPES","Power_heat")
-r2ppt <- 1
+r2ppt <- 0
 if (r2ppt==1){
   myPPT<-PPT.Init(method="RDCOMClient")
   for (i in pptlist){
