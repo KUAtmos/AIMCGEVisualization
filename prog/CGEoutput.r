@@ -204,29 +204,8 @@ for(j in 1:nrow(areamappara)){
   plotflag[[areamappara$Class[j]]] <- nrow(XX)  
 }
 
-#----r2ppt
-#The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
-#If you really needs ppt slide, you first ouptput png and then paste it.
-pptlist <- c("Fin_Ene","Fin_Ene_Ele_Heat","Fin_Ene_Gas","Fin_Ene_Liq","Fin_Ene_Solids","Fin_Ene_Res","Fin_Ene_Com","Fin_Ene_Tra","Fin_Ene_Ind","Emi_CO2_Ene_and_Ind_Pro","Pol_Cos_GDP_Los_rat","Prc_Car","TPES","Power_heat")
-r2ppt <- 0
-if (r2ppt==1){
-  myPPT<-PPT.Init(method="RDCOMClient")
-  for (i in pptlist){
-      if(plotflag[[i]]>0){
-  #      win.graph(width=1860, height=1450,pointsize = 1)
-  #      print(allplot[[i]])
-        myPPT<-PPT.AddTitleOnlySlide(myPPT,title="Title Only",title.fontsize=40,title.font="Arial")
-  #      myPPT<-PPT.AddGraphicstoSlide(myPPT,size= c(10,10,700,350), dev.out.type ='emf' )
-        myPPT<-PPT.AddGraphicstoSlide(myPPT,file=paste0(outputdir,rr,"/png/",i,".png"),size=c(10,10,700,500))
-  #      dev.off()
-    }
-  }
-  myPPT<-PPT.SaveAs(myPPT,file=paste0("../output/",rr,"/ppt/",rr,"comparison.pptx"))
-  myPPT<-PPT.Close(myPPT)
-  rm(myPPT)
-#      savePlot("test.emf",type="emf", device = dev.cur())
-#      myPPT<-PPT.AddGraphicstoSlide(myPPT,file="test.emf",dev.out.type="emf",size=c(10,10,500,350))
 }
 
-}
 
+#---- Main figure parts
+##---- NPV comparison with IPCC 
