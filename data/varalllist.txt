@@ -3516,3 +3516,5 @@ Wat_Wit_Ele_Col_Pon	Water Withdrawal|Electricity|Cooling Pond	km3/yr
 Wat_Wit_Ele_Dry_Col	Water Withdrawal|Electricity|Dry Cooling	km3/yr
 Wat_Wit_Ele_Sea_Col	Water Withdrawal|Electricity|Sea Cooling	km3/yr
 Yie_BioEne2nd_gen	Yield|Bioenergy|2nd generation	t DM/ha/yr
+Fin_Ene_Res_Ele_Heat	Final Energy|Residential|Electricity and Heat	EJ/yr
+Fin_Ene_Com_Ele_Heat	Final Energy|Commercial|Electricity and Heat	EJ/yr

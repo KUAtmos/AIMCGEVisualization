@@ -33,6 +33,7 @@ library(grid)
 library(RColorBrewer)
 library(R2PPT)
 library(RDCOMClient)
+library(cowplot)
 
 OrRdPal <- brewer.pal(9, "OrRd")
 set2Pal <- brewer.pal(8, "Set2")
@@ -82,7 +83,7 @@ varlist_load <- read.table("../data/varlist.txt", sep="\t",header=F, stringsAsFa
 varalllist <- read.table("../data/varalllist.txt", sep="\t",header=F, stringsAsFactors=F)
 varlist <- left_join(varlist_load,varalllist,by="V1")
 areapalette <- c("Coal|w/o CCS"="#000000","Coal|w/ CCS"="#7f878f","Oil|w/o CCS"="#ff2800","Oil|w/ CCS"="#ffd1d1","Gas|w/o CCS"="#9a0079","Gas|w/ CCS"="#c7b2de","Hydro"="#0041ff","Nuclear"="#663300","Solar"="#b4ebfa","Wind"="#ff9900","Biomass|w/o CCS"="#35a16b","Biomass|w/ CCS"="#cbf266","Geothermal"="#edc58f","Other"="#ffff99",
-                 "Solid"=pastelpal[1],"Liquid"=pastelpal[2],"Gas"=pastelpal[3],"Electricity"=pastelpal[4],"Heat"=pastelpal[5],"Hydrogen"=pastelpal[6],
+                 "Solid"=pastelpal[1],"Liquid"=pastelpal[2],"Gas"=pastelpal[7],"Electricity"=pastelpal[4],"Heat"=pastelpal[5],"Hydrogen"=pastelpal[6],"Pertoliquids"=pastelpal[2],"Biofuel"=pastelpal[3],
                  "Industry"=set2Pal[1],"Transport"=set2Pal[2],"Commercial"=set2Pal[3],"Residential"=set2Pal[4],
                  "Build-up"=pastelpal[1],"Cropland (for food)"=pastelpal[2],"Forest"=pastelpal[3],"Pasture"=pastelpal[4],"Energy Crops"=pastelpal[5],"Other Land"=pastelpal[6],"Other Arable Land"=pastelpal[7])
 areamap <- read.table("../data/Areafigureorder.txt", sep="\t",header=T, stringsAsFactors=F)
@@ -92,12 +93,12 @@ areamappara <- read.table("../data/Area.map", sep="\t",header=T, stringsAsFactor
 CGEload0 <- rgdx.param(paste0('../modeloutput/',filename,"_emf.gdx"),'IAMC_Template') 
 Getregion <- as.vector(unique(CGEload0$REMF))
 if(length(Getregion)==1){region <- Getregion}
-CGEload1 <- CGEload0 %>% rename("Value"=IAMC_template,"Variable"=VEMF) %>% 
+CGEload1 <- CGEload0 %>% rename("Value"=IAMC_Template,"Variable"=VEMF) %>% 
   left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1]) & REMF %in% region) %>% 
-  select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name")
+  select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name",Y="YEMF")
 
 #Enduse loading
-enduseflag <- 0
+enduseflag <- 1
 if(enduseflag==1){
 #  EnduseJload0 <- rgdx.param(paste0('../modeloutput/AIMEnduseG.gdx'),'EMFtemp1') %>% rename("SCENARIO"=i1,"Region"=i2,"Variable"=i3,"Y"=i4,"Value"=value) %>% mutate(Model="AIM/Enduse[Japan]")
 #  EnduseJload1 <- EnduseJload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
@@ -105,7 +106,7 @@ if(enduseflag==1){
 
   EnduseGload0 <- rgdx.param(paste0('../modeloutput/AIMEnduseG.gdx'),'data_all')  %>% rename("SCENARIO"=Sc,"Region"=Sr,"Variable"=Sv,"Y"=Sy,"Value"=data_all)  %>% mutate(Model="AIM/Enduse[Global]")
   EnduseGload1 <- EnduseGload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
-    select(-SCENARIO) %>% rename(SCENARIO="Name")
+    select(-SCENARIO) %>% rename(SCENARIO="Name") %>% select(Region,Variable,Y,Value,SCENARIO,Model)
 }
 
 file.copy(paste0("../../AIMCGE/individual/IEAEB1062CGE/output/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
@@ -152,12 +153,13 @@ plotflag <- as.list(nalist)
 names(allplot) <- nalist
 names(plotflag) <- nalist
 
-
+#region <- "World"
 for(rr in region){
   dir.create(paste0("../output/",rr))
   dir.create(paste0("../output/",rr,"/png"))
   dir.create(paste0("../output/",rr,"/pngdet"))
   dir.create(paste0("../output/",rr,"/ppt"))
+  dir.create(paste0("../output/",rr,"/merge"))
   maxy <- max(allmodel$Y)
   
 #---Line figures
@@ -205,6 +207,28 @@ for(j in 1:nrow(areamappara)){
   ggsave(plot_TPES.1, file=outname, dpi = 450, width=9, height=floor(length(unique(XX$SCENARIO))/4+1)*3+2,limitsize=FALSE)
   plotflag[[areamappara$Class[j]]] <- nrow(XX)  
 }
+
+#---merged figures
+
+pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
+ggsave(pp_tfc, file=paste0(outputdir,rr,"/merge/tfc.png"), width=9*2, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*2,limitsize=FALSE)
+p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Fin_Ene"]]), pattern = "guide-box")
+pp_tfcind <- plot_grid(allplot[["Fin_Ene"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com"]] + theme(legend.position="none"),
+                       allplot[["Fin_Ene_Ele"]] + theme(legend.position="none"),allplot[["Fin_Ene_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_SolidsBio"]] + theme(legend.position="none"),
+                       allplot[["Fin_Ene_Ind_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_SolidsBio"]] + theme(legend.position="none"),
+                       allplot[["Fin_Ene_Com_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com_SolidsBio"]] + theme(legend.position="none"),
+                       allplot[["Fin_Ene_Res_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_SolidsBio"]] + theme(legend.position="none"),
+                       allplot[["Fin_Ene_Tra_Ele"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_Bio"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_Oil"]] + theme(legend.position="none"),NULL,p_legend1,
+                       nrow=6,rel_widths =c(1,1,1,1,1),align = "hv")
+ggsave(pp_tfcind, file=paste0(outputdir,rr,"/merge/tfcind.png"), width=25, height=20,limitsize=FALSE)
+pp_area <- plot_grid(allplot[["TPES"]],allplot[["Power_heat"]],allplot[["Landuse"]],ncol=1,align = "hv")
+ggsave(pp_area, file=paste0(outputdir,rr,"/merge/majorArea.png"), width=15, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
+pp_main <- plot_grid(allplot[["GDP_MER"]] + theme(legend.position="none"),allplot[["POP"]] + theme(legend.position="none"),allplot[["Tem_Glo_Mea"]],
+                     allplot[["Emi_CO2_Ene_and_Ind_Pro"]] + theme(legend.position="none"),allplot[["Emi_CO2"]] + theme(legend.position="none"),allplot[["Emi_Kyo_Gas"]],
+                    allplot[["Pol_Cos_GDP_Los_rat"]] + theme(legend.position="none"),allplot[["Pol_Cos_Cns_Los_rat"]] + theme(legend.position="none"),allplot[["Prc_Car"]],
+                    allplot[["Pop_Ris_of_Hun"]] + theme(legend.position="none"),allplot[["Prc_Prm_Ene_Oil"]] + theme(legend.position="none"),allplot[["Prc_Sec_Ene_Ele"]],
+                       nrow=4,rel_widths =c(1,1,1.5),align = "hv")
+ggsave(pp_main, file=paste0(outputdir,rr,"/merge/main.png"), width=15, height=15,limitsize=FALSE)
 
 #----r2ppt
 #The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
