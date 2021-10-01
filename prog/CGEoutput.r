@@ -84,7 +84,7 @@ varlist_load <- read.table("../data/varlist.txt", sep="\t",header=F, stringsAsFa
 varalllist <- read.table("../data/varalllist.txt", sep="\t",header=F, stringsAsFactors=F)
 varlist <- left_join(varlist_load,varalllist,by="V1")
 areapalette <- c("Coal|w/o CCS"="#000000","Coal|w/ CCS"="#7f878f","Oil|w/o CCS"="#ff2800","Oil|w/ CCS"="#ffd1d1","Gas|w/o CCS"="#9a0079","Gas|w/ CCS"="#c7b2de","Hydro"="#0041ff","Nuclear"="#663300","Solar"="#b4ebfa","Wind"="#ff9900","Biomass|w/o CCS"="#35a16b","Biomass|w/ CCS"="#cbf266","Geothermal"="#edc58f","Other"="#ffff99",
-                 "Solid"=pastelpal[1],"Liquid"=pastelpal[2],"Gas"=pastelpal[7],"Electricity"=pastelpal[4],"Heat"=pastelpal[5],"Hydrogen"=pastelpal[6],"Pertoliquids"=pastelpal[2],"Biofuel"=pastelpal[3],
+                 "Solid"=pastelpal[1],"Coal"=pastelpal[1],"Liquid"=pastelpal[2],"Gas"=pastelpal[7],"Electricity"=pastelpal[4],"Heat"=pastelpal[5],"Hydrogen"=pastelpal[6],"Pertoliquids"=pastelpal[2],"Biofuel"=pastelpal[3],"Biomass"=pastelpal[3],
                  "Industry"=set2Pal[1],"Transport"=set2Pal[2],"Commercial"=set2Pal[3],"Residential"=set2Pal[4],
                  "Build-up"=pastelpal[1],"Cropland (for food)"=pastelpal[2],"Forest"=pastelpal[3],"Pasture"=pastelpal[4],"Energy Crops"=pastelpal[5],"Other Land"=pastelpal[6],"Other Arable Land"=pastelpal[7])
 areamap <- read.table("../data/Areafigureorder.txt", sep="\t",header=T, stringsAsFactors=F)
