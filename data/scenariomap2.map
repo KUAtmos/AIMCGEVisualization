@@ -1,5 +1,3 @@
 SCENARIO	Name
-Baseline	Baseline
-Opt_2D	Mitigation
-Baseline_FullTech	BaU
-Mitigation_FullTech	Mit
+Baseline	Enduse-BaU
+NPi1000	1000C

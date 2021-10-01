@@ -78,7 +78,8 @@ linepalette <- c("Baseline"="#4DAF4A","GlobalOptimalZero"="#FF7F00","NDC+Zero"="
 landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
 scenariomap <- read.table("../data/scenariomap.map", sep="\t",header=T, stringsAsFactors=F)
 scenariomap2 <- read.table("../data/scenariomap2.map", sep="\t",header=T, stringsAsFactors=F)
-region <- as.vector(read.table("../data/region.txt", sep="\t",header=F, stringsAsFactors=F)$V1)
+region_load <- as.vector(read.table("../data/region.txt", sep="\t",header=F, stringsAsFactors=F)$V1)
+region <- region_load
 varlist_load <- read.table("../data/varlist.txt", sep="\t",header=F, stringsAsFactors=F)
 varalllist <- read.table("../data/varalllist.txt", sep="\t",header=F, stringsAsFactors=F)
 varlist <- left_join(varlist_load,varalllist,by="V1")
@@ -214,7 +215,7 @@ pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"
 ggsave(pp_tfc, file=paste0(outputdir,rr,"/merge/tfc.png"), width=9*2, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*2,limitsize=FALSE)
 p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Fin_Ene"]]), pattern = "guide-box")
 pp_tfcind <- plot_grid(allplot[["Fin_Ene"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com"]] + theme(legend.position="none"),
-                       allplot[["Fin_Ene_Ele"]] + theme(legend.position="none"),allplot[["Fin_Ene_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_SolidsBio"]] + theme(legend.position="none"),
+                       allplot[["Fin_Ene_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_SolidsBio"]] + theme(legend.position="none"),
                        allplot[["Fin_Ene_Ind_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_SolidsBio"]] + theme(legend.position="none"),
                        allplot[["Fin_Ene_Com_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com_SolidsBio"]] + theme(legend.position="none"),
                        allplot[["Fin_Ene_Res_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_SolidsBio"]] + theme(legend.position="none"),
@@ -254,5 +255,35 @@ if (r2ppt==1){
 #      myPPT<-PPT.AddGraphicstoSlide(myPPT,file="test.emf",dev.out.type="emf",size=c(10,10,500,350))
 }
 
+}
+#Linefigure cross country
+dir.create(paste0("../output/","merge"))
+dir.create(paste0("../output/","merge","/png"))
+dir.create(paste0("../output/","merge","/pngdet"))
+allplotmerge <- as.list(nalist)
+plotflagmerge <- as.list(nalist)
+for (i in 1:nrow(varlist)){
+  if(nrow(filter(allmodel,Variable==varlist[i,1]))>0){
+    miny <- 2010 
+    plot.0 <- ggplot() + 
+      geom_line(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),group=interaction(SCENARIO,Model)),stat="identity") +
+      geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),shape=Model),size=3.0,fill="white") +
+      MyThemeLine + scale_color_manual(values=linepalette) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
+      xlab("year") + ylab(varlist[i,4])  +  ggtitle(paste(rr,varlist[i,3],sep=" ")) +
+      annotate("segment",x=2005,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
+      theme(legend.title=element_blank()) +facet_wrap(~Region,scales="free")
+    if(length(scenariomap$SCENARIO)<20){
+      plot.0 <- plot.0 +
+        geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model=="Reference"),aes(x=Y, y = Value) , color="black",shape=6,size=2.0,fill="grey") 
+    }
+    if(varlist[i,2]==1){
+      outname <- paste0(outputdir,"merge","/png/",varlist[i,1],".png")
+    }else{
+      outname <- paste0(outputdir,"merge","/pngdet/",varlist[i,1],".png")
+    }
+    ggsave(plot.0, file=outname, dpi = 150, width=10, height=12,limitsize=FALSE)
+    allplotmerge[[nalist[i]]] <- plot.0
+  plotflagmerge[[nalist[i]]] <- nrow(filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr))
+  }
 }
 
