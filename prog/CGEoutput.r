@@ -19,8 +19,11 @@ install.packages("Rcpp", dependencies = TRUE)
 install.packages("ReporteRsjars", dependencies = TRUE)
 install.packages("ReporteRs", dependencies = TRUE)
 install.packages("xlsx", dependencies = TRUE)
-install.packages("R2PPT", dependencies = TRUE) #Rtools needs to be installed
+#install.packages("R2PPT", dependencies = TRUE) #Rtools needs to be installed
+install.packages("officer", dependencies = TRUE) #Rtools needs to be installed
 install.packages('RDCOMClient', repos = 'http://www.omegahat.net/R/')
+library(devtools)
+devtools::install_github("tomwenseleers/export")
 }
 
 library(gdxrrw)
@@ -34,6 +37,9 @@ library(RColorBrewer)
 library(R2PPT)
 library(RDCOMClient)
 library(cowplot)
+library(officer)
+library(export)
+
 
 OrRdPal <- brewer.pal(9, "OrRd")
 set2Pal <- brewer.pal(8, "Set2")
@@ -154,7 +160,7 @@ plotflag <- as.list(nalist)
 names(allplot) <- nalist
 names(plotflag) <- nalist
 
-#region <- "World"
+region <- "World"
 for(rr in region){
   dir.create(paste0("../output/",rr))
   dir.create(paste0("../output/",rr,"/png"))
@@ -172,7 +178,7 @@ for (i in 1:nrow(varlist)){
       geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),shape=Model),size=3.0,fill="white") +
       MyThemeLine + scale_color_manual(values=linepalette) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
       xlab("year") + ylab(varlist[i,4])  +  ggtitle(paste(rr,varlist[i,3],sep=" ")) +
-      annotate("segment",x=2005,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
+      annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
       theme(legend.title=element_blank()) 
     if(length(scenariomap$SCENARIO)<20){
       plot.0 <- plot.0 +
@@ -198,10 +204,11 @@ for(j in 1:nrow(areamappara)){
     filter(Y>=2015)
   miny <- min(XX$Y,XX2$Y) 
   na.omit(XX$Value)
-  unit_name <-areamappara[j,3]
+  
+  unit_name <-areamappara[j,3] 
   ylab1 <- paste0(areamappara[j,2], " (", unit_name, ")")
   xlab1 <- areamappara[j,2]
-  colorpal <- areapalette
+  colorpal <- areapalette 
   plot_TPES.1 <- plot.1(XX)
   allplot[[areamappara$Class[j]]] <- plot_TPES.1 
   outname <- paste0(outputdir,rr,"/png/",areamappara[j,1],".png")
@@ -235,24 +242,19 @@ ggsave(pp_main, file=paste0(outputdir,rr,"/merge/main.png"), width=15, height=15
 #The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
 #If you really needs ppt slide, you first ouptput png and then paste it.
 pptlist <- c("Fin_Ene","Fin_Ene_Ele_Heat","Fin_Ene_Gas","Fin_Ene_Liq","Fin_Ene_Solids","Fin_Ene_Res","Fin_Ene_Com","Fin_Ene_Tra","Fin_Ene_Ind","Emi_CO2_Ene_and_Ind_Pro","Pol_Cos_GDP_Los_rat","Prc_Car","TPES","Power_heat")
-r2ppt <- 0
+r2ppt <- 1
+TorF <- 0
 if (r2ppt==1){
-  myPPT<-PPT.Init(method="RDCOMClient")
   for (i in pptlist){
       if(plotflag[[i]]>0){
-  #      win.graph(width=1860, height=1450,pointsize = 1)
-  #      print(allplot[[i]])
-        myPPT<-PPT.AddTitleOnlySlide(myPPT,title="Title Only",title.fontsize=40,title.font="Arial")
-  #      myPPT<-PPT.AddGraphicstoSlide(myPPT,size= c(10,10,700,350), dev.out.type ='emf' )
-        myPPT<-PPT.AddGraphicstoSlide(myPPT,file=paste0(outputdir,rr,"/png/",i,".png"),size=c(10,10,700,500))
-  #      dev.off()
-    }
+        TorF = TorF + 1
+        if(TorF>1){
+          graph2ppt(allplot[[i]], file = paste0("../output/",rr,"/ppt/",rr,"comparison.pptx"),width = 10, height = 10, append = TRUE)
+        }else{
+          graph2ppt(allplot[[i]], file = paste0("../output/",rr,"/ppt/",rr,"comparison.pptx"),width = 10, height = 10, append = FALSE)
+          }
+      }
   }
-  myPPT<-PPT.SaveAs(myPPT,file=paste0("../output/",rr,"/ppt/",rr,"comparison.pptx"))
-  myPPT<-PPT.Close(myPPT)
-  rm(myPPT)
-#      savePlot("test.emf",type="emf", device = dev.cur())
-#      myPPT<-PPT.AddGraphicstoSlide(myPPT,file="test.emf",dev.out.type="emf",size=c(10,10,500,350))
 }
 
 }
@@ -269,8 +271,8 @@ for (i in 1:nrow(varlist)){
       geom_line(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),group=interaction(SCENARIO,Model)),stat="identity") +
       geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),shape=Model),size=3.0,fill="white") +
       MyThemeLine + scale_color_manual(values=linepalette) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
-      xlab("year") + ylab(varlist[i,4])  +  ggtitle(paste(rr,varlist[i,3],sep=" ")) +
-      annotate("segment",x=2005,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
+      xlab("year") + ylab(varlist[i,4])  +  ggtitle(paste("Multi-regions",varlist[i,3],sep=" ")) +
+      annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
       theme(legend.title=element_blank()) +facet_wrap(~Region,scales="free")
     if(length(scenariomap$SCENARIO)<20){
       plot.0 <- plot.0 +
@@ -283,7 +285,10 @@ for (i in 1:nrow(varlist)){
     }
     ggsave(plot.0, file=outname, dpi = 150, width=10, height=12,limitsize=FALSE)
     allplotmerge[[nalist[i]]] <- plot.0
-  plotflagmerge[[nalist[i]]] <- nrow(filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr))
+  plotflagmerge[[nalist[i]]] <- nrow(filter(allmodel,Variable==varlist[i,1] & Model!="Reference"))
   }
 }
+
+
+
 
