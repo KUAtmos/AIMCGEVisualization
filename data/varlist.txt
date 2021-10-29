@@ -46,7 +46,7 @@ Fin_Ene_SolidsCoa	1
 Fin_Ene_Tra	1
 Fin_Ene_Tra_Ele	2
 Fin_Ene_Tra_Liq	2
-Fin_Ene_Tra_Liq_Bio	2
+Fin_Ene_Tra_Liq_Bio	1
 Fin_Ene_Tra_Liq_Oil	2
 GDP_MER	1
 POP	1
