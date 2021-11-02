@@ -12,7 +12,6 @@ Fin_Ene_Ind_SolidsBio	2
 Fin_Ene_Ind_SolidsCoa	2
 Fin_Ene_Liq	1
 Fin_Ene_NonEneUse	2
-Fin_Ene_NonEneUse_Coa	2
 Fin_Ene_NonEneUse_Gas	2
 Fin_Ene_NonEneUse_Oil	2
 Fin_Ene_Res_and_Com	1
@@ -147,3 +146,8 @@ Lan_Cov_Pst	1
 Lan_Cov_Cro_Non_Ene_Cro	1
 Lan_Cov_Frs	1
 Foo_Ene_Sup_Liv_Per_Cap	1
+Car_Seq_CCS	1
+Car_Seq_CCS_Bio	1
+Car_Seq_CCS_Fos_Ene	1
+Car_Seq_CCS_Fos_Ind_Pro	1
+

@@ -46,6 +46,17 @@ library(purrr)
 library(furrr)
 library(progressr)
 
+#---------------switches to specify the run condition -----
+filename <- "global_17" # filename should be "global_17","CHN","JPN"....
+enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+dirCGEoutput <-"../../anls_output/iiasa_database/gdx/"  # directory where the CGE output is located 
+parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
+#parallelmode <- 0 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
+threadsnum <- min(floor(availableCores()/2),24)
+r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
+
+#---------------End of switches to specify the run condition -----
+
 OrRdPal <- brewer.pal(9, "OrRd")
 set2Pal <- brewer.pal(8, "Set2")
 YlGnBupal <- brewer.pal(9, "YlGnBu")
@@ -81,14 +92,11 @@ dir.create(paste0("../output/","merge"))
 dir.create(paste0("../output/","merge","/png"))
 dir.create(paste0("../output/","merge","/pngdet"))
 
-#filename should be "global_17","CHN","JPN"....
-#filename <- c("CHN")
-filename <- c("global_17")
-#file.copy(paste0("E:/sfujimori/CGE/AIMHub2.2ESIntAsia/anls_output/iiasa_database/gdx/",filename,"_emf.gdx"), paste0("../modeloutput/",filename,"_emf.gdx"),overwrite = TRUE)
-file.copy(paste0("../../anls_output/iiasa_database/gdx/",filename,"_IAMC.gdx"), paste0("../modeloutput/",filename,"_emf.gdx"),overwrite = TRUE)
-file.copy(paste0("../../AIMCGE/individual/AIMEnduseG2CGE/data/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG.gdx"),overwrite = TRUE)
+file.copy(paste0(dirCGEoutput,filename,"_IAMC.gdx"), paste0("../modeloutput/",filename,"_emf.gdx"),overwrite = TRUE)
+file.copy(paste0(dirCGEoutput,"../../../../AIMCGE/individual/AIMEnduseG2CGE/data/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG.gdx"),overwrite = TRUE)
+file.copy(paste0(dirCGEoutput,"../../../../AIMCGE/individual/IEAEB1062CGE/output/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
 
-linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
+linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33","black")
 #linepalette <- c("Baseline"="#4DAF4A","GlobalOptimalZero"="#FF7F00","NDC+Zero"="#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
 
 landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
@@ -112,18 +120,13 @@ CGEload1 <- CGEload0 %>% rename("Value"=IAMC_Template,"Variable"=VEMF) %>%
   select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name",Y="YEMF")
 
 #Enduse loading
-enduseflag <- 1
 if(enduseflag==1){
-#  EnduseJload0 <- rgdx.param(paste0('../modeloutput/AIMEnduseG.gdx'),'EMFtemp1') %>% rename("SCENARIO"=i1,"Region"=i2,"Variable"=i3,"Y"=i4,"Value"=value) %>% mutate(Model="AIM/Enduse[Japan]")
-#  EnduseJload1 <- EnduseJload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
-#    select(-SCENARIO) %>% rename(SCENARIO="Name")
-
   EnduseGload0 <- rgdx.param(paste0('../modeloutput/AIMEnduseG.gdx'),'data_all')  %>% rename("SCENARIO"=Sc,"Region"=Sr,"Variable"=Sv,"Y"=Sy,"Value"=data_all)  %>% mutate(Model="AIM/Enduse[Global]")
   EnduseGload1 <- EnduseGload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
     select(-SCENARIO) %>% rename(SCENARIO="Name") %>% select(Region,Variable,Y,Value,SCENARIO,Model)
 }
 
-file.copy(paste0("../../AIMCGE/individual/IEAEB1062CGE/output/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
+#IEA energy balance information
 IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Variable"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
   select(Region,Variable,Y,Value,SCENARIO) %>% filter(Region %in% region) %>% mutate(Model="Reference")
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
@@ -137,28 +140,13 @@ if(enduseflag==1){
 }
 allmodel0$Y <- as.numeric(levels(allmodel0$Y))[allmodel0$Y]
 allmodel <- rbind(allmodel0,IEAEB1)  
+maxy <- max(allmodel$Y)
+linepalettewName <- linepalette
+names(linepalettewName) <- unique(allmodel$SCENARIO)
 
 #---IAMC tempalte loading and data mergeEnd
 
 #---functions
-#Area figure function
-plot.1 <- function(XX){
-  plot2 <- ggplot() + 
-    geom_area(data=XX,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
-    ylab(ylab1) + xlab(xlab1) +labs(fill="")+ guides(fill=guide_legend(reverse=TRUE)) + MyThemeLine +
-    theme(legend.position="bottom", text=element_text(size=12),  
-          axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, size = 12)) +
-    guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10)) +  ggtitle(paste(rr,areamappara$Class[j],sep=" "))+
-    facet_wrap(Model ~ SCENARIO,ncol=4) + scale_fill_manual(values=colorpal) + 
-    annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')
-  if(nrow(XX2)>=1){
-    plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity")
-  }else{
-    plot3 <- plot2
-  }
-  return(plot3)
-}
-
 #function for regional figure generation
 funcplotgen <- function(rr,progr){
   progr(message='region figures')
@@ -168,16 +156,15 @@ funcplotgen <- function(rr,progr){
   dir.create(paste0("../output/",rr,"/pngdet"))
   dir.create(paste0("../output/",rr,"/ppt"))
   dir.create(paste0("../output/",rr,"/merge"))
-  maxy <- max(allmodel$Y)
   
 #---Line figures
   for (i in 1:nrow(varlist)){
-    if(nrow(filter(allmodel,Variable==varlist[i,1] & Region==rr))>0){
+    if(nrow(filter(allmodel,Variable==varlist[i,1] & Region==rr & Model!="Reference"))>0){
       miny <- min(filter(allmodel,Variable==varlist[i,1] & Region==rr)$Y) 
       plot.0 <- ggplot() + 
-        geom_line(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),group=interaction(SCENARIO,Model)),stat="identity") +
-        geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),shape=Model),size=3.0,fill="white") +
-        MyThemeLine + scale_color_manual(values=linepalette) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
+        geom_line(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,Model)),stat="identity") +
+        geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=SCENARIO,shape=Model),size=3.0,fill="white") +
+        MyThemeLine + scale_color_manual(values=linepalettewName) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
         xlab("year") + ylab(varlist[i,4])  +  ggtitle(paste(rr,varlist[i,3],sep=" ")) +
         annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
         theme(legend.title=element_blank()) 
@@ -213,10 +200,22 @@ funcplotgen <- function(rr,progr){
     names(areapaletteArea) <- filter(areapaletteload,V1 %in% unique(XX$Ind))$V1
     colorpal <- areapaletteArea 
     
-    plot_TPES.1 <- plot.1(XX)
-    allplot[[areamappara$Class[j]]] <- plot_TPES.1 
+    plot2 <- ggplot() + 
+      geom_area(data=XX,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
+      ylab(ylab1) + xlab(xlab1) +labs(fill="")+ guides(fill=guide_legend(reverse=TRUE)) + MyThemeLine +
+      theme(legend.position="bottom", text=element_text(size=12),  
+            axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, size = 12)) +
+      guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10)) +  ggtitle(paste(rr,areamappara$Class[j],sep=" "))+
+      facet_wrap(Model ~ SCENARIO,ncol=4) + scale_fill_manual(values=colorpal) + 
+      annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')
+    if(nrow(XX2)>=1){
+      plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity")
+    }else{
+      plot3 <- plot2
+    }
+    allplot[[areamappara$Class[j]]] <- plot3 
     outname <- paste0(outputdir,rr,"/png/",areamappara[j,1],".png")
-    ggsave(plot_TPES.1, file=outname, dpi = 450, width=9, height=floor(length(unique(XX$SCENARIO))/4+1)*3+2,limitsize=FALSE)
+    ggsave(plot3, file=outname, dpi = 450, width=9, height=floor(length(unique(XX$SCENARIO))/4+1)*4+2,limitsize=FALSE)
     plotflag[[areamappara$Class[j]]] <- nrow(XX)  
   }
 
@@ -231,9 +230,9 @@ funcplotgen <- function(rr,progr){
                          allplot[["Fin_Ene_Res_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_SolidsBio"]] + theme(legend.position="none"),
                          allplot[["Fin_Ene_Tra_Ele"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_Bio"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_Oil"]] + theme(legend.position="none"),NULL,p_legend1,
                          nrow=6,rel_widths =c(1,1,1,1,1),align = "hv")
-  ggsave(pp_tfcind, file=paste0(outputdir,rr,"/merge/tfcind.png"), width=25, height=20,limitsize=FALSE)
+  ggsave(pp_tfcind, file=paste0(outputdir,rr,"/merge/tfcind.png"), width=25, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*4+2)*2,limitsize=FALSE)
   pp_area <- plot_grid(allplot[["TPES"]],allplot[["Power_heat"]],allplot[["Landuse"]],ncol=1,align = "hv")
-  ggsave(pp_area, file=paste0(outputdir,rr,"/merge/majorArea.png"), width=15, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
+  ggsave(pp_area, file=paste0(outputdir,rr,"/merge/majorArea.png"), width=15, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*4+2)*3,limitsize=FALSE)
   pp_main <- plot_grid(allplot[["GDP_MER"]] + theme(legend.position="none"),allplot[["POP"]] + theme(legend.position="none"),allplot[["Tem_Glo_Mea"]],
                        allplot[["Emi_CO2_Ene_and_Ind_Pro"]] + theme(legend.position="none"),allplot[["Emi_CO2"]] + theme(legend.position="none"),allplot[["Emi_Kyo_Gas"]],
                       allplot[["Pol_Cos_GDP_Los_rat"]] + theme(legend.position="none"),allplot[["Pol_Cos_Cns_Los_rat"]] + theme(legend.position="none"),allplot[["Prc_Car"]],
@@ -254,22 +253,22 @@ funcplotgen <- function(rr,progr){
             graph2ppt(allplot[[i]], file = paste0("../output/",rr,"/ppt/",rr,"comparison.pptx"),width = 10, height = 10, append = TRUE)
           }else{
             graph2ppt(allplot[[i]], file = paste0("../output/",rr,"/ppt/",rr,"comparison.pptx"),width = 10, height = 10, append = FALSE)
-            }
+          }
         }
     }
   }
-
 }
 
 # making cross regional figure
 mergefigGen <- function(ii,progr){
   progr(message='merge figures')
-  if(nrow(filter(allmodel,Variable==ii))>0){
+#    for(ii in lst$varlist){
+  if(nrow(filter(allmodel,Variable==ii  & Model!="Reference"))>0){
     miny <- 2010 
     plot.0 <- ggplot() + 
-      geom_line(data=filter(allmodel,Variable==ii & Model!="Reference"),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),group=interaction(SCENARIO,Model)),stat="identity") +
-      geom_point(data=filter(allmodel,Variable==ii & Model!="Reference"),aes(x=Y, y = Value , color=interaction(SCENARIO,Model),shape=Model),size=3.0,fill="white") +
-      MyThemeLine + scale_color_manual(values=linepalette) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
+      geom_line(data=filter(allmodel,Variable==ii & Model!="Reference"),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,Model)),stat="identity") +
+      geom_point(data=filter(allmodel,Variable==ii & Model!="Reference"),aes(x=Y, y = Value , color=SCENARIO,shape=Model),size=3.0,fill="white") +
+      MyThemeLine + scale_color_manual(values=linepalettewName) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
       xlab("year") + ylab(varlist$V3[varlist$V1==ii])  +  ggtitle(paste("Multi-regions",varlist$V2.y[varlist$V1==ii],sep=" ")) +
       annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
       theme(legend.title=element_blank()) +facet_wrap(~Region,scales="free")
@@ -282,27 +281,9 @@ mergefigGen <- function(ii,progr){
     }else{
       outname <- paste0(outputdir,"merge","/pngdet/",ii,".png")
     }
-    ggsave(plot.0, file=outname, dpi = 150, width=10, height=12,limitsize=FALSE)
+    ggsave(plot.0, file=outname, dpi = 150, width=15, height=12,limitsize=FALSE)
   }
 }
-
-#-----------------------
-#region <- c("World")
-nalist <- c(as.vector(varlist$V1),"TPES","POWER","Power_heat","Landuse","TFC_fuel","TFC_Sector","TFC_Ind","TFC_Tra","TFC_Res","TFC_Com")
-allplot <- as.list(nalist)
-plotflag <- as.list(nalist)
-names(allplot) <- nalist
-names(plotflag) <- nalist
-allplotmerge <- as.list(nalist)
-plotflagmerge <- as.list(nalist)
-lst <- list()
-lst$region <- region_load[1]
-lst$varlist <- as.list(as.vector(varlist$V1))
-
-#region <- "World"
-parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
-threadsnum <- min(floor(availableCores()/2),24)
-r2ppt <- 1 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
 
 #execute making regional figures
 exe_fig_make <- function(ListIte,Xfunc){
@@ -318,10 +299,23 @@ exe_fig_make <- function(ListIte,Xfunc){
     })
   }else{
     progr <- progressor(along=ListIte)
-    lapply(ListIte,funcplotgen)  
+    lapply(ListIte,Xfunc)  
   }
   print(Sys.time())
 }
+
+#-----------------------
+nalist <- c(as.vector(varlist$V1),"TPES","POWER","Power_heat","Landuse","TFC_fuel","TFC_Sector","TFC_Ind","TFC_Tra","TFC_Res","TFC_Com")
+allplot <- as.list(nalist)
+plotflag <- as.list(nalist)
+names(allplot) <- nalist
+names(plotflag) <- nalist
+allplotmerge <- as.list(nalist)
+plotflagmerge <- as.list(nalist)
+lst <- list()
+lst$region <- region_load
+lst$varlist <- as.list(as.vector(varlist$V1))
+
 #regional figure generation execution
 exe_fig_make(lst$region,funcplotgen)
 #cross-regional figure generation execution
