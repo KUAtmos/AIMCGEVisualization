@@ -93,8 +93,8 @@ dir.create(paste0("../output/","merge","/png"))
 dir.create(paste0("../output/","merge","/pngdet"))
 
 file.copy(paste0(dirCGEoutput,filename,"_IAMC.gdx"), paste0("../modeloutput/",filename,"_emf.gdx"),overwrite = TRUE)
-file.copy(paste0(dirCGEoutput,"../../../../AIMCGE/individual/AIMEnduseG2CGE/data/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG.gdx"),overwrite = TRUE)
-file.copy(paste0(dirCGEoutput,"../../../../AIMCGE/individual/IEAEB1062CGE/output/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
+file.copy(paste0(dirCGEoutput,"../../../AIMCGE/individual/AIMEnduseG2CGE/data/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG.gdx"),overwrite = TRUE)
+file.copy(paste0(dirCGEoutput,"../../../AIMCGE/individual/IEAEB1062CGE/output/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
 
 linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33","black")
 #linepalette <- c("Baseline"="#4DAF4A","GlobalOptimalZero"="#FF7F00","NDC+Zero"="#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
@@ -144,7 +144,7 @@ maxy <- max(allmodel$Y)
 linepalettewName <- linepalette
 names(linepalettewName) <- unique(allmodel$SCENARIO)
 
-#---IAMC tempalte loading and data mergeEnd
+#---End of IAMC tempalte loading and data merge
 
 #---functions
 #function for regional figure generation
@@ -315,6 +315,7 @@ plotflagmerge <- as.list(nalist)
 lst <- list()
 lst$region <- region_load
 lst$varlist <- as.list(as.vector(varlist$V1))
+lst$region <- "World"
 
 #regional figure generation execution
 exe_fig_make(lst$region,funcplotgen)
