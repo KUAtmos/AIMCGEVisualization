@@ -92,7 +92,7 @@ dir.create(paste0("../output/","merge"))
 dir.create(paste0("../output/","merge","/png"))
 dir.create(paste0("../output/","merge","/pngdet"))
 
-file.copy(paste0(dirCGEoutput,filename,"_IAMC.gdx"), paste0("../modeloutput/",filename,"_emf.gdx"),overwrite = TRUE)
+file.copy(paste0(dirCGEoutput,filename,"_IAMC.gdx"), paste0("../modeloutput/",filename,"_IAMC.gdx"),overwrite = TRUE)
 file.copy(paste0(dirCGEoutput,"../../../AIMCGE/individual/AIMEnduseG2CGE/data/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG.gdx"),overwrite = TRUE)
 file.copy(paste0(dirCGEoutput,"../../../AIMCGE/individual/IEAEB1062CGE/output/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
 
@@ -112,7 +112,7 @@ areamap <- read.table("../data/Areafigureorder.txt", sep="\t",header=T, stringsA
 areamappara <- read.table("../data/Area.map", sep="\t",header=T, stringsAsFactors=F)
 
 #---IAMC tempalte loading and data merge
-CGEload0 <- rgdx.param(paste0('../modeloutput/',filename,"_emf.gdx"),'IAMC_Template') 
+CGEload0 <- rgdx.param(paste0('../modeloutput/',filename,"_IAMC.gdx"),'IAMC_Template') 
 Getregion <- as.vector(unique(CGEload0$REMF))
 if(length(Getregion)==1){region <- Getregion}
 CGEload1 <- CGEload0 %>% rename("Value"=IAMC_Template,"Variable"=VEMF) %>% 
@@ -232,7 +232,7 @@ funcplotgen <- function(rr,progr){
                          nrow=6,rel_widths =c(1,1,1,1,1),align = "hv")
   ggsave(pp_tfcind, file=paste0(outputdir,rr,"/merge/tfcind.png"), width=25, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*4+2)*2,limitsize=FALSE)
   pp_area <- plot_grid(allplot[["TPES"]],allplot[["Power_heat"]],allplot[["Landuse"]],ncol=1,align = "hv")
-  ggsave(pp_area, file=paste0(outputdir,rr,"/merge/majorArea.png"), width=15, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*4+2)*3,limitsize=FALSE)
+  ggsave(pp_area, file=paste0(outputdir,rr,"/merge/majorArea.png"), width=15, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*4+2)*4,limitsize=FALSE)
   pp_main <- plot_grid(allplot[["GDP_MER"]] + theme(legend.position="none"),allplot[["POP"]] + theme(legend.position="none"),allplot[["Tem_Glo_Mea"]],
                        allplot[["Emi_CO2_Ene_and_Ind_Pro"]] + theme(legend.position="none"),allplot[["Emi_CO2"]] + theme(legend.position="none"),allplot[["Emi_Kyo_Gas"]],
                       allplot[["Pol_Cos_GDP_Los_rat"]] + theme(legend.position="none"),allplot[["Pol_Cos_Cns_Los_rat"]] + theme(legend.position="none"),allplot[["Prc_Car"]],
@@ -315,7 +315,7 @@ plotflagmerge <- as.list(nalist)
 lst <- list()
 lst$region <- region_load
 lst$varlist <- as.list(as.vector(varlist$V1))
-lst$region <- "World"
+#lst$region <- "World"
 
 #regional figure generation execution
 exe_fig_make(lst$region,funcplotgen)
