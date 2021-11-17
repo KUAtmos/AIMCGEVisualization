@@ -5,4 +5,4 @@
 /modeloutput/*.gdx
 
 .Rproj.user
-.Rhistory*
+*.Rhistory*
