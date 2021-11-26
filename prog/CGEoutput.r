@@ -48,8 +48,8 @@ library(progressr)
 
 #---------------switches to specify the run condition -----
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
-dirCGEoutput <-"../../anls_output/iiasa_database/gdx/"  # directory where the CGE output is located 
+enduseflag <- 1   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+dirCGEoutput <-"../../output/iiasa_database/gdx/"  # directory where the CGE output is located 
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 #parallelmode <- 0 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 threadsnum <- min(floor(availableCores()/2),24)
@@ -122,8 +122,9 @@ CGEload1 <- CGEload0 %>% rename("Value"=IAMC_Template,"Variable"=VEMF) %>%
 #Enduse loading
 if(enduseflag==1){
   EnduseGload0 <- rgdx.param(paste0('../modeloutput/AIMEnduseG.gdx'),'data_all')  %>% rename("SCENARIO"=Sc,"Region"=Sr,"Variable"=Sv,"Y"=Sy,"Value"=data_all)  %>% mutate(Model="AIM/Enduse[Global]")
-  EnduseGload1 <- EnduseGload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
+  EnduseGload01 <- EnduseGload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
     select(-SCENARIO) %>% rename(SCENARIO="Name") %>% select(Region,Variable,Y,Value,SCENARIO,Model)
+  EnduseGload1 <- rbind(EnduseGload01, filter(EnduseGload01, Variable=="Pol_Cos_Add_Tot_Ene_Sys_Cos") %>% select(-Variable) %>% mutate("Variable"="Pol_Cos_GDP_los"))
 }
 
 #IEA energy balance information
@@ -160,17 +161,22 @@ funcplotgen <- function(rr,progr){
 #---Line figures
   for (i in 1:nrow(varlist)){
     if(nrow(filter(allmodel,Variable==varlist[i,1] & Region==rr & Model!="Reference"))>0){
-      miny <- min(filter(allmodel,Variable==varlist[i,1] & Region==rr)$Y) 
+      df4plot0 <- filter(allmodel,Variable==varlist[i,1] & Region==rr)
+      miny <- min(df4plot0$Y) 
+      df4plot <- df4plot0 %>% filter(Model!="Reference") 
+      #%>% spread(key=SCENARIO,value=Value,fill=0) %>% gather(-Region,-Variable,-Y,-Model,key=SCENARIO,value=Value) %>%  
+      #spread(key=Model,value=Value,fill=0) %>% gather(-Region,-Variable,-Y,-SCENARIO,key=Model,value=Value)
+
       plot.0 <- ggplot() + 
-        geom_line(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,Model)),stat="identity") +
-        geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=SCENARIO,shape=Model),size=3.0,fill="white") +
+        geom_line(data=df4plot,aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,Model)),stat="identity") +
+        geom_point(data=df4plot,aes(x=Y, y = Value , color=SCENARIO,shape=Model),size=3.0,fill="white") +
         MyThemeLine + scale_color_manual(values=linepalettewName) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
         xlab("year") + ylab(varlist[i,4])  +  ggtitle(paste(rr,varlist[i,3],sep=" ")) +
         annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
         theme(legend.title=element_blank()) 
       if(length(scenariomap$SCENARIO)<20){
         plot.0 <- plot.0 +
-        geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model=="Reference"& Region==rr),aes(x=Y, y = Value) , color="black",shape=6,size=2.0,fill="grey") 
+        geom_point(data=filter(df4plot0,Model=="Reference"),aes(x=Y, y = Value) , color="black",shape=6,size=2.0,fill="grey") 
       }
       if(varlist[i,2]==1){
         outname <- paste0(outputdir,rr,"/png/",varlist[i,1],".png")
@@ -230,7 +236,7 @@ funcplotgen <- function(rr,progr){
                          allplot[["Fin_Ene_Res_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_SolidsBio"]] + theme(legend.position="none"),
                          allplot[["Fin_Ene_Tra_Ele"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_Bio"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_Oil"]] + theme(legend.position="none"),NULL,p_legend1,
                          nrow=6,rel_widths =c(1,1,1,1,1),align = "hv")
-  ggsave(pp_tfcind, file=paste0(outputdir,rr,"/merge/tfcind.png"), width=25, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*4+2)*2,limitsize=FALSE)
+  ggsave(pp_tfcind, file=paste0(outputdir,rr,"/merge/tfcind.png"), width=25, height=20,limitsize=FALSE)
   pp_area <- plot_grid(allplot[["TPES"]],allplot[["Power_heat"]],allplot[["Landuse"]],ncol=1,align = "hv")
   ggsave(pp_area, file=paste0(outputdir,rr,"/merge/majorArea.png"), width=15, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*4+2)*4,limitsize=FALSE)
   pp_main <- plot_grid(allplot[["GDP_MER"]] + theme(legend.position="none"),allplot[["POP"]] + theme(legend.position="none"),allplot[["Tem_Glo_Mea"]],
@@ -276,7 +282,7 @@ mergefigGen <- function(ii,progr){
       plot.0 <- plot.0 +
         geom_point(data=filter(allmodel,Variable==ii & Model=="Reference"),aes(x=Y, y = Value) , color="black",shape=6,size=2.0,fill="grey") 
     }
-    if(varlist$V2.x[varlist$V1==ii]==1){
+    if(length(varlist$V2.x[varlist$V1==ii])==1){
       outname <- paste0(outputdir,"merge","/png/",ii,".png")
     }else{
       outname <- paste0(outputdir,"merge","/pngdet/",ii,".png")

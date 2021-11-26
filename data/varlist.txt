@@ -7,6 +7,7 @@ Fin_Ene_Ind_Ele	2
 Fin_Ene_Ind_Ele_Heat	2
 Fin_Ene_Ind_Gas	2
 Fin_Ene_Ind_Liq	2
+Fin_Ene_Ind_Hyd	1
 Fin_Ene_Ind_Solids	2
 Fin_Ene_Ind_SolidsBio	2
 Fin_Ene_Ind_SolidsCoa	2
@@ -47,6 +48,7 @@ Fin_Ene_Tra_Ele	2
 Fin_Ene_Tra_Liq	2
 Fin_Ene_Tra_Liq_Bio	1
 Fin_Ene_Tra_Liq_Oil	2
+Fin_Ene_Tra_Hyd	1
 GDP_MER	1
 POP	1
 Tem_Glo_Mea	1
@@ -125,6 +127,7 @@ Prc_Prm_Ene_Oil	1
 Prc_Prm_Ene_Gas	1
 Prc_Prm_Ene_Coa	1
 Prc_Sec_Ene_Ele	1
+Prc_Sec_Ene_Hyd	1
 Sec_Ene_Ele_Heat	2
 Sec_Ene_Ele_Heat_Bio	2
 Sec_Ene_Ele_Heat_Coa	2
