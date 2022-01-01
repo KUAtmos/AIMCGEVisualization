@@ -7,7 +7,7 @@ CHN
 IND
 JPN
 #XSE
-#XSA
+XSA
 #CAN
 BRA
 #XLM

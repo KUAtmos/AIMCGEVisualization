@@ -49,12 +49,14 @@ library(progressr)
 #---------------switches to specify the run condition -----
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
 enduseflag <- 1   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
 dirCGEoutput <-"../../output/iiasa_database/gdx/"  # directory where the CGE output is located 
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 #parallelmode <- 0 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 threadsnum <- min(floor(availableCores()/2),24)
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
-
+mergecolnum <- 4 #merge figure facet number of columns
+ 
 #---------------End of switches to specify the run condition -----
 
 OrRdPal <- brewer.pal(9, "OrRd")
@@ -124,7 +126,15 @@ if(enduseflag==1){
   EnduseGload0 <- rgdx.param(paste0('../modeloutput/AIMEnduseG.gdx'),'data_all')  %>% rename("SCENARIO"=Sc,"Region"=Sr,"Variable"=Sv,"Y"=Sy,"Value"=data_all)  %>% mutate(Model="AIM/Enduse[Global]")
   EnduseGload01 <- EnduseGload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
     select(-SCENARIO) %>% rename(SCENARIO="Name") %>% select(Region,Variable,Y,Value,SCENARIO,Model)
-  EnduseGload1 <- rbind(EnduseGload01, filter(EnduseGload01, Variable=="Pol_Cos_Add_Tot_Ene_Sys_Cos") %>% select(-Variable) %>% mutate("Variable"="Pol_Cos_GDP_los"))
+  if(enduseEneCost==1){
+    EnduseGload_cost <- filter(EnduseGload01, Variable %in% c("Pol_Cos_Add_Tot_Ene_Sys_Cos","GDP_MER")) %>% spread(key=Variable,value=Value,fill=0) 
+    EnduseGload_cost$Pol_Cos_GDP_los_rat <- EnduseGload_cost$Pol_Cos_Add_Tot_Ene_Sys_Cos/EnduseGload_cost$GDP_MER*100
+    EnduseGload1 <- rbind(EnduseGload01, select(EnduseGload_cost,-GDP_MER,-Pol_Cos_Add_Tot_Ene_Sys_Cos) %>% rename(Value=Pol_Cos_GDP_los_rat) %>% mutate("Variable"="Pol_Cos_GDP_Los_rat"))
+  }else{
+    EnduseGload1 <- EnduseGload01
+  }
+  EnduseGload0 <- 0
+  EnduseGload01 <- 0
 }
 
 #IEA energy balance information
@@ -188,7 +198,7 @@ funcplotgen <- function(rr,progr){
     }
     plotflag[[nalist[i]]] <- nrow(filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr))
   }
-  #---Area figures
+#---Area figures
   for(j in 1:nrow(areamappara)){
     XX <- allmodel %>% filter(Variable %in% as.vector(areamap$Variable)) %>% left_join(areamap,by="Variable") %>% ungroup() %>% 
       filter(Class==areamappara[j,1] & Model!="Reference"& Region==rr) %>% select(Model,SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
@@ -212,7 +222,7 @@ funcplotgen <- function(rr,progr){
       theme(legend.position="bottom", text=element_text(size=12),  
             axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, size = 12)) +
       guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10)) +  ggtitle(paste(rr,areamappara$Class[j],sep=" "))+
-      facet_wrap(Model ~ SCENARIO,ncol=4) + scale_fill_manual(values=colorpal) + 
+      facet_wrap(Model ~ SCENARIO,ncol=mergecolnum) + scale_fill_manual(values=colorpal) + 
       annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')
     if(nrow(XX2)>=1){
       plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity")
@@ -237,8 +247,8 @@ funcplotgen <- function(rr,progr){
                          allplot[["Fin_Ene_Tra_Ele"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_Bio"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_Oil"]] + theme(legend.position="none"),NULL,p_legend1,
                          nrow=6,rel_widths =c(1,1,1,1,1),align = "hv")
   ggsave(pp_tfcind, file=paste0(outputdir,rr,"/merge/tfcind.png"), width=25, height=20,limitsize=FALSE)
-  pp_area <- plot_grid(allplot[["TPES"]],allplot[["Power_heat"]],allplot[["Landuse"]],ncol=1,align = "hv")
-  ggsave(pp_area, file=paste0(outputdir,rr,"/merge/majorArea.png"), width=15, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*4+2)*4,limitsize=FALSE)
+  pp_area <- plot_grid(allplot[["TPES"]],allplot[["Power_heat"]],allplot[["Landuse"]],allplot[["Investment"]],ncol=2,align = "hv")
+  ggsave(pp_area, file=paste0(outputdir,rr,"/merge/majorArea.png"), width=25, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*4+2)*2,limitsize=FALSE)
   pp_main <- plot_grid(allplot[["GDP_MER"]] + theme(legend.position="none"),allplot[["POP"]] + theme(legend.position="none"),allplot[["Tem_Glo_Mea"]],
                        allplot[["Emi_CO2_Ene_and_Ind_Pro"]] + theme(legend.position="none"),allplot[["Emi_CO2"]] + theme(legend.position="none"),allplot[["Emi_Kyo_Gas"]],
                       allplot[["Pol_Cos_GDP_Los_rat"]] + theme(legend.position="none"),allplot[["Pol_Cos_Cns_Los_rat"]] + theme(legend.position="none"),allplot[["Prc_Car"]],
@@ -311,7 +321,8 @@ exe_fig_make <- function(ListIte,Xfunc){
 }
 
 #-----------------------
-nalist <- c(as.vector(varlist$V1),"TPES","POWER","Power_heat","Landuse","TFC_fuel","TFC_Sector","TFC_Ind","TFC_Tra","TFC_Res","TFC_Com")
+nalist <- c(as.vector(varlist$V1),"TPES","POWER","Power_heat","Landuse","TFC_fuel","TFC_Sector","TFC_Ind","TFC_Tra","TFC_Res","TFC_Com","Investment")
+#nalist <- c("Investment")
 allplot <- as.list(nalist)
 plotflag <- as.list(nalist)
 names(allplot) <- nalist

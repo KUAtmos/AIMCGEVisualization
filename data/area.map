@@ -9,3 +9,4 @@ TFC_Ind	Final Energy|Industry	EJ/year
 TFC_Tra	Final Energy|Transport	EJ/year
 TFC_Res	Final Energy|Residential	EJ/year
 TFC_Com	Final Energy|commercial	EJ/year
+Investment	Investment	bil US$/year
