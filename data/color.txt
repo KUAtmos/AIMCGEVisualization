@@ -33,3 +33,6 @@
 "Energy Crops"	"#FF7F00"
 "Other Land"	"#FFFF33"
 "Other Arable Land"	"#A65628"
+"Buildings"	"#8DA0CB"
+"Fossil"	"#E41A1C"
+"BioExtraction"	"#35a16b"

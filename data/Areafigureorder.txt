@@ -81,3 +81,12 @@ TFC_Res	Gas	Fin_Ene_Res_Gas	3
 TFC_Res	Electricity	Fin_Ene_Res_Ele	4
 TFC_Res	Heat	Fin_Ene_Res_Heat	5
 TFC_Res	Hydrogen	Fin_Ene_Res_Hyd	6
+Investment	Industry	Inv_Ene_Dem_Ind_Eff_and_Dec	1
+Investment	Buildings	Inv_Ene_Dem_Res_and_Com_Eff_and_Dec	2
+Investment	Transport	Inv_Ene_Dem_Tra_Eff_and_Dec	3
+Investment	Hydrogen	Inv_Ene_Sup_Hyd	8
+Investment	Electricity	Inv_Ene_Sup_Ele	4
+Investment	Liquid	Inv_Ene_Sup_Liq	5
+Investment	Heat	Inv_Ene_Sup_Heat	7
+Investment	Fossil	Inv_Ene_Sup_Ext_Fos	6
+Investment	BioExtraction	Inv_Ene_Sup_Ext_Bio	9
