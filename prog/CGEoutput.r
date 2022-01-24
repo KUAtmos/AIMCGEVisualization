@@ -49,7 +49,8 @@ library(progressr)
 #---------------switches to specify the run condition -----
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
 enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
-dirCGEoutput <-"../../anls_output/iiasa_database/gdx/"  # directory where the CGE output is located 
+dirCGEoutput <-"../../output/iiasa_database/gdx/"  # directory where the CGE output is located 
+dirEnduseoutput <-"../../../Enduse/output/globalCGEInt/cons/main/"  # directory where the CGE output is located 
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 #parallelmode <- 0 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 threadsnum <- min(floor(availableCores()/2),24)
@@ -93,8 +94,8 @@ dir.create(paste0("../output/","merge","/png"))
 dir.create(paste0("../output/","merge","/pngdet"))
 
 file.copy(paste0(dirCGEoutput,filename,"_IAMC.gdx"), paste0("../modeloutput/",filename,"_IAMC.gdx"),overwrite = TRUE)
-file.copy(paste0(dirCGEoutput,"../../../AIMCGE/individual/AIMEnduseG2CGE/data/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG.gdx"),overwrite = TRUE)
-file.copy(paste0(dirCGEoutput,"../../../AIMCGE/individual/IEAEB1062CGE/output/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
+file.copy(paste0(dirEnduseoutput,"merged_output.gdx"), paste0("../modeloutput/AIMEnduseG.gdx"),overwrite = TRUE)
+file.copy(paste0(dirCGEoutput,"../../../AIMCGE/data/AIMHubData/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
 
 linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33","black")
 #linepalette <- c("Baseline"="#4DAF4A","GlobalOptimalZero"="#FF7F00","NDC+Zero"="#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
