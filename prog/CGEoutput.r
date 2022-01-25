@@ -123,22 +123,17 @@ CGEload1 <- CGEload0 %>% rename("Value"=IAMC_Template,"Variable"=VEMF) %>%
   select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name",Y="YEMF")
 
 #Enduse loading
-if(enduseflag==1){
-  EnduseGload0 <- rgdx.param(paste0('../modeloutput/AIMEnduseG.gdx'),'data_all')  %>% rename("SCENARIO"=Sc,"Region"=Sr,"Variable"=Sv,"Y"=Sy,"Value"=data_all)  %>% mutate(Model="Enduse[Global]-1")
-  EnduseGload1 <- EnduseGload0 %>% left_join(scenariomap2,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% 
-    select(-SCENARIO) %>% rename(SCENARIO="Name") %>% select(Region,Variable,Y,Value,SCENARIO,Model)
-}
 
 if(enduseflag>=1){
   for(ii in 1:enduseflag){
     if(ii==1){fileid <- ""}else{fileid <- ii}
     file.copy(paste0(dirEnduseoutput,"../../../globalCGEInt",fileid,"/cons/main/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG",ii,".gdx"),overwrite = TRUE)
-    eval(parse(text=paste0("EnduseGloadX0_",ii," <- rgdx.param(paste0('../modeloutput/AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Variable'=Sv,'Y'=Sy,'Value'=data_all)  %>% mutate(Model=paste0('Enduse[Global]-',",ii,"))")))
-    eval(parse(text=paste0("EnduseGloadX1_",ii," <- EnduseGloadX0_",ii," %>% left_join(scenariomap2,by='SCENARIO') %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% select(-SCENARIO) %>% rename(SCENARIO='Name') %>% select(Region,Variable,Y,Value,SCENARIO,Model)")))
+    eval(parse(text=paste0("EnduseGloadX0_",ii," <- rgdx.param(paste0('../modeloutput/AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Variable'=Sv,'Y'=Sy,'Value'=data_all)  %>% mutate(Model=paste0('Enduse[Global]-',",ii,"))%>% left_join(scenariomap2,by='SCENARIO')")))
+    eval(parse(text=paste0("EnduseGloadX1_",ii," <- EnduseGloadX0_",ii,"  %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% select(-SCENARIO) %>% rename(SCENARIO='Name') %>% select(Region,Variable,Y,Value,SCENARIO,Model)")))
     if(enduseEneCost==1){
-      eval(parse(text=paste0("EnduseGload_cost <- filter(EnduseGloadX0_",ii,", Variable %in% c('Pol_Cos_Add_Tot_Ene_Sys_Cos','GDP_MER')) %>% spread(key=Variable,value=Value,fill=0)")))
+      eval(parse(text=paste0("EnduseGload_cost <- filter(EnduseGloadX0_",ii,", Variable %in% c('Pol_Cos_Add_Tot_Ene_Sys_Cos','GDP_MER') & SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% spread(key=Variable,value=Value,fill=0)")))
       EnduseGload_cost$Pol_Cos_GDP_los_rat <- EnduseGload_cost$Pol_Cos_Add_Tot_Ene_Sys_Cos/EnduseGload_cost$GDP_MER*100
-      eval(parse(text=paste0("EnduseGloadX2_",ii," <- rbind(EnduseGloadX1_",ii,", select(EnduseGload_cost,-GDP_MER,-Pol_Cos_Add_Tot_Ene_Sys_Cos) %>% rename(Value=Pol_Cos_GDP_los_rat) %>% mutate(Variable='Pol_Cos_GDP_Los_rat'))")))
+      eval(parse(text=paste0("EnduseGloadX2_",ii," <- rbind(EnduseGloadX1_",ii,", select(EnduseGload_cost,-GDP_MER,-Pol_Cos_Add_Tot_Ene_Sys_Cos,-SCENARIO) %>% rename(Value=Pol_Cos_GDP_los_rat) %>% mutate(Variable='Pol_Cos_GDP_Los_rat')%>% rename(SCENARIO='Name'))")))
     }else{
       eval(parse(text=paste0("EnduseGloadX2_",ii," <- EnduseGloadX1_",ii)))
     }
@@ -147,7 +142,7 @@ if(enduseflag>=1){
   }
 }
 allmodel0 <- CGEload1  
-if(enduseflag>=2){
+if(enduseflag>=1){
   for(ii in 1:enduseflag){
     eval(parse(text=paste0("allmodeltmp <- rbind(allmodel0,EnduseGloadX2_",ii,")")))
     allmodel0 <- allmodeltmp
@@ -242,9 +237,11 @@ funcplotgen <- function(rr,progr){
   }
 
 #---merged figures
+  #Final energy consumption area
   pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
   ggsave(pp_tfc, file=paste0(outputdir,rr,"/merge/tfc.png"), width=9*2, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Fin_Ene"]]), pattern = "guide-box")
+  #Final energy consumption by sectors and fuels
   pp_tfcind <- plot_grid(allplot[["Fin_Ene"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com"]] + theme(legend.position="none"),
                          allplot[["Fin_Ene_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_SolidsBio"]] + theme(legend.position="none"),
                          allplot[["Fin_Ene_Ind_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_SolidsBio"]] + theme(legend.position="none"),
@@ -253,8 +250,10 @@ funcplotgen <- function(rr,progr){
                          allplot[["Fin_Ene_Tra_Ele"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_Bio"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_Oil"]] + theme(legend.position="none"),NULL,p_legend1,
                          nrow=6,rel_widths =c(1,1,1,1,1),align = "hv")
   ggsave(pp_tfcind, file=paste0(outputdir,rr,"/merge/tfcind.png"), width=25, height=20,limitsize=FALSE)
+  #Area plots
   pp_area <- plot_grid(allplot[["TPES"]],allplot[["Power_heat"]],allplot[["Landuse"]],allplot[["Investment"]],ncol=2,align = "hv")
-  ggsave(pp_area, file=paste0(outputdir,rr,"/merge/majorArea.png"), width=25, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*4+2)*2,limitsize=FALSE)
+  ggsave(pp_area, file=paste0(outputdir,rr,"/merge/majorArea.png"), width=25, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*4+2)*3,limitsize=FALSE)
+  #Main indicators
   pp_main <- plot_grid(allplot[["GDP_MER"]] + theme(legend.position="none"),allplot[["POP"]] + theme(legend.position="none"),allplot[["Tem_Glo_Mea"]],
                        allplot[["Emi_CO2_Ene_and_Ind_Pro"]] + theme(legend.position="none"),allplot[["Emi_CO2"]] + theme(legend.position="none"),allplot[["Emi_Kyo_Gas"]],
                       allplot[["Pol_Cos_GDP_Los_rat"]] + theme(legend.position="none"),allplot[["Pol_Cos_Cns_Los_rat"]] + theme(legend.position="none"),allplot[["Prc_Car"]],
@@ -336,8 +335,8 @@ allplotmerge <- as.list(nalist)
 plotflagmerge <- as.list(nalist)
 lst <- list()
 lst$region <- region_load
-lst$varlist <- as.list(as.vector(varlist$V1))
 #lst$region <- "World"
+lst$varlist <- as.list(as.vector(varlist$V1))
 
 #regional figure generation execution
 exe_fig_make(lst$region,funcplotgen)
