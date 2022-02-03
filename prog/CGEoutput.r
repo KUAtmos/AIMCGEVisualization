@@ -48,8 +48,8 @@ library(progressr)
 
 #---------------switches to specify the run condition -----
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
-enduseEneCost <- 1 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
+enduseflag <- 3   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
 dirCGEoutput <-"../../output/iiasa_database/gdx/"  # directory where the CGE output is located 
 dirEnduseoutput <-"../../../Enduse/output/globalCGEInt/cons/main/"  # directory where the CGE output is located 
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
@@ -96,7 +96,7 @@ dir.create(paste0("../output/","merge","/png"))
 dir.create(paste0("../output/","merge","/pngdet"))
 
 file.copy(paste0(dirCGEoutput,filename,"_IAMC.gdx"), paste0("../modeloutput/",filename,"_IAMC.gdx"),overwrite = TRUE)
-file.copy(paste0(dirEnduseoutput,"merged_output.gdx"), paste0("../modeloutput/AIMEnduseG.gdx"),overwrite = TRUE)
+#file.copy(paste0(dirEnduseoutput,"merged_output.gdx"), paste0("../modeloutput/AIMEnduseG.gdx"),overwrite = TRUE)
 file.copy(paste0(dirCGEoutput,"../../../AIMCGE/data/AIMHubData/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
 
 linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33","black")
@@ -126,7 +126,7 @@ CGEload1 <- CGEload0 %>% rename("Value"=IAMC_Template,"Variable"=VEMF) %>%
 
 if(enduseflag>=1){
   for(ii in 1:enduseflag){
-    if(ii==1){fileid <- ""}else{fileid <- ii}
+    fileid <- ii
     file.copy(paste0(dirEnduseoutput,"../../../globalCGEInt",fileid,"/cons/main/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG",ii,".gdx"),overwrite = TRUE)
     eval(parse(text=paste0("EnduseGloadX0_",ii," <- rgdx.param(paste0('../modeloutput/AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Variable'=Sv,'Y'=Sy,'Value'=data_all)  %>% mutate(Model=paste0('Enduse[Global]-',",ii,"))%>% left_join(scenariomap2,by='SCENARIO')")))
     eval(parse(text=paste0("EnduseGloadX1_",ii," <- EnduseGloadX0_",ii,"  %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% select(-SCENARIO) %>% rename(SCENARIO='Name') %>% select(Region,Variable,Y,Value,SCENARIO,Model)")))
@@ -182,12 +182,13 @@ funcplotgen <- function(rr,progr){
         geom_line(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,Model)),stat="identity") +
         geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr),aes(x=Y, y = Value , color=SCENARIO,shape=Model),size=3.0,fill="white") +
         MyThemeLine + scale_color_manual(values=linepalettewName) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
+        scale_shape_manual(values = 1:length(unique(allmodel$Model))) +
         xlab("year") + ylab(varlist[i,4])  +  ggtitle(paste(rr,varlist[i,3],sep=" ")) +
         annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
         theme(legend.title=element_blank()) 
       if(length(scenariomap$SCENARIO)<20){
         plot.0 <- plot.0 +
-        geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model=="Reference"& Region==rr),aes(x=Y, y = Value) , color="black",shape=6,size=2.0,fill="grey") 
+        geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model=="Reference"& Region==rr),aes(x=Y, y = Value) , color="black",shape=0,size=2.0,fill="grey") 
       }
       if(varlist[i,2]==1){
         outname <- paste0(outputdir,rr,"/png/",varlist[i,1],".png")
@@ -232,7 +233,7 @@ funcplotgen <- function(rr,progr){
     }
     allplot[[areamappara$Class[j]]] <- plot3 
     outname <- paste0(outputdir,rr,"/png/",areamappara[j,1],".png")
-    ggsave(plot3, file=outname, dpi = 450, width=9, height=floor(length(unique(XX$SCENARIO))/4+1)*4+2,limitsize=FALSE)
+    ggsave(plot3, file=outname, dpi = 450, width=9, height=floor(length(unique(XX$SCENARIO))/4+1)*8+2,limitsize=FALSE)
     plotflag[[areamappara$Class[j]]] <- nrow(XX)  
   }
 
@@ -290,12 +291,13 @@ mergefigGen <- function(ii,progr){
       geom_line(data=filter(allmodel,Variable==ii & Model!="Reference"),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,Model)),stat="identity") +
       geom_point(data=filter(allmodel,Variable==ii & Model!="Reference"),aes(x=Y, y = Value , color=SCENARIO,shape=Model),size=3.0,fill="white") +
       MyThemeLine + scale_color_manual(values=linepalettewName) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
+      scale_shape_manual(values = 1:length(unique(allmodel$Model))) +
       xlab("year") + ylab(varlist$V3[varlist$V1==ii])  +  ggtitle(paste("Multi-regions",varlist$V2.y[varlist$V1==ii],sep=" ")) +
       annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
       theme(legend.title=element_blank()) +facet_wrap(~Region,scales="free")
     if(length(scenariomap$SCENARIO)<20){
       plot.0 <- plot.0 +
-        geom_point(data=filter(allmodel,Variable==ii & Model=="Reference"),aes(x=Y, y = Value) , color="black",shape=6,size=2.0,fill="grey") 
+        geom_point(data=filter(allmodel,Variable==ii & Model=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=2.0,fill="grey") 
     }
     if(length(varlist$V2.x[varlist$V1==ii])==1){
       outname <- paste0(outputdir,"merge","/png/",ii,".png")

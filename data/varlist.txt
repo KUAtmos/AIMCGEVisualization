@@ -85,6 +85,7 @@ Sec_Ene_Liq_Oil	1
 Sec_Ene_Solids	1
 Sec_Ene_SolidsBio	1
 Sec_Ene_SolidsCoa	1
+Sec_Ene_Hyd	1
 Sec_Ene_Hyd_Bio	2
 Sec_Ene_Hyd_Coa	2
 Sec_Ene_Hyd_Gas	2

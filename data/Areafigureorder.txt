@@ -90,3 +90,10 @@ Investment	Liquid	Inv_Ene_Sup_Liq	5
 Investment	Heat	Inv_Ene_Sup_Heat	7
 Investment	Fossil	Inv_Ene_Sup_Ext_Fos	6
 Investment	BioExtraction	Inv_Ene_Sup_Ext_Bio	9
+Hydrogen	Coal|w/o CCS	Sec_Ene_Hyd_Coa_wo_CCS	1
+Hydrogen	Coal|w/ CCS	Sec_Ene_Hyd_Coa_w_CCS	2
+Hydrogen	Gas|w/o CCS	Sec_Ene_Hyd_Gas_wo_CCS	3
+Hydrogen	Gas|w/ CCS	Sec_Ene_Hyd_Gas_w_CCS	4
+Hydrogen	Biomass|w/o CCS	Sec_Ene_Hyd_Bio_wo_CCS	5
+Hydrogen	Biomass|w/ CCS	Sec_Ene_Hyd_Bio_w_CCS	6
+Hydrogen	Electricity	Sec_Ene_Hyd_Ele	7

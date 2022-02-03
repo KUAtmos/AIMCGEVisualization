@@ -2,6 +2,7 @@ Class	Var	Unit
 TPES	Primary energy	EJ/year
 Power	Power generation	EJ/year
 Power_heat	Power and heat generation	EJ/year
+Hydrogen	Hydrogen generation	EJ/year
 TFC_fuel	Final energy|Fuel	EJ/year
 Landuse	Land use	Mha
 TFC_Sector	Final Energy|Sectors	EJ/year
