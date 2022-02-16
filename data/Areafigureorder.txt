@@ -97,3 +97,7 @@ Hydrogen	Gas|w/ CCS	Sec_Ene_Hyd_Gas_w_CCS	4
 Hydrogen	Biomass|w/o CCS	Sec_Ene_Hyd_Bio_wo_CCS	5
 Hydrogen	Biomass|w/ CCS	Sec_Ene_Hyd_Bio_w_CCS	6
 Hydrogen	Electricity	Sec_Ene_Hyd_Ele	7
+AnnualInvest	Industry	Inv_Ann_Ind	1
+AnnualInvest	Commercial	Inv_Ann_Res_and_Com_Com	3
+AnnualInvest	Residential	Inv_Ann_Res_and_Com_Res	4
+AnnualInvest	Transport	Inv_Ann_Tra	2

@@ -1,3 +1,4 @@
+V1	V2
 "Coal|w/o CCS"	"#000000"
 "Coal|w/ CCS"	"#7f878f"
 "Oil|w/o CCS"	"#ff2800"

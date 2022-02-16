@@ -1,8 +1,6 @@
 /output
 
-/prog/.Rproj.user
-/prog/.Rhistory
-
+prog/.Rproj.user
+prog/.Rhistory
 /modeloutput/*.gdx
 
-.Rproj.user

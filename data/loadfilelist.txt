@@ -1,0 +1,8 @@
+paraname	filename
+scenariomap	../data/scenariomap.map
+scenariomap2	../data/scenariomap2.map
+varlist_load	../data/varlist.txt
+varalllist	../data/varalllist.txt
+areapaletteload	../data/color.txt
+areamap	../data/Areafigureorder.txt
+areamappara	../data/Area.map

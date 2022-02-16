@@ -1,3 +1,4 @@
+V1	V2
 Pol_Cos_Cns_Los_rat	1
 Fin_Ene	1
 Fin_Ene_Ele	1
