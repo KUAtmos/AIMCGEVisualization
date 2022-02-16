@@ -68,7 +68,7 @@ for(dd in dirlist){
 }
 
 
-file.copy(paste0(dirCGEoutput,"../../../AIMCGE/data/AIMHubData/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
+file.copy(paste0(dirCGEoutput,"../../../AIMCGE/data/AIMHubData/main/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
 
 linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33","black")
 landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
@@ -76,7 +76,7 @@ landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
 
 #File loading and parameter configuration
 fileloadlist <- read.table("../data/loadfilelist.txt", sep="\t",header=T, stringsAsFactors=F)
-for(i in nrow(fileloadlist)){
+for(i in 1:nrow(fileloadlist)){
   eval(parse(text=paste0(fileloadlist[i,]$paraname," <- read.table('",fileloadlist[i,]$filename,"', sep='\t',header=T, stringsAsFactors=F)")))
 }
 region_load <- as.vector(read.table("../data/region.txt", sep="\t",header=F, stringsAsFactors=F)$V1)
