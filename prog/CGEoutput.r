@@ -64,7 +64,7 @@ MyThemeLine <- theme_bw() +
 outdir <- "../output/"
 dirlist <- c(outdir,paste0(outdir,"ppt"),paste0(outdir,"merge"),paste0(outdir,"merge/png"),paste0(outdir,"merge/pngdet"))
 for(dd in dirlist){
-  dir.create(dd)
+  if(file.exists(dd)){}else{dir.create(dd)}
 }
 
 
@@ -132,6 +132,7 @@ IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
 IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
 
 allmodel <- rbind(allmodel0,IEAEB1)  
+#%>% filter(Model!="Enduse[Global]-4" & Model!="CGEEnd5" & Model!="CGEEnd4")
 maxy <- max(allmodel$Y)
 linepalettewName <- linepalette
 names(linepalettewName) <- unique(allmodel$SCENARIO)
@@ -217,14 +218,14 @@ funcplotgen <- function(rr,progr){
 #Function for Decomposition
 funcDecGen <- function(rr,progr){
   progr(message='region figures')
-  Decom2 <- Decom1 %>% filter(SCENARIO %in% scenariomap$SCENARIO & Y %in% c(2030,2050) & Sector!="OTH" & R==rr) 
+  Decom2 <- Decom1 %>% filter(SCENARIO %in% scenariomap$SCENARIO & Y %in% c(2030,2050) & Sector %in% c("IND","SER","PWR","OEN","TRS","AGR") & R==rr) 
   plotdec <- ggplot() + geom_bar(data=filter(Decom2,Element %in% c("fd_output","output_va","va","residual1")),aes(x=Sector, y = value*100 , fill=Element), stat="identity") +
-    geom_point(data=filter(Decom2,Element %in% c("va")),aes(x=Sector, y = value*100 ),color="black", stat="identity") +
+    geom_point(data=filter(Decom2,Element %in% c("fd")),aes(x=Sector, y = value*100 ),color="black", stat="identity") +
     ylab(flabel[1]) + xlab(flabel[2]) +labs(fill="") +
     guides(fill=guide_legend(reverse=TRUE)) + 
     MyThemeLine + theme(legend.position="bottom", text=element_text(size=12))+
     guides(fill=guide_legend(ncol=5))+ggtitle(paste0(rr," decomposition"))+
-    facet_grid(Y~SCENARIO,scales="free_x") + annotate("segment",x=0,xend=10,y=0,yend=0,linetype="dashed",color="grey")
+    facet_grid(Y~SCENARIO,scales="free_x") + annotate("segment",x=0,xend=6,y=0,yend=0,linetype="dashed",color="grey")
   outname <- paste0(outdir,rr,"/merge/","decomp.png")
   ggsave(plotdec, file=outname, width=floor(length(unique(Decom2$SCENARIO))/2+1)*4, height=10,limitsize=FALSE)    
 }
@@ -334,7 +335,7 @@ for(rr in lst$region){
   regoutdir <- paste0("../output/",rr)
   dirlist <- c(regoutdir,paste0(regoutdir,"/png"),paste0(regoutdir,"/pngdet"),paste0(regoutdir,"/ppt"),paste0(regoutdir,"/merge"))
   for(dd in dirlist){
-    dir.create(dd)
+    if(file.exists(dd)){}else{dir.create(dd)}
   }
 }
 

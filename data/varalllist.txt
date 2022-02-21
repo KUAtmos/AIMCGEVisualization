@@ -1,4 +1,4 @@
-V1	V2
+V1	V2	V3
 Emi_CO2_Ene_and_Ind_Pro	Emissions|CO2|Energy and Industrial Processes	Mt CO2/yr
 Fin_Ene	Final Energy	EJ/yr
 GDP_MER	GDP|MER	billion US$2010/yr
