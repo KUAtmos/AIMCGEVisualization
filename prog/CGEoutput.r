@@ -21,7 +21,7 @@ for(j in libloadlist){
 
 #---------------switches to specify the run condition -----
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 4   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseflag <- 6   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
 enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
 dirCGEoutput <-"../../output/iiasa_database/gdx/"  # directory where the CGE output is located 
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
@@ -30,7 +30,7 @@ parallelmode <- 1 #Switch for parallel process. if you would like to use multi-p
 #parallelmode <- 0 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 threadsnum <- min(floor(availableCores()/2),24)
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
-mergecolnum <- 4 #merge figure facet number of columns
+mergecolnum <- 6 #merge figure facet number of columns
 
 #---------------End of switches to specify the run condition -----
 
@@ -161,7 +161,7 @@ funcplotgen <- function(rr,progr){
         xlab("year") + ylab(varlist[i,4])  +  ggtitle(paste(rr,varlist[i,3],sep=" ")) +
         annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
         theme(legend.title=element_blank()) 
-      if(length(scenariomap$SCENARIO)<20){
+      if(length(scenariomap$SCENARIO)<40){
         plot.0 <- plot.0 +
         geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model=="Reference"& Region==rr),aes(x=Y, y = Value) , color="black",shape=0,size=2.0,fill="grey") 
       }
@@ -176,11 +176,8 @@ funcplotgen <- function(rr,progr){
     plotflag[[nalist[i]]] <- nrow(filter(allmodel,Variable==varlist[i,1] & Model!="Reference"& Region==rr))
   }
   #---merged figures
-  #Final energy consumption area
-  pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
-  ggsave(pp_tfc, file=paste0(outdir,rr,"/merge/tfc.png"), width=9*2, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
-  p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Fin_Ene"]]), pattern = "guide-box")
   #Final energy consumption by sectors and fuels
+  p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Fin_Ene"]]), pattern = "guide-box")
   pp_tfcind <- plot_grid(allplot[["Fin_Ene"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com"]] + theme(legend.position="none"),
                          allplot[["Fin_Ene_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_SolidsBio"]] + theme(legend.position="none"),
                          allplot[["Fin_Ene_Ind_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_SolidsBio"]] + theme(legend.position="none"),
@@ -264,9 +261,12 @@ funcAreaPlotGen <- function(rr,progr){
     }
     allplot[[areamappara$Class[j]]] <- plot3 
     outname <- paste0(outdir,rr,"/merge/",areamappara[j,1],".png")
-    ggsave(plot3, file=outname, dpi = 450, width=9, height=floor(length(unique(XX$SCENARIO))/4+1)*8+2,limitsize=FALSE)
+    ggsave(plot3, file=outname, width=15, height=floor(length(unique(XX$SCENARIO))/4+1)*10+2,limitsize=FALSE)
     plotflag[[areamappara$Class[j]]] <- nrow(XX)  
   }
+  #Final energy consumption area
+  pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
+  ggsave(pp_tfc, file=paste0(outdir,rr,"/merge/tfc.png"), width=9*2, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
 }
 
 
@@ -327,7 +327,7 @@ allplotmerge <- as.list(nalist)
 plotflagmerge <- as.list(nalist)
 lst <- list()
 lst$region <- region_load
-#lst$region <- "World"
+#lst$region <- c("XAF")
 lst$varlist <- as.list(as.vector(varlist$V1))
 
 #Creat directories
