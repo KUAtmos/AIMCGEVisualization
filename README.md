@@ -18,6 +18,8 @@ In /data/ folder, there are input files
 - region.txt : region set
 - varlist.txt : variable list (using AIM IIASA coding system)
 - scenariomap.map :scenario list and its names
+- scenariomap2.map :scenario list and its names for Endduse (loading process)
+- EnduseScenarioMap.map :scenario list and its names for Endduse (final presetation)
 - specify whether AIM/Enduse results are included in the analysis or not by "enduseflag"
 
 In /modeloutput/ folder, the model output should be included. This is automated by the program but may be better double check.
@@ -33,6 +35,8 @@ dirCGEoutput <-"../../anls_output/iiasa_database/gdx/"  # directory where the CG
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 threadsnum <- min(floor(availableCores()/2),24)
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
+mergecolnum <- 6 #merge figure facet number of columns
+CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
 
 
 # Location:

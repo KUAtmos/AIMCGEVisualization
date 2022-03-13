@@ -6,3 +6,4 @@ varalllist	../data/varalllist.txt
 areapaletteload	../data/color.txt
 areamap	../data/Areafigureorder.txt
 areamappara	../data/Area.map
+EnduseScenarioMap	../data/EnduseScenarioMap.map

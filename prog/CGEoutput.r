@@ -21,13 +21,13 @@ for(j in libloadlist){
 
 #---------------switches to specify the run condition -----
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 6   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseflag <- 5   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
 enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
 dirCGEoutput <-"../../output/iiasa_database/gdx/"  # directory where the CGE output is located 
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
 dirEnduseoutput <-"../../../Enduse/output/globalCGEInt/cons/main/"  # directory where the CGE output is located 
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
-#parallelmode <- 0 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
+EnduseSceName <- c("globalCGEInt","globalCGEInt_woc") #Enduse list
 threadsnum <- min(floor(availableCores()/2),24)
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
 mergecolnum <- 6 #merge figure facet number of columns
@@ -95,35 +95,51 @@ if(length(Getregion)==1){region <- Getregion}
 CGEload1 <- CGEload0 %>% rename("Value"=IAMC_Template,"Variable"=VEMF) %>% 
   left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1]) & REMF %in% region) %>% 
   select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name",Y="YEMF")
+CGEload1$Y <- as.numeric(levels(CGEload1$Y))[CGEload1$Y]
 
 #Enduse loading
-
 if(enduseflag>=1){
-  for(ii in 1:enduseflag){
-    fileid <- ii
-    if(file.exists(paste0(dirEnduseoutput,"../../../globalCGEInt",fileid,"/cons/main/merged_output.gdx"))){
-      file.copy(paste0(dirEnduseoutput,"../../../globalCGEInt",fileid,"/cons/main/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG",ii,".gdx"),overwrite = TRUE)
-      eval(parse(text=paste0("EnduseGloadX0_",ii," <- rgdx.param(paste0('../modeloutput/AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Variable'=Sv,'Y'=Sy,'Value'=data_all)  %>% mutate(Model=paste0('Enduse[Global]-',",ii,"))%>% left_join(scenariomap2,by='SCENARIO')")))
-      eval(parse(text=paste0("EnduseGloadX1_",ii," <- EnduseGloadX0_",ii,"  %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% select(-SCENARIO) %>% rename(SCENARIO='Name') %>% select(Region,Variable,Y,Value,SCENARIO,Model)")))
-      if(enduseEneCost==1){
-        eval(parse(text=paste0("EnduseGload_cost <- filter(EnduseGloadX0_",ii,", Variable %in% c('Pol_Cos_Add_Tot_Ene_Sys_Cos','GDP_MER') & SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% spread(key=Variable,value=Value,fill=0)")))
-        EnduseGload_cost$Pol_Cos_GDP_los_rat <- EnduseGload_cost$Pol_Cos_Add_Tot_Ene_Sys_Cos/EnduseGload_cost$GDP_MER*100
-        eval(parse(text=paste0("EnduseGloadX2_",ii," <- rbind(EnduseGloadX1_",ii,", select(EnduseGload_cost,-GDP_MER,-Pol_Cos_Add_Tot_Ene_Sys_Cos,-SCENARIO) %>% rename(Value=Pol_Cos_GDP_los_rat) %>% mutate(Variable='Pol_Cos_GDP_Los_rat')%>% rename(SCENARIO='Name'))")))
-      }else{
-        eval(parse(text=paste0("EnduseGloadX2_",ii," <- EnduseGloadX1_",ii)))
+  for(ll in EnduseSceName){
+    for(ii in 1:enduseflag){
+      fileid <- ii
+      if(file.exists(paste0(dirEnduseoutput,"../../../",ll,fileid,"/cons/main/merged_output.gdx"))){
+        file.copy(paste0(dirEnduseoutput,"../../../",ll,fileid,"/cons/main/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG",ii,".gdx"),overwrite = TRUE)
+        eval(parse(text=paste0("EnduseGloadX0_",ii,ll," <- rgdx.param(paste0('../modeloutput/AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Variable'=Sv,'Y'=Sy,'Value'=data_all) %>% mutate(Model=paste0('Enduse[Global]-',",ii,"))%>% mutate(SocEco='",ll,"') %>% left_join(scenariomap2,by='SCENARIO')")))
+        eval(parse(text=paste0("EnduseGloadX1_",ii,ll," <- EnduseGloadX0_",ii,ll,"  %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% select(-SCENARIO) %>% rename(SCENARIO='Name') %>% select(Region,Variable,Y,Value,SCENARIO,SocEco,Model)")))
+        if(enduseEneCost==1){
+          eval(parse(text=paste0("EnduseGload_cost <- filter(EnduseGloadX0_",ii,ll,", Variable %in% c('Pol_Cos_Add_Tot_Ene_Sys_Cos','GDP_MER') & SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% spread(key=Variable,value=Value,fill=0)")))
+          EnduseGload_cost$Pol_Cos_GDP_los_rat <- EnduseGload_cost$Pol_Cos_Add_Tot_Ene_Sys_Cos/EnduseGload_cost$GDP_MER*100
+          eval(parse(text=paste0("EnduseGloadX2_",ii,ll," <- rbind(EnduseGloadX1_",ii,ll,", select(EnduseGload_cost,-GDP_MER,-Pol_Cos_Add_Tot_Ene_Sys_Cos,-SCENARIO) %>% rename(Value=Pol_Cos_GDP_los_rat) %>% mutate(Variable='Pol_Cos_GDP_Los_rat')%>% rename(SCENARIO='Name'))")))
+        }else{
+          eval(parse(text=paste0("EnduseGloadX2_",ii,ll," <- EnduseGloadX1_",ii,ll)))
+        }
+        for(num in 0:1){
+          eval(parse(text=paste0("EnduseGloadX",num,"_",ii,ll," <- 0")))
+        }
       }
-      eval(parse(text=paste0("EnduseGloadX1_",ii," <- 0")))
     }
   }
-}
-allmodel0 <- CGEload1  
-if(enduseflag>=1){
-  for(ii in 1:enduseflag){
-    eval(parse(text=paste0("allmodeltmp <- rbind(allmodel0,EnduseGloadX2_",ii,")")))
-    allmodel0 <- allmodeltmp
+  tnum <- 0
+  for(ll in EnduseSceName){
+    for(ii in 1:enduseflag){
+      tnum <- tnum +1
+      if(tnum==1){
+        eval(parse(text=paste0("allmodelEnduse0 <- EnduseGloadX2_",ii,ll)))
+      }else{
+        eval(parse(text=paste0("allmodelEnduse0 <- rbind(allmodelEnduse0,EnduseGloadX2_",ii,ll,")")))
+      }
+      eval(parse(text=paste0("EnduseGloadX2_",ii,ll," <- 0")))
+    }
   }
+  allmodelEnduse1 <- inner_join(allmodelEnduse0,EnduseScenarioMap,by=c("SCENARIO","SocEco","Model")) %>% 
+    select(-SocEco,-SCENARIO) %>% rename(SCENARIO=ReNameSCENARIO) 
+  allmodelEnduse1$Y <- as.numeric(levels(allmodelEnduse1$Y))[allmodelEnduse1$Y]
+  allmodel0 <- rbind(CGEload1,allmodelEnduse1)
+  allmodelEnduse0 <- 0
+}else{
+  allmodel0 <- CGEload1
 }
-allmodel0$Y <- as.numeric(levels(allmodel0$Y))[allmodel0$Y]
+
 
 #IEA energy balance information
 IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Variable"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
@@ -132,7 +148,6 @@ IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
 IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
 
 allmodel <- rbind(allmodel0,IEAEB1)  
-#%>% filter(Model!="Enduse[Global]-4" & Model!="CGEEnd5" & Model!="CGEEnd4")
 maxy <- max(allmodel$Y)
 linepalettewName <- linepalette
 names(linepalettewName) <- unique(allmodel$SCENARIO)
