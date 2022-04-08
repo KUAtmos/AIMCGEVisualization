@@ -3,10 +3,11 @@
 insflag <- 0
 if(insflag==1){
   options(CRAN="http://cran.md.tsukuba.ac.jp/")
+  install.packages("devtools", dependencies = TRUE)
   library(devtools)
   devtools::install_github("tomwenseleers/export")
   install.packages('RDCOMClient', repos = 'http://www.omegahat.net/R/')
-  liblist <- c("ggplot2","RColorBrewer","dplyr","sp","maptools","maps","ggradar","fmsb","tidyr","stringr","rJava","Rcpp","ReporteRsjars","ReporteRs","xlsx","officer","furrr","purrr","progressr")
+  liblist <- c("reshape2","cowplot","ggplot2","RColorBrewer","dplyr","sp","maptools","maps","ggradar","fmsb","tidyr","stringr","rJava","Rcpp","ReporteRsjars","ReporteRs","xlsx","officer","furrr","purrr","progressr")
   for(j in liblist){
     install.packages(j, dependencies = TRUE)
   }
@@ -21,13 +22,13 @@ for(j in libloadlist){
 
 #---------------switches to specify the run condition -----
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 5   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
 enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
 dirCGEoutput <-"../../output/iiasa_database/gdx/"  # directory where the CGE output is located 
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
-dirEnduseoutput <-"../../../Enduse/output/globalCGEInt/cons/main/"  # directory where the CGE output is located 
+dirEnduseoutput <-"../../../Enduse/output/"  # directory where the CGE output is located 
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
-EnduseSceName <- c("globalCGEInt","globalCGEInt_woc") #Enduse list
+EnduseSceName <- c("globalCGEInt","globalCGEInt_woc","GCGEIntLoVRE","GCGEIntLoVRE_woc") #Enduse list "globalCGEInt_woc"
 threadsnum <- min(floor(availableCores()/2),24)
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
 mergecolnum <- 6 #merge figure facet number of columns
@@ -97,13 +98,17 @@ CGEload1 <- CGEload0 %>% rename("Value"=IAMC_Template,"Variable"=VEMF) %>%
   select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name",Y="YEMF")
 CGEload1$Y <- as.numeric(levels(CGEload1$Y))[CGEload1$Y]
 
+#Extract data
+ExtData <- filter(CGEload1,Variable %in% varlist$V1) %>% left_join(varlist %>% rename(Variable=V1)) %>% select(-V2.x,-Variable) %>% rename(Variable=V2.y,Unit=V3)
+write.csv(x = ExtData, file = "../output/exportdata.csv")
+
 #Enduse loading
 if(enduseflag>=1){
   for(ll in EnduseSceName){
     for(ii in 1:enduseflag){
       fileid <- ii
-      if(file.exists(paste0(dirEnduseoutput,"../../../",ll,fileid,"/cons/main/merged_output.gdx"))){
-        file.copy(paste0(dirEnduseoutput,"../../../",ll,fileid,"/cons/main/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG",ii,".gdx"),overwrite = TRUE)
+      if(file.exists(paste0(dirEnduseoutput,ll,fileid,"/cons/main/merged_output.gdx"))){
+        file.copy(paste0(dirEnduseoutput,ll,fileid,"/cons/main/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG",ii,".gdx"),overwrite = TRUE)
         eval(parse(text=paste0("EnduseGloadX0_",ii,ll," <- rgdx.param(paste0('../modeloutput/AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Variable'=Sv,'Y'=Sy,'Value'=data_all) %>% mutate(Model=paste0('Enduse[Global]-',",ii,"))%>% mutate(SocEco='",ll,"') %>% left_join(scenariomap2,by='SCENARIO')")))
         eval(parse(text=paste0("EnduseGloadX1_",ii,ll," <- EnduseGloadX0_",ii,ll,"  %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% select(-SCENARIO) %>% rename(SCENARIO='Name') %>% select(Region,Variable,Y,Value,SCENARIO,SocEco,Model)")))
         if(enduseEneCost==1){
