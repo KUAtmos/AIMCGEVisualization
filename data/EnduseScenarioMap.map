@@ -2,6 +2,13 @@ ReNameSCENARIO	SCENARIO	SocEco	Model
 Baseline	Baseline	globalCGEInt	Enduse[Global]-5
 1000C	1000C	globalCGEInt	Enduse[Global]-5
 0500C	0500C	globalCGEInt	Enduse[Global]-5
-Baseline_woc	Baseline	globalCGEInt_woc	Enduse[Global]-5
-1000C_woc	1000C	globalCGEInt_woc	Enduse[Global]-5
-0500C_woc	0500C	globalCGEInt_woc	Enduse[Global]-5
+Baseline	Baseline	globalCGEInt_woc	Enduse[Global]-5
+1000C	1000C	globalCGEInt_woc	Enduse[Global]-5
+0500C	0500C	globalCGEInt_woc	Enduse[Global]-5
+Baseline	Baseline	GCGEIntLoVRE	Enduse[Global]-5
+1000C	1000C	GCGEIntLoVRE	Enduse[Global]-5
+0500C	0500C	GCGEIntLoVRE	Enduse[Global]-5
+Baseline	Baseline	GCGEIntLoVRE_woc	Enduse[Global]-5
+1000C	1000C	GCGEIntLoVRE_woc	Enduse[Global]-5
+0500C	0500C	GCGEIntLoVRE_woc	Enduse[Global]-5
+
