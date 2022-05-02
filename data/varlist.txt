@@ -153,3 +153,14 @@ Car_Seq_CCS_Bio	1
 Car_Seq_CCS_Fos_Ene	1
 Car_Seq_CCS_Fos_Ind_Pro	1
 GDP_MER_Gro	1
+LCO_Ele_Coa_w_CCS	1
+LCO_Ele_Coa_wo_CCS	1
+LCO_Ele_Gas_w_CCS	1
+LCO_Ele_Gas_wo_CCS	1
+LCO_Ele_Nuc	1
+LCO_Ele_SolarPV_Mar	1
+LCO_Ele_SolarPV_Ave	1
+LCO_Ele_Win_Ons_Ave	1
+LCO_Ele_Win_Off_Ave	1
+LCO_Ele_Bio_w_CCS	1
+LCO_Ele_Bio_wo_CCS	1

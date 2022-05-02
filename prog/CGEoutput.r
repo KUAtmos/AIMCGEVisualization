@@ -22,7 +22,7 @@ for(j in libloadlist){
 
 #---------------switches to specify the run condition -----
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseflag <- 5   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
 enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
 dirCGEoutput <-"../../output/iiasa_database/gdx/"  # directory where the CGE output is located 
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
@@ -137,7 +137,7 @@ if(enduseflag>=1){
     }
   }
   allmodelEnduse1 <- inner_join(allmodelEnduse0,EnduseScenarioMap,by=c("SCENARIO","SocEco","Model")) %>% 
-    select(-SocEco,-SCENARIO) %>% rename(SCENARIO=ReNameSCENARIO) 
+    select(-SCENARIO,-Model) %>% rename(SCENARIO=ReNameSCENARIO,Model=SocEco) 
   allmodelEnduse1$Y <- as.numeric(levels(allmodelEnduse1$Y))[allmodelEnduse1$Y]
   allmodel0 <- rbind(CGEload1,allmodelEnduse1)
   allmodelEnduse0 <- 0
