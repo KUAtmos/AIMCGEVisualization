@@ -63,7 +63,7 @@ MyThemeLine <- theme_bw() +
 
 #-- data load
 outdir <- "../output/"
-dirlist <- c(outdir,paste0(outdir,"ppt"),paste0(outdir,"merge"),paste0(outdir,"merge/png"),paste0(outdir,"merge/pngdet"))
+dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdir,"ppt"),paste0(outdir,"merge"),paste0(outdir,"merge/png"),paste0(outdir,"merge/pngdet"))
 for(dd in dirlist){
   if(file.exists(dd)){}else{dir.create(dd)}
 }
@@ -98,9 +98,6 @@ CGEload1 <- CGEload0 %>% rename("Value"=IAMC_Template,"Variable"=VEMF) %>%
   select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name",Y="YEMF")
 CGEload1$Y <- as.numeric(levels(CGEload1$Y))[CGEload1$Y]
 
-#Extract data
-ExtData <- filter(CGEload1,Variable %in% varlist$V1) %>% left_join(varlist %>% rename(Variable=V1)) %>% select(-V2.x,-Variable) %>% rename(Variable=V2.y,Unit=V3)
-write.csv(x = ExtData, file = "../output/exportdata.csv")
 
 #Enduse loading
 if(enduseflag>=1){
@@ -152,10 +149,18 @@ IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("V
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
 IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
 
-allmodel <- rbind(allmodel0,IEAEB1)  
+allmodel <- rbind(allmodel0,IEAEB1) %>% select(Model,Region,Variable,SCENARIO,Y,Value) 
 maxy <- max(allmodel$Y)
 linepalettewName <- linepalette
 names(linepalettewName) <- unique(allmodel$SCENARIO)
+
+#Extract data
+ExtData <- filter(CGEload1,Variable %in% varlist$V1) %>% left_join(varlist %>% rename(Variable=V1)) %>% select(-V2.x,-Variable) %>% rename(Variable=V2.y,Unit=V3)
+write.csv(x = ExtData, file = "../output/data/exportdata.csv")
+symDim <- 6
+attr(allmodel, "symName") <- "allmodel"
+lst2 <- wgdx.reshape(allmodel,symDim)
+wgdx.lst(gdxName = paste0("../output/data/allcombine.gdx"),lst2)
 
 #---End of IAMC tempalte loading and data merge
 
@@ -186,9 +191,9 @@ funcplotgen <- function(rr,progr){
         geom_point(data=filter(allmodel,Variable==varlist[i,1] & Model=="Reference"& Region==rr),aes(x=Y, y = Value) , color="black",shape=0,size=2.0,fill="grey") 
       }
       if(varlist[i,2]==1){
-        outname <- paste0(outdir,rr,"/png/",varlist[i,1],".png")
+        outname <- paste0(outdir,"byRegion/",rr,"/png/",varlist[i,1],".png")
       }else{
-        outname <- paste0(outdir,rr,"/pngdet/",varlist[i,1],".png")
+        outname <- paste0(outdir,"byRegion/",rr,"/pngdet/",varlist[i,1],".png")
       }
       ggsave(plot.0, file=outname, dpi = 150, width=10, height=6,limitsize=FALSE)
       allplot[[nalist[i]]] <- plot.0
@@ -205,14 +210,14 @@ funcplotgen <- function(rr,progr){
                          allplot[["Fin_Ene_Res_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_SolidsBio"]] + theme(legend.position="none"),
                          allplot[["Fin_Ene_Tra_Ele"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_Bio"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_Oil"]] + theme(legend.position="none"),NULL,p_legend1,
                          nrow=6,rel_widths =c(1,1,1,1,1),align = "hv")
-  ggsave(pp_tfcind, file=paste0(outdir,rr,"/merge/tfcind.png"), width=25, height=20,limitsize=FALSE)
+  ggsave(pp_tfcind, file=paste0(outdir,"byRegion/",rr,"/merge/tfcind.png"), width=25, height=20,limitsize=FALSE)
   #Main indicators
   pp_main <- plot_grid(allplot[["GDP_MER"]] + theme(legend.position="none"),allplot[["POP"]] + theme(legend.position="none"),allplot[["Tem_Glo_Mea"]],
                        allplot[["Emi_CO2_Ene_and_Ind_Pro"]] + theme(legend.position="none"),allplot[["Emi_CO2"]] + theme(legend.position="none"),allplot[["Emi_Kyo_Gas"]],
                        allplot[["Pol_Cos_GDP_Los_rat"]] + theme(legend.position="none"),allplot[["Pol_Cos_Cns_Los_rat"]] + theme(legend.position="none"),allplot[["Prc_Car"]],
                        allplot[["Pop_Ris_of_Hun"]] + theme(legend.position="none"),allplot[["Prc_Prm_Ene_Oil"]] + theme(legend.position="none"),allplot[["Prc_Sec_Ene_Ele"]],
                        nrow=4,rel_widths =c(1,1,1.5),align = "hv")
-  ggsave(pp_main, file=paste0(outdir,rr,"/merge/main.png"), width=15, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/main.png"), width=15, height=15,limitsize=FALSE)
   
   #----r2ppt
   #The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
@@ -243,7 +248,7 @@ funcDecGen <- function(rr,progr){
     MyThemeLine + theme(legend.position="bottom", text=element_text(size=12))+
     guides(fill=guide_legend(ncol=5))+ggtitle(paste0(rr," decomposition"))+
     facet_grid(Y~SCENARIO,scales="free_x") + annotate("segment",x=0,xend=6,y=0,yend=0,linetype="dashed",color="grey")
-  outname <- paste0(outdir,rr,"/merge/","decomp.png")
+  outname <- paste0(outdir,"byRegion/",rr,"/merge/","decomp.png")
   ggsave(plotdec, file=outname, width=floor(length(unique(Decom2$SCENARIO))/2+1)*4, height=10,limitsize=FALSE)    
 }
 #function for regional area figure generation
@@ -280,13 +285,13 @@ funcAreaPlotGen <- function(rr,progr){
       plot3 <- plot2
     }
     allplot[[areamappara$Class[j]]] <- plot3 
-    outname <- paste0(outdir,rr,"/merge/",areamappara[j,1],".png")
+    outname <- paste0(outdir,"byRegion/",rr,"/merge/",areamappara[j,1],".png")
     ggsave(plot3, file=outname, width=15, height=floor(length(unique(XX$SCENARIO))/4+1)*10+2,limitsize=FALSE)
     plotflag[[areamappara$Class[j]]] <- nrow(XX)  
   }
   #Final energy consumption area
   pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
-  ggsave(pp_tfc, file=paste0(outdir,rr,"/merge/tfc.png"), width=9*2, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
+  ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/merge/tfc.png"), width=9*2, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
 }
 
 
@@ -309,9 +314,9 @@ mergefigGen <- function(ii,progr){
         geom_point(data=filter(allmodel,Variable==ii & Model=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=2.0,fill="grey") 
     }
     if(length(varlist$V2.x[varlist$V1==ii])==1){
-      outname <- paste0(outdir,"merge","/png/",ii,".png")
+      outname <- paste0(outdir,"multiReg","/png/",ii,".png")
     }else{
-      outname <- paste0(outdir,"merge","/pngdet/",ii,".png")
+      outname <- paste0(outdir,"multiReg","/pngdet/",ii,".png")
     }
     ggsave(plot.0, file=outname, dpi = 150, width=15, height=12,limitsize=FALSE)
   }
@@ -352,7 +357,7 @@ lst$varlist <- as.list(as.vector(varlist$V1))
 
 #Creat directories
 for(rr in lst$region){
-  regoutdir <- paste0("../output/",rr)
+  regoutdir <- paste0("../output/byRegion/",rr)
   dirlist <- c(regoutdir,paste0(regoutdir,"/png"),paste0(regoutdir,"/pngdet"),paste0(regoutdir,"/ppt"),paste0(regoutdir,"/merge"))
   for(dd in dirlist){
     if(file.exists(dd)){}else{dir.create(dd)}
