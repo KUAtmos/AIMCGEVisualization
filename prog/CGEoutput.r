@@ -22,7 +22,7 @@ for(j in libloadlist){
 
 #---------------switches to specify the run condition -----
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 5   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
 enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
 dirCGEoutput <-"../../output/iiasa_database/gdx/"  # directory where the CGE output is located 
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
@@ -83,6 +83,8 @@ for(i in 1:nrow(fileloadlist)){
 region_load <- as.vector(read.table("../data/region.txt", sep="\t",header=F, stringsAsFactors=F)$V1)
 region <- region_load
 varlist <- left_join(varlist_load,varalllist,by="V1")
+
+areapaletteload <- select(areamap,Class,Ind,color) %>% rename(V0=Class,V1=Ind,V2=color) 
 
 #---IAMC tempalte loading and data merge
 if(CGEgdxcopy==1){
@@ -266,8 +268,8 @@ funcAreaPlotGen <- function(rr,progr){
     ylab1 <- paste0(areamappara[j,2], " (", unit_name, ")")
     xlab1 <- areamappara[j,2]
     
-    areapaletteArea <- filter(areapaletteload,V1 %in% unique(XX$Ind))$V2
-    names(areapaletteArea) <- filter(areapaletteload,V1 %in% unique(XX$Ind))$V1
+    areapaletteArea <- filter(areapaletteload,V0==areamappara[j,1] & V1 %in% unique(XX$Ind))$V2
+    names(areapaletteArea) <- filter(areapaletteload,V0==areamappara[j,1] & V1 %in% unique(XX$Ind))$V1
     colorpal <- areapaletteArea 
     
     plot2 <- ggplot() + 

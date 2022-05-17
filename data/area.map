@@ -12,3 +12,5 @@ TFC_Res	Final Energy|Residential	EJ/year
 TFC_Com	Final Energy|commercial	EJ/year
 Investment	Investment	bil US$/year
 AnnualInvest	Annialized Investment	Billion US$/year
+EmissionsCO2	CO2 emissions	MtCO2/year
+CarbonSeqestration	Carbon sequestration	MtCO2/year

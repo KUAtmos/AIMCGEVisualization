@@ -47,3 +47,13 @@ but you can also use it in the independent folder which requires folder specific
 outout of this tool is in /output directory where you see regional names and "merge". The latter combine the regional resutls and the coverage of the regions should be specified in data/region.txt
  
 
+# Notes on changing the code
+## Add new area figure
+
+The following files should be edited
+
+- ../data/Areafigureorder.txt
+- ../data/Area.map
+
+The first file identifies the list of indicators, units and y axis label.
+The second file describes what indicators are assigned to each area plot, order of them and color schemes.
