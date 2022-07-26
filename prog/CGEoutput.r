@@ -22,13 +22,14 @@ for(j in libloadlist){
 
 #---------------switches to specify the run condition -----
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseflag <- 1   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
 enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
 dirCGEoutput <-"../../output/iiasa_database/gdx/"  # directory where the CGE output is located 
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
 dirEnduseoutput <-"../../../Enduse/output/"  # directory where the CGE output is located 
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 EnduseSceName <- c("globalCGEInt","globalCGEInt_woc","GCGEIntLoVRE","GCGEIntLoVRE_woc") #Enduse list "globalCGEInt_woc"
+#EnduseSceName <- c("globalCGEInt")
 threadsnum <- min(floor(availableCores()/2),24)
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
 mergecolnum <- 6 #merge figure facet number of columns
@@ -105,7 +106,7 @@ CGEload1$Y <- as.numeric(levels(CGEload1$Y))[CGEload1$Y]
 if(enduseflag>=1){
   for(ll in EnduseSceName){
     for(ii in 1:enduseflag){
-      fileid <- ii
+      fileid <- ii-1
       if(file.exists(paste0(dirEnduseoutput,ll,fileid,"/cons/main/merged_output.gdx"))){
         file.copy(paste0(dirEnduseoutput,ll,fileid,"/cons/main/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG",ii,".gdx"),overwrite = TRUE)
         eval(parse(text=paste0("EnduseGloadX0_",ii,ll," <- rgdx.param(paste0('../modeloutput/AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Variable'=Sv,'Y'=Sy,'Value'=data_all) %>% mutate(Model=paste0('Enduse[Global]-',",ii,"))%>% mutate(SocEco='",ll,"') %>% left_join(scenariomap2,by='SCENARIO')")))
@@ -153,6 +154,7 @@ IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
 
 allmodel <- rbind(allmodel0,IEAEB1) %>% select(Model,Region,Variable,SCENARIO,Y,Value) 
 maxy <- max(allmodel$Y)
+#maxy <- 2050
 linepalettewName <- linepalette
 names(linepalettewName) <- unique(allmodel$SCENARIO)
 

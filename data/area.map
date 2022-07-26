@@ -14,3 +14,16 @@ Investment	Investment	bil US$/year
 AnnualInvest	Annialized Investment	Billion US$/year
 EmissionsCO2	CO2 emissions	MtCO2/year
 CarbonSeqestration	Carbon sequestration	MtCO2/year
+TFC_Tra_Roa	Final Energy|Road Transport	EJ/year
+TFC_Tra_Rai	Final Energy|Railway Transport	EJ/year
+TFC_Tra_Shi	Final Energy|Navigation Transport	EJ/year
+TFC_Tra_Avi	Final Energy|Aviation Transport	EJ/year
+EmissionsNOx	Emissions NOx	Mt NO/yr
+EmissionsSulfur	Emissions Sulfur	Mt SO2/yr
+EmissionsNH3	Emissions NH3	Mt NH3/yr
+EmissionsBC	Emissions BC	Mt BC/yr
+EmissionsOC	Emissions OC	Mt OC/yr
+EmissionsCO	Emissions CO	Mt CO/yr
+EmissionsCH4	Emissions CH4	Mt CH4/yr
+EmissionsN2O	Emissions N2O	kt N2O/yr
+EmissionsTraNOx	Emissions NOx	Mt NO/yr

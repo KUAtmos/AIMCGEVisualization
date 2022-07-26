@@ -48,6 +48,10 @@ Fin_Ene_Tra_Ele	2
 Fin_Ene_Tra_Liq	2
 Fin_Ene_Tra_Liq_Bio	1
 Fin_Ene_Tra_Liq_Oil	2
+Fin_Ene_Tra_Roa	1
+Fin_Ene_Tra_Rai	1
+Fin_Ene_Tra_Shi	1
+Fin_Ene_Tra_Avi	1
 GDP_MER	1
 POP	1
 Tem_Glo_Mea	1
@@ -144,6 +148,9 @@ Emi_N2O	1
 Emi_VOC	1
 Emi_NH3	1
 Emi_NOx	1
+Emi_NH3_Ene	1
+Emi_NH3_Ene_Dem_Tra	1
+Emi_NH3_AFO	1
 Lan_Cov_Pst	1
 Lan_Cov_Cro_Non_Ene_Cro	1
 Lan_Cov_Frs	1
