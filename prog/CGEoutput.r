@@ -22,14 +22,14 @@ for(j in libloadlist){
 
 #---------------switches to specify the run condition -----
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 1   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseflag <- 3   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
 enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
 dirCGEoutput <-"../../output/iiasa_database/gdx/"  # directory where the CGE output is located 
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
 dirEnduseoutput <-"../../../Enduse/output/"  # directory where the CGE output is located 
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 EnduseSceName <- c("globalCGEInt","globalCGEInt_woc","GCGEIntLoVRE","GCGEIntLoVRE_woc") #Enduse list "globalCGEInt_woc"
-#EnduseSceName <- c("globalCGEInt")
+EnduseSceName <- c("globalCGEInt","globalCGEInt_woc")
 threadsnum <- min(floor(availableCores()/2),24)
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
 mergecolnum <- 6 #merge figure facet number of columns
@@ -154,9 +154,10 @@ IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
 
 allmodel <- rbind(allmodel0,IEAEB1) %>% select(Model,Region,Variable,SCENARIO,Y,Value) 
 maxy <- max(allmodel$Y)
-#maxy <- 2050
+maxy <- 2050
 linepalettewName <- linepalette
 names(linepalettewName) <- unique(allmodel$SCENARIO)
+allmodel <- filter(allmodel,Y <= maxy)
 
 #Extract data
 ExtData <- filter(CGEload1,Variable %in% varlist$V1) %>% left_join(varlist %>% rename(Variable=V1)) %>% select(-V2.x,-Variable) %>% rename(Variable=V2.y,Unit=V3)
@@ -258,7 +259,7 @@ funcDecGen <- function(rr,progr){
 #function for regional area figure generation
 funcAreaPlotGen <- function(rr,progr){
   for(j in 1:nrow(areamappara)){
-    XX <- allmodel %>% filter(Variable %in% as.vector(areamap$Variable)) %>% left_join(areamap,by="Variable") %>% ungroup() %>% 
+  XX <- allmodel %>% filter(Variable %in% as.vector(areamap$Variable)) %>% left_join(areamap,by="Variable") %>% ungroup() %>% 
       filter(Class==areamappara[j,1] & Model!="Reference"& Region==rr) %>% select(Model,SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
     XX2 <- allmodel %>% filter(Variable %in% as.vector(areamap$Variable)) %>% left_join(areamap,by="Variable") %>% ungroup() %>% 
       filter(Class==areamappara[j,1] & Model=="Reference"& Region==rr) %>% select(-SCENARIO,-Model,Ind,Y,Value,order)  %>% arrange(order)%>%
@@ -275,7 +276,7 @@ funcAreaPlotGen <- function(rr,progr){
     colorpal <- areapaletteArea 
     
     plot2 <- ggplot() + 
-      geom_area(data=XX,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
+      geom_area(data=filter(XX,Y<=maxy),aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
       ylab(ylab1) + xlab(xlab1) +labs(fill="")+ guides(fill=guide_legend(reverse=TRUE)) + MyThemeLine +
       theme(legend.position="bottom", text=element_text(size=12),  
             axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, size = 12)) +
@@ -306,8 +307,8 @@ mergefigGen <- function(ii,progr){
   if(nrow(filter(allmodel,Variable==ii  & Model!="Reference"))>0){
     miny <- 2010 
     plot.0 <- ggplot() + 
-      geom_line(data=filter(allmodel,Variable==ii & Model!="Reference"),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,Model)),stat="identity") +
-      geom_point(data=filter(allmodel,Variable==ii & Model!="Reference"),aes(x=Y, y = Value , color=SCENARIO,shape=Model),size=3.0,fill="white") +
+      geom_line(data=filter(allmodel,Variable==ii & Model!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,Model)),stat="identity") +
+      geom_point(data=filter(allmodel,Variable==ii & Model!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,shape=Model),size=3.0,fill="white") +
       MyThemeLine + scale_color_manual(values=linepalettewName) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
       scale_shape_manual(values = 1:length(unique(allmodel$Model))) +
       xlab("year") + ylab(varlist$V3[varlist$V1==ii])  +  ggtitle(paste("Multi-regions",varlist$V2.y[varlist$V1==ii],sep=" ")) +
@@ -356,7 +357,6 @@ allplotmerge <- as.list(nalist)
 plotflagmerge <- as.list(nalist)
 lst <- list()
 lst$region <- region_load
-#lst$region <- c("XAF")
 lst$varlist <- as.list(as.vector(varlist$V1))
 
 #Creat directories

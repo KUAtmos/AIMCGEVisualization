@@ -143,6 +143,8 @@ Fin_Ene_Ele_Heat	1
 Fin_Ene_Ind_Ele_Heat	2
 Fin_Ene_Res_and_Com_Ele_Heat	2
 Tem_Glo_Mea	1
+Frc_Aer_Oth	1
+Frc_Aer_Clo_Ind	1
 Emi_CH4	1
 Emi_N2O	1
 Emi_VOC	1
