@@ -1,4 +1,4 @@
-ReNameSCENARIO	SCENARIO	SocEco	Model
+ReNameSCENARIO	SCENARIO	SocEco	ModName
 Baseline	Baseline	globalCGEInt	Enduse[Global]-1
 1000C	1000C	globalCGEInt	Enduse[Global]-1
 0500C	0500C	globalCGEInt	Enduse[Global]-1

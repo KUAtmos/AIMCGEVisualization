@@ -143,6 +143,8 @@ Fin_Ene_Ele_Heat	1
 Fin_Ene_Ind_Ele_Heat	2
 Fin_Ene_Res_and_Com_Ele_Heat	2
 Tem_Glo_Mea	1
+Frc_Aer_Oth	1
+Frc_Aer_Clo_Ind	1
 Emi_CH4	1
 Emi_N2O	1
 Emi_VOC	1
@@ -160,6 +162,7 @@ Car_Seq_CCS_Bio	1
 Car_Seq_CCS_Fos_Ene	1
 Car_Seq_CCS_Fos_Ind_Pro	1
 GDP_MER_Gro	1
+Inv_All	1
 LCO_Ele_Coa_w_CCS	1
 LCO_Ele_Coa_wo_CCS	1
 LCO_Ele_Gas_w_CCS	1
@@ -171,3 +174,7 @@ LCO_Ele_Win_Ons_Ave	1
 LCO_Ele_Win_Off_Ave	1
 LCO_Ele_Bio_w_CCS	1
 LCO_Ele_Bio_wo_CCS	1
+Fin_Ene_Res_Liq_and_Gas	1
+Fin_Ene_Ind_Liq_and_Gas	1
+Fin_Ene_Tra_Liq_and_Gas	1
+Fin_Ene_Com_Liq_and_Gas	1
