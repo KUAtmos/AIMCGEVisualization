@@ -8,11 +8,11 @@ IND
 JPN
 XSE
 #XSA
-#CAN
+CAN
 BRA
 #XLM
 #CIS
-#XME
+XME
 #XNF
 #XAF
 World

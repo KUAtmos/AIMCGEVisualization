@@ -1,4 +1,4 @@
-Class	Ind	Variable	order	color
+Class	Ind	Var	order	color
 TPES	Coal|w/o CCS	Prm_Ene_Coa_wo_CCS	1	'#000000'
 TPES	Coal|w/ CCS	Prm_Ene_Coa_w_CCS	2	'#7f878f'
 TPES	Oil|w/o CCS	Prm_Ene_Oil_wo_CCS	3	'#ff2800'

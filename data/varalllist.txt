@@ -3519,3 +3519,7 @@ Wat_Wit_Ele_Sea_Col	Water Withdrawal|Electricity|Sea Cooling	km3/yr
 Yie_BioEne2nd_gen	Yield|Bioenergy|2nd generation	t DM/ha/yr
 Fin_Ene_Res_Ele_Heat	Final Energy|Residential|Electricity and Heat	EJ/yr
 Fin_Ene_Com_Ele_Heat	Final Energy|Commercial|Electricity and Heat	EJ/yr
+Fin_Ene_Res_Liq_and_Gas	Final Energy|Residential|Liquids and Gases	EJ/yr
+Fin_Ene_Ind_Liq_and_Gas	Final Energy|Industry|Liquids and Gases	EJ/yr
+Fin_Ene_Tra_Liq_and_Gas	Final Energy|Transportation|Liquids and Gases	EJ/yr
+Fin_Ene_Com_Liq_and_Gas	Final Energy|Commercial|Liquids and Gases	EJ/yr
