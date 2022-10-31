@@ -3,6 +3,7 @@ Pol_Cos_Cns_Los_rat	1
 Fin_Ene	1
 Fin_Ene_Ele	1
 Fin_Ene_Gas	1
+Fin_Ene_Liq_and_Gas	1
 Fin_Ene_Ind	1
 Fin_Ene_Ind_Ele	2
 Fin_Ene_Ind_Ele_Heat	2
@@ -52,6 +53,7 @@ Fin_Ene_Tra_Roa	1
 Fin_Ene_Tra_Rai	1
 Fin_Ene_Tra_Shi	1
 Fin_Ene_Tra_Avi	1
+Fin_Ene_Tra_Gas	1
 GDP_MER	1
 POP	1
 Tem_Glo_Mea	1
@@ -95,6 +97,10 @@ Sec_Ene_Hyd_Bio	2
 Sec_Ene_Hyd_Coa	2
 Sec_Ene_Hyd_Gas	2
 Fin_Ene_Hyd	1
+Fin_Ene_Tra_Hyd	1
+Fin_Ene_Res_Hyd	1
+Fin_Ene_Com_Hyd	1
+Fin_Ene_Ind_Hyd	1
 Emi_CO2_Ene_and_Ind_Pro	1
 Emi_CO2	1
 Emi_CO2_AFO	1

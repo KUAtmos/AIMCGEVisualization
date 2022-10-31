@@ -189,7 +189,8 @@ flabel <- c("change in % of GDP","sectors")
 funcplotgen <- function(rr,progr){
   progr(message='region figures')
 
-#---Line figures
+#  for (rr in region_load){ #For debug
+    #---Line figures
   for (i in 1:nrow(varlist)){
     if(nrow(filter(allmodel,Var==varlist[i,1] & Region==rr & ModName!="Reference"))>0){
       miny <- min(filter(allmodel,Var==varlist[i,1] & Region==rr)$Y) 
@@ -198,7 +199,7 @@ funcplotgen <- function(rr,progr){
         geom_point(data=filter(allmodel,Var==varlist[i,1] & ModName!="Reference"& Region==rr),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=3.0,fill="white") +
         MyThemeLine + scale_color_manual(values=linepalettewName) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
         scale_shape_manual(values = 1:length(unique(allmodel$ModName))) +
-        xlab("year") + ylab(varlist[i,4])  +  ggtitle(paste(rr,varlist[i,3],sep=" ")) +
+        xlab("year") + ylab(varlist[i,4])  +  ggtitle(paste0(rr,expression("\n"),varlist[i,3])) +
         annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
         theme(legend.title=element_blank()) 
       if(length(scenariomap$SCENARIO)<40){
@@ -210,29 +211,44 @@ funcplotgen <- function(rr,progr){
       }else{
         outname <- paste0(outdir,"byRegion/",rr,"/pngdet/",varlist[i,1],".png")
       }
-      ggsave(plot.0, file=outname, dpi = 150, width=10, height=6,limitsize=FALSE)
+      ggsave(plot.0, file=outname, dpi = 150, width=7, height=5,limitsize=FALSE)
       allplot[[nalist[i]]] <- plot.0
+      allplot_nonleg[[nalist[i]]] <- plot.0+ theme(legend.position="none")
     }
     plotflag[[nalist[i]]] <- nrow(filter(allmodel,Var==varlist[i,1] & ModName!="Reference"& Region==rr))
   }
   #---merged figures
   #Final energy consumption by sectors and fuels
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Fin_Ene"]]), pattern = "guide-box")
-  pp_tfcind <- plot_grid(allplot[["Fin_Ene"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com"]] + theme(legend.position="none"),NULL,
-                         allplot[["Fin_Ene_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_SolidsBio"]] + theme(legend.position="none"),NULL,
-                         allplot[["Fin_Ene_Ind_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_SolidsBio"]] + theme(legend.position="none"),allplot[["Fin_Ene_Ind_Liq_and_Gas"]] + theme(legend.position="none"),
-                         allplot[["Fin_Ene_Com_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com_SolidsBio"]] + theme(legend.position="none"),allplot[["Fin_Ene_Com_Liq_and_Gas"]] + theme(legend.position="none"),
-                         allplot[["Fin_Ene_Res_Ele_Heat"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_Gas"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_Liq"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_SolidsCoa"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_SolidsBio"]] + theme(legend.position="none"),allplot[["Fin_Ene_Res_Liq_and_Gas"]] + theme(legend.position="none"),
-                         allplot[["Fin_Ene_Tra_Ele"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_Bio"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_Oil"]] + theme(legend.position="none"),allplot[["Fin_Ene_Tra_Liq_and_Gas"]] + theme(legend.position="none"),NULL,p_legend1,
-                         nrow=6,rel_widths =c(1,1,1,1,1),align = "hv")
-  ggsave(pp_tfcind, file=paste0(outdir,"byRegion/",rr,"/merge/tfcind.png"), width=25, height=20,limitsize=FALSE)
+  pp_tfcind <- plot_grid(
+                         allplot_nonleg[["Fin_Ene"]],    allplot_nonleg[["Fin_Ene_Ele_Heat"]],    allplot_nonleg[["Fin_Ene_Liq_and_Gas"]],
+                           allplot_nonleg[["Fin_Ene_Gas"]],allplot_nonleg[["Fin_Ene_Liq"]],allplot_nonleg[["Fin_Ene_SolidsCoa"]],allplot_nonleg[["Fin_Ene_SolidsBio"]],allplot_nonleg[["Fin_Ene_Hyd"]],
+                         allplot_nonleg[["Fin_Ene_Ind"]],allplot_nonleg[["Fin_Ene_Ind_Ele_Heat"]],allplot_nonleg[["Fin_Ene_Ind_Liq_and_Gas"]],
+                           allplot_nonleg[["Fin_Ene_Ind_Gas"]],allplot_nonleg[["Fin_Ene_Ind_Liq"]],allplot_nonleg[["Fin_Ene_Ind_SolidsCoa"]],allplot_nonleg[["Fin_Ene_Ind_SolidsBio"]],allplot_nonleg[["Fin_Ene_Ind_Hyd"]],
+                         allplot_nonleg[["Fin_Ene_Com"]],allplot_nonleg[["Fin_Ene_Com_Ele_Heat"]],allplot_nonleg[["Fin_Ene_Com_Liq_and_Gas"]],
+                           allplot_nonleg[["Fin_Ene_Com_Gas"]],allplot_nonleg[["Fin_Ene_Com_Liq"]],allplot_nonleg[["Fin_Ene_Com_SolidsCoa"]],allplot_nonleg[["Fin_Ene_Com_SolidsBio"]],allplot_nonleg[["Fin_Ene_Com_Hyd"]],
+                         allplot_nonleg[["Fin_Ene_Res"]],allplot_nonleg[["Fin_Ene_Res_Ele_Heat"]],allplot_nonleg[["Fin_Ene_Res_Liq_and_Gas"]],
+                           allplot_nonleg[["Fin_Ene_Res_Gas"]],allplot_nonleg[["Fin_Ene_Res_Liq"]],allplot_nonleg[["Fin_Ene_Res_SolidsCoa"]],allplot_nonleg[["Fin_Ene_Res_SolidsBio"]],allplot_nonleg[["Fin_Ene_Res_Hyd"]],
+                         allplot_nonleg[["Fin_Ene_Tra"]],allplot_nonleg[["Fin_Ene_Tra_Ele"]],     allplot_nonleg[["Fin_Ene_Tra_Liq_and_Gas"]],
+                           allplot_nonleg[["Fin_Ene_Tra_Gas"]],allplot_nonleg[["Fin_Ene_Tra_Liq_Bio"]],allplot_nonleg[["Fin_Ene_Tra_Liq_Oil"]],allplot_nonleg[["Fin_Ene_Tra_Hyd"]],p_legend1,
+                         nrow=5,ncol=8,rel_widths =c(1,1,1,1,1,1,1,1),align = "hv")
+  ggsave(pp_tfcind, file=paste0(outdir,"byRegion/",rr,"/merge/tfcind.png"), width=30, height=20,limitsize=FALSE)
   #Main indicators
-  pp_main <- plot_grid(allplot[["GDP_MER"]] + theme(legend.position="none"),allplot[["POP"]] + theme(legend.position="none"),allplot[["Tem_Glo_Mea"]],
-                       allplot[["Emi_CO2_Ene_and_Ind_Pro"]] + theme(legend.position="none"),allplot[["Emi_CO2"]] + theme(legend.position="none"),allplot[["Emi_Kyo_Gas"]],
-                       allplot[["Pol_Cos_GDP_Los_rat"]] + theme(legend.position="none"),allplot[["Pol_Cos_Cns_Los_rat"]] + theme(legend.position="none"),allplot[["Prc_Car"]],
-                       allplot[["Pop_Ris_of_Hun"]] + theme(legend.position="none"),allplot[["Prc_Prm_Ene_Oil"]] + theme(legend.position="none"),allplot[["Prc_Sec_Ene_Ele"]],
+  pp_main <- plot_grid(allplot_nonleg[["GDP_MER"]],allplot_nonleg[["POP"]],allplot[["Tem_Glo_Mea"]],
+                       allplot_nonleg[["Emi_CO2_Ene_and_Ind_Pro"]],allplot_nonleg[["Emi_CO2"]],allplot_nonleg[["Emi_Kyo_Gas"]],
+                       allplot_nonleg[["Pol_Cos_GDP_Los_rat"]],allplot_nonleg[["Pol_Cos_Cns_Los_rat"]],allplot_nonleg[["Prc_Car"]],
+                       allplot_nonleg[["Pop_Ris_of_Hun"]],allplot_nonleg[["Prc_Prm_Ene_Oil"]],allplot_nonleg[["Prc_Sec_Ene_Ele"]],
                        nrow=4,rel_widths =c(1,1,1.5),align = "hv")
   ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/main.png"), width=15, height=15,limitsize=FALSE)
+
+#Emissions
+  p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Emi_CO2"]]), pattern = "guide-box")
+  pp_main <- plot_grid(allplot_nonleg[["Emi_CO2"]],allplot_nonleg[["Emi_CH4"]],allplot_nonleg[["Emi_N2O"]]+ theme(legend.position="none"),allplot_nonleg[["Emi_F_G"]]+ theme(legend.position="none"),
+                       allplot_nonleg[["Emi_Sul"]],allplot_nonleg[["Emi_NOx"]],allplot_nonleg[["Emi_BC"]],allplot_nonleg[["Emi_OC"]]+ theme(legend.position="none"),
+                       allplot_nonleg[["Emi_VOC"]],allplot_nonleg[["Emi_NH3"]],allplot_nonleg[["Emi_CO"]],allplot_nonleg[["Emi_Kyo_Gas"]]+ theme(legend.position="none"),
+                       allplot_nonleg[["Tem_Glo_Mea"]],allplot_nonleg[["Frc"]],p_legend1,
+                       nrow=4,rel_widths =c(1,1,1,1),align = "hv")
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/Emissions.png"), width=15, height=15,limitsize=FALSE)
   
   #----r2ppt
   #The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
@@ -261,54 +277,59 @@ funcDecGen <- function(rr,progr){
     ylab(flabel[1]) + xlab(flabel[2]) +labs(fill="") +
     guides(fill=guide_legend(reverse=TRUE)) + 
     MyThemeLine + theme(legend.position="bottom", text=element_text(size=12))+
-    guides(fill=guide_legend(ncol=5))+ggtitle(paste0(rr," decomposition"))+
+    guides(fill=guide_legend(ncol=5))+ggtitle(paste0(rr,expression("\n")," decomposition"))+
     facet_grid(Y~SCENARIO,scales="free_x") + annotate("segment",x=0,xend=6,y=0,yend=0,linetype="dashed",color="grey")
   outname <- paste0(outdir,"byRegion/",rr,"/merge/","decomp.png")
   ggsave(plotdec, file=outname, width=floor(length(unique(Decom2$SCENARIO))/2+1)*4, height=10,limitsize=FALSE)    
 }
 #function for regional area figure generation
 funcAreaPlotGen <- function(rr,progr){
+#  for( rr in as.vector(region_load)){
   for(j in 1:nrow(areamappara)){
-  XX <- allmodel %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
-      filter(Class==areamappara[j,1] & ModName!="Reference"& Region==rr) %>% select(ModName,SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
-    XX2 <- allmodel %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
-      filter(Class==areamappara[j,1] & ModName=="Reference"& Region==rr) %>% select(-SCENARIO,-ModName,Ind,Y,Value,order)  %>% arrange(order)%>%
-      filter(Y>=2015)
-    miny <- min(XX$Y,XX2$Y) 
-    na.omit(XX$Value)
-    
-    unit_name <-areamappara[j,3] 
-    ylab1 <- paste0(areamappara[j,2], " (", unit_name, ")")
-    xlab1 <- areamappara[j,2]
-    
-    areapaletteArea <- filter(areapaletteload,V0==areamappara[j,1] & V1 %in% unique(XX$Ind))$V2
-    names(areapaletteArea) <- filter(areapaletteload,V0==areamappara[j,1] & V1 %in% unique(XX$Ind))$V1
-    colorpal <- areapaletteArea 
-    
-    plot2 <- ggplot() + 
-      geom_area(data=filter(XX,Y<=maxy),aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
-      ylab(ylab1) + xlab(xlab1) +labs(fill="")+ guides(fill=guide_legend(reverse=TRUE)) + MyThemeLine +
-      theme(legend.position="bottom", text=element_text(size=12),  
-            axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, size = 12)) +
-      guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10)) +  ggtitle(paste(rr,areamappara$Class[j],sep=" "))+
-      facet_wrap(ModName ~ SCENARIO,ncol=mergecolnum) + scale_fill_manual(values=colorpal) + 
-      annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')+
-      ggtitle(paste0(rr,areamappara[j,]$Class))
-    if(nrow(XX2)>=1){
-      plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity")
-    }else{
-      plot3 <- plot2
+    if(nrow(filter(allmodel %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
+                   filter(Class==areamappara[j,1] & ModName!="Reference"& Region==rr)))>0){
+      XX <- allmodel %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
+        filter(Class==areamappara[j,1] & ModName!="Reference"& Region==rr) %>% select(ModName,SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
+      XX2 <- allmodel %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
+        filter(Class==areamappara[j,1] & ModName=="Reference"& Region==rr) %>% select(-SCENARIO,-ModName,Ind,Y,Value,order)  %>% arrange(order)%>%
+        filter(Y>=2015)
+      XX3 <- allmodel %>% filter(Var %in% as.vector(areamappara$lineVar[j]) & ModName!="Reference"& Region==rr) %>% select(ModName,SCENARIO,Var,Y,Value)
+      
+      miny <- min(XX$Y,XX2$Y) 
+      na.omit(XX$Value)
+      unit_name <-areamappara[j,3] 
+      ylab1 <- paste0(areamappara[j,2], " (", unit_name, ")")
+      xlab1 <- areamappara[j,2]
+      
+      areapaletteArea <- filter(areapaletteload,V0==areamappara[j,1] & V1 %in% unique(XX$Ind))$V2
+      names(areapaletteArea) <- filter(areapaletteload,V0==areamappara[j,1] & V1 %in% unique(XX$Ind))$V1
+      colorpal <- areapaletteArea 
+      
+      plot2 <- ggplot() + 
+        geom_area(data=filter(XX,Y<=maxy),aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
+        ylab(ylab1) + xlab(xlab1) +labs(fill="")+ guides(fill=guide_legend(reverse=TRUE)) + MyThemeLine +
+        theme(legend.position="bottom", text=element_text(size=12),  
+              axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, size = 12)) +
+        guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10)) +  ggtitle(paste(rr,areamappara$Class[j],sep=" "))+
+        facet_wrap(ModName ~ SCENARIO,ncol=mergecolnum) + scale_fill_manual(values=colorpal) + 
+        annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')+
+        ggtitle(paste0(rr,areamappara[j,]$Class)) +
+        geom_line(data=filter(XX3,Y<=maxy),aes(x=Y, y = Value ), color="black",linetype="dashed",size=2)
+      if(nrow(XX2)>=1){
+        plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity")
+      }else{
+        plot3 <- plot2
+      }
+      allplot[[areamappara$Class[j]]] <- plot3 
+      outname <- paste0(outdir,"byRegion/",rr,"/merge/",areamappara[j,1],".png")
+      ggsave(plot3, file=outname, width=15, height=max(1,floor(length(unique(XX$SCENARIO))/4))*5+2,limitsize=FALSE)
+      plotflag[[areamappara$Class[j]]] <- nrow(XX)  
     }
-    allplot[[areamappara$Class[j]]] <- plot3 
-    outname <- paste0(outdir,"byRegion/",rr,"/merge/",areamappara[j,1],".png")
-    ggsave(plot3, file=outname, width=15, height=floor(length(unique(XX$SCENARIO))/4+1)*10+2,limitsize=FALSE)
-    plotflag[[areamappara$Class[j]]] <- nrow(XX)  
+    #Final energy consumption area
+    pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
+    ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/merge/tfc.png"), width=9*2, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
   }
-  #Final energy consumption area
-  pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
-  ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/merge/tfc.png"), width=9*2, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
 }
-
 
 # making cross regional figure
 mergefigGen <- function(ii,progr){
@@ -321,7 +342,7 @@ mergefigGen <- function(ii,progr){
       geom_point(data=filter(allmodel,Var==ii & ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=3.0,fill="white") +
       MyThemeLine + scale_color_manual(values=linepalettewName) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
       scale_shape_manual(values = 1:length(unique(allmodel$ModName))) +
-      xlab("year") + ylab(varlist$V3[varlist$V1==ii])  +  ggtitle(paste("Multi-regions",varlist$V2.y[varlist$V1==ii],sep=" ")) +
+      xlab("year") + ylab(varlist$V3[varlist$V1==ii])  +  ggtitle(paste("Multi-regions",expression("\n"),varlist$V2.y[varlist$V1==ii],sep=" ")) +
       annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
       theme(legend.title=element_blank()) +facet_wrap(~Region,scales="free")
     if(length(scenariomap$SCENARIO)<20){
@@ -360,8 +381,10 @@ exe_fig_make <- function(ListIte,Xfunc){
 #Parameter configuration for iterations
 nalist <- c(as.vector(varlist$V1),"TPES","POWER","Power_heat","Landuse","TFC_fuel","TFC_Sector","TFC_Ind","TFC_Tra","TFC_Res","TFC_Com","Investment")
 allplot <- as.list(nalist)
+allplot_nonleg <- as.list(nalist)
 plotflag <- as.list(nalist)
 names(allplot) <- nalist
+names(allplot_nonleg) <- nalist
 names(plotflag) <- nalist
 allplotmerge <- as.list(nalist)
 plotflagmerge <- as.list(nalist)

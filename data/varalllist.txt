@@ -3523,3 +3523,46 @@ Fin_Ene_Res_Liq_and_Gas	Final Energy|Residential|Liquids and Gases	EJ/yr
 Fin_Ene_Ind_Liq_and_Gas	Final Energy|Industry|Liquids and Gases	EJ/yr
 Fin_Ene_Tra_Liq_and_Gas	Final Energy|Transportation|Liquids and Gases	EJ/yr
 Fin_Ene_Com_Liq_and_Gas	Final Energy|Commercial|Liquids and Gases	EJ/yr
+Fin_Ene_Tra_Shi_Pss_Gas_Hyd_syn	Final Energy|Transportation|Shipping|Passenger|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Tra_Shi_Pss_Gas_Nat_Gas	Final Energy|Transportation|Shipping|Passenger|Gases|Natural Gas	EJ/yr
+Fin_Ene_Tra_Avi_Pss_Gas_BioEne	Final Energy|Transportation|Aviation|Passenger|Gases|Bioenergy	EJ/yr
+Fin_Ene_Tra_Avi_Pss_Gas_Fos	Final Energy|Transportation|Aviation|Passenger|Gases|Fossil	EJ/yr
+Fin_Ene_Tra_Avi_Pss_Gas_Hyd_syn	Final Energy|Transportation|Aviation|Passenger|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Tra_Avi_Pss_Gas_Nat_Gas	Final Energy|Transportation|Aviation|Passenger|Gases|Natural Gas	EJ/yr
+Fin_Ene_Tra_Fre_Gas_Hyd_syn	Final Energy|Transportation|Freight|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Tra_Fre_Gas_Nat_Gas	Final Energy|Transportation|Freight|Gases|Natural Gas	EJ/yr
+Fin_Ene_Tra_Roa_Fre_Gas_BioEne	Final Energy|Transportation|Road|Freight|Gases|Bioenergy	EJ/yr
+Fin_Ene_Tra_Roa_Fre_Gas_Fos	Final Energy|Transportation|Road|Freight|Gases|Fossil	EJ/yr
+Fin_Ene_Tra_Roa_Fre_Gas_Hyd_syn	Final Energy|Transportation|Road|Freight|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Tra_Roa_Fre_Gas_Nat_Gas	Final Energy|Transportation|Road|Freight|Gases|Natural Gas	EJ/yr
+Fin_Ene_Tra_Rai_Fre_Gas_BioEne	Final Energy|Transportation|Rail|Freight|Gases|Bioenergy	EJ/yr
+Fin_Ene_Tra_Rai_Fre_Gas_Fos	Final Energy|Transportation|Rail|Freight|Gases|Fossil	EJ/yr
+Fin_Ene_Tra_Rai_Fre_Gas_Hyd_syn	Final Energy|Transportation|Rail|Freight|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Tra_Rai_Fre_Gas_Nat_Gas	Final Energy|Transportation|Rail|Freight|Gases|Natural Gas	EJ/yr
+Fin_Ene_Tra_Shi_Fre_Gas_BioEne	Final Energy|Transportation|Shipping|Freight|Gases|Bioenergy	EJ/yr
+Fin_Ene_Tra_Shi_Fre_Gas_Fos	Final Energy|Transportation|Shipping|Freight|Gases|Fossil	EJ/yr
+Fin_Ene_Tra_Shi_Fre_Gas_Hyd_syn	Final Energy|Transportation|Shipping|Freight|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Tra_Shi_Fre_Gas_Nat_Gas	Final Energy|Transportation|Shipping|Freight|Gases|Natural Gas	EJ/yr
+Fin_Ene_Tra_Avi_Fre_Gas_BioEne	Final Energy|Transportation|Aviation|Freight|Gases|Bioenergy	EJ/yr
+Fin_Ene_Tra_Avi_Fre_Gas_Fos	Final Energy|Transportation|Aviation|Freight|Gases|Fossil	EJ/yr
+Fin_Ene_Tra_Avi_Fre_Gas_Hyd_syn	Final Energy|Transportation|Aviation|Freight|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Tra_Avi_Fre_Gas_Nat_Gas	Final Energy|Transportation|Aviation|Freight|Gases|Natural Gas	EJ/yr
+Fin_Ene_Tra_Dom_Shi_Gas_BioEne	Final Energy|Transportation|Domestic|Shipping|Gases|Bioenergy	EJ/yr
+Fin_Ene_Tra_Dom_Shi_Gas_Fos	Final Energy|Transportation|Domestic|Shipping|Gases|Fossil	EJ/yr
+Fin_Ene_Tra_Dom_Shi_Gas_Hyd_syn	Final Energy|Transportation|Domestic|Shipping|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Tra_Dom_Shi_Gas_Nat_Gas	Final Energy|Transportation|Domestic|Shipping|Gases|Natural Gas	EJ/yr
+Fin_Ene_Tra_Dom_Avi_Gas_BioEne	Final Energy|Transportation|Domestic|Aviation|Gases|Bioenergy	EJ/yr
+Fin_Ene_Tra_Dom_Avi_Gas_Fos	Final Energy|Transportation|Domestic|Aviation|Gases|Fossil	EJ/yr
+Fin_Ene_Tra_Dom_Avi_Gas_Hyd_syn	Final Energy|Transportation|Domestic|Aviation|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Tra_Dom_Avi_Gas_Nat_Gas	Final Energy|Transportation|Domestic|Aviation|Gases|Natural Gas	EJ/yr
+Fin_Ene_Tra_Int_Shi_Gas_BioEne	Final Energy|Transportation|International|Shipping|Gases|Bioenergy	EJ/yr
+Fin_Ene_Tra_Int_Shi_Gas_Fos	Final Energy|Transportation|International|Shipping|Gases|Fossil	EJ/yr
+Fin_Ene_Tra_Int_Shi_Gas_Hyd_syn	Final Energy|Transportation|International|Shipping|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Tra_Int_Shi_Gas_Nat_Gas	Final Energy|Transportation|International|Shipping|Gases|Natural Gas	EJ/yr
+Fin_Ene_Tra_Int_Avi_Gas_BioEne	Final Energy|Transportation|International|Aviation|Gases|Bioenergy	EJ/yr
+Fin_Ene_Tra_Int_Avi_Gas_Fos	Final Energy|Transportation|International|Aviation|Gases|Fossil	EJ/yr
+Fin_Ene_Tra_Int_Avi_Gas_Hyd_syn	Final Energy|Transportation|International|Aviation|Gases|Hydrogen synfuel	EJ/yr
+Fin_Ene_Tra_Int_Avi_Gas_Nat_Gas	Final Energy|Transportation|International|Aviation|Gases|Natural Gas	EJ/yr
+Fin_Ene_Liq_and_Gas	Final Energy|Liquids and Gases	EJ/yr
+Frc_Aer_Dir	Forcing|Aerosol|Direct	W/m2
+Frc_Alb_Cha	Forcing|Albedo Change	W/m2
