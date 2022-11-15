@@ -22,7 +22,7 @@ for(j in libloadlist){
 
 #---------------switches to specify the run condition -----
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 1   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseflag <- 3   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
 enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
 dirCGEoutput <-"../../output/iiasa_database/gdx/"  # directory where the CGE output is located 
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
@@ -109,7 +109,7 @@ if(enduseflag>=1){
       fileid <- ii-1
       if(file.exists(paste0(dirEnduseoutput,ll,fileid,"/cons/main/merged_output.gdx"))){
         file.copy(paste0(dirEnduseoutput,ll,fileid,"/cons/main/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG",ii,".gdx"),overwrite = TRUE)
-        eval(parse(text=paste0("EnduseGloadX0_",ii,ll," <- rgdx.param(paste0('../modeloutput/AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Var'=Sv,'Y'=Sy,'Value'=data_all) %>% mutate(ModName=paste0('Enduse[Global]-',",ii,"))%>% mutate(SocEco='",ll,"') %>% left_join(scenariomap2,by='SCENARIO')")))
+        eval(parse(text=paste0("EnduseGloadX0_",ii,ll," <- rgdx.param(paste0('../modeloutput/AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Var'=Sv,'Y'=Sy,'Value'=data_all) %>% mutate(ModName=paste0('Enduse[Global]-',",ii,"))%>% mutate(SocEco='",ll,ii,"') %>% left_join(scenariomap2,by='SCENARIO')")))
         eval(parse(text=paste0("EnduseGloadX1_",ii,ll," <- EnduseGloadX0_",ii,ll,"  %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% select(-SCENARIO) %>% rename(SCENARIO='Name') %>% select(Region,Var,Y,Value,SCENARIO,SocEco,ModName)")))
         if(enduseEneCost==1){
           eval(parse(text=paste0("EnduseGload_cost <- filter(EnduseGloadX0_",ii,ll,", Var %in% c('Pol_Cos_Add_Tot_Ene_Sys_Cos','GDP_MER') & SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% spread(key=Var,value=Value,fill=0)")))
@@ -174,8 +174,9 @@ ExtData <- filter(CGEload1,Var %in% varlist$V1) %>% left_join(varlist %>% rename
 write.csv(x = ExtData, file = "../output/data/exportdata.csv")
 symDim <- 6
 attr(allmodel, "symName") <- "allmodel"
-lst2 <- wgdx.reshape(allmodel,symDim)
-wgdx.lst(gdxName = paste0("../output/data/allcombine.gdx"),lst2)
+lst3 <- wgdx.reshape(allmodel,symDim)
+wgdx.lst(gdxName = paste0("../output/data/allcombine.gdx"),lst3)
+#system("gams analysis.gms")
 
 #---End of IAMC tempalte loading and data merge
 
