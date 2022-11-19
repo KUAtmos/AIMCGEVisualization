@@ -27,16 +27,16 @@ In /modeloutput/ folder, the model output should be included. This is automated 
 
 # Spepecification by parameters
 
-In the main program there is a location to specifies key parameters which tag is below
-  #---------------switches to specify the run condition -----
-filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
-dirCGEoutput <-"../../anls_output/iiasa_database/gdx/"  # directory where the CGE output is located 
-parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
-threadsnum <- min(floor(availableCores()/2),24)
-r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
-mergecolnum <- 6 #merge figure facet number of columns
-CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
+In the main program there is a location to specifies key parameters which tag is below  
+  #---------------switches to specify the run condition -----  
+filename <- "global_17" # filename should be "global_17","CHN","JPN"....  
+enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.  
+dirCGEoutput <-"../../anls_output/iiasa_database/gdx/"  # directory where the CGE output is located   
+parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.  
+threadsnum <- min(floor(availableCores()/2),24)  
+r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.  
+mergecolnum <- 6 #merge figure facet number of columns  
+CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.  
 
 
 # Location:
