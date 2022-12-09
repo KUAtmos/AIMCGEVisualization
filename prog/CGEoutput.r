@@ -32,7 +32,7 @@ EnduseSceName <- c("globalCGEInt","globalCGEInt_woc","GCGEIntLoVRE","GCGEIntLoVR
 EnduseSceName <- c("globalCGEInt")
 threadsnum <- min(floor(availableCores()/2),24)
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
-mergecolnum <- 6 #merge figure facet number of columns
+mergecolnum <- 4 #merge figure facet number of columns
 
 #---------------End of switches to specify the run condition -----
 
@@ -109,10 +109,10 @@ if(enduseflag>=1){
       fileid <- ii-1
       if(file.exists(paste0(dirEnduseoutput,ll,fileid,"/cons/main/merged_output.gdx"))){
         file.copy(paste0(dirEnduseoutput,ll,fileid,"/cons/main/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG",ii,".gdx"),overwrite = TRUE)
-        eval(parse(text=paste0("EnduseGloadX0_",ii,ll," <- rgdx.param(paste0('../modeloutput/AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Var'=Sv,'Y'=Sy,'Value'=data_all) %>% mutate(ModName=paste0('Enduse[Global]-',",ii,"))%>% mutate(SocEco='",ll,ii,"') %>% left_join(scenariomap2,by='SCENARIO')")))
-        eval(parse(text=paste0("EnduseGloadX1_",ii,ll," <- EnduseGloadX0_",ii,ll,"  %>% filter(SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% select(-SCENARIO) %>% rename(SCENARIO='Name') %>% select(Region,Var,Y,Value,SCENARIO,SocEco,ModName)")))
+        eval(parse(text=paste0("EnduseGloadX0_",ii,ll," <- rgdx.param(paste0('../modeloutput/AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Var'=Sv,'Y'=Sy,'Value'=data_all) %>% mutate(SocEco='",ll,ii,"') %>% left_join(scenariomap2,by='SCENARIO')")))
+        eval(parse(text=paste0("EnduseGloadX1_",ii,ll," <- EnduseGloadX0_",ii,ll,"  %>% filter(SCENARIO %in% as.vector(scenariomap2[,1])) %>% select(-SCENARIO) %>% rename(SCENARIO='Name') %>% select(Region,Var,Y,Value,SCENARIO,SocEco)")))
         if(enduseEneCost==1){
-          eval(parse(text=paste0("EnduseGload_cost <- filter(EnduseGloadX0_",ii,ll,", Var %in% c('Pol_Cos_Add_Tot_Ene_Sys_Cos','GDP_MER') & SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% spread(key=Var,value=Value,fill=0)")))
+          eval(parse(text=paste0("EnduseGload_cost <- filter(EnduseGloadX0_",ii,ll,", Var %in% c('Pol_Cos_Add_Tot_Ene_Sys_Cos','GDP_MER') & SCENARIO %in% as.vector(scenariomap2[,1])) %>% spread(key=Var,value=Value,fill=0)")))
           EnduseGload_cost$Pol_Cos_GDP_los_rat <- EnduseGload_cost$Pol_Cos_Add_Tot_Ene_Sys_Cos/EnduseGload_cost$GDP_MER*100
           eval(parse(text=paste0("EnduseGloadX2_",ii,ll," <- rbind(EnduseGloadX1_",ii,ll,", select(EnduseGload_cost,-GDP_MER,-Pol_Cos_Add_Tot_Ene_Sys_Cos,-SCENARIO) %>% rename(Value=Pol_Cos_GDP_los_rat) %>% mutate(Var='Pol_Cos_GDP_Los_rat')%>% rename(SCENARIO='Name'))")))
         }else{
@@ -136,8 +136,8 @@ if(enduseflag>=1){
       eval(parse(text=paste0("EnduseGloadX2_",ii,ll," <- 0")))
     }
   }
-  allmodelEnduse1 <- inner_join(allmodelEnduse0,EnduseScenarioMap,by=c("SCENARIO","SocEco","ModName")) %>% 
-    select(-SCENARIO,-ModName)  %>% rename(SCENARIO=ReNameSCENARIO,ModName=SocEco) 
+  allmodelEnduse1 <- inner_join(allmodelEnduse0,EnduseScenarioMap,by=c("SCENARIO","SocEco")) %>% 
+    select(-SCENARIO,-SocEco)  %>% rename(SCENARIO=ReNameSCENARIO) 
   allmodelEnduse2 <- allmodelEnduse1 %>% select(Region,Var,ModName,SCENARIO,Y,Value)
   #unload Enduse GDX file
   symDim <- 6
@@ -145,7 +145,8 @@ if(enduseflag>=1){
   lst2 <- wgdx.reshape(allmodelEnduse2,symDim)
   wgdx.lst(gdxName = paste0("../modeloutput/Endusecombine.gdx"),lst2)
   system(paste("gams EnduseMod.gms",sep=" "))
-  allmodelEnduse3 <- rgdx.param(paste0('../modeloutput/EndusecombineMod.gdx'),'EnduseCombined') %>% select(-'.i6') %>% rename(Value=EnduseCombined)
+  allmodelEnduse3 <- rgdx.param(paste0('../modeloutput/EndusecombineMod.gdx'),'EnduseCombined2') %>% select(-'.i6') %>% rename(Value=EnduseCombined2,Region=RCGE) %>%
+    filter(Region %in% region)
   allmodelEnduse3$Y <- as.numeric(levels(allmodelEnduse3$Y))[allmodelEnduse3$Y]
   allmodel0 <- rbind(CGEload1,allmodelEnduse3)
   allmodelEnduse0 <- 0
@@ -176,7 +177,7 @@ symDim <- 6
 attr(allmodel, "symName") <- "allmodel"
 lst3 <- wgdx.reshape(allmodel,symDim)
 wgdx.lst(gdxName = paste0("../output/data/allcombine.gdx"),lst3)
-#system("gams analysis.gms")
+system("gams analysis.gms")
 
 #---End of IAMC tempalte loading and data merge
 
@@ -325,7 +326,7 @@ funcAreaPlotGen <- function(rr,progr){
       }
       allplot[[areamappara$Class[j]]] <- plot3 
       outname <- paste0(outdir,"byRegion/",rr,"/merge/",areamappara[j,1],".png")
-      ggsave(plot3, file=outname, width=15, height=max(1,floor(length(unique(XX$SCENARIO))/4))*5+2,limitsize=FALSE)
+      ggsave(plot3, file=outname, width=mergecolnum*2, height=max(1,floor(length(unique(XX$SCENARIO))/mergecolnum))*6+2,limitsize=FALSE)
       plotflag[[areamappara$Class[j]]] <- nrow(XX)  
     }
     #Final energy consumption area

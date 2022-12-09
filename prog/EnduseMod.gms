@@ -1,17 +1,49 @@
 $TITLE Enduse data modification
+$setglobal CGERepoDir ../../AIMCGE
+$setglobal IntRepoDir ../../../../IntTool
+
 SET
 Region,Var,ModName,SCENARIO,Y
 Value/Value/
+RCGE/
+USA	"USA"
+XE25	"EU"
+XER	"Rest of EU"
+TUR	"Turkey"
+XOC	"New Zealand and Australia"
+CHN	"China"
+IND	"India"
+JPN	"Japan"
+XSE	"Rest of East and South East Asia"
+XSA	"Rest of Asia"
+CAN	"Canada"
+BRA	"Brazil"
+XLM	"Rest of Brazil"
+CIS	"Former USSR"
+XME	"Middle East"
+XNF	"North Africa"
+XAF	"Sub-Sahara"
+World	
+"R5OECD90+EU"
+R5REF	
+R5ASIA	
+R5MAF	
+R5LAM	
+/
+Var/
+$  include %CGERepoDir%/tools/iiasa_data_submission/define/variables.set
+/
 ;
 ALIAS(Var,Var2);
 
 PARAMETER
 EnduseCombined(Region,Var,ModName,SCENARIO,Y,*)
+EnduseCombined2(RCGE,Var,ModName,SCENARIO,Y,*)
 EnduseCombined0(Region,Var,ModName,SCENARIO,Y)
 ;
 
 $gdxin '../modeloutput/Endusecombine.gdx'
-$load Region,Var,ModName,SCENARIO,Y
+$load Region,ModName,SCENARIO,Y
 $load EnduseCombined
 
 SET
@@ -37,9 +69,30 @@ Fin_Ene_Com_SolidsCoa	.	Fin_Ene_Com_SolidsCoa
 Fin_Ene_Com_Liq_and_Gas	.	Fin_Ene_Com_Liq_and_Gas
 Fin_Ene_Com_Ele_Heat	.	Fin_Ene_Com_Ele_Heat
 /
+RMAP(Region,RCGE)/
+$  include %IntRepoDir%/define/region32.map
+World	.	World
+"R5OECD90+EU"	.	"R5OECD90+EU"
+R5REF	.	R5REF
+R5ASIA	.	R5ASIA
+R5MAF	.	R5MAF
+R5LAM	.	R5LAM
+/
+VarWtMap_load(var,Var2)/
+$  include %CGERepoDir%/tools/iiasa_data_submission/define/Weight.map
+/
+VarWtMap(var,Var2)
 ;
+VarWtMap(var,Var2)$(VarWtMap_load(var,Var2) AND (NOT SAMEAS(var,var2)))=YES;
 
 EnduseCombined(Region,Var,ModName,SCENARIO,Y,"Value")$(SUM(Var2$(MapVar(Var,Var2)),1))=SUM(Var2$(MapVar(Var,Var2)),EnduseCombined(Region,Var2,ModName,SCENARIO,Y,"Value"));
+EnduseCombined2(RCGE,Var,ModName,SCENARIO,Y,"Value")$(NOT SUM(Var2$VarWtMap(var,Var2),1))=SUM(Region$(RMAP(Region,RCGE)),EnduseCombined(Region,Var,ModName,SCENARIO,Y,"Value"));
+EnduseCombined2(RCGE,Var,ModName,SCENARIO,Y,"Value")$(SUM(Var2$VarWtMap(var,Var2),1) AND SUM(Var2$VarWtMap(var,Var2),SUM(Region$(RMAP(Region,RCGE)),EnduseCombined(Region,Var2,ModName,SCENARIO,Y,"Value"))))=
+  SUM(Var2$VarWtMap(var,Var2),SUM(Region$(RMAP(Region,RCGE)),EnduseCombined(Region,Var,ModName,SCENARIO,Y,"Value")*EnduseCombined(Region,Var2,ModName,SCENARIO,Y,"Value")))/
+  SUM(Var2$VarWtMap(var,Var2),SUM(Region$(RMAP(Region,RCGE)),EnduseCombined(Region,Var2,ModName,SCENARIO,Y,"Value")));
+
 execute_unload '../modeloutput/EndusecombineMod.gdx'
-EnduseCombined
+EnduseCombined2
+VarWtMap
+Region
 ;

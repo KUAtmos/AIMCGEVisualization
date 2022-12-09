@@ -190,3 +190,8 @@ Fin_Ene_Res_Liq_and_Gas	1
 Fin_Ene_Ind_Liq_and_Gas	1
 Fin_Ene_Tra_Liq_and_Gas	1
 Fin_Ene_Com_Liq_and_Gas	1
+Sec_Ene_Heat_Bio	1
+Sec_Ene_Heat_Coa	1
+Sec_Ene_Heat_Gas	1
+Sec_Ene_Heat_Geo	1
+Sec_Ene_Heat_Nuc	1
