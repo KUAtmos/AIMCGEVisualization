@@ -64,7 +64,7 @@ MyThemeLine <- theme_bw() +
 
 #-- data load
 outdir <- "../output/"
-dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdir,"ppt"),paste0(outdir,"merge"),paste0(outdir,"merge/png"),paste0(outdir,"merge/pngdet"))
+dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdir,"multiRegR5"),paste0(outdir,"ppt"),)
 for(dd in dirlist){
   if(file.exists(dd)){}else{dir.create(dd)}
 }
@@ -81,9 +81,11 @@ fileloadlist <- read.table("../data/loadfilelist.txt", sep="\t",header=T, string
 for(i in 1:nrow(fileloadlist)){
   eval(parse(text=paste0(fileloadlist[i,]$paraname," <- read.table('",fileloadlist[i,]$filename,"', sep='\t',header=T, stringsAsFactors=F)")))
 }
+eval(parse(text=paste0(fileloadlist[7,]$paraname," <- read.table('",fileloadlist[7,]$filename,"', sep='\t',header=F, stringsAsFactors=F)")))
 region_load <- as.vector(read.table("../data/region.txt", sep="\t",header=F, stringsAsFactors=F)$V1)
 region <- region_load
-varlist <- left_join(varlist_load,varalllist,by="V1")
+R5R <- c("World","R5OECD90+EU","R5REF","R5ASIA","R5MAF","R5LAM")
+varlist <- left_join(varlist_load,varalllist,by=c("V1"))
 
 areapaletteload <- select(areamap,Class,Ind,color) %>% rename(V0=Class,V1=Ind,V2=color) 
 
@@ -112,7 +114,7 @@ if(enduseflag>=1){
         eval(parse(text=paste0("EnduseGloadX0_",ii,ll," <- rgdx.param(paste0('../modeloutput/AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Var'=Sv,'Y'=Sy,'Value'=data_all) %>% mutate(SocEco='",ll,ii,"') %>% left_join(scenariomap2,by='SCENARIO')")))
         eval(parse(text=paste0("EnduseGloadX1_",ii,ll," <- EnduseGloadX0_",ii,ll,"  %>% filter(SCENARIO %in% as.vector(scenariomap2[,1])) %>% select(-SCENARIO) %>% rename(SCENARIO='Name') %>% select(Region,Var,Y,Value,SCENARIO,SocEco)")))
         if(enduseEneCost==1){
-          eval(parse(text=paste0("EnduseGload_cost <- filter(EnduseGloadX0_",ii,ll,", Var %in% c('Pol_Cos_Add_Tot_Ene_Sys_Cos','GDP_MER') & SCENARIO %in% as.vector(scenariomap2[,1])) %>% spread(key=Var,value=Value,fill=0)")))
+          eval(parse(text=paste0("EnduseGload_cost <- filter(EnduseGloadX0_",ii,ll,", Var %in% c('Pol_Cos_Add_Tot_Ene_Sys_Cos','GDP_MER') & SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% spread(key=Var,value=Value,fill=0)")))
           EnduseGload_cost$Pol_Cos_GDP_los_rat <- EnduseGload_cost$Pol_Cos_Add_Tot_Ene_Sys_Cos/EnduseGload_cost$GDP_MER*100
           eval(parse(text=paste0("EnduseGloadX2_",ii,ll," <- rbind(EnduseGloadX1_",ii,ll,", select(EnduseGload_cost,-GDP_MER,-Pol_Cos_Add_Tot_Ene_Sys_Cos,-SCENARIO) %>% rename(Value=Pol_Cos_GDP_los_rat) %>% mutate(Var='Pol_Cos_GDP_Los_rat')%>% rename(SCENARIO='Name'))")))
         }else{
@@ -166,7 +168,7 @@ IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
 allmodel <- rbind(allmodel0,IEAEB1) %>% select(ModName,Region,Var,SCENARIO,Y,Value) 
 maxy <- max(allmodel$Y)
 #maxy <- 2050
-linepalettewName <- linepalette
+linepalettewName <- linepalette[1:length(unique(allmodel$SCENARIO))]
 names(linepalettewName) <- unique(allmodel$SCENARIO)
 allmodel <- filter(allmodel,Y <= maxy)
 
@@ -194,30 +196,32 @@ funcplotgen <- function(rr,progr){
 #  for (rr in region_load){ #For debug
     #---Line figures
   for (i in 1:nrow(varlist)){
-    if(nrow(filter(allmodel,Var==varlist[i,1] & Region==rr & ModName!="Reference"))>0){
-      miny <- min(filter(allmodel,Var==varlist[i,1] & Region==rr)$Y) 
+    if(nrow(filter(allmodel,Var==varlist$V1[i] & Region==rr & ModName!="Reference"))>0){
+      miny <- min(filter(allmodel,Var==varlist$V1[i] & Region==rr)$Y) 
+      linepalettewName1 <- linepalette[1:length(unique(filter(allmodel,Var==varlist$V1[i] & Region==rr)$SCENARIO))]
+      names(linepalettewName1) <- unique(filter(allmodel,Var==varlist$V1[i] & Region==rr)$SCENARIO)
       plot.0 <- ggplot() + 
-        geom_line(data=filter(allmodel,Var==varlist[i,1] & ModName!="Reference"& Region==rr),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
-        geom_point(data=filter(allmodel,Var==varlist[i,1] & ModName!="Reference"& Region==rr),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=3.0,fill="white") +
-        MyThemeLine + scale_color_manual(values=linepalettewName) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
+        geom_line(data=filter(allmodel,Var==varlist$V1[i] & ModName!="Reference"& Region==rr),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
+        geom_point(data=filter(allmodel,Var==varlist$V1[i] & ModName!="Reference"& Region==rr),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=3.0,fill="white") +
+        MyThemeLine + scale_color_manual(values=linepalettewName1) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
         scale_shape_manual(values = 1:length(unique(allmodel$ModName))) +
-        xlab("year") + ylab(varlist[i,4])  +  ggtitle(paste0(rr,expression("\n"),varlist[i,3])) +
+        xlab("year") + ylab(paste0(varlist$V2.y[i],"(",varlist$V3[i],")") ) +  ggtitle(paste0(rr,expression("\n"),varlist$V2.y[i])) +
         annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
         theme(legend.title=element_blank()) 
       if(length(scenariomap$SCENARIO)<40){
         plot.0 <- plot.0 +
-        geom_point(data=filter(allmodel,Var==varlist[i,1] & ModName=="Reference"& Region==rr),aes(x=Y, y = Value) , color="black",shape=0,size=2.0,fill="grey") 
+        geom_point(data=filter(allmodel,Var==varlist$V1[i] & ModName=="Reference"& Region==rr),aes(x=Y, y = Value) , color="black",shape=0,size=2.0,fill="grey") 
       }
-      if(varlist[i,2]==1){
-        outname <- paste0(outdir,"byRegion/",rr,"/png/",varlist[i,1],".png")
+      if(varlist$V2.x[i]==1){
+        outname <- paste0(outdir,"byRegion/",rr,"/png/",varlist$V1[i],".png")
       }else{
-        outname <- paste0(outdir,"byRegion/",rr,"/pngdet/",varlist[i,1],".png")
+        outname <- paste0(outdir,"byRegion/",rr,"/pngdet/",varlist$V1[i],".png")
       }
       ggsave(plot.0, file=outname, dpi = 150, width=7, height=5,limitsize=FALSE)
       allplot[[nalist[i]]] <- plot.0
       allplot_nonleg[[nalist[i]]] <- plot.0+ theme(legend.position="none")
     }
-    plotflag[[nalist[i]]] <- nrow(filter(allmodel,Var==varlist[i,1] & ModName!="Reference"& Region==rr))
+    plotflag[[nalist[i]]] <- nrow(filter(allmodel,Var==varlist$V1[i] & ModName!="Reference"& Region==rr))
   }
   #---merged figures
   #Final energy consumption by sectors and fuels
@@ -318,7 +322,7 @@ funcAreaPlotGen <- function(rr,progr){
         facet_wrap(ModName ~ SCENARIO,ncol=mergecolnum) + scale_fill_manual(values=colorpal) + 
         annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')+
         ggtitle(paste0(rr,areamappara[j,]$Class)) +
-        geom_line(data=filter(XX3,Y<=maxy),aes(x=Y, y = Value ), color="black",linetype="dashed",size=2)
+        geom_line(data=filter(XX3,Y<=maxy),aes(x=Y, y = Value ), color="black",linetype="dashed",size=1.2)
       if(nrow(XX2)>=1){
         plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity")
       }else{
@@ -336,29 +340,43 @@ funcAreaPlotGen <- function(rr,progr){
 }
 
 # making cross regional figure
+plotXregion <-function(InputX,ii){
+  miny <- 2010 
+  linepalettewName1 <- linepalette[1:length(unique(filter(InputX,Var==ii)$SCENARIO))]
+  names(linepalettewName1) <- unique(filter(InputX,Var==ii)$SCENARIO)
+  plot.0 <- ggplot() + 
+    geom_line(data=filter(InputX,Var==ii & ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
+    geom_point(data=filter(InputX,Var==ii & ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=3.0,fill="white") +
+    MyThemeLine + scale_color_manual(values=linepalettewName1) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
+    scale_shape_manual(values = 1:length(unique(InputX$ModName))) +
+    xlab("year") + ylab(paste0(varlist$V3[varlist$V1==ii],"(",varlist$V3[varlist$V3==ii],")"))  +  ggtitle(paste("Multi-regions",expression("\n"),varlist$V2.y[varlist$V1==ii],sep=" ")) +
+    annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
+    theme(legend.title=element_blank()) +facet_wrap(~Region,scales="free")
+  if(length(scenariomap$SCENARIO)<20){
+    plot.0 <- plot.0 +
+      geom_point(data=filter(InputX,Var==ii & ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=2.0,fill="grey") 
+  }
+  return(plot.0)
+}
 mergefigGen <- function(ii,progr){
   progr(message='merge figures')
-#    for(ii in lst$varlist){
   if(nrow(filter(allmodel,Var==ii  & ModName!="Reference"))>0){
-    miny <- 2010 
-    plot.0 <- ggplot() + 
-      geom_line(data=filter(allmodel,Var==ii & ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
-      geom_point(data=filter(allmodel,Var==ii & ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=3.0,fill="white") +
-      MyThemeLine + scale_color_manual(values=linepalettewName) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
-      scale_shape_manual(values = 1:length(unique(allmodel$ModName))) +
-      xlab("year") + ylab(varlist$V3[varlist$V1==ii])  +  ggtitle(paste("Multi-regions",expression("\n"),varlist$V2.y[varlist$V1==ii],sep=" ")) +
-      annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
-      theme(legend.title=element_blank()) +facet_wrap(~Region,scales="free")
-    if(length(scenariomap$SCENARIO)<20){
-      plot.0 <- plot.0 +
-        geom_point(data=filter(allmodel,Var==ii & ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=2.0,fill="grey") 
-    }
+    plot.reg <- plotXregion(allmodel,ii)
     if(length(varlist$V2.x[varlist$V1==ii])==1){
       outname <- paste0(outdir,"multiReg","/png/",ii,".png")
     }else{
       outname <- paste0(outdir,"multiReg","/pngdet/",ii,".png")
     }
-    ggsave(plot.0, file=outname, dpi = 150, width=15, height=12,limitsize=FALSE)
+    ggsave(plot.reg, file=outname, dpi = 150, width=15, height=12,limitsize=FALSE)
+  }
+  if(nrow(filter(allmodel,Var==ii & Region %in% R5R & ModName!="Reference"))>0){
+    plot.reg <- plotXregion(filter(allmodel,Region %in% R5R),ii)
+    if(length(varlist$V2.x[varlist$V1==ii])==1){
+      outname <- paste0(outdir,"multiRegR5","/png/",ii,".png")
+    }else{
+      outname <- paste0(outdir,"multiRegR5","/pngdet/",ii,".png")
+    }
+    ggsave(plot.reg, file=outname, dpi = 150, width=10, height=7.5,limitsize=FALSE)
   }
 }
 

@@ -195,3 +195,4 @@ Sec_Ene_Heat_Coa	1
 Sec_Ene_Heat_Gas	1
 Sec_Ene_Heat_Geo	1
 Sec_Ene_Heat_Nuc	1
+Sec_Ene_Inp_Gas_Nat_Gas_DAC	1
