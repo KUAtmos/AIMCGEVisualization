@@ -64,7 +64,7 @@ MyThemeLine <- theme_bw() +
 
 #-- data load
 outdir <- "../output/"
-dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdir,"multiRegR5"),paste0(outdir,"ppt"),paste0(outdir,"misc"))
+dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdir,"multiRegR5"),paste0(outdir,"ppt"),paste0(outdir,"misc"),paste0(outdir,"data"))
 for(dd in dirlist){
   if(file.exists(dd)){}else{dir.create(dd)}
 }
