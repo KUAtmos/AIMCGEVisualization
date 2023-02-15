@@ -32,7 +32,7 @@ EnduseSceName <- c("globalCGEInt","globalCGEInt_woc","GCGEIntLoVRE","GCGEIntLoVR
 EnduseSceName <- c("globalCGEInt")
 threadsnum <- min(floor(availableCores()/2),24)
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
-mergecolnum <- 4 #merge figure facet number of columns
+mergecolnum <- 6 #merge figure facet number of columns
 
 #---------------End of switches to specify the run condition -----
 
@@ -64,7 +64,7 @@ MyThemeLine <- theme_bw() +
 
 #-- data load
 outdir <- "../output/"
-dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdir,"multiRegR5"),paste0(outdir,"ppt"),)
+dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdir,"multiRegR5"),paste0(outdir,"ppt"),paste0(outdir,"misc"))
 for(dd in dirlist){
   if(file.exists(dd)){}else{dir.create(dd)}
 }
@@ -107,10 +107,9 @@ CGEload1$Y <- as.numeric(levels(CGEload1$Y))[CGEload1$Y]
 #Enduse loading
 if(enduseflag>=1){
   for(ll in EnduseSceName){
-    for(ii in 1:enduseflag){
-      fileid <- ii-1
-      if(file.exists(paste0(dirEnduseoutput,ll,fileid,"/cons/main/merged_output.gdx"))){
-        file.copy(paste0(dirEnduseoutput,ll,fileid,"/cons/main/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG",ii,".gdx"),overwrite = TRUE)
+    for(ii in 0:enduseflag){
+      if(file.exists(paste0(dirEnduseoutput,ll,ii,"/cons/main/merged_output.gdx"))){
+        file.copy(paste0(dirEnduseoutput,ll,ii,"/cons/main/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG",ii,".gdx"),overwrite = TRUE)
         eval(parse(text=paste0("EnduseGloadX0_",ii,ll," <- rgdx.param(paste0('../modeloutput/AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Var'=Sv,'Y'=Sy,'Value'=data_all) %>% mutate(SocEco='",ll,ii,"') %>% left_join(scenariomap2,by='SCENARIO')")))
         eval(parse(text=paste0("EnduseGloadX1_",ii,ll," <- EnduseGloadX0_",ii,ll,"  %>% filter(SCENARIO %in% as.vector(scenariomap2[,1])) %>% select(-SCENARIO) %>% rename(SCENARIO='Name') %>% select(Region,Var,Y,Value,SCENARIO,SocEco)")))
         if(enduseEneCost==1){
@@ -128,7 +127,7 @@ if(enduseflag>=1){
   }
   tnum <- 0
   for(ll in EnduseSceName){
-    for(ii in 1:enduseflag){
+    for(ii in 0:enduseflag){
       tnum <- tnum +1
       if(tnum==1){
         eval(parse(text=paste0("allmodelEnduse0 <- EnduseGloadX2_",ii,ll)))
@@ -349,7 +348,7 @@ plotXregion <-function(InputX,ii){
     geom_point(data=filter(InputX,Var==ii & ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=3.0,fill="white") +
     MyThemeLine + scale_color_manual(values=linepalettewName1) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
     scale_shape_manual(values = 1:length(unique(InputX$ModName))) +
-    xlab("year") + ylab(paste0(varlist$V3[varlist$V1==ii],"(",varlist$V3[varlist$V3==ii],")"))  +  ggtitle(paste("Multi-regions",expression("\n"),varlist$V2.y[varlist$V1==ii],sep=" ")) +
+    xlab("year") + ylab(paste0(varlist$V2.y[varlist$V1==ii],"(",varlist$V3[varlist$V1==ii],")"))  +  ggtitle(paste("Multi-regions",expression("\n"),varlist$V2.y[varlist$V1==ii],sep=" ")) +
     annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
     theme(legend.title=element_blank()) +facet_wrap(~Region,scales="free")
   if(length(scenariomap$SCENARIO)<20){

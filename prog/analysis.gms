@@ -53,18 +53,20 @@ i2	.	CGE2	.	Tech1
 i3	.	CGE3	.	Tech2
 i4	.	CGE4	.	Tech3
 i5	.	CGE5	.	Tech4
+i6	.	CGE6	.	Tech5
 /
 ModConverMap(ModName1,ModName2,Ite,ModSpe)/
-CGE0  . CGE1  . i1  . CGE
-CGE1  . CGE2  . i2  . CGE
-CGE2  . CGE3  . i3  . CGE
-CGE3  . CGE4  . i4  . CGE
-CGE4  . CGE5  . i5  . CGE
-Tech0  . Tech1  . i1  . Tech
-Tech1  . Tech2  . i2  . Tech
-Tech2  . Tech3  . i3  . Tech
-Tech3  . Tech4  . i4  . Tech
-*Tech4  . Tech5  . i5  . Tech
+CGE0  . CGE1  . i0  . CGE
+CGE1  . CGE2  . i1  . CGE
+CGE2  . CGE3  . i2  . CGE
+CGE3  . CGE4  . i3  . CGE
+CGE4  . CGE5  . i4  . CGE
+CGE5  . CGE6  . i5  . CGE
+Tech0  . Tech1  . i0 . Tech
+Tech1  . Tech2  . i1  . Tech
+Tech2  . Tech3  . i2  . Tech
+Tech3  . Tech4  . i3  . Tech
+Tech4  . Tech5  . i4  . Tech
 /
 
 Varmain(Var)/
