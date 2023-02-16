@@ -33,7 +33,7 @@ EnduseSceName <- c("globalCGEInt")
 threadsnum <- min(floor(availableCores()/2),24)
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
 mergecolnum <- 6 #merge figure facet number of columns
-
+RegSpec <- 0 #Regional specification if turned into 1, the regional list is loaded for the regional plot
 #---------------End of switches to specify the run condition -----
 
 OrRdPal <- brewer.pal(9, "OrRd")
@@ -79,13 +79,16 @@ landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
 #File loading and parameter configuration
 fileloadlist <- read.table("../data/loadfilelist.txt", sep="\t",header=T, stringsAsFactors=F)
 for(i in 1:nrow(fileloadlist)){
-  eval(parse(text=paste0(fileloadlist[i,]$paraname," <- read.table('",fileloadlist[i,]$filename,"', sep='\t',header=T, stringsAsFactors=F)")))
+  if(fileloadlist[i,]$header==1){tf <- "T"}else{tf <- "F"}
+  eval(parse(text=paste0(fileloadlist[i,]$paraname," <- read.table('",fileloadlist[i,]$filename,"', sep='\t',header=",tf,", stringsAsFactors=F)")))
 }
-eval(parse(text=paste0(fileloadlist[7,]$paraname," <- read.table('",fileloadlist[7,]$filename,"', sep='\t',header=F, stringsAsFactors=F)")))
 region_load <- as.vector(read.table("../data/region.txt", sep="\t",header=F, stringsAsFactors=F)$V1)
 region <- region_load
-R5R <- c("World","R5OECD90+EU","R5REF","R5ASIA","R5MAF","R5LAM")
+R5R <- as.vector(R5R_load$V1)
+R17R <- as.vector(R17R_load$V1)
+R17p5R <- c(R5R,R17R[-18])
 varlist <- left_join(varlist_load,varalllist,by=c("V1"))
+Ylist <- seq(2010,2100,by=5)
 
 areapaletteload <- select(areamap,Class,Ind,color) %>% rename(V0=Class,V1=Ind,V2=color) 
 
@@ -97,12 +100,12 @@ if(CGEgdxcopy==1){
   CGEload0 <- rgdx.param(paste0(dirCGEoutput,filename,"_IAMC.gdx"),'IAMC_Template') 
 }
 Getregion <- as.vector(unique(CGEload0$REMF))
-if(length(Getregion)==1){region <- Getregion}
+if(length(Getregion)==1){region <- Getregion}else{region <- R17p5R}
 CGEload1 <- CGEload0 %>% rename("Value"=IAMC_Template,"Var"=VEMF) %>% 
-  left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1]) & REMF %in% region) %>% 
+  left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1])) %>% 
   select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name",Y="YEMF")
 CGEload1$Y <- as.numeric(levels(CGEload1$Y))[CGEload1$Y]
-
+CGEload0 <- 0
 
 #Enduse loading
 if(enduseflag>=1){
@@ -139,7 +142,7 @@ if(enduseflag>=1){
   }
   allmodelEnduse1 <- inner_join(allmodelEnduse0,EnduseScenarioMap,by=c("SCENARIO","SocEco")) %>% 
     select(-SCENARIO,-SocEco)  %>% rename(SCENARIO=ReNameSCENARIO) 
-  allmodelEnduse2 <- allmodelEnduse1 %>% select(Region,Var,ModName,SCENARIO,Y,Value)
+  allmodelEnduse2 <- allmodelEnduse1 %>% select(Region,Var,ModName,SCENARIO,Y,Value) %>% filter(Y %in% Ylist)
   #unload Enduse GDX file
   symDim <- 6
   attr(allmodelEnduse2, "symName") <- "EnduseCombined"
@@ -151,6 +154,7 @@ if(enduseflag>=1){
   allmodelEnduse3$Y <- as.numeric(levels(allmodelEnduse3$Y))[allmodelEnduse3$Y]
   allmodel0 <- rbind(CGEload1,allmodelEnduse3)
   allmodelEnduse0 <- 0
+  allmodelEnduse1 <- 0
   allmodelEnduse2 <- 0
   
 }else{
@@ -160,7 +164,7 @@ if(enduseflag>=1){
 
 #IEA energy balance information
 IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Var"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
-  select(Region,Var,Y,Value,SCENARIO) %>% filter(Region %in% region) %>% mutate(ModName="Reference")
+  select(Region,Var,Y,Value,SCENARIO) %>% filter(Region %in% c(R5R,R17R)) %>% mutate(ModName="Reference")
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
 IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
 
@@ -191,17 +195,18 @@ flabel <- c("change in % of GDP","sectors")
 #function for regional figure generation
 funcplotgen <- function(rr,progr){
   progr(message='region figures')
-
-#  for (rr in region_load){ #For debug
-    #---Line figures
+  Data4plot0 <- filter(allmodel,Region==rr)
+  #---Line figures
+  #  for (rr in region_load){ #For debug
   for (i in 1:nrow(varlist)){
-    if(nrow(filter(allmodel,Var==varlist$V1[i] & Region==rr & ModName!="Reference"))>0){
-      miny <- min(filter(allmodel,Var==varlist$V1[i] & Region==rr)$Y) 
-      linepalettewName1 <- linepalette[1:length(unique(filter(allmodel,Var==varlist$V1[i] & Region==rr)$SCENARIO))]
-      names(linepalettewName1) <- unique(filter(allmodel,Var==varlist$V1[i] & Region==rr)$SCENARIO)
+    Data4plot <- filter(Data4plot0,Var==varlist$V1[i])
+    if(nrow(filter(Data4plot,ModName!="Reference"))>0){
+      miny <- min(Data4plot$Y) 
+      linepalettewName1 <- linepalette[1:length(unique(Data4plot$SCENARIO))]
+      names(linepalettewName1) <- unique(Data4plot$SCENARIO)
       plot.0 <- ggplot() + 
-        geom_line(data=filter(allmodel,Var==varlist$V1[i] & ModName!="Reference"& Region==rr),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
-        geom_point(data=filter(allmodel,Var==varlist$V1[i] & ModName!="Reference"& Region==rr),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=3.0,fill="white") +
+        geom_line(data=filter(Data4plot,ModName!="Reference"),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
+        geom_point(data=filter(Data4plot,ModName!="Reference"),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=1.5,fill="white") +
         MyThemeLine + scale_color_manual(values=linepalettewName1) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
         scale_shape_manual(values = 1:length(unique(allmodel$ModName))) +
         xlab("year") + ylab(paste0(varlist$V2.y[i],"(",varlist$V3[i],")") ) +  ggtitle(paste0(rr,expression("\n"),varlist$V2.y[i])) +
@@ -209,7 +214,7 @@ funcplotgen <- function(rr,progr){
         theme(legend.title=element_blank()) 
       if(length(scenariomap$SCENARIO)<40){
         plot.0 <- plot.0 +
-        geom_point(data=filter(allmodel,Var==varlist$V1[i] & ModName=="Reference"& Region==rr),aes(x=Y, y = Value) , color="black",shape=0,size=2.0,fill="grey") 
+        geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
       }
       if(varlist$V2.x[i]==1){
         outname <- paste0(outdir,"byRegion/",rr,"/png/",varlist$V1[i],".png")
@@ -220,7 +225,7 @@ funcplotgen <- function(rr,progr){
       allplot[[nalist[i]]] <- plot.0
       allplot_nonleg[[nalist[i]]] <- plot.0+ theme(legend.position="none")
     }
-    plotflag[[nalist[i]]] <- nrow(filter(allmodel,Var==varlist$V1[i] & ModName!="Reference"& Region==rr))
+    plotflag[[nalist[i]]] <- nrow(filter(Data4plot,ModName!="Reference"))
   }
   #---merged figures
   #Final energy consumption by sectors and fuels
@@ -291,16 +296,16 @@ funcDecGen <- function(rr,progr){
 }
 #function for regional area figure generation
 funcAreaPlotGen <- function(rr,progr){
+  Data4plot <- filter(allmodel,Region==rr)
 #  for( rr in as.vector(region_load)){
   for(j in 1:nrow(areamappara)){
-    if(nrow(filter(allmodel %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
-                   filter(Class==areamappara[j,1] & ModName!="Reference"& Region==rr)))>0){
-      XX <- allmodel %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
-        filter(Class==areamappara[j,1] & ModName!="Reference"& Region==rr) %>% select(ModName,SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
-      XX2 <- allmodel %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
-        filter(Class==areamappara[j,1] & ModName=="Reference"& Region==rr) %>% select(-SCENARIO,-ModName,Ind,Y,Value,order)  %>% arrange(order)%>%
+    XX <- Data4plot %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
+      filter(Class==areamappara[j,1] & ModName!="Reference") %>% select(ModName,SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
+    if(nrow(XX)>0){
+      XX2 <- Data4plot %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
+        filter(Class==areamappara[j,1] & ModName=="Reference") %>% select(-SCENARIO,-ModName,Ind,Y,Value,order)  %>% arrange(order)%>%
         filter(Y>=2015)
-      XX3 <- allmodel %>% filter(Var %in% as.vector(areamappara$lineVar[j]) & ModName!="Reference"& Region==rr) %>% select(ModName,SCENARIO,Var,Y,Value)
+      XX3 <- Data4plot %>% filter(Var %in% as.vector(areamappara$lineVar[j]) & ModName!="Reference") %>% select(ModName,SCENARIO,Var,Y,Value)
       
       miny <- min(XX$Y,XX2$Y) 
       na.omit(XX$Value)
@@ -340,12 +345,13 @@ funcAreaPlotGen <- function(rr,progr){
 
 # making cross regional figure
 plotXregion <-function(InputX,ii){
-  miny <- 2010 
   linepalettewName1 <- linepalette[1:length(unique(filter(InputX,Var==ii)$SCENARIO))]
   names(linepalettewName1) <- unique(filter(InputX,Var==ii)$SCENARIO)
+  Data4Plot <- filter(InputX,Var==ii)
+  miny <- min(Data4plot$Y) 
   plot.0 <- ggplot() + 
-    geom_line(data=filter(InputX,Var==ii & ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
-    geom_point(data=filter(InputX,Var==ii & ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=3.0,fill="white") +
+    geom_line(data=filter(Data4Plot, ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
+    geom_point(data=filter(Data4Plot, ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=1.5,fill="white") +
     MyThemeLine + scale_color_manual(values=linepalettewName1) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
     scale_shape_manual(values = 1:length(unique(InputX$ModName))) +
     xlab("year") + ylab(paste0(varlist$V2.y[varlist$V1==ii],"(",varlist$V3[varlist$V1==ii],")"))  +  ggtitle(paste("Multi-regions",expression("\n"),varlist$V2.y[varlist$V1==ii],sep=" ")) +
@@ -353,14 +359,14 @@ plotXregion <-function(InputX,ii){
     theme(legend.title=element_blank()) +facet_wrap(~Region,scales="free")
   if(length(scenariomap$SCENARIO)<20){
     plot.0 <- plot.0 +
-      geom_point(data=filter(InputX,Var==ii & ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=2.0,fill="grey") 
+      geom_point(data=filter(Data4Plot, ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
   }
   return(plot.0)
 }
 mergefigGen <- function(ii,progr){
   progr(message='merge figures')
   if(nrow(filter(allmodel,Var==ii  & ModName!="Reference"))>0){
-    plot.reg <- plotXregion(allmodel,ii)
+    plot.reg <- plotXregion(filter(allmodel,Region %in% R17R),ii)
     if(length(varlist$V2.x[varlist$V1==ii])==1){
       outname <- paste0(outdir,"multiReg","/png/",ii,".png")
     }else{
@@ -375,7 +381,7 @@ mergefigGen <- function(ii,progr){
     }else{
       outname <- paste0(outdir,"multiRegR5","/pngdet/",ii,".png")
     }
-    ggsave(plot.reg, file=outname, dpi = 150, width=10, height=7.5,limitsize=FALSE)
+    ggsave(plot.reg, file=outname, dpi = 150, width=12, height=7.5,limitsize=FALSE)
   }
 }
 
@@ -410,8 +416,13 @@ names(plotflag) <- nalist
 allplotmerge <- as.list(nalist)
 plotflagmerge <- as.list(nalist)
 lst <- list()
-lst$region <- region_load
+if(RegSpec==0){
+  lst$region <- R17p5R
+}else{
+  lst$region <- region_load
+}
 lst$varlist <- as.list(as.vector(varlist$V1))
+lst$R5R <- R5R
 
 #Creat directories
 for(rr in lst$region){
@@ -424,14 +435,15 @@ for(rr in lst$region){
 
 #regional figure generation execution
 exe_fig_make(lst$region,funcplotgen)
-#regional Decomposition figure generation execution
-exe_fig_make(lst$region,funcDecGen)
 #regional area figure generation execution
 exe_fig_make(lst$region,funcAreaPlotGen)
 
-
 #cross-regional figure generation execution
-exe_fig_make(lst$varlist,mergefigGen)
+if(length(Getregion)!=1){
+  exe_fig_make(lst$varlist,mergefigGen)
+}
 
+#regional Decomposition figure generation execution
+exe_fig_make(lst$region,funcDecGen)
 
 
