@@ -348,7 +348,7 @@ plotXregion <-function(InputX,ii){
   linepalettewName1 <- linepalette[1:length(unique(filter(InputX,Var==ii)$SCENARIO))]
   names(linepalettewName1) <- unique(filter(InputX,Var==ii)$SCENARIO)
   Data4Plot <- filter(InputX,Var==ii)
-  miny <- min(Data4plot$Y) 
+  miny <- min(Data4plot$Y,2010) 
   plot.0 <- ggplot() + 
     geom_line(data=filter(Data4Plot, ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
     geom_point(data=filter(Data4Plot, ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=1.5,fill="white") +
