@@ -283,7 +283,7 @@ funcplotgen <- function(rr,progr){
 #Function for Decomposition
 funcDecGen <- function(rr,progr){
   progr(message='region figures')
-  Decom2 <- Decom1 %>% filter(SCENARIO %in% scenariomap$SCENARIO & Y %in% c(2030,2050) & Sector %in% c("IND","SER","PWR","OEN","TRS","AGR") & R==rr) 
+  Decom2 <- Decom1 %>% filter(SCENARIO %in% scenariomap$SCENARIO & Y %in% c(2030,2050,2100) & Sector %in% c("IND","SER","PWR","OEN","TRS","AGR") & R==rr) 
   plotdec <- ggplot() + geom_bar(data=filter(Decom2,Element %in% c("fd_output","output_va","va","residual1")),aes(x=Sector, y = value*100 , fill=Element), stat="identity") +
     geom_point(data=filter(Decom2,Element %in% c("fd")),aes(x=Sector, y = value*100 ),color="black", stat="identity") +
     ylab(flabel[1]) + xlab(flabel[2]) +labs(fill="") +
@@ -344,11 +344,13 @@ funcAreaPlotGen <- function(rr,progr){
 }
 
 # making cross regional figure
-plotXregion <-function(InputX,ii){
+plotXregion <-function(InputX,ii,rr){
+#  for(ii in lst$varlist){
+  InputX <- filter(allmodel,Region %in% rr)
   linepalettewName1 <- linepalette[1:length(unique(filter(InputX,Var==ii)$SCENARIO))]
   names(linepalettewName1) <- unique(filter(InputX,Var==ii)$SCENARIO)
   Data4Plot <- filter(InputX,Var==ii)
-  miny <- min(Data4plot$Y,2010) 
+  miny <- min(Data4Plot$Y,2010) 
   plot.0 <- ggplot() + 
     geom_line(data=filter(Data4Plot, ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
     geom_point(data=filter(Data4Plot, ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=1.5,fill="white") +
@@ -365,8 +367,9 @@ plotXregion <-function(InputX,ii){
 }
 mergefigGen <- function(ii,progr){
   progr(message='merge figures')
+#  for(ii in lst$varlist){
   if(nrow(filter(allmodel,Var==ii  & ModName!="Reference"))>0){
-    plot.reg <- plotXregion(filter(allmodel,Region %in% R17R),ii)
+    plot.reg <- plotXregion(filter(allmodel,Region %in% R17R),ii,R17R)
     if(length(varlist$V2.x[varlist$V1==ii])==1){
       outname <- paste0(outdir,"multiReg","/png/",ii,".png")
     }else{
@@ -375,7 +378,7 @@ mergefigGen <- function(ii,progr){
     ggsave(plot.reg, file=outname, dpi = 150, width=15, height=12,limitsize=FALSE)
   }
   if(nrow(filter(allmodel,Var==ii & Region %in% R5R & ModName!="Reference"))>0){
-    plot.reg <- plotXregion(filter(allmodel,Region %in% R5R),ii)
+    plot.reg <- plotXregion(filter(allmodel,Region %in% R5R),ii,R5R)
     if(length(varlist$V2.x[varlist$V1==ii])==1){
       outname <- paste0(outdir,"multiRegR5","/png/",ii,".png")
     }else{
@@ -446,4 +449,5 @@ if(length(Getregion)!=1){
 #regional Decomposition figure generation execution
 exe_fig_make(lst$region,funcDecGen)
 
+#source("Discrepancy.R")
 
