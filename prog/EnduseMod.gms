@@ -68,6 +68,14 @@ Fin_Ene_Com_SolidsBio	.	Fin_Ene_Com_SolidsBio
 Fin_Ene_Com_SolidsCoa	.	Fin_Ene_Com_SolidsCoa
 Fin_Ene_Com_Liq_and_Gas	.	Fin_Ene_Com_Liq_and_Gas
 Fin_Ene_Com_Ele_Heat	.	Fin_Ene_Com_Ele_Heat
+Sec_Ene_Inp_Coa_Ele_Heat  . Sec_Ene_Inp_Coa_Ele
+Sec_Ene_Inp_Coa_Ele_Heat  . Sec_Ene_Inp_Coa_Heat
+Sec_Ene_Inp_Gas_Ele_Heat  . Sec_Ene_Inp_Gas_Ele
+Sec_Ene_Inp_Gas_Ele_Heat  . Sec_Ene_Inp_Gas_Heat
+Sec_Ene_Inp_Oil_Ele_Heat  . Sec_Ene_Inp_Oil_Ele
+Sec_Ene_Inp_Oil_Ele_Heat  . Sec_Ene_Inp_Oil_Heat
+Sec_Ene_Inp_Bio_Ele_Heat  . Sec_Ene_Inp_Bio_Ele
+Sec_Ene_Inp_Bio_Ele_Heat  . Sec_Ene_Inp_Bio_Heat
 /
 RMAP(Region,RCGE)/
 $  include %IntRepoDir%/define/region32.map

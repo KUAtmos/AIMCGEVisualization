@@ -196,3 +196,10 @@ Sec_Ene_Heat_Gas	1
 Sec_Ene_Heat_Geo	1
 Sec_Ene_Heat_Nuc	1
 Sec_Ene_Inp_Gas_Nat_Gas_DAC	1
+Sec_Ene_Inp_Ele_DAC	1
+Sec_Ene_Inp_Bio_Ele_Heat	1
+Sec_Ene_Inp_Coa_Ele_Heat	1
+Sec_Ene_Inp_Gas_Ele_Heat	1
+Sec_Ene_Inp_Oil_Ele_Heat	1
+Sec_Ene_Inp_Coa_Bla_Fur	1
+Sec_Ene_Inp_Hyd_Ele	1

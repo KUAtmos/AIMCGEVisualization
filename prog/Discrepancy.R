@@ -31,5 +31,5 @@ plot.0 <- ggplot() +
 outname <- paste0(outdir,"misc/R5ModelDif.png")
 ggsave(plot.0, file=outname, width=15, height=15,limitsize=FALSE)
 
-Exceedlist <- filter(Diff_load, Indi=="MAEStand" & Ite=="i3" & Value >= 0.05)
+Exceedlist <- filter(Diff_load, Indi=="MAEStand" & Ite=="i3" & Value >= 0.1)
 write.csv(x = Exceedlist, file = "../output/misc/Exceedlist_dif.csv")
