@@ -1,6 +1,8 @@
 $TITLE Enduse data modification
-$setglobal CGERepoDir ../../AIMCGE
-$setglobal IntRepoDir ../../../../IntTool
+$setglobal Maindir
+$setglobal CGERepoDir %Maindir%../../AIMCGE
+$setglobal IntRepoDir %Maindir%../../../../IntTool
+$setglobal outputdir ../
 
 SET
 Region,Var,ModName,SCENARIO,Y
@@ -42,7 +44,7 @@ EnduseCombined2(RCGE,Var,ModName,SCENARIO,Y,*)
 EnduseCombined0(Region,Var,ModName,SCENARIO,Y)
 ;
 
-$gdxin '../modeloutput/Endusecombine.gdx'
+$gdxin '%outputdir%/modeloutput/Endusecombine.gdx'
 $load Region,ModName,SCENARIO,Y
 $load EnduseCombined
 
@@ -99,7 +101,7 @@ EnduseCombined2(RCGE,Var,ModName,SCENARIO,Y,"Value")$(SUM(Var2$VarWtMap(var,Var2
   SUM(Var2$VarWtMap(var,Var2),SUM(Region$(RMAP(Region,RCGE)),EnduseCombined(Region,Var,ModName,SCENARIO,Y,"Value")*EnduseCombined(Region,Var2,ModName,SCENARIO,Y,"Value")))/
   SUM(Var2$VarWtMap(var,Var2),SUM(Region$(RMAP(Region,RCGE)),EnduseCombined(Region,Var2,ModName,SCENARIO,Y,"Value")));
 
-execute_unload '../modeloutput/EndusecombineMod.gdx'
+execute_unload '%outputdir%modeloutput/EndusecombineMod.gdx'
 EnduseCombined2
 VarWtMap
 Region

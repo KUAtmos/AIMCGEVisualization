@@ -21,12 +21,21 @@ for(j in libloadlist){
 
 
 #---------------switches to specify the run condition -----
+submodule <- 1 #0 if this repository cloned to the AIMHub dir
+if(submodule==1){
+	maindirloc <- "../../"
+	outdir <- "../../../../output/fig/" #Output directory 
+}else{
+	maindirloc <- ""
+	outdir <- "../output/" 
+}
+outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GDX file
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 5   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
 enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
-dirCGEoutput <-"../../output/iiasa_database/gdx/"  # directory where the CGE output is located 
+dirCGEoutput <- paste0(maindirloc,"../../output/iiasa_database/gdx/")  # directory where the CGE output is located 
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
-dirEnduseoutput <-"../../../Enduse/output/"  # directory where the CGE output is located 
+dirEnduseoutput <- paste0(maindirloc,"../../../Enduse/output/")  # directory where the Enduse output is located 
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 EnduseSceName <- c("globalCGEInt","globalCGEInt_woc","GCGEIntLoVRE","GCGEIntLoVRE_woc") #Enduse list "globalCGEInt_woc"
 EnduseSceName <- c("globalCGEInt")
@@ -63,8 +72,7 @@ MyThemeLine <- theme_bw() +
   )
 
 #-- data load
-outdir <- "../output/"
-dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdir,"multiRegR5"),paste0(outdir,"ppt"),paste0(outdir,"misc"),paste0(outdir,"data"))
+dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdirmd),paste0(outdir,"multiRegR5"),paste0(outdir,"ppt"),paste0(outdir,"misc"),paste0(outdir,"data"))
 for(dd in dirlist){
   if(file.exists(dd)){}else{dir.create(dd)}
 }
@@ -94,8 +102,8 @@ areapaletteload <- select(areamap,Class,Ind,color) %>% rename(V0=Class,V1=Ind,V2
 
 #---IAMC tempalte loading and data merge
 if(CGEgdxcopy==1){
-  file.copy(paste0(dirCGEoutput,filename,"_IAMC.gdx"), paste0("../modeloutput/",filename,"_IAMC.gdx"),overwrite = TRUE)
-  CGEload0 <- rgdx.param(paste0('../modeloutput/',filename,"_IAMC.gdx"),'IAMC_Template') 
+  file.copy(paste0(dirCGEoutput,filename,"_IAMC.gdx"), paste0(outdirmd,filename,"_IAMC.gdx"),overwrite = TRUE)
+  CGEload0 <- rgdx.param(paste0(outdirmd ,filename,"_IAMC.gdx"),'IAMC_Template') 
 }else{  
   CGEload0 <- rgdx.param(paste0(dirCGEoutput,filename,"_IAMC.gdx"),'IAMC_Template') 
 }
@@ -112,8 +120,8 @@ if(enduseflag>=1){
   for(ll in EnduseSceName){
     for(ii in 0:enduseflag){
       if(file.exists(paste0(dirEnduseoutput,ll,ii,"/cons/main/merged_output.gdx"))){
-        file.copy(paste0(dirEnduseoutput,ll,ii,"/cons/main/merged_output.gdx"), paste0("../modeloutput/AIMEnduseG",ii,".gdx"),overwrite = TRUE)
-        eval(parse(text=paste0("EnduseGloadX0_",ii,ll," <- rgdx.param(paste0('../modeloutput/AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Var'=Sv,'Y'=Sy,'Value'=data_all) %>% mutate(SocEco='",ll,ii,"') %>% left_join(scenariomap2,by='SCENARIO')")))
+        file.copy(paste0(dirEnduseoutput,ll,ii,"/cons/main/merged_output.gdx"), paste0(outdirmd,"AIMEnduseG",ii,".gdx"),overwrite = TRUE)
+        eval(parse(text=paste0("EnduseGloadX0_",ii,ll," <- rgdx.param(paste0(outdirmd,'AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Var'=Sv,'Y'=Sy,'Value'=data_all) %>% mutate(SocEco='",ll,ii,"') %>% left_join(scenariomap2,by='SCENARIO')")))
         eval(parse(text=paste0("EnduseGloadX1_",ii,ll," <- EnduseGloadX0_",ii,ll,"  %>% filter(SCENARIO %in% as.vector(scenariomap2[,1])) %>% select(-SCENARIO) %>% rename(SCENARIO='Name') %>% select(Region,Var,Y,Value,SCENARIO,SocEco)")))
         if(enduseEneCost==1){
           eval(parse(text=paste0("EnduseGload_cost <- filter(EnduseGloadX0_",ii,ll,", Var %in% c('Pol_Cos_Add_Tot_Ene_Sys_Cos','GDP_MER') & SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% spread(key=Var,value=Value,fill=0)")))
@@ -147,9 +155,9 @@ if(enduseflag>=1){
   symDim <- 6
   attr(allmodelEnduse2, "symName") <- "EnduseCombined"
   lst2 <- wgdx.reshape(allmodelEnduse2,symDim)
-  wgdx.lst(gdxName = paste0("../modeloutput/Endusecombine.gdx"),lst2)
-  system(paste("gams EnduseMod.gms",sep=" "))
-  allmodelEnduse3 <- rgdx.param(paste0('../modeloutput/EndusecombineMod.gdx'),'EnduseCombined2') %>% select(-'.i6') %>% rename(Value=EnduseCombined2,Region=RCGE) %>%
+  wgdx.lst(gdxName = paste0(outdirmd,"Endusecombine.gdx"),lst2)
+  system(paste0("gams EnduseMod.gms --Maindir=",maindirloc," --outputdir=",outdir))
+  allmodelEnduse3 <- rgdx.param(paste0(outdirmd,'EndusecombineMod.gdx'),'EnduseCombined2') %>% select(-'.i6') %>% rename(Value=EnduseCombined2,Region=RCGE) %>%
     filter(Region %in% region)
   allmodelEnduse3$Y <- as.numeric(levels(allmodelEnduse3$Y))[allmodelEnduse3$Y]
   allmodel0 <- rbind(CGEload1,allmodelEnduse3)
@@ -166,7 +174,7 @@ if(enduseflag>=1){
 IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Var"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
   select(Region,Var,Y,Value,SCENARIO) %>% filter(Region %in% c(R5R,R17R)) %>% mutate(ModName="Reference")
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
-IEAEB1 <- filter(IEAEB0,Y<=2015 & Y>=1990)
+IEAEB1 <- filter(IEAEB0,Y<=2020 & Y>=1990)
 
 allmodel <- rbind(allmodel0,IEAEB1) %>% select(ModName,Region,Var,SCENARIO,Y,Value) 
 maxy <- max(allmodel$Y)
@@ -177,12 +185,12 @@ allmodel <- filter(allmodel,Y <= maxy)
 
 #Extract data
 ExtData <- filter(CGEload1,Var %in% varlist$V1) %>% left_join(varlist %>% rename(Var=V1)) %>% select(-V2.x,-Var) %>% rename(Var=V2.y,Unit=V3)
-write.csv(x = ExtData, file = "../output/data/exportdata.csv")
+write.csv(x = ExtData, file = paste0(outdir,"/data/exportdata.csv"))
 symDim <- 6
 attr(allmodel, "symName") <- "allmodel"
 lst3 <- wgdx.reshape(allmodel,symDim)
-wgdx.lst(gdxName = paste0("../output/data/allcombine.gdx"),lst3)
-system("gams analysis.gms")
+wgdx.lst(gdxName = paste0(outdir,"data/allcombine.gdx"),lst3)
+system(paste0("gams analysis.gms --outdir=",outdir))
 
 #---End of IAMC tempalte loading and data merge
 

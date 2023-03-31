@@ -1,4 +1,5 @@
 $TITLE Enduse integration analysis
+$setglobal outdir ../output
 SET
 Dum/
 "Fin_Ene", "Fin_Ene_Ele_Heat", "Fin_Ene_Liq_and_Gas", "Fin_Ene_SolidsCoa", "Fin_Ene_SolidsBio", "Fin_Ene_Hyd", "Fin_Ene_Ind", "Fin_Ene_Com", "Fin_Ene_Res", "Fin_Ene_Tra"
@@ -9,7 +10,9 @@ Sec_Ene_Hyd, Sec_Ene_Hyd_Gas, Sec_Ene_Hyd_Bio, Sec_Ene_Hyd_Ele
 "Fin_Ene_Ind_Ele_Heat", "Fin_Ene_Ind_Liq_and_Gas", "Fin_Ene_Ind_SolidsCoa", "Fin_Ene_Ind_SolidsBio", "Fin_Ene_Ind_Hyd", "Fin_Ene_Com_Ele_Heat", "Fin_Ene_Com_Liq_and_Gas", "Fin_Ene_Com_SolidsCoa", "Fin_Ene_Com_SolidsBio", "Fin_Ene_Com_Hyd", "Fin_Ene_Res_Ele_Heat", "Fin_Ene_Res_Liq_and_Gas", "Fin_Ene_Res_SolidsCoa", "Fin_Ene_Res_SolidsBio", "Fin_Ene_Res_Hyd", "Fin_Ene_Tra_Ele", "Fin_Ene_Tra_Liq_and_Gas", "Fin_Ene_Tra_Liq_Bio", "Fin_Ene_Tra_Liq_Oil", "Fin_Ene_Tra_Hyd"
 
 /
-Region,Var,ModName,SCENARIO,Y
+Region,Var
+ModName/CGE0*CGE10,Tech0*Tech10/
+SCENARIO,Y
 Value/Value/
 Ite  Iteration/i0*i10/
 Indi/
@@ -39,9 +42,10 @@ MeanModel(ModName,SCENARIO,Region,Var)
 VarModel(ModName,SCENARIO,Region,Var)
 ;
 
-$gdxin '../output/data/allcombine.gdx'
-$load Region,Var,ModName,SCENARIO,Y
+$gdxin '%outdir%/data/allcombine.gdx'
+$load Region,Var,SCENARIO,Y
 $load DataLoad=allmodel
+*$load ModName
 
 ALIAS(ModName,ModName2,ModName1);
 
@@ -185,7 +189,7 @@ ConvStat("MEAN",Ite,ModSpe,SCENARIO,Region,Var)$(Varmain(Var) AND RegionMain(Reg
   SUM((Y,ModName1,ModName2)$(Y2020Comp(Y) AND ModConverMap(ModName1,ModName2,Ite,ModSpe) AND DataLoad1(ModName1,Region,Var,SCENARIO,Y) AND DataLoad1(ModName2,Region,Var,SCENARIO,Y)),1);
 ConvStat("MAEStand",Ite,ModSpe,SCENARIO,Region,Var)$(ConvStat("MEAN",Ite,ModSpe,SCENARIO,Region,Var))=ConvStat("MAE",Ite,ModSpe,SCENARIO,Region,Var)/ConvStat("MEAN",Ite,ModSpe,SCENARIO,Region,Var);
 
-execute_unload '../output/data/analysis.gdx'
+execute_unload '%outdir%/data/analysis.gdx'
 Stat
 ConvStat
 ;
