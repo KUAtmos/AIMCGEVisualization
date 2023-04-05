@@ -89,7 +89,7 @@ R5MAF	.	R5MAF
 R5LAM	.	R5LAM
 /
 VarWtMap_load(var,Var2)/
-$  include %CGERepoDir%/tools/iiasa_data_submission/define/Weight.map
+$  include %CGERepoDir%/tools/iiasa_data_submission/define/weight.map
 /
 VarWtMap(var,Var2)
 ;

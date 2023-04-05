@@ -14,10 +14,15 @@ if(insflag==1){
   #install.packages("gdxrrw", dependencies = TRUE)
 }
 
-libloadlist <- c("gdxrrw","ggplot2","dplyr","reshape2","tidyr","maps","grid","RColorBrewer","R2PPT","RDCOMClient","cowplot","officer","export","purrr","furrr","progressr")
+libloadlist <- c("gdxrrw","ggplot2","dplyr","reshape2","tidyr","maps","grid","RColorBrewer","cowplot","export","purrr","furrr","progressr")
 for(j in libloadlist){
   eval(parse(text=paste0("library(",j,")")))
 }
+args <- commandArgs(trailingOnly = TRUE)
+gams_sys_dir <- as.character(args[1])
+#gams_sys_dir <- "/opt/gams/gams37.1_linux_x64_64_sfx"
+igdx(gams_sys_dir)
+
 
 
 #---------------switches to specify the run condition -----
@@ -31,7 +36,7 @@ if(submodule==1){
 }
 outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GDX file
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseflag <- 1   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
 enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
 dirCGEoutput <- paste0(maindirloc,"../../output/iiasa_database/gdx/")  # directory where the CGE output is located 
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
