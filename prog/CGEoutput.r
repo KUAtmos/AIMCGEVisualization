@@ -19,8 +19,10 @@ for(j in libloadlist){
   eval(parse(text=paste0("library(",j,")")))
 }
 args <- commandArgs(trailingOnly = TRUE)
+default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24))   # Default value but gams path should be modified if GUI based R is used
+default_flg <- is.na(args[1:2])
+args[default_flg] <- default_args[default_flg]
 gams_sys_dir <- as.character(args[1])
-#gams_sys_dir <- "/opt/gams/gams37.1_linux_x64_64_sfx"
 igdx(gams_sys_dir)
 
 
@@ -36,7 +38,7 @@ if(submodule==1){
 }
 outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GDX file
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 1   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseflag <- 5   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
 enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
 dirCGEoutput <- paste0(maindirloc,"../../output/iiasa_database/gdx/")  # directory where the CGE output is located 
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
@@ -44,7 +46,8 @@ dirEnduseoutput <- paste0(maindirloc,"../../../Enduse/output/")  # directory whe
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 EnduseSceName <- c("globalCGEInt","globalCGEInt_woc","GCGEIntLoVRE","GCGEIntLoVRE_woc") #Enduse list "globalCGEInt_woc"
 EnduseSceName <- c("globalCGEInt")
-threadsnum <- min(floor(availableCores()/2),24)
+threadsnum <-  as.numeric(args[2])
+print(threadsnum) 
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
 mergecolnum <- 6 #merge figure facet number of columns
 RegSpec <- 0 #Regional specification if turned into 1, the regional list is loaded for the regional plot
@@ -448,7 +451,8 @@ for(rr in lst$region){
     if(file.exists(dd)){}else{dir.create(dd)}
   }
 }
-
+ffff <- 1
+if(ffff==1){
 #regional figure generation execution
 exe_fig_make(lst$region,funcplotgen)
 #regional area figure generation execution
@@ -458,9 +462,12 @@ exe_fig_make(lst$region,funcAreaPlotGen)
 if(length(Getregion)!=1){
   exe_fig_make(lst$varlist,mergefigGen)
 }
+}
 
 #regional Decomposition figure generation execution
 exe_fig_make(lst$region,funcDecGen)
 
-#source("Discrepancy.R")
+if(enduseflag>0){
+source("Discrepancy.R")
+}
 
