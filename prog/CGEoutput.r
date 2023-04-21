@@ -19,16 +19,17 @@ for(j in libloadlist){
   eval(parse(text=paste0("library(",j,")")))
 }
 args <- commandArgs(trailingOnly = TRUE)
-default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24))   # Default value but gams path should be modified if GUI based R is used
-default_flg <- is.na(args[1:2])
+default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1")   # Default value but gams path should be modified if GUI based R is used
+default_flg <- is.na(args[1:5])
 args[default_flg] <- default_args[default_flg]
 gams_sys_dir <- as.character(args[1])
+AscenarionameAuto <- as.character(args[3])
 igdx(gams_sys_dir)
 
 
 
 #---------------switches to specify the run condition -----
-submodule <- 1 #0 if this repository cloned to the AIMHub dir
+submodule <- as.numeric(args[5]) #0 if this repository cloned to the AIMHub dir
 if(submodule==1){
 	maindirloc <- "../../"
 	outdir <- "../../../../output/fig/" #Output directory 
@@ -38,7 +39,7 @@ if(submodule==1){
 }
 outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GDX file
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 5   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
 enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
 dirCGEoutput <- paste0(maindirloc,"../../output/iiasa_database/gdx/")  # directory where the CGE output is located 
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
@@ -106,6 +107,11 @@ R17p5R <- c(R5R,R17R[-18])
 varlist <- left_join(varlist_load,varalllist,by=c("V1"))
 Ylist <- seq(2010,2100,by=5)
 
+if(AscenarionameAuto=="on"){
+  scenariomap_load <- read.table(paste0(dirCGEoutput,'../../',args[4],'/txt/scenario_list.txt'), header=F,stringsAsFactors=F)
+  scenariomap <- cbind(scenariomap_load,scenariomap_load,"CGE")
+  names(scenariomap) <- c("SCENARIO","Name","ModName")
+}
 areapaletteload <- select(areamap,Class,Ind,color) %>% rename(V0=Class,V1=Ind,V2=color) 
 
 #---IAMC tempalte loading and data merge
@@ -320,7 +326,7 @@ funcAreaPlotGen <- function(rr,progr){
     if(nrow(XX)>0){
       XX2 <- Data4plot %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
         filter(Class==areamappara[j,1] & ModName=="Reference") %>% select(-SCENARIO,-ModName,Ind,Y,Value,order)  %>% arrange(order)%>%
-        filter(Y>=2015)
+        filter(Y<=2015)
       XX3 <- Data4plot %>% filter(Var %in% as.vector(areamappara$lineVar[j]) & ModName!="Reference") %>% select(ModName,SCENARIO,Var,Y,Value)
       
       miny <- min(XX$Y,XX2$Y) 
@@ -344,7 +350,7 @@ funcAreaPlotGen <- function(rr,progr){
         ggtitle(paste0(rr,areamappara[j,]$Class)) +
         geom_line(data=filter(XX3,Y<=maxy),aes(x=Y, y = Value ), color="black",linetype="dashed",size=1.2)
       if(nrow(XX2)>=1){
-        plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity")
+        plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity", alpha=0.7)
       }else{
         plot3 <- plot2
       }
