@@ -209,7 +209,7 @@ system(paste0("gams analysis.gms --outdir=",outdir))
 #---End of IAMC tempalte loading and data merge
 
 #Decomposition analysis data load
-Decom1 <- rgdx.param(paste0(dirCGEoutput,"../../global/",filename,"/gdx/analysis.gdx"),'Loss_dcp_gdp' ) %>% rename("value"=Loss_dcp_gdp,"Sector"=SCO2_S,"Element"=decele) 
+Decom1 <- rgdx.param(paste0(dirCGEoutput,'../../',args[4],'/gdx/analysis.gdx'),'Loss_dcp_gdp' ) %>% rename("value"=Loss_dcp_gdp,"Sector"=SCO2_S,"Element"=decele) 
 flabel <- c("change in % of GDP","sectors")
 
 
