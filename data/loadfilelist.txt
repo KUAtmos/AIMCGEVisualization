@@ -5,6 +5,5 @@ varlist_load	../data/varlist.txt	1
 areamap	../data/Areafigureorder.txt	1
 areamappara	../data/area.map	1
 EnduseScenarioMap	../data/EnduseScenarioMap.map	1
-varalllist	../../iiasa_data_submission/data/all_list.txt	0
 R5R_load	../data/regionR5.txt	0
 R17R_load	../data/regionR17.txt	0

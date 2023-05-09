@@ -19,7 +19,7 @@ for(j in libloadlist){
   eval(parse(text=paste0("library(",j,")")))
 }
 args <- commandArgs(trailingOnly = TRUE)
-default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1")   # Default value but gams path should be modified if GUI based R is used
+default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","0")   # Default value but gams path should be modified if GUI based R is used
 default_flg <- is.na(args[1:5])
 args[default_flg] <- default_args[default_flg]
 gams_sys_dir <- as.character(args[1])
@@ -33,9 +33,11 @@ submodule <- as.numeric(args[5]) #0 if this repository cloned to the AIMHub dir
 if(submodule==1){
 	maindirloc <- "../../"
 	outdir <- "../../../../output/fig/" #Output directory 
+	varalllist <- read.table("../../iiasa_data_submission/data/all_list.txt", sep="\t",header=F, stringsAsFactors=F)
 }else{
 	maindirloc <- ""
 	outdir <- "../output/" 
+	varalllist <- read.table("../../AIMCGE/tools/iiasa_data_submission/data/all_list.txt", sep="\t",header=F, stringsAsFactors=F)
 }
 outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GDX file
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
@@ -272,7 +274,7 @@ funcplotgen <- function(rr,progr){
                        allplot_nonleg[["Emi_CO2_Ene_and_Ind_Pro"]],allplot_nonleg[["Emi_CO2"]],allplot_nonleg[["Emi_Kyo_Gas"]],p_legend1,
                        allplot_nonleg[["Pol_Cos_GDP_Los_rat"]],allplot_nonleg[["Pol_Cos_Cns_Los_rat"]],allplot_nonleg[["Prc_Car"]],p_legend2,
                        allplot_nonleg[["Pop_Ris_of_Hun"]],allplot_nonleg[["Prc_Prm_Ene_Oil"]],allplot_nonleg[["Prc_Sec_Ene_Ele"]],p_legend1,
-                       nrow=4,rel_widths =c(1,1,1,0.3),align = "hv")
+                       nrow=4,rel_widths =c(1,1,1,0.7),align = "hv")
   ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/main.png"), width=15, height=15,limitsize=FALSE)
 
 #Emissions
