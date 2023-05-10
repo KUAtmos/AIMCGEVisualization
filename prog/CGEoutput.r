@@ -14,7 +14,7 @@ if(insflag==1){
   #install.packages("gdxrrw", dependencies = TRUE)
 }
 
-libloadlist <- c("gdxrrw","ggplot2","dplyr","reshape2","tidyr","maps","grid","RColorBrewer","cowplot","export","purrr","furrr","progressr")
+libloadlist <- c("gdxrrw","ggplot2","dplyr","reshape2","tidyr","maps","grid","RColorBrewer","cowplot","hms","purrr","furrr","progressr")
 for(j in libloadlist){
   eval(parse(text=paste0("library(",j,")")))
 }
@@ -25,7 +25,8 @@ args[default_flg] <- default_args[default_flg]
 gams_sys_dir <- as.character(args[1])
 AscenarionameAuto <- as.character(args[3])
 igdx(gams_sys_dir)
-
+sizememory <- 1000*1024^2 
+options(future.globals.maxSize= sizememory)
 
 
 #---------------switches to specify the run condition -----
