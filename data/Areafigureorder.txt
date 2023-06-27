@@ -1,68 +1,223 @@
-Class	Ind	Variable	order
-TPES	Coal|w/o CCS	Prm_Ene_Coa_wo_CCS	1
-TPES	Coal|w/ CCS	Prm_Ene_Coa_w_CCS	2
-TPES	Oil|w/o CCS	Prm_Ene_Oil_wo_CCS	3
-TPES	Oil|w/ CCS	Prm_Ene_Oil_w_CCS	4
-TPES	Gas|w/o CCS	Prm_Ene_Gas_wo_CCS	5
-TPES	Gas|w/ CCS	Prm_Ene_Gas_w_CCS	6
-TPES	Nuclear	Prm_Ene_Nuc	7
-TPES	Hydro	Prm_Ene_Hyd	8
-TPES	Solar	Prm_Ene_Solar	9
-TPES	Wind	Prm_Ene_Win	10
-TPES	Biomass|w/o CCS	Prm_Ene_Bio_wo_CCS	11
-TPES	Biomass|w/ CCS	Prm_Ene_Bio_w_CCS	12
-TPES	Geothermal	Prm_Ene_Geo	13
-Power	Coal|w/o CCS	Sec_Ene_Ele_Coa_wo_CCS	1
-Power	Coal|w/ CCS	Sec_Ene_Ele_Coa_w_CCS	2
-Power	Oil|w/o CCS	Sec_Ene_Ele_Oil_wo_CCS	3
-Power	Oil|w/ CCS	Sec_Ene_Ele_Oil_w_CCS	4
-Power	Gas|w/o CCS	Sec_Ene_Ele_Gas_wo_CCS	5
-Power	Gas|w/ CCS	Sec_Ene_Ele_Gas_w_CCS	6
-Power	Nuclear	Sec_Ene_Ele_Nuc	7
-Power	Hydro	Sec_Ene_Ele_Hyd	8
-Power	Solar	Sec_Ene_Ele_Solar	9
-Power	Wind	Sec_Ene_Ele_Win	10
-Power	Biomass|w/o CCS	Sec_Ene_Ele_Bio_wo_CCS	11
-Power	Biomass|w/ CCS	Sec_Ene_Ele_Bio_w_CCS	12
-Power	Geothermal	Sec_Ene_Ele_Geo	13
-TFC_fuel	Solid	Fin_Ene_Solids	1
-TFC_fuel	Liquid	Fin_Ene_Liq	2
-TFC_fuel	Gas	Fin_Ene_Gas	3
-TFC_fuel	Electricity	Fin_Ene_Ele	4
-TFC_fuel	Heat	Fin_Ene_Heat	5
-TFC_fuel	Hydrogen	Fin_Ene_Hyd	6
-Landuse	Build-up	Lan_Cov_Bui_Are	6
-Landuse	Cropland (for food)	Lan_Cov_Cro_Non_Ene_Cro	1
-Landuse	Forest	Lan_Cov_Frs	2
-Landuse	Pasture	Lan_Cov_Pst	3
-Landuse	Energy Crops	Lan_Cov_Cro_Ene_Cro	4
-Landuse	Other Land	Lan_Cov_Oth_Lan	7
-Landuse	Other Arable Land	Lan_Cov_Oth_Ara_Lan	5
-TFC_Sector	Industry	Fin_Ene_Ind	1
-TFC_Sector	Transport	Fin_Ene_Tra	2
-TFC_Sector	Commercial	Fin_Ene_Com	3
-TFC_Sector	Residential	Fin_Ene_Res	4
-TFC_Ind	Solid	Fin_Ene_ind_Solids	1
-TFC_Ind	Liquid	Fin_Ene_Ind_Liq	2
-TFC_Ind	Gas	Fin_Ene_Ind_Gas	3
-TFC_Ind	Electricity	Fin_Ene_Ind_Ele	4
-TFC_Ind	Heat	Fin_Ene_Ind_Heat	5
-TFC_Ind	Hydrogen	Fin_Ene_Ind_Hyd	6
-TFC_Tra	Solid	Fin_Ene_Tra_Solids	1
-TFC_Tra	Liquid	Fin_Ene_Tra_Liq	2
-TFC_Tra	Gas	Fin_Ene_Tra_Gas	3
-TFC_Tra	Electricity	Fin_Ene_Tra_Ele	4
-TFC_Tra	Heat	Fin_Ene_Tra_Heat	5
-TFC_Tra	Hydrogen	Fin_Ene_Tra_Hyd	6
-TFC_Com	Solid	Fin_Ene_Com_Solids	1
-TFC_Com	Liquid	Fin_Ene_Com_Liq	2
-TFC_Com	Gas	Fin_Ene_Com_Gas	3
-TFC_Com	Electricity	Fin_Ene_Com_Ele	4
-TFC_Com	Heat	Fin_Ene_Com_Heat	5
-TFC_Com	Hydrogen	Fin_Ene_Com_Hyd	6
-TFC_Res	Solid	Fin_Ene_Res_Solids	1
-TFC_Res	Liquid	Fin_Ene_Res_Liq	2
-TFC_Res	Gas	Fin_Ene_Res_Gas	3
-TFC_Res	Electricity	Fin_Ene_Res_Ele	4
-TFC_Res	Heat	Fin_Ene_Res_Heat	5
-TFC_Res	Hydrogen	Fin_Ene_Res_Hyd	6
+Class	Ind	Var	order	color
+TPES	Coal|w/o CCS	Prm_Ene_Coa_wo_CCS	1	'#000000'
+TPES	Coal|w/ CCS	Prm_Ene_Coa_w_CCS	2	'#7f878f'
+TPES	Oil|w/o CCS	Prm_Ene_Oil_wo_CCS	3	'#ff2800'
+TPES	Oil|w/ CCS	Prm_Ene_Oil_w_CCS	4	'#ffd1d1'
+TPES	Gas|w/o CCS	Prm_Ene_Gas_wo_CCS	5	'#9a0079'
+TPES	Gas|w/ CCS	Prm_Ene_Gas_w_CCS	6	'#c7b2de'
+TPES	Nuclear	Prm_Ene_Nuc	7	'#663300'
+TPES	Hydro	Prm_Ene_Hyd	8	'#0041ff'
+TPES	Solar	Prm_Ene_Solar	9	'#b4ebfa'
+TPES	Wind	Prm_Ene_Win	10	'#ff9900'
+TPES	Biomass|w/o CCS	Prm_Ene_Bio_wo_CCS	11	'#35a16b'
+TPES	Biomass|w/ CCS	Prm_Ene_Bio_w_CCS	12	'#cbf266'
+TPES	Geothermal	Prm_Ene_Geo	13	'#edc58f'
+TPES	SecondaryTrade	Prm_Ene_Sec_Ene_Trd	14	'#377EB8'
+Power	Coal|w/o CCS	Sec_Ene_Ele_Coa_wo_CCS	1	'#000000'
+Power	Coal|w/ CCS	Sec_Ene_Ele_Coa_w_CCS	2	'#7f878f'
+Power	Oil|w/o CCS	Sec_Ene_Ele_Oil_wo_CCS	3	'#ff2800'
+Power	Oil|w/ CCS	Sec_Ene_Ele_Oil_w_CCS	4	'#ffd1d1'
+Power	Gas|w/o CCS	Sec_Ene_Ele_Gas_wo_CCS	5	'#9a0079'
+Power	Gas|w/ CCS	Sec_Ene_Ele_Gas_w_CCS	6	'#c7b2de'
+Power	Nuclear	Sec_Ene_Ele_Nuc	7	'#663300'
+Power	Hydro	Sec_Ene_Ele_Hyd	8	'#0041ff'
+Power	Solar	Sec_Ene_Ele_Solar	9	'#b4ebfa'
+Power	Wind	Sec_Ene_Ele_Win	10	'#ff9900'
+Power	Biomass|w/o CCS	Sec_Ene_Ele_Bio_wo_CCS	11	'#35a16b'
+Power	Biomass|w/ CCS	Sec_Ene_Ele_Bio_w_CCS	12	'#cbf266'
+Power	Geothermal	Sec_Ene_Ele_Geo	13	'#edc58f'
+Power	Others	Sec_Ene_Ele_Oth	14	'#377EB8'
+Power_heat	Coal|w/o CCS	Sec_Ene_Ele_Heat_Coa_wo_CCS	1	'#000000'
+Power_heat	Coal|w/ CCS	Sec_Ene_Ele_Heat_Coa_w_CCS	2	'#7f878f'
+Power_heat	Oil|w/o CCS	Sec_Ene_Ele_Oil_wo_CCS	3	'#ff2800'
+Power_heat	Oil|w/ CCS	Sec_Ene_Ele_Oil_w_CCS	4	'#ffd1d1'
+Power_heat	Gas|w/o CCS	Sec_Ene_Ele_Heat_Gas_wo_CCS	5	'#9a0079'
+Power_heat	Gas|w/ CCS	Sec_Ene_Ele_Heat_Gas_w_CCS	6	'#c7b2de'
+Power_heat	Nuclear	Sec_Ene_Ele_Heat_Nuc	7	'#663300'
+Power_heat	Hydro	Sec_Ene_Ele_Hyd	8	'#0041ff'
+Power_heat	Solar	Sec_Ene_Ele_Solar	9	'#b4ebfa'
+Power_heat	Wind	Sec_Ene_Ele_Win	10	'#ff9900'
+Power_heat	Biomass|w/o CCS	Sec_Ene_Ele_Heat_Bio_wo_CCS	11	'#35a16b'
+Power_heat	Biomass|w/ CCS	Sec_Ene_Ele_Heat_Bio_w_CCS	12	'#cbf266'
+Power_heat	Geothermal	Sec_Ene_Ele_Heat_Geo	13	'#edc58f'
+Power_heat	Others	Sec_Ene_Ele_Heat_Oth	14	'#377EB8'
+TFC_fuel	Solid	Fin_Ene_Solids	1	'#E41A1C'
+TFC_fuel	Liquid	Fin_Ene_Liq	2	'#377EB8'
+TFC_fuel	Gas	Fin_Ene_Gas	3	'#A65628'
+TFC_fuel	Electricity	Fin_Ene_Ele	4	'#FFFF33'
+TFC_fuel	Heat	Fin_Ene_Heat	5	'#FF7F00'
+TFC_fuel	Hydrogen	Fin_Ene_Hyd	6	'#984EA3'
+Landuse	Build-up	Lan_Cov_Bui_Are	6	'#E41A1C'
+Landuse	Cropland (for food)	Lan_Cov_Cro_Non_Ene_Cro	1	'#377EB8'
+Landuse	Forest	Lan_Cov_Frs	2	'#4DAF4A'
+Landuse	Pasture	Lan_Cov_Pst	3	'#984EA3'
+Landuse	Energy Crops	Lan_Cov_Cro_Ene_Cro	4	'#FF7F00'
+Landuse	Other Land	Lan_Cov_Oth_Lan	7	'#FFFF33'
+Landuse	Other Arable Land	Lan_Cov_Oth_Ara_Lan	5	'#A65628'
+TFC_Sector	Industry	Fin_Ene_Ind	1	'#66C2A5'
+TFC_Sector	Transport	Fin_Ene_Tra	2	'#FC8D62'
+TFC_Sector	Commercial	Fin_Ene_Com	3	'#8DA0CB'
+TFC_Sector	Residential	Fin_Ene_Res	4	'#E78AC3'
+TFC_Ind	Coal	Fin_Ene_Ind_SolidsCoa	1	'#E41A1C'
+TFC_Ind	Biomass	Fin_Ene_Ind_SolidsBio	2	'#4DAF4A'
+TFC_Ind	Liquid	Fin_Ene_Ind_Liq	3	'#377EB8'
+TFC_Ind	Gas	Fin_Ene_Ind_Gas	4	'#A65628'
+TFC_Ind	Electricity	Fin_Ene_Ind_Ele	5	'#FFFF33'
+TFC_Ind	Heat	Fin_Ene_Ind_Heat	6	'#FF7F00'
+TFC_Ind	Hydrogen	Fin_Ene_Ind_Hyd	7	'#984EA3'
+TFC_Tra	Solid	Fin_Ene_Tra_Solids	1	'#E41A1C'
+TFC_Tra	Pertoliquids	Fin_Ene_Tra_Liq_Oil	2	'#377EB8'
+TFC_Tra	Biofuel	Fin_Ene_Tra_Liq_Bio	3	'#4DAF4A'
+TFC_Tra	Gas	Fin_Ene_Tra_Gas	4	'#A65628'
+TFC_Tra	Electricity	Fin_Ene_Tra_Ele	5	'#FFFF33'
+TFC_Tra	Heat	Fin_Ene_Tra_Heat	6	'#FF7F00'
+TFC_Tra	Hydrogen	Fin_Ene_Tra_Hyd	7	'#984EA3'
+TFC_Com	Solid	Fin_Ene_Com_Solids	1	'#E41A1C'
+TFC_Com	Liquid	Fin_Ene_Com_Liq	2	'#377EB8'
+TFC_Com	Gas	Fin_Ene_Com_Gas	4	'#A65628'
+TFC_Com	Electricity	Fin_Ene_Com_Ele	5	'#FFFF33'
+TFC_Com	Heat	Fin_Ene_Com_Heat	6	'#FF7F00'
+TFC_Com	Hydrogen	Fin_Ene_Com_Hyd	7	'#984EA3'
+TFC_Res	Solid	Fin_Ene_Res_Solids	1	'#E41A1C'
+TFC_Res	Liquid	Fin_Ene_Res_Liq	2	'#377EB8'
+TFC_Res	Gas	Fin_Ene_Res_Gas	3	'#A65628'
+TFC_Res	Electricity	Fin_Ene_Res_Ele	4	'#FFFF33'
+TFC_Res	Heat	Fin_Ene_Res_Heat	5	'#FF7F00'
+TFC_Res	Hydrogen	Fin_Ene_Res_Hyd	6	'#984EA3'
+Investment	Industry	Inv_Ene_Dem_Ind_Eff_and_Dec	1	'#66C2A5'
+Investment	Buildings	Inv_Ene_Dem_Res_and_Com_Eff_and_Dec	2	'#8DA0CB'
+Investment	Transport	Inv_Ene_Dem_Tra_Eff_and_Dec	3	'#FC8D62'
+Investment	Hydrogen	Inv_Ene_Sup_Hyd	8	'#984EA3'
+Investment	Electricity	Inv_Ene_Sup_Ele	4	'#FFFF33'
+Investment	Liquid	Inv_Ene_Sup_Liq	5	'#377EB8'
+Investment	Heat	Inv_Ene_Sup_Heat	7	'#FF7F00'
+Investment	Fossil	Inv_Ene_Sup_Ext_Fos	6	'#E41A1C'
+Investment	BioExtraction	Inv_Ene_Sup_Ext_Bio	9	'#35a16b'
+Investment	DACCS	Inv_Ene_Sup_Oth	10	'#7f878f'
+Hydrogen	Coal|w/o CCS	Sec_Ene_Hyd_Coa_wo_CCS	1	'#000000'
+Hydrogen	Coal|w/ CCS	Sec_Ene_Hyd_Coa_w_CCS	2	'#7f878f'
+Hydrogen	Gas|w/o CCS	Sec_Ene_Hyd_Gas_wo_CCS	3	'#9a0079'
+Hydrogen	Gas|w/ CCS	Sec_Ene_Hyd_Gas_w_CCS	4	'#c7b2de'
+Hydrogen	Biomass|w/o CCS	Sec_Ene_Hyd_Bio_wo_CCS	5	'#35a16b'
+Hydrogen	Biomass|w/ CCS	Sec_Ene_Hyd_Bio_w_CCS	6	'#cbf266'
+Hydrogen	Electricity	Sec_Ene_Hyd_Ele	7	'#FFFF33'
+AnnualInvest	Industry	Inv_Ann_Ind	1	'#66C2A5'
+AnnualInvest	Commercial	Inv_Ann_Res_and_Com_Com	2	'#8DA0CB'
+AnnualInvest	Residential	Inv_Ann_Res_and_Com_Res	3	'#E78AC3'
+AnnualInvest	Transport	Inv_Ann_Tra_Pss	4	'#FC8D62'
+AnnualInvest	Transport_Fre	Inv_Ann_Tra_Fre	5	'#FC8D62'
+EmissionsCO2	Energy supply	Emi_CO2_Ene_Sup	1	'#66C2A5'
+EmissionsCO2	Energy demand	Emi_CO2_Ene_Dem	2	'#8DA0CB'
+EmissionsCO2	AFOLU	Emi_CO2_AFO	3	'#FC8D62'
+EmissionsCO2	Industrial process	Emi_CO2_Ind_Pro	4	'#984EA3'
+EmissionsCO2	Product Use	Emi_CO2_Pro_Use	5	'#FFFF33'
+EmissionsCO2	DACCS	Emi_CO2_Oth	6	'#377EB8'
+CarbonSeqestration	Fossil	Car_Seq_CCS_Fos	1	'#E41A1C'
+CarbonSeqestration	Industry	Car_Seq_CCS_Ind_Pro	2	'#984EA3'
+CarbonSeqestration	DACCS	Car_Seq_Dir_Air_Cap	5	'#66C2A5'
+CarbonSeqestration	Land use	Car_Seq_Lan_Use_Aff	3	'#8DA0CB'
+CarbonSeqestration	BECCS	Car_Seq_CCS_Bio_Ene	4	'#FC8D62'
+TFC_Tra_Roa	Pertoliquids	Fin_Ene_Tra_Roa_Liq_Oil	2	'#377EB8'
+TFC_Tra_Roa	Biofuel	Fin_Ene_Tra_Roa_Liq_Bio	3	'#4DAF4A'
+TFC_Tra_Roa	Electricity	Fin_Ene_Tra_Roa_Ele	5	'#FFFF33'
+TFC_Tra_Roa	Hydrogen	Fin_Ene_Tra_Roa_Hyd	7	'#984EA3'
+TFC_Tra_Roa	Gas	Fin_Ene_Tra_Roa_Gas	4	'#A65628'
+TFC_Tra_Rai	Pertoliquids	Fin_Ene_Tra_Rai_Liq_Oil	2	'#377EB8'
+TFC_Tra_Rai	Biofuel	Fin_Ene_Tra_Rai_Liq_Bio	3	'#4DAF4A'
+TFC_Tra_Rai	Electricity	Fin_Ene_Tra_Rai_Ele	5	'#FFFF33'
+TFC_Tra_Rai	Hydrogen	Fin_Ene_Tra_Rai_Hyd	7	'#984EA3'
+TFC_Tra_Rai	Gas	Fin_Ene_Tra_Rai_Gas	4	'#A65628'
+TFC_Tra_Shi	Pertoliquids	Fin_Ene_Tra_Shi_Liq_Oil	2	'#377EB8'
+TFC_Tra_Shi	Biofuel	Fin_Ene_Tra_Shi_Liq_Bio	3	'#4DAF4A'
+TFC_Tra_Shi	Electricity	Fin_Ene_Tra_Shi_Ele	5	'#FFFF33'
+TFC_Tra_Shi	Hydrogen	Fin_Ene_Tra_Shi_Hyd	7	'#984EA3'
+TFC_Tra_Shi	Gas	Fin_Ene_Tra_Shi_Gas	4	'#A65628'
+TFC_Tra_Avi	Pertoliquids	Fin_Ene_Tra_Avi_Liq_Oil	2	'#377EB8'
+TFC_Tra_Avi	Biofuel	Fin_Ene_Tra_Avi_Liq_Bio	3	'#4DAF4A'
+TFC_Tra_Avi	Electricity	Fin_Ene_Tra_Avi_Ele	5	'#FFFF33'
+TFC_Tra_Avi	Hydrogen	Fin_Ene_Tra_Avi_Hyd	7	'#984EA3'
+TFC_Tra_Avi	Gas	Fin_Ene_Tra_Avi_Gas	4	'#A65628'
+EmissionsNOx	AFOLU	Emi_NOx_AFO	1	'#66C2A5'
+EmissionsNOx	Ene. Dem. Industry	Emi_NOx_Ene_Dem_Ind	2	'#8DA0CB'
+EmissionsNOx	Ene. Dem. Transport	Emi_NOx_Ene_Dem_Tra	3	'#FC8D62'
+EmissionsNOx	Ene. Dem. Buildings	Emi_NOx_Ene_Dem_Agg___Res_and_Com	4	'#984EA3'
+EmissionsNOx	Energy Supply	Emi_NOx_Ene_Sup	5	'#FFFF33'
+EmissionsNOx	Industrial process	Emi_NOx_Ind_Pro	6	'#377EB8'
+EmissionsNOx	Product Use	Emi_NOx_Pro_Use	7	'#FF7F00'
+EmissionsNOx	Waste	Emi_NOx_Was	8	'#A65628'
+EmissionsSulfur	AFOLU	Emi_Sul_AFO	1	'#66C2A5'
+EmissionsSulfur	Ene. Dem. Industry	Emi_Sul_Ene_Dem_Ind	2	'#8DA0CB'
+EmissionsSulfur	Ene. Dem. Transport	Emi_Sul_Ene_Dem_Tra	3	'#FC8D62'
+EmissionsSulfur	Ene. Dem. Buildings	Emi_Sul_Ene_Dem_Agg___Res_and_Com	4	'#984EA3'
+EmissionsSulfur	Energy Supply	Emi_Sul_Ene_Sup	5	'#FFFF33'
+EmissionsSulfur	Industrial process	Emi_Sul_Ind_Pro	6	'#377EB8'
+EmissionsSulfur	Product Use	Emi_Sul_Pro_Use	7	'#FF7F00'
+EmissionsSulfur	Waste	Emi_Sul_Was	8	'#A65628'
+EmissionsNH3	AFOLU	Emi_NH3_AFO	1	'#66C2A5'
+EmissionsNH3	Ene. Dem. Industry	Emi_NH3_Ene_Dem_Ind	2	'#8DA0CB'
+EmissionsNH3	Ene. Dem. Transport	Emi_NH3_Ene_Dem_Tra	3	'#FC8D62'
+EmissionsNH3	Ene. Dem. Buildings	Emi_NH3_Ene_Dem_Agg___Res_and_Com	4	'#984EA3'
+EmissionsNH3	Energy Supply	Emi_NH3_Ene_Sup	5	'#FFFF33'
+EmissionsNH3	Industrial process	Emi_NH3_Ind_Pro	6	'#377EB8'
+EmissionsNH3	Product Use	Emi_NH3_Pro_Use	7	'#FF7F00'
+EmissionsNH3	Waste	Emi_NH3_Was	8	'#A65628'
+EmissionsBC	AFOLU	Emi_BC_AFO	1	'#66C2A5'
+EmissionsBC	Ene. Dem. Industry	Emi_BC_Ene_Dem_Ind	2	'#8DA0CB'
+EmissionsBC	Ene. Dem. Transport	Emi_BC_Ene_Dem_Tra	3	'#FC8D62'
+EmissionsBC	Ene. Dem. Buildings	Emi_BC_Ene_Dem_Agg___Res_and_Com	4	'#984EA3'
+EmissionsBC	Energy Supply	Emi_BC_Ene_Sup	5	'#FFFF33'
+EmissionsBC	Industrial process	Emi_BC_Ind_Pro	6	'#377EB8'
+EmissionsBC	Product Use	Emi_BC_Pro_Use	7	'#FF7F00'
+EmissionsBC	Waste	Emi_BC_Was	8	'#A65628'
+EmissionsOC	AFOLU	Emi_OC_AFO	1	'#66C2A5'
+EmissionsOC	Ene. Dem. Industry	Emi_OC_Ene_Dem_Ind	2	'#8DA0CB'
+EmissionsOC	Ene. Dem. Transport	Emi_OC_Ene_Dem_Tra	3	'#FC8D62'
+EmissionsOC	Ene. Dem. Buildings	Emi_OC_Ene_Dem_Agg___Res_and_Com	4	'#984EA3'
+EmissionsOC	Energy Supply	Emi_OC_Ene_Sup	5	'#FFFF33'
+EmissionsOC	Industrial process	Emi_OC_Ind_Pro	6	'#377EB8'
+EmissionsOC	Product Use	Emi_OC_Pro_Use	7	'#FF7F00'
+EmissionsOC	Waste	Emi_OC_Was	8	'#A65628'
+EmissionsCO	AFOLU	Emi_CO_AFO	1	'#66C2A5'
+EmissionsCO	Ene. Dem. Industry	Emi_CO_Ene_Dem_Ind	2	'#8DA0CB'
+EmissionsCO	Ene. Dem. Transport	Emi_CO_Ene_Dem_Tra	3	'#FC8D62'
+EmissionsCO	Ene. Dem. Buildings	Emi_CO_Ene_Dem_Agg___Res_and_Com	4	'#984EA3'
+EmissionsCO	Energy Supply	Emi_CO_Ene_Sup	5	'#FFFF33'
+EmissionsCO	Industrial process	Emi_CO_Ind_Pro	6	'#377EB8'
+EmissionsCO	Product Use	Emi_CO_Pro_Use	7	'#FF7F00'
+EmissionsCO	Waste	Emi_CO_Was	8	'#A65628'
+EmissionsCH4	AFOLU	Emi_CH4_AFO	1	'#66C2A5'
+EmissionsCH4	Ene. Dem. Industry	Emi_CH4_Ene_Dem_Ind	2	'#8DA0CB'
+EmissionsCH4	Ene. Dem. Transport	Emi_CH4_Ene_Dem_Tra	3	'#FC8D62'
+EmissionsCH4	Ene. Dem. Buildings	Emi_CH4_Ene_Dem_Agg___Res_and_Com	4	'#984EA3'
+EmissionsCH4	Energy Supply	Emi_CH4_Ene_Sup	5	'#FFFF33'
+EmissionsCH4	Industrial process	Emi_CH4_Ind_Pro	6	'#377EB8'
+EmissionsCH4	Product Use	Emi_CH4_Pro_Use	7	'#FF7F00'
+EmissionsCH4	Waste	Emi_CH4_Was	8	'#A65628'
+EmissionsN2O	AFOLU	Emi_N2O_AFO	1	'#66C2A5'
+EmissionsN2O	Ene. Dem. Industry	Emi_N2O_Ene_Dem_Ind	2	'#8DA0CB'
+EmissionsN2O	Ene. Dem. Transport	Emi_N2O_Ene_Dem_Tra	3	'#FC8D62'
+EmissionsN2O	Ene. Dem. Buildings	Emi_N2O_Ene_Dem_Agg___Res_and_Com	4	'#984EA3'
+EmissionsN2O	Energy Supply	Emi_N2O_Ene_Sup	5	'#FFFF33'
+EmissionsN2O	Industrial process	Emi_N2O_Ind_Pro	6	'#377EB8'
+EmissionsN2O	Product Use	Emi_N2O_Pro_Use	7	'#FF7F00'
+EmissionsN2O	Waste	Emi_N2O_Was	8	'#A65628'
+EmissionsTraNOx	Road	Emi_NOx_Ene_Dem_Tra_Roa	1	'#66C2A5'
+EmissionsTraNOx	Rail	Emi_NOx_Ene_Dem_Tra_Rai	2	'#8DA0CB'
+EmissionsTraNOx	Dom. Ship	Emi_NOx_Ene_Dem_Tra_Shi_Dom	3	'#FC8D62'
+EmissionsTraNOx	Int. Ship	Emi_NOx_Ene_Dem_Tra_Shi_Int	4	'#984EA3'
+EmissionsTraNOx	Dom. Avi	Emi_NOx_Ene_Dem_Tra_Avi_Dom	5	'#FFFF33'
+EmissionsTraNOx	Int. Avi	Emi_NOx_Ene_Dem_Tra_Avi_Int	6	'#377EB8'
+Forcing	Aerosol Sulfate	Frc_Aer_Sul_Dir	5	'#000000'
+Forcing	Aerosol Other	Frc_Aer_Oth	8	'#7f878f'
+Forcing	Aerosol Cloud	Frc_Aer_Clo_Ind	9	'#ff2800'
+Forcing	Aerosol OC	Frc_Aer_OC	6	'#ffd1d1'
+Forcing	Aerosol BC	Frc_Aer_BC	7	'#9a0079'
+Forcing	Other	Frc_Oth	11	'#c7b2de'
+Forcing	Albedo	Frc_Alb_Cha	7	'#663300'
+Forcing	CO2	Frc_CO2	1	'#0041ff'
+Forcing	CH4	Frc_CH4	2	'#b4ebfa'
+Forcing	N2O	Frc_N2O	3	'#ff9900'
+Forcing	Montreol gas	Frc_Mon_Gas	10	'#35a16b'
+Forcing	F-Gas	Frc_F_G	4	'#cbf266'
+
+

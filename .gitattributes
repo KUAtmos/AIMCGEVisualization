@@ -1,0 +1,5 @@
+*.R            text eol=lf
+*.r            text eol=lf
+*.map          text eol=lf
+*.txt            text eol=lf
+*.gms            text eol=lf

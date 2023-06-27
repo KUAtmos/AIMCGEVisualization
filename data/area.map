@@ -1,10 +1,30 @@
-Class	Var	Unit
-TPES	Primary energy	EJ/year
-Power	Power generation	EJ/year
-TFC_fuel	Final energy|Fuel	EJ/year
-Landuse	Land use	Mha
-TFC_Sector	Final Energy|Sectors	EJ/year
-TFC_Ind	Final Energy|Industry	EJ/year
-TFC_Tra	Final Energy|Transport	EJ/year
-TFC_Res	Final Energy|Residential	EJ/year
-TFC_Com	Final Energy|commercial	EJ/year
+Class	Var	Unit	lineVar
+TPES	Primary energy	EJ/year	Prm_Ene
+Power	Power generation	EJ/year	Sec_Ene_Ele
+Power_heat	Power and heat generation	EJ/year	Sec_Ene_Ele_Heat
+Hydrogen	Hydrogen generation	EJ/year	Sec_Ene_Hyd
+TFC_fuel	Final energy|Fuel	EJ/year	Fin_Ene
+Landuse	Land use	Mha	Lan_Cov
+TFC_Sector	Final Energy|Sectors	EJ/year	Fin_Ene
+TFC_Ind	Final Energy|Industry	EJ/year	Fin_Ene_Ind
+TFC_Tra	Final Energy|Transport	EJ/year	Fin_Ene_Tra
+TFC_Res	Final Energy|Residential	EJ/year	Fin_Ene_Res
+TFC_Com	Final Energy|commercial	EJ/year	Fin_Ene_Com
+Investment	Investment	bil US$/year	Inv_Ene
+AnnualInvest	Annialized Investment	Billion US$/year	Inv_Ann
+EmissionsCO2	CO2 emissions	MtCO2/year	Emi_CO2
+CarbonSeqestration	Carbon sequestration	MtCO2/year	Car_Seq
+TFC_Tra_Roa	Final Energy|Road Transport	EJ/year	Fin_Ene_Tra_Roa
+TFC_Tra_Rai	Final Energy|Railway Transport	EJ/year	Fin_Ene_Tra_Rai
+TFC_Tra_Shi	Final Energy|Navigation Transport	EJ/year	Fin_Ene_Tra_Shi
+TFC_Tra_Avi	Final Energy|Aviation Transport	EJ/year	Fin_Ene_Tra_Avi
+EmissionsNOx	Emissions NOx	Mt NO/yr	Emi_NOx
+EmissionsSulfur	Emissions Sulfur	Mt SO2/yr	Emi_Sul
+EmissionsNH3	Emissions NH3	Mt NH3/yr	Emi_NH3
+EmissionsBC	Emissions BC	Mt BC/yr	Emi_BC
+EmissionsOC	Emissions OC	Mt OC/yr	Emi_OC
+EmissionsCO	Emissions CO	Mt CO/yr	Emi_CO
+EmissionsCH4	Emissions CH4	Mt CH4/yr	Emi_CH4
+EmissionsN2O	Emissions N2O	kt N2O/yr	Emi_N2O
+EmissionsTraNOx	Emissions NOx	Mt NO/yr	Emi_NOx_Ene_Dem_Tra
+Forcing	Forcing	W/m2	Frc
