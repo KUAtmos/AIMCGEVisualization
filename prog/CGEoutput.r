@@ -35,20 +35,20 @@ if(submodule==1){
 	maindirloc <- "../../"
 	outdir <- "../../../../output/fig/" #Output directory 
 	AIMHubdir <- "../../../" 
-	varalllist <- read.table("../../iiasa_data_submission/data/all_list.txt", sep="\t",header=F, stringsAsFactors=F)
+	varalllist <- read.table(paste0(AIMHubdir,"tools/iiasa_data_submission/data/all_list.txt"), sep="\t",header=F, stringsAsFactors=F)
 }else if(submodule==0){
 	maindirloc <- ""
 	outdir <- "../output/" 
 	AIMHubdir <- "../../" 
+	varalllist <- read.table(paste0(AIMHubdir,"tools/iiasa_data_submission/data/all_list.txt"), sep="\t",header=F, stringsAsFactors=F)
 }else if(submodule==2){
   maindirloc <- "../../"
   outdir <- "../../../../../../IntTool/output/fig/" #Output directory 
   AIMHubdir <- "../../../" 
+  varalllist <- read.table(paste0(outdir,"../../define/iamctemp/VariableFullList.txt"), sep="\t",header=F, stringsAsFactors=F)
 }
-varalllist <- read.table(paste0(AIMHubdir,"tools/iiasa_data_submission/data/all_list.txt"), sep="\t",header=F, stringsAsFactors=F)
 outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GDX file
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-dirCGEoutput <- paste0(maindirloc,"../../output/iiasa_database/gdx/")  # directory where the CGE output is located 
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
@@ -115,6 +115,7 @@ Ylist <- seq(2010,2100,by=5)
 areapaletteload <- select(areamap,Class,Ind,color) %>% rename(V0=Class,V1=Ind,V2=color) 
 
 #---IAMC tempalte loading and data merge
+dirCGEoutput <- paste0(maindirloc,"../../output/iiasa_database/gdx/")  # directory where the CGE output is located 
 if(submodule!=2){
   if(AscenarionameAuto=="on"){  #scenario mapping specification
     scenariomap_load <- read.table(paste0(dirCGEoutput,'../../',args[4],'/txt/scenario_list.txt'), header=F,stringsAsFactors=F)
