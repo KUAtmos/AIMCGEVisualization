@@ -12,13 +12,13 @@ names(ScenarioNameMap) <- c("target","origin")
 Conv_load <- rgdx.param(paste0(outdir,'data/analysis.gdx'),'ConvStat') %>% rename("Value"=ConvStat) %>% filter(Var %in% Varass) %>% 
   left_join(varalllist %>% rename(Var=V1) %>% select(-V3,-V4)) %>% rename (VarCode=Var) %>% rename(Var=V2) %>% left_join(ScenarioNameMap %>% rename(SCENARIO=origin))
 plot.0 <- ggplot() + 
-  geom_line(data=filter(Conv_load, Indi=="MAEStand" & ModSpe=="CGE"),aes(x=Ite, y = Value * 100, color=Var,group=Var),stat="identity") +
+  geom_line(data=filter(Conv_load, Indi=="MAEStand" & ModSpe=="AIMHub"),aes(x=Ite, y = Value * 100, color=Var,group=Var),stat="identity") +
   MyThemeLine +  xlab("Iteration") + ylab("Discrepancy (%)") +
   facet_wrap(Region ~ target) + guides(color = guide_legend(ncol = 1, byrow = TRUE, title=""))
 outname <- paste0(outdir,"misc/R5Conv.png")
 ggsave(plot.0, file=outname, width=15, height=15,limitsize=FALSE)
 
-Exceedlist <- filter(Conv_load, Indi=="MAEStand" & ModSpe=="CGE" & Ite=="i3" & Value >= 0.05)
+Exceedlist <- filter(Conv_load, Indi=="MAEStand" & ModSpe=="AIMHub" & Ite=="i3" & Value >= 0.05)
 write.csv(x = Exceedlist, file = paste0(outdir,"misc/Exceedlist_conv.csv"))
 
 #Difference figures

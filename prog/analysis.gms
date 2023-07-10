@@ -11,7 +11,7 @@ Sec_Ene_Hyd, Sec_Ene_Hyd_Gas, Sec_Ene_Hyd_Bio, Sec_Ene_Hyd_Ele
 
 /
 Region,Var
-ModName/CGE0*CGE10,Tech0*Tech10/
+ModName/AIMHub0*AIMHub10,AIMTech0*AIMTech10/
 SCENARIO,Y
 Value/Value/
 Ite  Iteration/i0*i10/
@@ -23,7 +23,7 @@ MAEStand	Mean absolute error standardized
 MEAN	Mean
 Correlation	Correlation coefficient 
 /
-ModSpe/CGE,Tech/
+ModSpe/AIMHub,AIMTech/
 ;
 ALIAS(Var,Var2);
 
@@ -51,26 +51,26 @@ ALIAS(ModName,ModName2,ModName1);
 
 SET
 ModCompMap(Ite,ModName,ModName)/
-i0	.	CGE0	.	Tech0
-i1	.	CGE1	.	Tech0
-i2	.	CGE2	.	Tech1
-i3	.	CGE3	.	Tech2
-i4	.	CGE4	.	Tech3
-i5	.	CGE5	.	Tech4
-i6	.	CGE6	.	Tech5
+i0	.	AIMHub0	.	AIMTech0
+i1	.	AIMHub1	.	AIMTech0
+i2	.	AIMHub2	.	AIMTech1
+i3	.	AIMHub3	.	AIMTech2
+i4	.	AIMHub4	.	AIMTech3
+i5	.	AIMHub5	.	AIMTech4
+i6	.	AIMHub6	.	AIMTech5
 /
 ModConverMap(ModName1,ModName2,Ite,ModSpe)/
-CGE0  . CGE1  . i0  . CGE
-CGE1  . CGE2  . i1  . CGE
-CGE2  . CGE3  . i2  . CGE
-CGE3  . CGE4  . i3  . CGE
-CGE4  . CGE5  . i4  . CGE
-CGE5  . CGE6  . i5  . CGE
-Tech0  . Tech1  . i0 . Tech
-Tech1  . Tech2  . i1  . Tech
-Tech2  . Tech3  . i2  . Tech
-Tech3  . Tech4  . i3  . Tech
-Tech4  . Tech5  . i4  . Tech
+AIMHub0  . AIMHub1  . i0  . AIMHub
+AIMHub1  . AIMHub2  . i1  . AIMHub
+AIMHub2  . AIMHub3  . i2  . AIMHub
+AIMHub3  . AIMHub4  . i3  . AIMHub
+AIMHub4  . AIMHub5  . i4  . AIMHub
+AIMHub5  . AIMHub6  . i5  . AIMHub
+AIMTech0  . AIMTech1  . i0 . AIMTech
+AIMTech1  . AIMTech2  . i1  . AIMTech
+AIMTech2  . AIMTech3  . i2  . AIMTech
+AIMTech3  . AIMTech4  . i3  . AIMTech
+AIMTech4  . AIMTech5  . i4  . AIMTech
 /
 
 Varmain(Var)/

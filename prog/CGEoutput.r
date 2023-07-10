@@ -34,22 +34,25 @@ submodule <- as.numeric(args[5]) #0 if this repository cloned to the AIMHub dir
 if(submodule==1){
 	maindirloc <- "../../"
 	outdir <- "../../../../output/fig/" #Output directory 
+	AIMHubdir <- "../../../" 
 	varalllist <- read.table("../../iiasa_data_submission/data/all_list.txt", sep="\t",header=F, stringsAsFactors=F)
-}else{
+}else if(submodule==0){
 	maindirloc <- ""
 	outdir <- "../output/" 
-	varalllist <- read.table("../../AIMCGE/tools/iiasa_data_submission/data/all_list.txt", sep="\t",header=F, stringsAsFactors=F)
+	AIMHubdir <- "../../" 
+}else if(submodule==2){
+  maindirloc <- "../../"
+  outdir <- "../../../../../../IntTool/output/fig/" #Output directory 
+  AIMHubdir <- "../../../" 
 }
+varalllist <- read.table(paste0(AIMHubdir,"tools/iiasa_data_submission/data/all_list.txt"), sep="\t",header=F, stringsAsFactors=F)
 outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GDX file
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
-enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
-enduseEneCost <- 0 # if you would like to display additional, energy system cost per GDP in the figure of GDP loss rate, make parameter 1 and otherwise 0.
 dirCGEoutput <- paste0(maindirloc,"../../output/iiasa_database/gdx/")  # directory where the CGE output is located 
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
-dirEnduseoutput <- paste0(maindirloc,"../../../Enduse/output/")  # directory where the Enduse output is located 
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
-EnduseSceName <- c("globalCGEInt","globalCGEInt_woc","GCGEIntLoVRE","GCGEIntLoVRE_woc") #Enduse list "globalCGEInt_woc"
-EnduseSceName <- c("globalCGEInt")
+enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+decompositionflag <-0  #if you would like to run decomposition analysis turn on 1, otherwise 0.
 threadsnum <-  as.numeric(args[2])
 print(threadsnum) 
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
@@ -89,25 +92,16 @@ for(dd in dirlist){
 }
 
 
-file.copy(paste0(dirCGEoutput,"../../../AIMCGE/data/AIMHubData/main/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
+file.copy(paste0(AIMHubdir,"data/AIMHubData/main/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
 
 linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33","black")
 landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
 #linepalette <- c("Baseline"="#4DAF4A","GlobalOptimalZero"="#FF7F00","NDC+Zero"="#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
 
 #File loading and parameter configuration
-if(AscenarionameAuto=="on"){
-  scenariomap_load <- read.table(paste0(dirCGEoutput,'../../',args[4],'/txt/scenario_list.txt'), header=F,stringsAsFactors=F)
-  scenariomap <- cbind(scenariomap_load,scenariomap_load,"CGE")
-  names(scenariomap) <- c("SCENARIO","Name","ModName")
-}else{
-  scenariomap <- read.table('../data/scenariomap.map',sep='\t',header=T)
-}
-scenariomap2 <- read.table('../data/scenariomap2.map',sep='\t',header=T)
 varlist_load <- read.table('../data/varlist.txt',sep='\t',header=T)
 areamap <- read.table('../data/Areafigureorder.txt',sep='\t',header=T)
 areamappara <- read.table('../data/area.map',sep='\t',header=T)
-EnduseScenarioMap <- read.table('../data/EnduseScenarioMap.map',sep='\t',header=T)
 R5R_load <- read.table('../data/regionR5.txt',sep='\t',header=F)
 R17R_load <- read.table('../data/regionR17.txt',sep='\t',header=F)
 region_load <- as.vector(read.table("../data/region.txt", sep="\t",header=F, stringsAsFactors=F)$V1)
@@ -121,73 +115,40 @@ Ylist <- seq(2010,2100,by=5)
 areapaletteload <- select(areamap,Class,Ind,color) %>% rename(V0=Class,V1=Ind,V2=color) 
 
 #---IAMC tempalte loading and data merge
-if(CGEgdxcopy==1){
-  file.copy(paste0(dirCGEoutput,filename,"_IAMC.gdx"), paste0(outdirmd,filename,"_IAMC.gdx"),overwrite = TRUE)
-  CGEload0 <- rgdx.param(paste0(outdirmd ,filename,"_IAMC.gdx"),'IAMC_Template') 
-}else{  
-  CGEload0 <- rgdx.param(paste0(dirCGEoutput,filename,"_IAMC.gdx"),'IAMC_Template') 
+if(submodule!=2){
+  if(AscenarionameAuto=="on"){  #scenario mapping specification
+    scenariomap_load <- read.table(paste0(dirCGEoutput,'../../',args[4],'/txt/scenario_list.txt'), header=F,stringsAsFactors=F)
+    scenariomap <- cbind(scenariomap_load,scenariomap_load,"CGE")
+    names(scenariomap) <- c("SCENARIO","Name","ModName")
+  }else{
+    scenariomap <- read.table('../data/scenariomap.map',sep='\t',header=T)
+  }
+  
+  if(CGEgdxcopy==1){ # Data file loading
+    file.copy(paste0(dirCGEoutput,filename,"_IAMC.gdx"), paste0(outdirmd,filename,"_IAMC.gdx"),overwrite = TRUE)
+    CGEload0 <- rgdx.param(paste0(outdirmd ,filename,"_IAMC.gdx"),'IAMC_Template') 
+  }else{  
+    CGEload0 <- rgdx.param(paste0(dirCGEoutput,filename,"_IAMC.gdx"),'IAMC_Template') 
+  }
+  CGEload1 <- CGEload0 %>% rename("Value"=IAMC_Template,"Var"=VEMF) %>% 
+    left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1])) %>% 
+    select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name",Y="YEMF")
+}else{
+  if(AscenarionameAuto=="on"){  #scenario mapping specification
+    scenariomap_load <- rgdx.set(paste0(outdir,'/../gdx/IAMCTemplate.gdx'),'SCENARIO') 
+    scenariomap <- cbind(scenariomap_load,scenariomap_load)
+    names(scenariomap) <- c("SCENARIO","Name")
+  }else{
+    scenariomap <- read.table(paste0(outdir,'../../define/iamctemp/VisualizationScenariomap.map'),sep='\t',header=T)
+  }
+  CGEload0 <- rgdx.param(paste0(outdir,'/../gdx/IAMCTemplate.gdx'),'MergedIAMC') 
+  CGEload1 <- CGEload0 %>% rename("Value"=mergedIAMC,"Var"=VIAMC,Region="RIAMC",ModName="Modelset") %>% left_join(scenariomap,by="SCENARIO") %>% select(Region,Var,Y,Value,SCENARIO,ModName)
 }
-Getregion <- as.vector(unique(CGEload0$REMF))
+Getregion <- as.vector(unique(CGEload1$Region))
 if(length(Getregion)==1){region <- Getregion}else{region <- R17p5R}
-CGEload1 <- CGEload0 %>% rename("Value"=IAMC_Template,"Var"=VEMF) %>% 
-  left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1])) %>% 
-  select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name",Y="YEMF")
 CGEload1$Y <- as.numeric(levels(CGEload1$Y))[CGEload1$Y]
 CGEload0 <- 0
-
-#Enduse loading
-if(enduseflag>=1){
-  for(ll in EnduseSceName){
-    for(ii in 0:enduseflag){
-      if(file.exists(paste0(dirEnduseoutput,ll,ii,"/cons/main/merged_output.gdx"))){
-        file.copy(paste0(dirEnduseoutput,ll,ii,"/cons/main/merged_output.gdx"), paste0(outdirmd,"AIMEnduseG",ii,".gdx"),overwrite = TRUE)
-        eval(parse(text=paste0("EnduseGloadX0_",ii,ll," <- rgdx.param(paste0(outdirmd,'AIMEnduseG",ii,".gdx'),'data_all')  %>% rename('SCENARIO'=Sc,'Region'=Sr,'Var'=Sv,'Y'=Sy,'Value'=data_all) %>% mutate(SocEco='",ll,ii,"') %>% left_join(scenariomap2,by='SCENARIO')")))
-        eval(parse(text=paste0("EnduseGloadX1_",ii,ll," <- EnduseGloadX0_",ii,ll,"  %>% filter(SCENARIO %in% as.vector(scenariomap2[,1])) %>% select(-SCENARIO) %>% rename(SCENARIO='Name') %>% select(Region,Var,Y,Value,SCENARIO,SocEco)")))
-        if(enduseEneCost==1){
-          eval(parse(text=paste0("EnduseGload_cost <- filter(EnduseGloadX0_",ii,ll,", Var %in% c('Pol_Cos_Add_Tot_Ene_Sys_Cos','GDP_MER') & SCENARIO %in% as.vector(scenariomap2[,1]) & Region %in% region) %>% spread(key=Var,value=Value,fill=0)")))
-          EnduseGload_cost$Pol_Cos_GDP_los_rat <- EnduseGload_cost$Pol_Cos_Add_Tot_Ene_Sys_Cos/EnduseGload_cost$GDP_MER*100
-          eval(parse(text=paste0("EnduseGloadX2_",ii,ll," <- rbind(EnduseGloadX1_",ii,ll,", select(EnduseGload_cost,-GDP_MER,-Pol_Cos_Add_Tot_Ene_Sys_Cos,-SCENARIO) %>% rename(Value=Pol_Cos_GDP_los_rat) %>% mutate(Var='Pol_Cos_GDP_Los_rat')%>% rename(SCENARIO='Name'))")))
-        }else{
-          eval(parse(text=paste0("EnduseGloadX2_",ii,ll," <- EnduseGloadX1_",ii,ll)))
-        }
-        for(num in 0:1){
-          eval(parse(text=paste0("EnduseGloadX",num,"_",ii,ll," <- 0")))
-        }
-      }
-    }
-  }
-  tnum <- 0
-  for(ll in EnduseSceName){
-    for(ii in 0:enduseflag){
-      tnum <- tnum +1
-      if(tnum==1){
-        eval(parse(text=paste0("allmodelEnduse0 <- EnduseGloadX2_",ii,ll)))
-      }else{
-        eval(parse(text=paste0("allmodelEnduse0 <- rbind(allmodelEnduse0,EnduseGloadX2_",ii,ll,")")))
-      }
-      eval(parse(text=paste0("EnduseGloadX2_",ii,ll," <- 0")))
-    }
-  }
-  allmodelEnduse1 <- inner_join(allmodelEnduse0,EnduseScenarioMap,by=c("SCENARIO","SocEco")) %>% 
-    select(-SCENARIO,-SocEco)  %>% rename(SCENARIO=ReNameSCENARIO) 
-  allmodelEnduse2 <- allmodelEnduse1 %>% select(Region,Var,ModName,SCENARIO,Y,Value) %>% filter(Y %in% Ylist)
-  #unload Enduse GDX file
-  symDim <- 6
-  attr(allmodelEnduse2, "symName") <- "EnduseCombined"
-  lst2 <- wgdx.reshape(allmodelEnduse2,symDim)
-  wgdx.lst(gdxName = paste0(outdirmd,"Endusecombine.gdx"),lst2)
-  system(paste0("gams EnduseMod.gms --Maindir=",maindirloc," --outputdir=",outdir))
-  allmodelEnduse3 <- rgdx.param(paste0(outdirmd,'EndusecombineMod.gdx'),'EnduseCombined2') %>% select(-'.i6') %>% rename(Value=EnduseCombined2,Region=RCGE) %>%
-    filter(Region %in% region)
-  allmodelEnduse3$Y <- as.numeric(levels(allmodelEnduse3$Y))[allmodelEnduse3$Y]
-  allmodel0 <- rbind(CGEload1,allmodelEnduse3)
-  allmodelEnduse0 <- 0
-  allmodelEnduse1 <- 0
-  allmodelEnduse2 <- 0
-  
-}else{
-  allmodel0 <- CGEload1
-}
+allmodel0 <- CGEload1
 
 
 #IEA energy balance information
@@ -206,17 +167,16 @@ allmodel <- filter(allmodel,Y <= maxy)
 #Extract data
 ExtData <- filter(CGEload1,Var %in% varlist$V1) %>% left_join(varlist %>% rename(Var=V1)) %>% select(-V2.x,-Var) %>% rename(Var=V2.y,Unit=V3)
 write.csv(x = ExtData, file = paste0(outdir,"/data/exportdata.csv"))
-symDim <- 6
-attr(allmodel, "symName") <- "allmodel"
-lst3 <- wgdx.reshape(allmodel,symDim)
-wgdx.lst(gdxName = paste0(outdir,"data/allcombine.gdx"),lst3)
-system(paste0("gams analysis.gms --outdir=",outdir))
+
+if(enduseflag>=1){
+  symDim <- 6
+  attr(allmodel, "symName") <- "allmodel"
+  lst3 <- wgdx.reshape(allmodel,symDim)
+  wgdx.lst(gdxName = paste0(outdir,"data/allcombine.gdx"),lst3)
+  system(paste0("gams analysis.gms --outdir=",outdir))
+}
 
 #---End of IAMC tempalte loading and data merge
-
-#Decomposition analysis data load
-Decom1 <- rgdx.param(paste0(dirCGEoutput,'../../',args[4],'/gdx/analysis.gdx'),'Loss_dcp_gdp' ) %>% rename("value"=Loss_dcp_gdp,"Sector"=SCO2_S,"Element"=decele) 
-flabel <- c("change in % of GDP","sectors")
 
 
 #---functions
@@ -225,13 +185,14 @@ funcplotgen <- function(rr,progr){
   progr(message='region figures')
   Data4plot0 <- filter(allmodel,Region==rr)
   #---Line figures
-#  for (rr in region_load){ Data4plot0 <- filter(allmodel,Region==rr) #For debug
+#  for (rr in region_spe){ Data4plot0 <- filter(allmodel,Region==rr) #For debug
   for (i in 1:nrow(varlist)){
     Data4plot <- filter(Data4plot0,Var==varlist$V1[i])
     if(nrow(filter(Data4plot,ModName!="Reference"))>0){
       miny <- min(Data4plot$Y) 
       linepalettewName1 <- linepalette[1:length(unique(Data4plot$SCENARIO))]
       names(linepalettewName1) <- unique(Data4plot$SCENARIO)
+      numitem <- length(as.vector(unique(Data4plot$SCENARIO)))+length(as.vector(unique(Data4plot$ModName))) #Get number of items
       plot.0 <- ggplot() + 
         geom_line(data=filter(Data4plot,ModName!="Reference"),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
         geom_point(data=filter(Data4plot,ModName!="Reference"),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=1.5,fill="white") +
@@ -249,7 +210,7 @@ funcplotgen <- function(rr,progr){
       }else{
         outname <- paste0(outdir,"byRegion/",rr,"/pngdet/",varlist$V1[i],".png")
       }
-      ggsave(plot.0, file=outname, dpi = 150, width=5, height=3.5,limitsize=FALSE)
+      ggsave(plot.0, file=outname, dpi = 150, width=max(1,numitem/10)*5, height=max(1,numitem/10)*3.5,limitsize=FALSE)
       allplot[[nalist[i]]] <- plot.0
       allplot_nonleg[[nalist[i]]] <- plot.0+ theme(legend.position="none")
     }
@@ -315,20 +276,6 @@ funcplotgen <- function(rr,progr){
     }
   }
 }
-#Function for Decomposition
-funcDecGen <- function(rr,progr){
-  progr(message='region figures')
-  Decom2 <- Decom1 %>% filter(SCENARIO %in% scenariomap$SCENARIO & Y %in% c(2030,2050,2100) & Sector %in% c("IND","SER","PWR","OEN","TRS","AGR") & R==rr) 
-  plotdec <- ggplot() + geom_bar(data=filter(Decom2,Element %in% c("fd_output","output_va","va","residual1")),aes(x=Sector, y = value*100 , fill=Element), stat="identity") +
-    geom_point(data=filter(Decom2,Element %in% c("fd")),aes(x=Sector, y = value*100 ),color="black", stat="identity") +
-    ylab(flabel[1]) + xlab(flabel[2]) +labs(fill="") +
-    guides(fill=guide_legend(reverse=TRUE)) + 
-    MyThemeLine + theme(legend.position="bottom", text=element_text(size=12))+
-    guides(fill=guide_legend(ncol=5))+ggtitle(paste0(rr,expression("\n")," decomposition"))+
-    facet_grid(Y~SCENARIO,scales="free_x") + annotate("segment",x=0,xend=6,y=0,yend=0,linetype="dashed",color="grey")
-  outname <- paste0(outdir,"byRegion/",rr,"/merge/","decomp.png")
-  ggsave(plotdec, file=outname, width=floor(length(unique(Decom2$SCENARIO))/2+1)*4, height=10,limitsize=FALSE)    
-}
 #function for regional area figure generation
 funcAreaPlotGen <- function(rr,progr){
   Data4plot <- filter(allmodel,Region==rr)
@@ -351,6 +298,7 @@ funcAreaPlotGen <- function(rr,progr){
       areapaletteArea <- filter(areapaletteload,V0==areamappara[j,1] & V1 %in% unique(XX$Ind))$V2
       names(areapaletteArea) <- filter(areapaletteload,V0==areamappara[j,1] & V1 %in% unique(XX$Ind))$V1
       colorpal <- areapaletteArea 
+      numitem <- length(as.vector(unique(Data4plot$ModName))) #Get number of items
       
       plot2 <- ggplot() + 
         geom_area(data=filter(XX,Y<=maxy),aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
@@ -358,7 +306,7 @@ funcAreaPlotGen <- function(rr,progr){
         theme(legend.position="bottom", text=element_text(size=12),  
               axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, size = 12)) +
         guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10)) +  ggtitle(paste(rr,areamappara$Class[j],sep=" "))+
-        facet_grid(ModName ~ SCENARIO) + scale_fill_manual(values=colorpal) + 
+        facet_wrap(ModName ~ SCENARIO) + scale_fill_manual(values=colorpal) + 
         annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')+
         ggtitle(paste0(rr,areamappara[j,]$Class)) +
         geom_line(data=filter(XX3,Y<=maxy),aes(x=Y, y = Value ), color="black",linetype="dashed",size=1.2)
@@ -484,7 +432,26 @@ if(length(Getregion)!=1){
 }
 
 #regional Decomposition figure generation execution
-exe_fig_make(lst$region,funcDecGen)
+#Decomposition analysis data load
+if(decompositionflag>0){
+  Decom1 <- rgdx.param(paste0(dirCGEoutput,'../../',args[4],'/gdx/analysis.gdx'),'Loss_dcp_gdp' ) %>% rename("value"=Loss_dcp_gdp,"Sector"=SCO2_S,"Element"=decele) 
+  flabel <- c("change in % of GDP","sectors")
+  #Function for Decomposition
+  funcDecGen <- function(rr,progr){
+    progr(message='region figures')
+    Decom2 <- Decom1 %>% filter(SCENARIO %in% scenariomap$SCENARIO & Y %in% c(2030,2050,2100) & Sector %in% c("IND","SER","PWR","OEN","TRS","AGR") & R==rr) 
+    plotdec <- ggplot() + geom_bar(data=filter(Decom2,Element %in% c("fd_output","output_va","va","residual1")),aes(x=Sector, y = value*100 , fill=Element), stat="identity") +
+      geom_point(data=filter(Decom2,Element %in% c("fd")),aes(x=Sector, y = value*100 ),color="black", stat="identity") +
+      ylab(flabel[1]) + xlab(flabel[2]) +labs(fill="") +
+      guides(fill=guide_legend(reverse=TRUE)) + 
+      MyThemeLine + theme(legend.position="bottom", text=element_text(size=12))+
+      guides(fill=guide_legend(ncol=5))+ggtitle(paste0(rr,expression("\n")," decomposition"))+
+      facet_grid(Y~SCENARIO,scales="free_x") + annotate("segment",x=0,xend=6,y=0,yend=0,linetype="dashed",color="grey")
+    outname <- paste0(outdir,"byRegion/",rr,"/merge/","decomp.png")
+    ggsave(plotdec, file=outname, width=floor(length(unique(Decom2$SCENARIO))/2+1)*4, height=10,limitsize=FALSE)    
+  }
+  exe_fig_make(lst$region,funcDecGen)
+}
 
 if(enduseflag>0){
 source("Discrepancy.R")

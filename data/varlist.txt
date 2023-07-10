@@ -204,3 +204,9 @@ Sec_Ene_Inp_Oil_Ele_Heat	1
 Sec_Ene_Inp_Coa_Bla_Fur	1
 Sec_Ene_Inp_Hyd_Ele	1
 Ene_Its	1
+Pop_Mor_AP_PM25	1
+Pop_Mor_AP_Ozo	1
+Pop_Mor_AP	1
+Con_PM25_Pop_Wei	1
+Pop_Ext_pov	1
+
