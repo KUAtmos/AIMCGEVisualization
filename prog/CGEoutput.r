@@ -35,24 +35,24 @@ if(submodule==1){
 	maindirloc <- "../../"
 	outdir <- "../../../../output/fig/" #Output directory 
 	AIMHubdir <- "../../../" 
-	varalllist <- read.table(paste0(AIMHubdir,"tools/iiasa_data_submission/data/all_list.txt"), sep="\t",header=F, stringsAsFactors=F)
+	VarListPath <- paste0(AIMHubdir,"tools/iiasa_data_submission/data/all_list.txt")
 }else if(submodule==0){
 	maindirloc <- ""
 	outdir <- "../output/" 
 	AIMHubdir <- "../../" 
-	varalllist <- read.table(paste0(AIMHubdir,"tools/iiasa_data_submission/data/all_list.txt"), sep="\t",header=F, stringsAsFactors=F)
+	VarListPath <- paste0(AIMHubdir,"tools/iiasa_data_submission/data/all_list.txt")
 }else if(submodule==2){
   maindirloc <- "../../"
   outdir <- "../../../../../../IntTool/output/fig/" #Output directory 
   AIMHubdir <- "../../../" 
-  varalllist <- read.table(paste0(outdir,"../../define/iamctemp/VariableFullList.txt"), sep="\t",header=F, stringsAsFactors=F)
+	VarListPath <- paste0(outdir,"../../define/iamctemp/VariableFullList.txt")
 }
 outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GDX file
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
-decompositionflag <-0  #if you would like to run decomposition analysis turn on 1, otherwise 0.
+decompositionflag <- 0  #if you would like to run decomposition analysis turn on 1, otherwise 0.
 threadsnum <-  as.numeric(args[2])
 print(threadsnum) 
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
@@ -99,6 +99,7 @@ landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
 #linepalette <- c("Baseline"="#4DAF4A","GlobalOptimalZero"="#FF7F00","NDC+Zero"="#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
 
 #File loading and parameter configuration
+varalllist <- read.table(VarListPath, sep="\t",header=F, stringsAsFactors=F)
 varlist_load <- read.table('../data/varlist.txt',sep='\t',header=T)
 areamap <- read.table('../data/Areafigureorder.txt',sep='\t',header=T)
 areamappara <- read.table('../data/area.map',sep='\t',header=T)
