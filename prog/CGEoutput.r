@@ -19,8 +19,8 @@ for(j in libloadlist){
   eval(parse(text=paste0("library(",j,")")))
 }
 args <- commandArgs(trailingOnly = TRUE)
-default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1")   # Default value but gams path should be modified if GUI based R is used
-default_flg <- is.na(args[1:5])
+default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","0")   # Default value but gams path should be modified if GUI based R is used
+default_flg <- is.na(args[1:6])
 args[default_flg] <- default_args[default_flg]
 gams_sys_dir <- as.character(args[1])
 AscenarionameAuto <- as.character(args[3])
@@ -51,7 +51,7 @@ outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GD
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
-enduseflag <- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+enduseflag <- as.numeric(args[6])   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
 decompositionflag <- 0  #if you would like to run decomposition analysis turn on 1, otherwise 0.
 threadsnum <-  as.numeric(args[2])
 print(threadsnum) 
@@ -170,14 +170,6 @@ allmodel <- filter(allmodel,Y <= maxy)
 ExtData <- filter(CGEload1,Var %in% varlist$V1) %>% left_join(varlist %>% rename(Var=V1)) %>% select(-V2.x,-Var) %>% rename(Var=V2.y,Unit=V3)
 write.csv(x = ExtData, file = paste0(outdir,"/data/exportdata.csv"))
 
-if(enduseflag>=1){
-  symDim <- 6
-  attr(allmodel, "symName") <- "allmodel"
-  lst3 <- wgdx.reshape(allmodel,symDim)
-  wgdx.lst(gdxName = paste0(outdir,"data/allcombine.gdx"),lst3)
-  system(paste0("gams analysis.gms --outdir=",outdir))
-}
-
 #---End of IAMC tempalte loading and data merge
 
 
@@ -208,9 +200,9 @@ funcplotgen <- function(rr,progr){
         geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
       }
       if(varlist$V2.x[i]==1){
-        outname <- paste0(outdir,"byRegion/",rr,"/png/",varlist$V1[i],".png")
+        outname <- paste0(outdir,"byRegion/",rr,"/png/",rr,"_",varlist$V1[i],".png")
       }else{
-        outname <- paste0(outdir,"byRegion/",rr,"/pngdet/",varlist$V1[i],".png")
+        outname <- paste0(outdir,"byRegion/",rr,"/pngdet/",rr,"_",varlist$V1[i],".png")
       }
       ggsave(plot.0, file=outname, dpi = 150, width=max(1,numitem/10)*5, height=max(1,numitem/10)*3.5,limitsize=FALSE)
       allplot[[nalist[i]]] <- plot.0
@@ -233,7 +225,7 @@ funcplotgen <- function(rr,progr){
                          allplot_nonleg[["Fin_Ene_Tra"]],allplot_nonleg[["Fin_Ene_Tra_Ele"]],     allplot_nonleg[["Fin_Ene_Tra_Liq_and_Gas"]],
                            allplot_nonleg[["Fin_Ene_Tra_Gas"]],allplot_nonleg[["Fin_Ene_Tra_Liq_Bio"]],allplot_nonleg[["Fin_Ene_Tra_Liq_Oil"]],allplot_nonleg[["Fin_Ene_Tra_Hyd"]],p_legend1,
                          nrow=5,ncol=8,rel_widths =c(1,1,1,1,1,1,1,1),align = "hv")
-  ggsave(pp_tfcind, file=paste0(outdir,"byRegion/",rr,"/merge/tfcind.png"), width=30, height=20,limitsize=FALSE)
+  ggsave(pp_tfcind, file=paste0(outdir,"byRegion/",rr,"/merge/",rr,"_tfcind.png"), width=30, height=20,limitsize=FALSE)
   #Main indicators
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["GDP_MER"]]), pattern = "guide-box")
   if(nrow(filter(Data4plot,Var=="Pol_Cos_GDP_Los_rat"))>0){
@@ -249,7 +241,7 @@ funcplotgen <- function(rr,progr){
                          allplot_nonleg[["Pop_Ris_of_Hun"]],allplot_nonleg[["Prc_Prm_Ene_Oil"]],allplot_nonleg[["Prc_Sec_Ene_Ele"]],p_legend1,
                          nrow=3,rel_widths =c(1,1,1,0.7),align = "hv")
   }
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/main.png"), width=15, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/",rr,"_main.png"), width=15, height=15,limitsize=FALSE)
 
 #Emissions
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Emi_CO2"]]), pattern = "guide-box")
@@ -258,7 +250,7 @@ funcplotgen <- function(rr,progr){
                        allplot_nonleg[["Emi_VOC"]],allplot_nonleg[["Emi_NH3"]],allplot_nonleg[["Emi_CO"]],allplot_nonleg[["Emi_Kyo_Gas"]]+ theme(legend.position="none"),
                        allplot_nonleg[["Tem_Glo_Mea"]],allplot_nonleg[["Frc"]],p_legend1,
                        nrow=4,rel_widths =c(1,1,1,1),align = "hv")
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/Emissions.png"), width=15, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/",rr,"_Emissions.png"), width=15, height=15,limitsize=FALSE)
   
   #----r2ppt
   #The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
@@ -318,13 +310,13 @@ funcAreaPlotGen <- function(rr,progr){
         plot3 <- plot2
       }
       allplot[[areamappara$Class[j]]] <- plot3 
-      outname <- paste0(outdir,"byRegion/",rr,"/merge/",areamappara[j,1],".png")
-      ggsave(plot3, file=outname, width=mergecolnum*2, height=max(1,floor(length(unique(XX$SCENARIO))/mergecolnum))*6+2,limitsize=FALSE)
+      outname <- paste0(outdir,"byRegion/",rr,"/merge/",rr,"_",areamappara[j,1],".png")
+      ggsave(plot3, file=outname, width=mergecolnum*2, height=max(1,floor(length(unique(XX$SCENARIO))/mergecolnum))*10+2,limitsize=FALSE)
       plotflag[[areamappara$Class[j]]] <- nrow(XX)  
     }
     #Final energy consumption area
     pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
-    ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/merge/tfc.png"), width=9*2, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
+    ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/merge/",rr,"_tfc.png"), width=9*2, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
   }
 }
 
@@ -356,18 +348,18 @@ mergefigGen <- function(ii,progr){
   if(nrow(filter(allmodel,Var==ii  & ModName!="Reference"))>0){
     plot.reg <- plotXregion(filter(allmodel,Region %in% R17R),ii,R17R)
     if(length(varlist$V2.x[varlist$V1==ii])==1){
-      outname <- paste0(outdir,"multiReg","/png/",ii,".png")
+      outname <- paste0(outdir,"multiReg","/png/R17_",ii,".png")
     }else{
-      outname <- paste0(outdir,"multiReg","/pngdet/",ii,".png")
+      outname <- paste0(outdir,"multiReg","/pngdet/R17_",ii,".png")
     }
     ggsave(plot.reg, file=outname, dpi = 150, width=15, height=12,limitsize=FALSE)
   }
   if(nrow(filter(allmodel,Var==ii & Region %in% R5R & ModName!="Reference"))>0){
     plot.reg <- plotXregion(filter(allmodel,Region %in% R5R),ii,R5R)
     if(length(varlist$V2.x[varlist$V1==ii])==1){
-      outname <- paste0(outdir,"multiRegR5","/png/",ii,".png")
+      outname <- paste0(outdir,"multiRegR5","/png/R5_",ii,".png")
     }else{
-      outname <- paste0(outdir,"multiRegR5","/pngdet/",ii,".png")
+      outname <- paste0(outdir,"multiRegR5","/pngdet/R5_",ii,".png")
     }
     ggsave(plot.reg, file=outname, dpi = 150, width=12, height=7.5,limitsize=FALSE)
   }
@@ -435,13 +427,30 @@ if(length(Getregion)!=1){
 
 #regional Decomposition figure generation execution
 #Decomposition analysis data load
+
+if(enduseflag>0){
+  symDim <- 6
+  attr(allmodel, "symName") <- "allmodel"
+  lst3 <- wgdx.reshape(allmodel,symDim)
+  wgdx.lst(gdxName = paste0(outdir,"data/allcombine.gdx"),lst3)
+  system(paste0("gams analysis.gms --outdir=",outdir))
+  source("Discrepancy.R")
+}
+
+decompositionflag <- 1
 if(decompositionflag>0){
   Decom1 <- rgdx.param(paste0(dirCGEoutput,'../../',args[4],'/gdx/analysis.gdx'),'Loss_dcp_gdp' ) %>% rename("value"=Loss_dcp_gdp,"Sector"=SCO2_S,"Element"=decele) 
+  scenariomap_load2 <- read.table(paste0(dirCGEoutput,'../../',args[4],'/txt/scenario_list.txt'), header=F,stringsAsFactors=F)
+  scenariomap2 <- cbind(scenariomap_load2,scenariomap_load2,"CGE")
+  names(scenariomap2) <- c("SCENARIO","Name","ModName")
   flabel <- c("change in % of GDP","sectors")
   #Function for Decomposition
   funcDecGen <- function(rr,progr){
     progr(message='region figures')
-    Decom2 <- Decom1 %>% filter(SCENARIO %in% scenariomap$SCENARIO & Y %in% c(2030,2050,2100) & Sector %in% c("IND","SER","PWR","OEN","TRS","AGR") & R==rr) 
+#  for(rr in as.vector(lst$region)){
+    Decom2 <- Decom1 %>% filter(SCENARIO %in% scenariomap2$SCENARIO & Y %in% c(2030,2050,2100) & Sector %in% c("IND","SER","PWR","OEN","TRS","AGR") & R==rr) 
+    if(nrow(filter(Decom2,Element %in% c("fd_output","output_va","va","residual1")))>0){
+
     plotdec <- ggplot() + geom_bar(data=filter(Decom2,Element %in% c("fd_output","output_va","va","residual1")),aes(x=Sector, y = value*100 , fill=Element), stat="identity") +
       geom_point(data=filter(Decom2,Element %in% c("fd")),aes(x=Sector, y = value*100 ),color="black", stat="identity") +
       ylab(flabel[1]) + xlab(flabel[2]) +labs(fill="") +
@@ -449,13 +458,9 @@ if(decompositionflag>0){
       MyThemeLine + theme(legend.position="bottom", text=element_text(size=12))+
       guides(fill=guide_legend(ncol=5))+ggtitle(paste0(rr,expression("\n")," decomposition"))+
       facet_grid(Y~SCENARIO,scales="free_x") + annotate("segment",x=0,xend=6,y=0,yend=0,linetype="dashed",color="grey")
-    outname <- paste0(outdir,"byRegion/",rr,"/merge/","decomp.png")
+    outname <- paste0(outdir,"byRegion/",rr,"/merge/",rr,"_decomp.png")
     ggsave(plotdec, file=outname, width=floor(length(unique(Decom2$SCENARIO))/2+1)*4, height=10,limitsize=FALSE)    
+    }
   }
   exe_fig_make(lst$region,funcDecGen)
 }
-
-if(enduseflag>0){
-source("Discrepancy.R")
-}
-
