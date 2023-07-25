@@ -271,44 +271,47 @@ funcplotgen <- function(rr,progr){
   }
 }
 #function for regional area figure generation
+funcAreaPlotSpe <- function(ZZ,ZZ2,ZZ3,AreaItem){
+  miny <- min(ZZ$Y,ZZ2$Y) 
+  na.omit(ZZ$Value)
+  ylab1 <- paste0(areamappara$Var[areamappara$Class==AreaItem], " (", areamappara$Unit[areamappara$Class==AreaItem], ")")
+  xlab1 <- areamappara$Var[areamappara$Class==AreaItem]
+
+  areapaletteArea <- filter(areapaletteload,V0==AreaItem & V1 %in% unique(ZZ$Ind))$V2
+  names(areapaletteArea) <- filter(areapaletteload,V0==AreaItem & V1 %in% unique(ZZ$Ind))$V1
+  colorpal <- areapaletteArea 
+  
+  plotX <- ggplot() + 
+    geom_area(data=filter(ZZ,Y<=maxy),aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
+    ylab(ylab1) + xlab(xlab1) +labs(fill="")+ guides(fill=guide_legend(reverse=TRUE)) + MyThemeLine +
+    theme(legend.position="bottom", text=element_text(size=12),  
+          axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, size = 12)) +
+    guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10)) + scale_fill_manual(values=colorpal) +
+    annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')+
+    geom_line(data=filter(ZZ3,Y<=maxy),aes(x=Y, y = Value ), color="black",linetype="dashed",size=1.2)
+  if(nrow(ZZ2)>=1){
+    plotY <- plotX +    geom_area(data=ZZ2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity", alpha=0.7)
+  }else{
+    plotY <- plotX
+  }
+  
+  return(plotY)
+}
+
 funcAreaPlotGen <- function(rr,progr){
   Data4plot <- filter(allmodel,Region==rr)
 #  for( rr in as.vector(region_load)){
-  for(j in 1:nrow(areamappara)){
+  for(AreaItem in as.vector(areamappara$Class)){
     XX <- Data4plot %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
-      filter(Class==areamappara[j,1] & ModName!="Reference") %>% select(ModName,SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
+      filter(Class==AreaItem & ModName!="Reference") %>% select(ModName,SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
     if(nrow(XX)>0){
       XX2 <- Data4plot %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
-        filter(Class==areamappara[j,1] & ModName=="Reference") %>% select(-SCENARIO,-ModName,Ind,Y,Value,order)  %>% arrange(order)%>%
+        filter(Class==AreaItem & ModName=="Reference") %>% select(-SCENARIO,-ModName,Ind,Y,Value,order)  %>% arrange(order)%>%
         filter(Y<=2015)
-      XX3 <- Data4plot %>% filter(Var %in% as.vector(areamappara$lineVar[j]) & ModName!="Reference") %>% select(ModName,SCENARIO,Var,Y,Value)
-      
-      miny <- min(XX$Y,XX2$Y) 
-      na.omit(XX$Value)
-      unit_name <-areamappara[j,3] 
-      ylab1 <- paste0(areamappara[j,2], " (", unit_name, ")")
-      xlab1 <- areamappara[j,2]
-      
-      areapaletteArea <- filter(areapaletteload,V0==areamappara[j,1] & V1 %in% unique(XX$Ind))$V2
-      names(areapaletteArea) <- filter(areapaletteload,V0==areamappara[j,1] & V1 %in% unique(XX$Ind))$V1
-      colorpal <- areapaletteArea 
+      XX3 <- Data4plot %>% filter(Var==areamappara$lineVar[areamappara$Class==AreaItem] & ModName!="Reference") %>% select(ModName,SCENARIO,Var,Y,Value)
       numitem <- length(as.vector(unique(Data4plot$ModName))) #Get number of items
-      
-      plot2 <- ggplot() + 
-        geom_area(data=filter(XX,Y<=maxy),aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
-        ylab(ylab1) + xlab(xlab1) +labs(fill="")+ guides(fill=guide_legend(reverse=TRUE)) + MyThemeLine +
-        theme(legend.position="bottom", text=element_text(size=12),  
-              axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, size = 12)) +
-        guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10)) +  ggtitle(paste(rr,areamappara$Class[j],sep=" "))+
-        facet_wrap(ModName ~ SCENARIO) + scale_fill_manual(values=colorpal) + 
-        annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')+
-        ggtitle(paste0(rr,areamappara[j,]$Class)) +
-        geom_line(data=filter(XX3,Y<=maxy),aes(x=Y, y = Value ), color="black",linetype="dashed",size=1.2)
-      if(nrow(XX2)>=1){
-        plot3 <- plot2 +    geom_area(data=XX2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity", alpha=0.7)
-      }else{
-        plot3 <- plot2
-      }
+      plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
+      plot3 <- plot1 + ggtitle(paste(rr,areamappara$Class[j],sep=" "))+facet_wrap(ModName ~ SCENARIO)
       allplot[[areamappara$Class[j]]] <- plot3 
       outname <- paste0(outdir,"byRegion/",rr,"/merge/",rr,"_",areamappara[j,1],".png")
       ggsave(plot3, file=outname, width=mergecolnum*2, height=max(1,floor(length(unique(XX$SCENARIO))/mergecolnum))*10+2,limitsize=FALSE)
@@ -348,9 +351,9 @@ mergefigGen <- function(ii,progr){
   if(nrow(filter(allmodel,Var==ii  & ModName!="Reference"))>0){
     plot.reg <- plotXregion(filter(allmodel,Region %in% R17R),ii,R17R)
     if(length(varlist$V2.x[varlist$V1==ii])==1){
-      outname <- paste0(outdir,"multiReg","/png/R17_",ii,".png")
+      outname <- paste0(outdir,"multiReg/png/R17_",ii,".png")
     }else{
-      outname <- paste0(outdir,"multiReg","/pngdet/R17_",ii,".png")
+      outname <- paste0(outdir,"multiReg/pngdet/R17_",ii,".png")
     }
     ggsave(plot.reg, file=outname, dpi = 150, width=15, height=12,limitsize=FALSE)
   }
@@ -362,6 +365,31 @@ mergefigGen <- function(ii,progr){
       outname <- paste0(outdir,"multiRegR5","/pngdet/R5_",ii,".png")
     }
     ggsave(plot.reg, file=outname, dpi = 150, width=12, height=7.5,limitsize=FALSE)
+  }
+}
+
+#function for area figure cross region
+funcAreaXregionPlotGen <- function(AreaItem,progr){
+  Data4plot <- allmodel_area %>% left_join(areamap,by="Var") %>% ungroup() %>% 
+      filter(Class==AreaItem) %>% select(ModName,SCENARIO,Region,Ind,Y,Value,order)  %>% arrange(order)
+  ModelList <- unique(as.vector(Data4plot$ModName))
+  ScenarioList <- unique(as.vector(scenariomap$SCENARIO))
+  #scenario model loop
+  for(SC in ScenarioList){
+    for(MD in ModelList){
+      if(MD!="Reference"){
+        XX <- Data4plot %>% filter(ModName==MD & SCENARIO==SC) %>% select(Region,Ind,Y,Value,order)
+        XX2 <- Data4plot %>% filter(ModName=="Reference") %>% select(Region,Ind,Y,Value,order)  %>% arrange(order)%>% filter(Y<=2015)
+        XX3 <- allmodel %>% filter(ModName==MD & SCENARIO==SC & Var %in% as.vector(areamappara$lineVar[areamappara$Class==AreaItem]) & ModName!="Reference") %>% select(Region,Var,Y,Value)
+        if(nrow(XX)>0){      
+          numitem <- length(as.vector(unique(Data4plot$Region))) #Get number of items
+          plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
+          plot3 <- plot1 + facet_wrap( ~ Region,scales="free_y",ncol=mergecolnum) + ggtitle(paste(AreaItem,sep=" "))
+          outname <- paste0(outdir,"multiReg/merge/",SC,"_",MD,"_",AreaItem,".png")
+          ggsave(plot3, file=outname, width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,limitsize=FALSE)
+        }
+      }
+    }
   }
 }
 
@@ -397,12 +425,13 @@ allplotmerge <- as.list(nalist)
 plotflagmerge <- as.list(nalist)
 lst <- list()
 if(RegSpec==0){
-  lst$region <- R17p5R
+  lst$region <- as.list(R17p5R)
 }else{
-  lst$region <- region_load
+  lst$region <- as.list(region_load)
 }
 lst$varlist <- as.list(as.vector(varlist$V1))
-lst$R5R <- R5R
+lst$R5R <- as.list(R5R)
+lst$Area <- as.list(as.vector(unique(areamappara$Class)))
 
 #Creat directories
 for(rr in lst$region){
@@ -424,6 +453,10 @@ if(length(Getregion)!=1){
   exe_fig_make(lst$varlist,mergefigGen)
 }
 }
+#X regional for area figure
+print(as.vector(scenariomap$SCENARIO))
+allmodel_area <- filter(allmodel, Var %in% as.vector(areamap$Var)) 
+exe_fig_make(lst$Area,funcAreaXregionPlotGen)
 
 #regional Decomposition figure generation execution
 #Decomposition analysis data load
