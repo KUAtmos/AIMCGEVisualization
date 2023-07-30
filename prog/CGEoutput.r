@@ -311,11 +311,11 @@ funcAreaPlotGen <- function(rr,progr){
       XX3 <- Data4plot %>% filter(Var==areamappara$lineVar[areamappara$Class==AreaItem] & ModName!="Reference") %>% select(ModName,SCENARIO,Var,Y,Value)
       numitem <- length(as.vector(unique(Data4plot$ModName))) #Get number of items
       plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
-      plot3 <- plot1 + ggtitle(paste(rr,areamappara$Class[j],sep=" "))+facet_wrap(ModName ~ SCENARIO)
-      allplot[[areamappara$Class[j]]] <- plot3 
-      outname <- paste0(outdir,"byRegion/",rr,"/merge/",rr,"_",areamappara[j,1],".png")
+      plot3 <- plot1 + ggtitle(paste(rr,AreaItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
+      allplot[[AreaItem]] <- plot3 
+      outname <- paste0(outdir,"byRegion/",rr,"/merge/",rr,"_",AreaItem,".png")
       ggsave(plot3, file=outname, width=mergecolnum*2, height=max(1,floor(length(unique(XX$SCENARIO))/mergecolnum))*10+2,limitsize=FALSE)
-      plotflag[[areamappara$Class[j]]] <- nrow(XX)  
+      plotflag[[AreaItem]] <- nrow(XX)  
     }
     #Final energy consumption area
     pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
