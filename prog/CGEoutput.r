@@ -19,7 +19,7 @@ for(j in libloadlist){
   eval(parse(text=paste0("library(",j,")")))
 }
 args <- commandArgs(trailingOnly = TRUE)
-default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","0")   # Default value but gams path should be modified if GUI based R is used
+default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","2","0")   # Default value but gams path should be modified if GUI based R is used
 default_flg <- is.na(args[1:6])
 args[default_flg] <- default_args[default_flg]
 gams_sys_dir <- as.character(args[1])
@@ -167,9 +167,12 @@ names(linepalettewName) <- unique(allmodel$SCENARIO)
 allmodel <- filter(allmodel,Y <= maxy)
 
 #Extract data
-ExtData <- filter(CGEload1,Var %in% varlist$V1) %>% left_join(varlist %>% rename(Var=V1)) %>% select(-V2.x,-Var) %>% rename(Var=V2.y,Unit=V3)
-write.csv(x = ExtData, file = paste0(outdir,"/data/exportdata.csv"))
-
+ExtData <- filter(allmodel0,Var %in% varlist$V1) %>% left_join(unique(varlist %>% rename(Var=V1,Variable=V2.y,Unit=V3) %>% select(Var,Variable,Unit))) %>% 
+  select(-Var) %>% rename(Model=ModName,Year=Y) %>%
+  select(Model,SCENARIO,Region,Variable,Unit,Year,Value) %>% 
+  spread(value=Value,key=Year)
+write.csv(x = ExtData, row.names = FALSE,file = paste0(outdir,"/data/exportdata.csv"))
+ExtData <- 0
 #---End of IAMC tempalte loading and data merge
 
 
@@ -311,11 +314,11 @@ funcAreaPlotGen <- function(rr,progr){
       XX3 <- Data4plot %>% filter(Var==areamappara$lineVar[areamappara$Class==AreaItem] & ModName!="Reference") %>% select(ModName,SCENARIO,Var,Y,Value)
       numitem <- length(as.vector(unique(Data4plot$ModName))) #Get number of items
       plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
-      plot3 <- plot1 + ggtitle(paste(rr,areamappara$Class[j],sep=" "))+facet_wrap(ModName ~ SCENARIO)
-      allplot[[areamappara$Class[j]]] <- plot3 
-      outname <- paste0(outdir,"byRegion/",rr,"/merge/",rr,"_",areamappara[j,1],".png")
+      plot3 <- plot1 + ggtitle(paste(rr,AreaItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
+      allplot[[AreaItem]] <- plot3 
+      outname <- paste0(outdir,"byRegion/",rr,"/merge/",rr,"_",AreaItem,".png")
       ggsave(plot3, file=outname, width=mergecolnum*2, height=max(1,floor(length(unique(XX$SCENARIO))/mergecolnum))*10+2,limitsize=FALSE)
-      plotflag[[areamappara$Class[j]]] <- nrow(XX)  
+      plotflag[[AreaItem]] <- nrow(XX)  
     }
     #Final energy consumption area
     pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
@@ -444,23 +447,22 @@ for(rr in lst$region){
 ffff <- 1
 if(ffff==1){
 #regional figure generation execution
-exe_fig_make(lst$region,funcplotgen)
+  exe_fig_make(lst$region,funcplotgen)
 #regional area figure generation execution
-exe_fig_make(lst$region,funcAreaPlotGen)
+  exe_fig_make(lst$region,funcAreaPlotGen)
 
 #cross-regional figure generation execution
-if(length(Getregion)!=1){
-  exe_fig_make(lst$varlist,mergefigGen)
-}
-}
+  if(length(Getregion)!=1){
+    exe_fig_make(lst$varlist,mergefigGen)
+  }
 #X regional for area figure
-print(as.vector(scenariomap$SCENARIO))
-allmodel_area <- filter(allmodel, Var %in% as.vector(areamap$Var)) 
-exe_fig_make(lst$Area,funcAreaXregionPlotGen)
+  print(as.vector(scenariomap$SCENARIO))
+  allmodel_area <- filter(allmodel, Var %in% as.vector(areamap$Var)) 
+  exe_fig_make(lst$Area,funcAreaXregionPlotGen)
+}
 
 #regional Decomposition figure generation execution
 #Decomposition analysis data load
-
 if(enduseflag>0){
   symDim <- 6
   attr(allmodel, "symName") <- "allmodel"
