@@ -19,8 +19,8 @@ for(j in libloadlist){
   eval(parse(text=paste0("library(",j,")")))
 }
 args <- commandArgs(trailingOnly = TRUE)
-default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","0")   # Default value but gams path should be modified if GUI based R is used
-default_flg <- is.na(args[1:6])
+default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","0","global")   # Default value but gams path should be modified if GUI based R is used
+default_flg <- is.na(args[1:7])
 args[default_flg] <- default_args[default_flg]
 gams_sys_dir <- as.character(args[1])
 AscenarionameAuto <- as.character(args[3])
@@ -48,7 +48,11 @@ if(submodule==1){
 	VarListPath <- paste0(outdir,"../../define/iamctemp/VariableFullList.txt")
 }
 outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GDX file
-filename <- "global_17" # filename should be "global_17","CHN","JPN"....
+if(args[7]=="global"){ # filename should be "global_17","CHN","JPN"....
+  filename <- "global_17"
+}else{
+  filename <- args[7]
+}
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 enduseflag <- as.numeric(args[6])   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
@@ -167,7 +171,7 @@ names(linepalettewName) <- unique(allmodel$SCENARIO)
 allmodel <- filter(allmodel,Y <= maxy)
 
 #Extract data
-ExtData <- filter(CGEload1,Var %in% varlist$V1) %>% left_join(varlist %>% rename(Var=V1)) %>% select(-V2.x,-Var) %>% rename(Var=V2.y,Unit=V3)
+ExtData <- filter(CGEload1,Var %in% varlist$V1)%>% left_join(unique(varlist %>% rename(Var=V1))) %>% select(-V2.x,-Var) %>% rename(Var=V2.y,Unit=V3)
 write.csv(x = ExtData, file = paste0(outdir,"/data/exportdata.csv"))
 
 #---End of IAMC tempalte loading and data merge
@@ -424,10 +428,14 @@ names(plotflag) <- nalist
 allplotmerge <- as.list(nalist)
 plotflagmerge <- as.list(nalist)
 lst <- list()
-if(RegSpec==0){
-  lst$region <- as.list(R17p5R)
+if(args[7]=="global"){
+  if(RegSpec==0){
+    lst$region <- as.list(R17p5R)
+  }else{
+    lst$region <- as.list(region_load)
+  }
 }else{
-  lst$region <- as.list(region_load)
+  lst$region <-as.list(args[7])
 }
 lst$varlist <- as.list(as.vector(varlist$V1))
 lst$R5R <- as.list(R5R)
@@ -435,7 +443,7 @@ lst$Area <- as.list(as.vector(unique(areamappara$Class)))
 
 #Creat directories
 for(rr in lst$region){
-  regoutdir <- paste0("../output/byRegion/",rr)
+  regoutdir <- paste0(outdir,"byRegion/",rr)
   dirlist <- c(regoutdir,paste0(regoutdir,"/png"),paste0(regoutdir,"/pngdet"),paste0(regoutdir,"/ppt"),paste0(regoutdir,"/merge"))
   for(dd in dirlist){
     if(file.exists(dd)){}else{dir.create(dd)}
