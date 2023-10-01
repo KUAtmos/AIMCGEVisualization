@@ -171,9 +171,12 @@ names(linepalettewName) <- unique(allmodel$SCENARIO)
 allmodel <- filter(allmodel,Y <= maxy)
 
 #Extract data
-ExtData <- filter(CGEload1,Var %in% varlist$V1)%>% left_join(unique(varlist %>% rename(Var=V1))) %>% select(-V2.x,-Var) %>% rename(Var=V2.y,Unit=V3)
-write.csv(x = ExtData, file = paste0(outdir,"/data/exportdata.csv"))
-
+ExtData <- filter(allmodel0,Var %in% varlist$V1) %>% left_join(unique(varlist %>% rename(Var=V1,Variable=V2.y,Unit=V3) %>% select(Var,Variable,Unit))) %>% 
+  select(-Var) %>% rename(Model=ModName,Year=Y) %>%
+  select(Model,SCENARIO,Region,Variable,Unit,Year,Value) %>% 
+  spread(value=Value,key=Year)
+write.csv(x = ExtData, row.names = FALSE,file = paste0(outdir,"/data/exportdata.csv"))
+ExtData <- 0
 #---End of IAMC tempalte loading and data merge
 
 
@@ -452,23 +455,22 @@ for(rr in lst$region){
 ffff <- 1
 if(ffff==1){
 #regional figure generation execution
-exe_fig_make(lst$region,funcplotgen)
+  exe_fig_make(lst$region,funcplotgen)
 #regional area figure generation execution
-exe_fig_make(lst$region,funcAreaPlotGen)
+  exe_fig_make(lst$region,funcAreaPlotGen)
 
 #cross-regional figure generation execution
-if(length(Getregion)!=1){
-  exe_fig_make(lst$varlist,mergefigGen)
-}
-}
+  if(length(Getregion)!=1){
+    exe_fig_make(lst$varlist,mergefigGen)
+  }
 #X regional for area figure
-print(as.vector(scenariomap$SCENARIO))
-allmodel_area <- filter(allmodel, Var %in% as.vector(areamap$Var)) 
-exe_fig_make(lst$Area,funcAreaXregionPlotGen)
+  print(as.vector(scenariomap$SCENARIO))
+  allmodel_area <- filter(allmodel, Var %in% as.vector(areamap$Var)) 
+  exe_fig_make(lst$Area,funcAreaXregionPlotGen)
+}
 
 #regional Decomposition figure generation execution
 #Decomposition analysis data load
-
 if(enduseflag>0){
   symDim <- 6
   attr(allmodel, "symName") <- "allmodel"

@@ -209,4 +209,7 @@ Pop_Mor_AP_Ozo	1
 Pop_Mor_AP	1
 Con_PM25_Pop_Wei	1
 Pop_Ext_pov	1
-
+Ele_rat_Ele	1
+Sha_NonBioRen_Ene_Prm_Ene	1
+Sha_NonBioRen_Ene_Sec_Ene_Ele_Heat	1
+Sha_NonBioRen_Ene_Sec_Ene_Ele	1

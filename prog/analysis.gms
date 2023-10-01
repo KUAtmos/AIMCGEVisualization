@@ -37,6 +37,7 @@ RMSEStand(Ite,SCENARIO,Region,Var)
 MAEStand(Ite,SCENARIO,Region,Var)
 MEAN(Ite,SCENARIO,Region,Var)
 Stat(Indi,Ite,SCENARIO,Region,Var)
+DifStatHub(Indi,SCENARIO,Region,Var)
 ConvStat(Indi,Ite,ModSpe,SCENARIO,Region,Var)
 MeanModel(ModName,SCENARIO,Region,Var)
 VarModel(ModName,SCENARIO,Region,Var)
@@ -60,17 +61,19 @@ i5	.	AIMHub5	.	AIMTech4
 i6	.	AIMHub6	.	AIMTech5
 /
 ModConverMap(ModName1,ModName2,Ite,ModSpe)/
-AIMHub0  . AIMHub1  . i0  . AIMHub
-AIMHub1  . AIMHub2  . i1  . AIMHub
-AIMHub2  . AIMHub3  . i2  . AIMHub
-AIMHub3  . AIMHub4  . i3  . AIMHub
-AIMHub4  . AIMHub5  . i4  . AIMHub
-AIMHub5  . AIMHub6  . i5  . AIMHub
-AIMTech0  . AIMTech1  . i0 . AIMTech
-AIMTech1  . AIMTech2  . i1  . AIMTech
-AIMTech2  . AIMTech3  . i2  . AIMTech
-AIMTech3  . AIMTech4  . i3  . AIMTech
-AIMTech4  . AIMTech5  . i4  . AIMTech
+AIMHub0  . AIMHub1  . i1  . AIMHub
+AIMHub1  . AIMHub2  . i2  . AIMHub
+AIMHub2  . AIMHub3  . i3  . AIMHub
+AIMHub3  . AIMHub4  . i4  . AIMHub
+AIMHub4  . AIMHub5  . i5  . AIMHub
+AIMTech0  . AIMTech1  . i1 . AIMTech
+AIMTech1  . AIMTech2  . i2  . AIMTech
+AIMTech2  . AIMTech3  . i3  . AIMTech
+AIMTech3  . AIMTech4  . i4  . AIMTech
+AIMTech4  . AIMTech5  . i5  . AIMTech
+/
+ModCompMapHub(ModName,ModName)/
+AIMHub0	.	AIMHub5
 /
 
 Varmain(Var)/
@@ -189,7 +192,16 @@ ConvStat("MEAN",Ite,ModSpe,SCENARIO,Region,Var)$(Varmain(Var) AND RegionMain(Reg
   SUM((Y,ModName1,ModName2)$(Y2020Comp(Y) AND ModConverMap(ModName1,ModName2,Ite,ModSpe) AND DataLoad1(ModName1,Region,Var,SCENARIO,Y) AND DataLoad1(ModName2,Region,Var,SCENARIO,Y)),1);
 ConvStat("MAEStand",Ite,ModSpe,SCENARIO,Region,Var)$(ConvStat("MEAN",Ite,ModSpe,SCENARIO,Region,Var))=ConvStat("MAE",Ite,ModSpe,SCENARIO,Region,Var)/ConvStat("MEAN",Ite,ModSpe,SCENARIO,Region,Var);
 
+DifStatHub("MAE",SCENARIO,Region,Var)$(Varmain(Var) AND RegionMain(Region) AND SUM((Y,ModName1,ModName2)$(Y2020Comp(Y) AND ModCompMapHub(ModName1,ModName2) AND DataLoad1(ModName1,Region,Var,SCENARIO,Y) AND DataLoad1(ModName2,Region,Var,SCENARIO,Y)),1))=
+  SUM((Y,ModName1,ModName2)$(Y2020Comp(Y) AND ModCompMapHub(ModName1,ModName2) AND DataLoad1(ModName1,Region,Var,SCENARIO,Y) AND DataLoad1(ModName2,Region,Var,SCENARIO,Y)),ABS((DataLoad1(ModName1,Region,Var,SCENARIO,Y)-DataLoad1(ModName2,Region,Var,SCENARIO,Y))))/
+  SUM((Y,ModName1,ModName2)$(Y2020Comp(Y) AND ModCompMapHub(ModName1,ModName2) AND DataLoad1(ModName1,Region,Var,SCENARIO,Y) AND DataLoad1(ModName2,Region,Var,SCENARIO,Y)),1);
+DifStatHub("MEAN",SCENARIO,Region,Var)$(Varmain(Var) AND RegionMain(Region) AND SUM((Y,ModName1,ModName2)$(Y2020Comp(Y) AND ModCompMapHub(ModName1,ModName2) AND DataLoad1(ModName1,Region,Var,SCENARIO,Y) AND DataLoad1(ModName2,Region,Var,SCENARIO,Y)),1))=
+  SUM((Y,ModName1,ModName2)$(Y2020Comp(Y) AND ModCompMapHub(ModName1,ModName2) AND DataLoad1(ModName1,Region,Var,SCENARIO,Y) AND DataLoad1(ModName1,Region,Var,SCENARIO,Y)),ABS((DataLoad1(ModName1,Region,Var,SCENARIO,Y)+DataLoad1(ModName2,Region,Var,SCENARIO,Y))))/
+  SUM((Y,ModName1,ModName2)$(Y2020Comp(Y) AND ModCompMapHub(ModName1,ModName2) AND DataLoad1(ModName1,Region,Var,SCENARIO,Y) AND DataLoad1(ModName2,Region,Var,SCENARIO,Y)),1);
+DifStatHub("MAEStand",SCENARIO,Region,Var)$(DifStatHub("MEAN",SCENARIO,Region,Var))=DifStatHub("MAE",SCENARIO,Region,Var)/DifStatHub("MEAN",SCENARIO,Region,Var);
+
 execute_unload '%outdir%/data/analysis.gdx'
 Stat
 ConvStat
+DifStatHub
 ;

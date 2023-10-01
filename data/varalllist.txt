@@ -3566,3 +3566,6 @@ Fin_Ene_Tra_Int_Avi_Gas_Nat_Gas	Final Energy|Transportation|International|Aviati
 Fin_Ene_Liq_and_Gas	Final Energy|Liquids and Gases	EJ/yr
 Frc_Aer_Dir	Forcing|Aerosol|Direct	W/m2
 Frc_Alb_Cha	Forcing|Albedo Change	W/m2
+Sha_NonBioRen_Ene_Prm_Ene	Share of Non-Biomass Renewables|Primary Energy	%
+Sha_NonBioRen_Ene_Sec_Ene_Ele_Heat	Share of Non-Biomass Renewables|Secondary Energy|Electricity and Heat	%
+Sha_NonBioRen_Ene_Sec_Ene_Ele	Share of Non-Biomass Renewables|Secondary Energy|Electricity	%
