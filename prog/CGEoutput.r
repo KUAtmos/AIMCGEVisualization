@@ -19,8 +19,11 @@ for(j in libloadlist){
   eval(parse(text=paste0("library(",j,")")))
 }
 args <- commandArgs(trailingOnly = TRUE)
-default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","0","global")   # Default value but gams path should be modified if GUI based R is used
-default_flg <- is.na(args[1:7])
+#arguments are: 1:gams sys,2:number of CPU, 3:visualizaton scenario name specification auto or not, 4:file location, 5:submodule switch, 6:enduse iteration switch, 7: GDX file name, 8: region code/global
+default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","0","global_17_IAMC","global")   # Default value but gams path should be modified if GUI based R is used
+#default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "country/CHN","2","1","IAMCTemplate_Iteon_CHN","CHN")   # Default value but gams path should be modified if GUI based R is used
+
+default_flg <- is.na(args[1:8])
 args[default_flg] <- default_args[default_flg]
 gams_sys_dir <- as.character(args[1])
 AscenarionameAuto <- as.character(args[3])
@@ -48,11 +51,7 @@ if(submodule==1){
 	VarListPath <- paste0(outdir,"../../define/iamctemp/VariableFullList.txt")
 }
 outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GDX file
-if(args[7]=="global"){ # filename should be "global_17","CHN","JPN"....
-  filename <- "global_17"
-}else{
-  filename <- args[7]
-}
+filename <- args[7] # filename should be "global_17","CHN","JPN"....
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 enduseflag <- as.numeric(args[6])   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
@@ -131,23 +130,23 @@ if(submodule!=2){
   }
   
   if(CGEgdxcopy==1){ # Data file loading
-    file.copy(paste0(dirCGEoutput,filename,"_IAMC.gdx"), paste0(outdirmd,filename,"_IAMC.gdx"),overwrite = TRUE)
-    CGEload0 <- rgdx.param(paste0(outdirmd ,filename,"_IAMC.gdx"),'IAMC_Template') 
+    file.copy(paste0(dirCGEoutput,filename,".gdx"), paste0(outdirmd,filename,".gdx"),overwrite = TRUE)
+    CGEload0 <- rgdx.param(paste0(outdirmd ,filename,".gdx"),'IAMC_Template') 
   }else{  
-    CGEload0 <- rgdx.param(paste0(dirCGEoutput,filename,"_IAMC.gdx"),'IAMC_Template') 
+    CGEload0 <- rgdx.param(paste0(dirCGEoutput,filename,".gdx"),'IAMC_Template') 
   }
   CGEload1 <- CGEload0 %>% rename("Value"=IAMC_Template,"Var"=VEMF) %>% 
     left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1])) %>% 
     select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name",Y="YEMF")
 }else{
   if(AscenarionameAuto=="on"){  #scenario mapping specification
-    scenariomap_load <- rgdx.set(paste0(outdir,'/../gdx/IAMCTemplate.gdx'),'SCENARIO') 
+    scenariomap_load <- rgdx.set(paste0(outdir,'/../iamc/',filename,'.gdx'),'SCENARIO') 
     scenariomap <- cbind(scenariomap_load,scenariomap_load)
     names(scenariomap) <- c("SCENARIO","Name")
   }else{
     scenariomap <- read.table(paste0(outdir,'../../define/iamctemp/VisualizationScenariomap.map'),sep='\t',header=T)
   }
-  CGEload0 <- rgdx.param(paste0(outdir,'/../gdx/IAMCTemplate.gdx'),'MergedIAMC') 
+  CGEload0 <- rgdx.param(paste0(outdir,'/../iamc/',filename,'.gdx'),'MergedIAMC') 
   CGEload1 <- CGEload0 %>% rename("Value"=mergedIAMC,"Var"=VIAMC,Region="RIAMC",ModName="Modelset") %>% left_join(scenariomap,by="SCENARIO") %>% select(Region,Var,Y,Value,SCENARIO,ModName)
 }
 Getregion <- as.vector(unique(CGEload1$Region))
@@ -431,14 +430,14 @@ names(plotflag) <- nalist
 allplotmerge <- as.list(nalist)
 plotflagmerge <- as.list(nalist)
 lst <- list()
-if(args[7]=="global"){
+if(args[8]=="global"){
   if(RegSpec==0){
     lst$region <- as.list(R17p5R)
   }else{
     lst$region <- as.list(region_load)
   }
 }else{
-  lst$region <-as.list(args[7])
+  lst$region <-as.list(args[8])
 }
 lst$varlist <- as.list(as.vector(varlist$V1))
 lst$R5R <- as.list(R5R)
