@@ -36,7 +36,7 @@ options(future.globals.maxSize= sizememory)
 submodule <- as.numeric(args[5]) #0 if this repository cloned to the AIMHub dir
 if(submodule==1){
 	maindirloc <- "../../"
-	outdir <- "../../../../output/fig/" #Output directory 
+	outdir <- paste0("../../../../output/fig_",args[8],"/") #Output directory 
 	AIMHubdir <- "../../../" 
 	VarListPath <- paste0(AIMHubdir,"tools/iiasa_data_submission/data/all_list.txt")
 }else if(submodule==0){
@@ -46,7 +46,7 @@ if(submodule==1){
 	VarListPath <- paste0(AIMHubdir,"tools/iiasa_data_submission/data/all_list.txt")
 }else if(submodule==2){
   maindirloc <- "../../"
-  outdir <- "../../../../../../IntTool/output/fig/" #Output directory 
+  outdir <- paste0("../../../../../../IntTool/output/fig_",args[8],"/") #Output directory 
   AIMHubdir <- "../../../" 
 	VarListPath <- paste0(outdir,"../../define/iamctemp/VariableFullList.txt")
 }
@@ -234,7 +234,7 @@ funcplotgen <- function(rr,progr){
   ggsave(pp_tfcind, file=paste0(outdir,"byRegion/",rr,"/merge/",rr,"_tfcind.png"), width=30, height=20,limitsize=FALSE)
   #Main indicators
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["GDP_MER"]]), pattern = "guide-box")
-  if(nrow(filter(Data4plot,Var=="Pol_Cos_GDP_Los_rat"))>0){
+  if(nrow(filter(Data4plot0,Var=="Pol_Cos_GDP_Los_rat"))>0){
     p_legend2 <- gtable::gtable_filter(ggplotGrob(allplot[["Pol_Cos_GDP_Los_rat"]]), pattern = "guide-box")
     pp_main <- plot_grid(allplot_nonleg[["GDP_MER"]],allplot_nonleg[["POP"]],allplot_nonleg[["Tem_Glo_Mea"]],p_legend1,
                        allplot_nonleg[["Emi_CO2_Ene_and_Ind_Pro"]],allplot_nonleg[["Emi_CO2"]],allplot_nonleg[["Emi_Kyo_Gas"]],p_legend1,
@@ -461,21 +461,24 @@ if(ffff==1){
 #cross-regional figure generation execution
   if(length(Getregion)!=1){
     exe_fig_make(lst$varlist,mergefigGen)
-  }
 #X regional for area figure
-  print(as.vector(scenariomap$SCENARIO))
-  allmodel_area <- filter(allmodel, Var %in% as.vector(areamap$Var)) 
-  exe_fig_make(lst$Area,funcAreaXregionPlotGen)
+    print(as.vector(scenariomap$SCENARIO))
+    allmodel_area <- filter(allmodel, Var %in% as.vector(areamap$Var)) 
+    exe_fig_make(lst$Area,funcAreaXregionPlotGen)
+  }
 }
 
 #regional Decomposition figure generation execution
 #Decomposition analysis data load
 if(enduseflag>0){
   symDim <- 6
-  attr(allmodel, "symName") <- "allmodel"
-  lst3 <- wgdx.reshape(allmodel,symDim)
+  attr(allmodel0, "symName") <- "allmodel0"
+  lst3 <- wgdx.reshape(allmodel0,symDim)
   wgdx.lst(gdxName = paste0(outdir,"data/allcombine.gdx"),lst3)
-  system(paste0("gams analysis.gms --outdir=",outdir))
+  write.csv(x = as.vector(unique(allmodel0$SCENARIO)), row.names = FALSE,file = paste0(outdir,"/data/scenario.csv"))
+  write.csv(x = as.vector(unique(allmodel0$Region)), row.names = FALSE,file = paste0(outdir,"/data/region.csv"))
+
+  system(paste0("gams analysis.gms --outdir=",outdir," --Region=",args[8]))
   source("Discrepancy.R")
 }
 

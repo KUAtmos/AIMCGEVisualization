@@ -3,16 +3,25 @@ $setglobal outdir ../output
 SET
 Dum/
 "Fin_Ene", "Fin_Ene_Ele_Heat", "Fin_Ene_Liq_and_Gas", "Fin_Ene_SolidsCoa", "Fin_Ene_SolidsBio", "Fin_Ene_Hyd", "Fin_Ene_Ind", "Fin_Ene_Com", "Fin_Ene_Res", "Fin_Ene_Tra"
-
 Sec_Ene_Ele_Heat, Sec_Ene_Ele_Heat_Coa, Sec_Ene_Ele_Oil, Sec_Ene_Ele_Heat_Gas, Sec_Ene_Ele_Heat_Nuc, Sec_Ene_Ele_Hyd, Sec_Ene_Ele_Solar, Sec_Ene_Ele_Win, Sec_Ene_Ele_Heat_Bio, Sec_Ene_Ele_Heat_Geo
 Sec_Ene_Hyd, Sec_Ene_Hyd_Gas, Sec_Ene_Hyd_Bio, Sec_Ene_Hyd_Ele
-
 "Fin_Ene_Ind_Ele_Heat", "Fin_Ene_Ind_Liq_and_Gas", "Fin_Ene_Ind_SolidsCoa", "Fin_Ene_Ind_SolidsBio", "Fin_Ene_Ind_Hyd", "Fin_Ene_Com_Ele_Heat", "Fin_Ene_Com_Liq_and_Gas", "Fin_Ene_Com_SolidsCoa", "Fin_Ene_Com_SolidsBio", "Fin_Ene_Com_Hyd", "Fin_Ene_Res_Ele_Heat", "Fin_Ene_Res_Liq_and_Gas", "Fin_Ene_Res_SolidsCoa", "Fin_Ene_Res_SolidsBio", "Fin_Ene_Res_Hyd", "Fin_Ene_Tra_Ele", "Fin_Ene_Tra_Liq_and_Gas", "Fin_Ene_Tra_Liq_Bio", "Fin_Ene_Tra_Liq_Oil", "Fin_Ene_Tra_Hyd"
 
 /
-Region,Var
+Region/
+$include '%outdir%/data/region.csv'
+/
+Var/
+"Fin_Ene", "Fin_Ene_Ele_Heat", "Fin_Ene_Liq_and_Gas", "Fin_Ene_SolidsCoa", "Fin_Ene_SolidsBio", "Fin_Ene_Hyd", "Fin_Ene_Ind", "Fin_Ene_Com", "Fin_Ene_Res", "Fin_Ene_Tra"
+Sec_Ene_Ele_Heat, Sec_Ene_Ele_Heat_Coa, Sec_Ene_Ele_Oil, Sec_Ene_Ele_Heat_Gas, Sec_Ene_Ele_Heat_Nuc, Sec_Ene_Ele_Hyd, Sec_Ene_Ele_Solar, Sec_Ene_Ele_Win, Sec_Ene_Ele_Heat_Bio, Sec_Ene_Ele_Heat_Geo
+Sec_Ene_Hyd, Sec_Ene_Hyd_Gas, Sec_Ene_Hyd_Bio, Sec_Ene_Hyd_Ele
+"Fin_Ene_Ind_Ele_Heat", "Fin_Ene_Ind_Liq_and_Gas", "Fin_Ene_Ind_SolidsCoa", "Fin_Ene_Ind_SolidsBio", "Fin_Ene_Ind_Hyd", "Fin_Ene_Com_Ele_Heat", "Fin_Ene_Com_Liq_and_Gas", "Fin_Ene_Com_SolidsCoa", "Fin_Ene_Com_SolidsBio", "Fin_Ene_Com_Hyd", "Fin_Ene_Res_Ele_Heat", "Fin_Ene_Res_Liq_and_Gas", "Fin_Ene_Res_SolidsCoa", "Fin_Ene_Res_SolidsBio", "Fin_Ene_Res_Hyd", "Fin_Ene_Tra_Ele", "Fin_Ene_Tra_Liq_and_Gas", "Fin_Ene_Tra_Liq_Bio", "Fin_Ene_Tra_Liq_Oil", "Fin_Ene_Tra_Hyd"
+/
 ModName/AIMHub0*AIMHub10,AIMTech0*AIMTech10/
-SCENARIO,Y
+SCENARIO/
+$include '%outdir%/data/scenario.csv'
+/
+Y/1990*2100/
 Value/Value/
 Ite  Iteration/i0*i10/
 Indi/
@@ -44,7 +53,6 @@ VarModel(ModName,SCENARIO,Region,Var)
 ;
 
 $gdxin '%outdir%/data/allcombine.gdx'
-$load Region,Var,SCENARIO,Y
 $load DataLoad=allmodel
 *$load ModName
 
@@ -140,12 +148,16 @@ Y2020Comp(Y)/
 2020,2025,2030,2035,2040,2045,2050,2055,2060,2065,2070,2075,2080,2085,2090,2095,2100
 /
 RegionMain(Region)/
+$ifthen.global %Region%==global
 World
 R5ASIA
 "R5OECD90+EU"
 R5REF
 R5MAF
 R5LAM
+$else.global 
+%Region%
+$endif.global
 /
 
 ;
