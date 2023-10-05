@@ -472,11 +472,11 @@ if(ffff==1){
 #Decomposition analysis data load
 if(enduseflag>0){
   symDim <- 6
-  attr(allmodel0, "symName") <- "allmodel0"
-  lst3 <- wgdx.reshape(allmodel0,symDim)
+  attr(allmodel, "symName") <- "allmodel"
+  lst3 <- wgdx.reshape(allmodel,symDim)
   wgdx.lst(gdxName = paste0(outdir,"data/allcombine.gdx"),lst3)
-  write.csv(x = as.vector(unique(allmodel0$SCENARIO)), row.names = FALSE,file = paste0(outdir,"/data/scenario.csv"))
-  write.csv(x = as.vector(unique(allmodel0$Region)), row.names = FALSE,file = paste0(outdir,"/data/region.csv"))
+  write.csv(x = as.vector(unique(allmodel$SCENARIO)), row.names = FALSE,file = paste0(outdir,"/data/scenario.csv"))
+  write.csv(x = as.vector(unique(allmodel$Region)), row.names = FALSE,file = paste0(outdir,"/data/region.csv"))
 
   system(paste0("gams analysis.gms --outdir=",outdir," --Region=",args[8]))
   source("Discrepancy.R")
