@@ -25,6 +25,9 @@ args[default_flg] <- default_args[default_flg]
 gams_sys_dir <- as.character(args[1])
 AscenarionameAuto <- as.character(args[3])
 igdx(gams_sys_dir)
+Iterationflag <- as.numeric(args[6])   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+decompositionflag <- 0  #if you would like to run decomposition analysis turn on 1, otherwise 0.
+threadsnum <-  as.numeric(args[2])
 sizememory <- 1000*1024^2 
 options(future.globals.maxSize= sizememory)
 
@@ -43,7 +46,14 @@ if(submodule==1){
 	VarListPath <- paste0(AIMHubdir,"tools/iiasa_data_submission/data/all_list.txt")
 }else if(submodule==2){
   maindirloc <- "../../"
-  outdir <- "../../../../../../IntTool/output/fig/" #Output directory 
+  if(Iterationflag==0){
+    Itename <- "Iteoff"
+    VisualizationScenarioFile <- "VisualizationScenariomap"
+  }else{
+    Itename <- "Iteon"
+    VisualizationScenarioFile <- "VisualizationScenariomapIte"
+  }
+  outdir <- paste0("../../../../../../IntTool/output/fig",Itename,"/") #Output directory 
   AIMHubdir <- "../../../" 
 	VarListPath <- paste0(outdir,"../../define/iamctemp/VariableFullList.txt")
 }
@@ -51,9 +61,6 @@ outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GD
 filename <- "global_17" # filename should be "global_17","CHN","JPN"....
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
-enduseflag <- as.numeric(args[6])   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
-decompositionflag <- 0  #if you would like to run decomposition analysis turn on 1, otherwise 0.
-threadsnum <-  as.numeric(args[2])
 print(threadsnum) 
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
 mergecolnum <- 6 #merge figure facet number of columns
@@ -137,14 +144,14 @@ if(submodule!=2){
     select(-SCENARIO) %>% rename(Region="REMF",SCENARIO="Name",Y="YEMF")
 }else{
   if(AscenarionameAuto=="on"){  #scenario mapping specification
-    scenariomap_load <- rgdx.set(paste0(outdir,'/../gdx/IAMCTemplate.gdx'),'SCENARIO') 
+    scenariomap_load <- rgdx.set(paste0(outdir,'/../gdx/IAMCTemplate_',Itename,'.gdx'),'SCENARIO') 
     scenariomap <- cbind(scenariomap_load,scenariomap_load)
     names(scenariomap) <- c("SCENARIO","Name")
   }else{
-    scenariomap <- read.table(paste0(outdir,'../../define/iamctemp/VisualizationScenariomap.map'),sep='\t',header=T)
+    scenariomap <- read.table(paste0(outdir,'../../define/iamctemp/',VisualizationScenarioFile,'.map'),sep='\t',header=T)
   }
-  CGEload0 <- rgdx.param(paste0(outdir,'/../gdx/IAMCTemplate.gdx'),'MergedIAMC') 
-  CGEload1 <- CGEload0 %>% rename("Value"=mergedIAMC,"Var"=VIAMC,Region="RIAMC",ModName="Modelset") %>% left_join(scenariomap,by="SCENARIO") %>% select(Region,Var,Y,Value,SCENARIO,ModName)
+  CGEload0 <- rgdx.param(paste0(outdir,'/../gdx/IAMCTemplate_',Itename,'.gdx'),'MergedIAMC') 
+  CGEload1 <- CGEload0 %>% rename("Value"=mergedIAMC,"Var"=VIAMC,Region="RIAMC",ModName="Modelset") %>% left_join(scenariomap,by="SCENARIO") %>% filter(SCENARIO %in% as.vector(scenariomap[,1])) %>% select(Region,Var,Y,Value,SCENARIO,ModName)
 }
 Getregion <- as.vector(unique(CGEload1$Region))
 if(length(Getregion)==1){region <- Getregion}else{region <- R17p5R}
@@ -311,7 +318,7 @@ funcAreaPlotGen <- function(rr,progr){
       XX3 <- Data4plot %>% filter(Var==areamappara$lineVar[areamappara$Class==AreaItem] & ModName!="Reference") %>% select(ModName,SCENARIO,Var,Y,Value)
       numitem <- length(as.vector(unique(Data4plot$ModName))) #Get number of items
       plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
-      plot3 <- plot1 + ggtitle(paste(rr,AreaItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
+      plot3 <- plot1 + ggtitle(paste(rr,AreaItem,sep=" "))+facet_wrap(ModName ~ SCENARIO,ncol=4)
       allplot[[AreaItem]] <- plot3 
       outname <- paste0(outdir,"byRegion/",rr,"/merge/",rr,"_",AreaItem,".png")
       ggsave(plot3, file=outname, width=mergecolnum*2, height=max(1,floor(length(unique(XX$SCENARIO))/mergecolnum))*10+2,limitsize=FALSE)
@@ -367,7 +374,6 @@ mergefigGen <- function(ii,progr){
     ggsave(plot.reg, file=outname, dpi = 150, width=12, height=7.5,limitsize=FALSE)
   }
 }
-
 #function for area figure cross region
 funcAreaXregionPlotGen <- function(AreaItem,progr){
   Data4plot <- allmodel_area %>% left_join(areamap,by="Var") %>% ungroup() %>% 
@@ -461,7 +467,7 @@ exe_fig_make(lst$Area,funcAreaXregionPlotGen)
 #regional Decomposition figure generation execution
 #Decomposition analysis data load
 
-if(enduseflag>0){
+if(Iterationflag>0){
   symDim <- 6
   attr(allmodel, "symName") <- "allmodel"
   lst3 <- wgdx.reshape(allmodel,symDim)
