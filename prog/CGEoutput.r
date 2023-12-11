@@ -251,13 +251,21 @@ funcplotgen <- function(rr,progr){
 
 #Emissions
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Emi_CO2"]]), pattern = "guide-box")
-  pp_main <- plot_grid(allplot_nonleg[["Emi_CO2"]],allplot_nonleg[["Emi_CH4"]],allplot_nonleg[["Emi_N2O"]]+ theme(legend.position="none"),allplot_nonleg[["Emi_F_G"]]+ theme(legend.position="none"),
-                       allplot_nonleg[["Emi_Sul"]],allplot_nonleg[["Emi_NOx"]],allplot_nonleg[["Emi_BC"]],allplot_nonleg[["Emi_OC"]]+ theme(legend.position="none"),
-                       allplot_nonleg[["Emi_VOC"]],allplot_nonleg[["Emi_NH3"]],allplot_nonleg[["Emi_CO"]],allplot_nonleg[["Emi_Kyo_Gas"]]+ theme(legend.position="none"),
+  pp_main <- plot_grid(allplot_nonleg[["Emi_CO2"]],allplot_nonleg[["Emi_CH4"]],allplot_nonleg[["Emi_N2O"]],allplot_nonleg[["Emi_F_G"]],
+                       allplot_nonleg[["Emi_Sul"]],allplot_nonleg[["Emi_NOx"]],allplot_nonleg[["Emi_BC"]],allplot_nonleg[["Emi_OC"]],
+                       allplot_nonleg[["Emi_VOC"]],allplot_nonleg[["Emi_NH3"]],allplot_nonleg[["Emi_CO"]],allplot_nonleg[["Emi_Kyo_Gas"]],
                        allplot_nonleg[["Tem_Glo_Mea"]],allplot_nonleg[["Frc"]],p_legend1,
                        nrow=4,rel_widths =c(1,1,1,1),align = "hv")
   ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/",rr,"_Emissions.png"), width=15, height=15,limitsize=FALSE)
-  
+
+#Emissions
+  p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Lan_Cov_Pst"]]), pattern = "guide-box")
+  pp_main <- plot_grid(allplot_nonleg[["Lan_Cov_Cro"]],allplot_nonleg[["Lan_Cov_Pst"]],allplot_nonleg[["Lan_Cov_Cro_Ene_Cro"]],
+                       allplot_nonleg[["Lan_Cov_Cro_Non_Ene_Cro"]],allplot_nonleg[["Lan_Cov_Frs"]],allplot_nonleg[["Lan_Cov_Frs_Man"]],
+                       allplot_nonleg[["Lan_Cov_Oth_Nat_Lan"]],allplot_nonleg[["Lan_Cov_Oth_Lan"]],p_legend1,
+                       nrow=3,rel_widths =c(1,1,1),align = "hv")
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/",rr,"_LanduseLine.png"), width=15, height=15,limitsize=FALSE)
+
   #----r2ppt
   #The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
   #If you really needs ppt slide, you first output png and then paste it.

@@ -2,7 +2,7 @@ V1	V2	V3
 Emi_CO2_Ene_and_Ind_Pro	Emissions|CO2|Energy and Industrial Processes	Mt CO2/yr
 Fin_Ene	Final Energy	EJ/yr
 GDP_MER	GDP|MER	billion US$2010/yr
-POP	Population	Million
+Pop	Population	Million
 Prc_Car	Price|Carbon	US$2010/t CO2
 Prc_Prm_Ene_Oil	Price|Primary Energy|Oil	US$2010/GJ
 Prc_Sec_Ene_Ele	Price|Secondary Energy|Electricity	US$2010/GJ
