@@ -28,6 +28,9 @@ args[default_flg] <- default_args[default_flg]
 gams_sys_dir <- as.character(args[1])
 AscenarionameAuto <- as.character(args[3])
 igdx(gams_sys_dir)
+Iterationflag <- as.numeric(args[6])   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+decompositionflag <- 0  #if you would like to run decomposition analysis turn on 1, otherwise 0.
+threadsnum <-  as.numeric(args[2])
 sizememory <- 1000*1024^2 
 options(future.globals.maxSize= sizememory)
 
@@ -46,6 +49,13 @@ if(submodule==1){
 	VarListPath <- paste0(AIMHubdir,"tools/iiasa_data_submission/data/all_list.txt")
 }else if(submodule==2){
   maindirloc <- "../../"
+  if(Iterationflag==0){
+    Itename <- "Iteoff"
+    VisualizationScenarioFile <- "VisualizationScenariomap"
+  }else{
+    Itename <- "Iteon"
+    VisualizationScenarioFile <- "VisualizationScenariomapIte"
+  }
   outdir <- paste0("../../../../../../IntTool/output/fig_",args[8],"/") #Output directory 
   AIMHubdir <- "../../../" 
 	VarListPath <- paste0(outdir,"../../define/iamctemp/VariableFullList.txt")
@@ -54,9 +64,6 @@ outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GD
 filename <- args[7] # filename should be "global_17","CHN","JPN"....
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
-enduseflag <- as.numeric(args[6])   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
-decompositionflag <- 0  #if you would like to run decomposition analysis turn on 1, otherwise 0.
-threadsnum <-  as.numeric(args[2])
 print(threadsnum) 
 r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
 mergecolnum <- 6 #merge figure facet number of columns
@@ -478,13 +485,14 @@ if(ffff==1){
 
 #regional Decomposition figure generation execution
 #Decomposition analysis data load
-if(enduseflag>0){
+
+if(Iterationflag>0){
   symDim <- 6
-  attr(allmodel0, "symName") <- "allmodel0"
-  lst3 <- wgdx.reshape(allmodel0,symDim)
+  attr(allmodel, "symName") <- "allmodel"
+  lst3 <- wgdx.reshape(allmodel,symDim)
   wgdx.lst(gdxName = paste0(outdir,"data/allcombine.gdx"),lst3)
-  write.csv(x = as.vector(unique(allmodel0$SCENARIO)), row.names = FALSE,file = paste0(outdir,"/data/scenario.csv"))
-  write.csv(x = as.vector(unique(allmodel0$Region)), row.names = FALSE,file = paste0(outdir,"/data/region.csv"))
+  write.csv(x = as.vector(unique(allmodel$SCENARIO)), row.names = FALSE,file = paste0(outdir,"/data/scenario.csv"))
+  write.csv(x = as.vector(unique(allmodel$Region)), row.names = FALSE,file = paste0(outdir,"/data/region.csv"))
 
   system(paste0("gams analysis.gms --outdir=",outdir," --Region=",args[8]))
   source("Discrepancy.R")
