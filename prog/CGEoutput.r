@@ -213,9 +213,9 @@ funcplotgen <- function(rr,progr){
         geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
       }
       if(varlist$V2.x[i]==1){
-        outname <- paste0(outdir,"byRegion/",rr,"/png/",rr,"_",varlist$V1[i],".png")
+        outname <- paste0(outdir,"byRegion/",rr,"/png/",varlist$V1[i],"_",rr,".png")
       }else{
-        outname <- paste0(outdir,"byRegion/",rr,"/pngdet/",rr,"_",varlist$V1[i],".png")
+        outname <- paste0(outdir,"byRegion/",rr,"/pngdet/",varlist$V1[i],"_",rr,".png")
       }
       ggsave(plot.0, file=outname, dpi = 150, width=max(1,numitem/10)*5, height=max(1,numitem/10)*3.5,limitsize=FALSE)
       allplot[[nalist[i]]] <- plot.0
@@ -238,7 +238,7 @@ funcplotgen <- function(rr,progr){
                          allplot_nonleg[["Fin_Ene_Tra"]],allplot_nonleg[["Fin_Ene_Tra_Ele"]],     allplot_nonleg[["Fin_Ene_Tra_Liq_and_Gas"]],
                            allplot_nonleg[["Fin_Ene_Tra_Gas"]],allplot_nonleg[["Fin_Ene_Tra_Liq_Bio"]],allplot_nonleg[["Fin_Ene_Tra_Liq_Oil"]],allplot_nonleg[["Fin_Ene_Tra_Hyd"]],p_legend1,
                          nrow=5,ncol=8,rel_widths =c(1,1,1,1,1,1,1,1),align = "hv")
-  ggsave(pp_tfcind, file=paste0(outdir,"byRegion/",rr,"/merge/",rr,"_tfcind.png"), width=30, height=20,limitsize=FALSE)
+  ggsave(pp_tfcind, file=paste0(outdir,"byRegion/",rr,"/merge/tfcind_",rr,".png"), width=30, height=20,limitsize=FALSE)
   #Main indicators
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["GDP_MER"]]), pattern = "guide-box")
   if(nrow(filter(Data4plot0,Var=="Pol_Cos_GDP_Los_rat"))>0){
@@ -254,7 +254,7 @@ funcplotgen <- function(rr,progr){
                          allplot_nonleg[["Pop_Ris_of_Hun"]],allplot_nonleg[["Prc_Prm_Ene_Oil"]],allplot_nonleg[["Prc_Sec_Ene_Ele"]],p_legend1,
                          nrow=3,rel_widths =c(1,1,1,0.7),align = "hv")
   }
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/",rr,"_main.png"), width=15, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/main_",rr,".png"), width=15, height=15,limitsize=FALSE)
 
 #Emissions
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Emi_CO2"]]), pattern = "guide-box")
@@ -263,15 +263,24 @@ funcplotgen <- function(rr,progr){
                        allplot_nonleg[["Emi_VOC"]],allplot_nonleg[["Emi_NH3"]],allplot_nonleg[["Emi_CO"]],allplot_nonleg[["Emi_Kyo_Gas"]],
                        allplot_nonleg[["Tem_Glo_Mea"]],allplot_nonleg[["Frc"]],p_legend1,
                        nrow=4,rel_widths =c(1,1,1,1),align = "hv")
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/",rr,"_Emissions.png"), width=15, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/Emissions_",rr,".png"), width=15, height=15,limitsize=FALSE)
 
-#Emissions
+#Land use
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Lan_Cov_Pst"]]), pattern = "guide-box")
   pp_main <- plot_grid(allplot_nonleg[["Lan_Cov_Cro"]],allplot_nonleg[["Lan_Cov_Pst"]],allplot_nonleg[["Lan_Cov_Cro_Ene_Cro"]],
                        allplot_nonleg[["Lan_Cov_Cro_Non_Ene_Cro"]],allplot_nonleg[["Lan_Cov_Frs"]],allplot_nonleg[["Lan_Cov_Frs_Man"]],
                        allplot_nonleg[["Lan_Cov_Oth_Nat_Lan"]],allplot_nonleg[["Lan_Cov_Oth_Lan"]],p_legend1,
                        nrow=3,rel_widths =c(1,1,1),align = "hv")
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/",rr,"_LanduseLine.png"), width=15, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/LanduseLine_",rr,".png"), width=15, height=15,limitsize=FALSE)
+
+#Price
+  p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Prc_Prm_Ene_Oil"]]), pattern = "guide-box")
+  pp_main <- plot_grid(allplot_nonleg[["Prc_Prm_Ene_Oil"]],allplot_nonleg[["Prc_Prm_Ene_Gas"]],allplot_nonleg[["Prc_Prm_Ene_Bio"]],
+                       allplot_nonleg[["Prc_Sec_Ene_Liq_Bio"]],allplot_nonleg[["Prc_Sec_Ene_Ele_MWh"]],allplot_nonleg[["Prc_Sec_Ene_Hyd"]],
+                       allplot_nonleg[["Prc_Fin_Ene_Res_and_Com_Res"]],allplot_nonleg[["Prc_Fin_Ene_Res_and_Com_Res_Ele"]],allplot_nonleg[["Prc_Fin_Ene_Res_and_Com_Res_wo_car_pri"]],
+                       allplot_nonleg[["Prc_Agr_NonEneCro_Ind"]],allplot_nonleg[["Prc_Agr_Liv_Ind"]],p_legend1,
+                       nrow=4,rel_widths =c(1,1,1),align = "hv")
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/Price_",rr,".png"), width=15, height=15,limitsize=FALSE)
 
   #----r2ppt
   #The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
@@ -334,13 +343,13 @@ funcAreaPlotGen <- function(rr,progr){
       plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
       plot3 <- plot1 + ggtitle(paste(rr,AreaItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
       allplot[[AreaItem]] <- plot3 
-      outname <- paste0(outdir,"byRegion/",rr,"/merge/",rr,"_",AreaItem,".png")
+      outname <- paste0(outdir,"byRegion/",rr,"/merge/",AreaItem,"_",rr,".png")
       ggsave(plot3, file=outname, width=mergecolnum*2, height=max(1,floor(length(unique(XX$SCENARIO))/mergecolnum))*10+2,limitsize=FALSE)
       plotflag[[AreaItem]] <- nrow(XX)  
     }
     #Final energy consumption area
     pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
-    ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/merge/",rr,"_tfc.png"), width=9*2, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
+    ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/merge/tfc_",rr,".png"), width=9*2, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
   }
 }
 
@@ -372,18 +381,18 @@ mergefigGen <- function(ii,progr){
   if(nrow(filter(allmodel,Var==ii  & ModName!="Reference"))>0){
     plot.reg <- plotXregion(filter(allmodel,Region %in% R17R),ii,R17R)
     if(length(varlist$V2.x[varlist$V1==ii])==1){
-      outname <- paste0(outdir,"multiReg/png/R17_",ii,".png")
+      outname <- paste0(outdir,"multiReg/png/",ii,"_R17.png")
     }else{
-      outname <- paste0(outdir,"multiReg/pngdet/R17_",ii,".png")
+      outname <- paste0(outdir,"multiReg/pngdet/",ii,"_R17.png")
     }
     ggsave(plot.reg, file=outname, dpi = 150, width=15, height=12,limitsize=FALSE)
   }
   if(nrow(filter(allmodel,Var==ii & Region %in% R5R & ModName!="Reference"))>0){
     plot.reg <- plotXregion(filter(allmodel,Region %in% R5R),ii,R5R)
     if(length(varlist$V2.x[varlist$V1==ii])==1){
-      outname <- paste0(outdir,"multiRegR5","/png/R5_",ii,".png")
+      outname <- paste0(outdir,"multiRegR5/png/",ii,"_R5.png")
     }else{
-      outname <- paste0(outdir,"multiRegR5","/pngdet/R5_",ii,".png")
+      outname <- paste0(outdir,"multiRegR5/pngdet/",ii,"_R5.png")
     }
     ggsave(plot.reg, file=outname, dpi = 150, width=12, height=7.5,limitsize=FALSE)
   }
