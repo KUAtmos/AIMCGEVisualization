@@ -183,6 +183,9 @@ Lan_Cov_Frs	1
 Lan_Cov_Frs_Man	1
 Lan_Cov_Oth_Nat_Lan	1
 Lan_Cov_Oth_Lan	1
+Lan_Cov_Frs_Aff_and_Ref	1
+Lan_Cov_Frs_Nat_Frs	1
+Lan_Cov_Bui_Are	1
 Foo_Ene_Sup_Liv_Per_Cap	1
 Car_Seq_CCS	1
 Car_Seq_CCS_Bio	1

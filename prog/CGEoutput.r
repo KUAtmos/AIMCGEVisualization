@@ -212,11 +212,7 @@ funcplotgen <- function(rr,progr){
         plot.0 <- plot.0 +
         geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
       }
-      if(varlist$V2.x[i]==1){
-        outname <- paste0(outdir,"byRegion/",rr,"/png/",varlist$V1[i],"_",rr,".png")
-      }else{
-        outname <- paste0(outdir,"byRegion/",rr,"/pngdet/",varlist$V1[i],"_",rr,".png")
-      }
+      outname <- paste0(outdir,"byRegion/",rr,"/png/",varlist$V1[i],"_",rr,".png")
       ggsave(plot.0, file=outname, dpi = 150, width=max(1,numitem/10)*5, height=max(1,numitem/10)*3.5,limitsize=FALSE)
       allplot[[nalist[i]]] <- plot.0
       allplot_nonleg[[nalist[i]]] <- plot.0+ theme(legend.position="none")
@@ -267,10 +263,10 @@ funcplotgen <- function(rr,progr){
 
 #Land use
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Lan_Cov_Pst"]]), pattern = "guide-box")
-  pp_main <- plot_grid(allplot_nonleg[["Lan_Cov_Cro"]],allplot_nonleg[["Lan_Cov_Pst"]],allplot_nonleg[["Lan_Cov_Cro_Ene_Cro"]],
-                       allplot_nonleg[["Lan_Cov_Cro_Non_Ene_Cro"]],allplot_nonleg[["Lan_Cov_Frs"]],allplot_nonleg[["Lan_Cov_Frs_Man"]],
-                       allplot_nonleg[["Lan_Cov_Oth_Nat_Lan"]],allplot_nonleg[["Lan_Cov_Oth_Lan"]],p_legend1,
-                       nrow=3,rel_widths =c(1,1,1),align = "hv")
+  pp_main <- plot_grid(allplot_nonleg[["Lan_Cov_Cro"]],allplot_nonleg[["Lan_Cov_Pst"]],allplot_nonleg[["Lan_Cov_Cro_Ene_Cro"]],allplot_nonleg[["Lan_Cov_Frs_Aff_and_Ref"]],
+                       allplot_nonleg[["Lan_Cov_Cro_Non_Ene_Cro"]],allplot_nonleg[["Lan_Cov_Frs"]],allplot_nonleg[["Lan_Cov_Frs_Nat_Frs"]],
+                       allplot_nonleg[["Lan_Cov_Oth_Nat_Lan"]],allplot_nonleg[["Lan_Cov_Oth_Lan"]],allplot_nonleg[["Lan_Cov_Bui_Are"]],p_legend1,
+                       nrow=3,rel_widths =c(1,1,1,1),align = "hv")
   ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/LanduseLine_",rr,".png"), width=15, height=15,limitsize=FALSE)
 
 #Price
@@ -380,20 +376,12 @@ mergefigGen <- function(ii,progr){
 #  for(ii in lst$varlist){
   if(nrow(filter(allmodel,Var==ii  & ModName!="Reference"))>0){
     plot.reg <- plotXregion(filter(allmodel,Region %in% R17R),ii,R17R)
-    if(length(varlist$V2.x[varlist$V1==ii])==1){
-      outname <- paste0(outdir,"multiReg/png/",ii,"_R17.png")
-    }else{
-      outname <- paste0(outdir,"multiReg/pngdet/",ii,"_R17.png")
-    }
+    outname <- paste0(outdir,"multiReg/png/",ii,"_R17.png")
     ggsave(plot.reg, file=outname, dpi = 150, width=15, height=12,limitsize=FALSE)
   }
   if(nrow(filter(allmodel,Var==ii & Region %in% R5R & ModName!="Reference"))>0){
     plot.reg <- plotXregion(filter(allmodel,Region %in% R5R),ii,R5R)
-    if(length(varlist$V2.x[varlist$V1==ii])==1){
-      outname <- paste0(outdir,"multiRegR5/png/",ii,"_R5.png")
-    }else{
-      outname <- paste0(outdir,"multiRegR5/pngdet/",ii,"_R5.png")
-    }
+    outname <- paste0(outdir,"multiRegR5/png/",ii,"_R5.png")
     ggsave(plot.reg, file=outname, dpi = 150, width=12, height=7.5,limitsize=FALSE)
   }
 }
