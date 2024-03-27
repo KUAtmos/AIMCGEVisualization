@@ -213,7 +213,7 @@ funcplotgen <- function(rr,progr){
         geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
       }
       outname <- paste0(outdir,"byRegion/",rr,"/png/",varlist$V1[i],"_",rr,".png")
-      ggsave(plot.0, file=outname, dpi = 150, width=max(1,numitem/10)*5, height=max(1,numitem/10)*3.5,limitsize=FALSE)
+      ggsave(plot.0, file=outname, dpi = 150, width=max(10,numitem), height=max(7,numitem*0.7),limitsize=FALSE)
       allplot[[nalist[i]]] <- plot.0
       allplot_nonleg[[nalist[i]]] <- plot.0+ theme(legend.position="none")
     }
@@ -243,14 +243,14 @@ funcplotgen <- function(rr,progr){
                        allplot_nonleg[["Emi_CO2_Ene_and_Ind_Pro"]],allplot_nonleg[["Emi_CO2"]],allplot_nonleg[["Emi_Kyo_Gas"]],allplot_nonleg[["Prm_Ene"]],p_legend1,
                        allplot_nonleg[["Pop_Ris_of_Hun"]],allplot_nonleg[["Prc_Prm_Ene_Oil"]],allplot_nonleg[["Prc_Sec_Ene_Ele"]],allplot_nonleg[["Prc_Agr_NonEneCro_Ind"]],p_legend1,
                        allplot_nonleg[["Pol_Cos_GDP_Los_rat"]],allplot_nonleg[["Pol_Cos_Cns_Los_rat"]],allplot_nonleg[["Prc_Car"]],allplot_nonleg[["Prc_Car"]],p_legend2,
-                       nrow=4,rel_widths =c(1,1,1,1,0.7),align = "hv")
+                       nrow=4,rel_widths =c(1,1,1,1,1.5),align = "hv")
   }else{
     pp_main <- plot_grid(allplot_nonleg[["GDP_MER"]],allplot_nonleg[["Pop"]],allplot_nonleg[["Tem_Glo_Mea"]],p_legend1,
                          allplot_nonleg[["Emi_CO2_Ene_and_Ind_Pro"]],allplot_nonleg[["Emi_CO2"]],allplot_nonleg[["Emi_Kyo_Gas"]],p_legend1,
                          allplot_nonleg[["Pop_Ris_of_Hun"]],allplot_nonleg[["Prc_Prm_Ene_Oil"]],allplot_nonleg[["Prc_Sec_Ene_Ele"]],p_legend1,
-                         nrow=3,rel_widths =c(1,1,1,0.7),align = "hv")
+                         nrow=3,rel_widths =c(1,1,1,1.5),align = "hv")
   }
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/main_",rr,".png"), width=15, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/main_",rr,".png"), width=18, height=15,limitsize=FALSE)
 
 #Emissions
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Emi_CO2"]]), pattern = "guide-box")
@@ -259,7 +259,7 @@ funcplotgen <- function(rr,progr){
                        allplot_nonleg[["Emi_VOC"]],allplot_nonleg[["Emi_NH3"]],allplot_nonleg[["Emi_CO"]],allplot_nonleg[["Emi_Kyo_Gas"]],
                        allplot_nonleg[["Tem_Glo_Mea"]],allplot_nonleg[["Frc"]],p_legend1,
                        nrow=4,rel_widths =c(1,1,1,1),align = "hv")
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/Emissions_",rr,".png"), width=15, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/Emissions_",rr,".png"), width=18, height=15,limitsize=FALSE)
 
 #Land use
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Lan_Cov_Pst"]]), pattern = "guide-box")
@@ -340,7 +340,7 @@ funcAreaPlotGen <- function(rr,progr){
       plot3 <- plot1 + ggtitle(paste(rr,AreaItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
       allplot[[AreaItem]] <- plot3 
       outname <- paste0(outdir,"byRegion/",rr,"/merge/",AreaItem,"_",rr,".png")
-      ggsave(plot3, file=outname, width=mergecolnum*2, height=max(1,floor(length(unique(XX$SCENARIO))/mergecolnum))*10+2,limitsize=FALSE)
+      ggsave(plot3, file=outname, width=mergecolnum*3, height=max(1,floor(length(unique(XX$SCENARIO))/mergecolnum))*10+2,limitsize=FALSE)
       plotflag[[AreaItem]] <- nrow(XX)  
     }
     #Final energy consumption area
