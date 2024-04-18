@@ -199,7 +199,7 @@ funcplotgen <- function(rr,progr){
       miny <- min(Data4plot$Y) 
       linepalettewName1 <- linepalette[1:length(unique(Data4plot$SCENARIO))]
       names(linepalettewName1) <- unique(Data4plot$SCENARIO)
-      numitem <- length(as.vector(unique(Data4plot$SCENARIO)))+length(as.vector(unique(Data4plot$ModName))) #Get number of items
+      numitem <- length(as.vector(unique(Data4plot$SCENARIO)))*length(as.vector(unique(Data4plot$ModName))) #Get number of items
       plot.0 <- ggplot() + 
         geom_line(data=filter(Data4plot,ModName!="Reference"),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
         geom_point(data=filter(Data4plot,ModName!="Reference"),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=1.5,fill="white") +
@@ -213,7 +213,7 @@ funcplotgen <- function(rr,progr){
         geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
       }
       outname <- paste0(outdir,"byRegion/",rr,"/png/",varlist$V1[i],"_",rr,".png")
-      ggsave(plot.0, file=outname, dpi = 150, width=max(10,numitem), height=max(7,numitem*0.7),limitsize=FALSE)
+      ggsave(plot.0, file=outname, dpi = 150, width=max(10,numitem*0.3), height=max(7,numitem*0.2),limitsize=FALSE)
       allplot[[nalist[i]]] <- plot.0
       allplot_nonleg[[nalist[i]]] <- plot.0+ theme(legend.position="none")
     }
@@ -335,12 +335,14 @@ funcAreaPlotGen <- function(rr,progr){
         filter(Class==AreaItem & ModName=="Reference") %>% select(-SCENARIO,-ModName,Ind,Y,Value,order)  %>% arrange(order)%>%
         filter(Y<=2015)
       XX3 <- Data4plot %>% filter(Var==areamappara$lineVar[areamappara$Class==AreaItem] & ModName!="Reference") %>% select(ModName,SCENARIO,Var,Y,Value)
-      numitem <- length(as.vector(unique(Data4plot$ModName))) #Get number of items
+      numitem1 <- length(as.vector(unique(Data4plot$ModName))) #Get number of items
+      numitem2 <- length(as.vector(unique(Data4plot$SCENARIO))) #Get number of items
+      numcol <- floor(sqrt(numitem1*numitem2))
       plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
       plot3 <- plot1 + ggtitle(paste(rr,AreaItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
       allplot[[AreaItem]] <- plot3 
       outname <- paste0(outdir,"byRegion/",rr,"/merge/",AreaItem,"_",rr,".png")
-      ggsave(plot3, file=outname, width=mergecolnum*3, height=max(1,floor(length(unique(XX$SCENARIO))/mergecolnum))*10+2,limitsize=FALSE)
+      ggsave(plot3, file=outname, width=numcol*4, height=numcol*3,limitsize=FALSE)
       plotflag[[AreaItem]] <- nrow(XX)  
     }
     #Final energy consumption area
