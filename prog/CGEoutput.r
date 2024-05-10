@@ -393,21 +393,19 @@ funcAreaXregionPlotGen <- function(AreaItem,progr){
   Data4plot <- allmodel_area %>% left_join(areamap,by="Var") %>% ungroup() %>% 
       filter(Class==AreaItem) %>% select(ModName,SCENARIO,Region,Ind,Y,Value,order)  %>% arrange(order)
   ModelList <- unique(as.vector(Data4plot$ModName))
-  ScenarioList <- unique(as.vector(scenariomap$SCENARIO))
+  ScenarioList <- unique(as.vector(scenariomap$Name))
   #scenario model loop
   for(SC in ScenarioList){
     for(MD in ModelList){
-      if(MD!="Reference"){
-        XX <- Data4plot %>% filter(ModName==MD & SCENARIO==SC) %>% select(Region,Ind,Y,Value,order)
-        XX2 <- Data4plot %>% filter(ModName=="Reference") %>% select(Region,Ind,Y,Value,order)  %>% arrange(order)%>% filter(Y<=2015)
-        XX3 <- allmodel %>% filter(ModName==MD & SCENARIO==SC & Var %in% as.vector(areamappara$lineVar[areamappara$Class==AreaItem]) & ModName!="Reference") %>% select(Region,Var,Y,Value)
-        if(nrow(XX)>0){      
-          numitem <- length(as.vector(unique(Data4plot$Region))) #Get number of items
-          plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
-          plot3 <- plot1 + facet_wrap( ~ Region,scales="free_y",ncol=mergecolnum) + ggtitle(paste(AreaItem,sep=" "))
-          outname <- paste0(outdir,"multiReg/merge/",SC,"_",MD,"_",AreaItem,".png")
-          ggsave(plot3, file=outname, width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,limitsize=FALSE)
-        }
+      XX <- Data4plot %>% filter(ModName==MD & SCENARIO==SC) %>% select(Region,Ind,Y,Value,order)
+      XX2 <- Data4plot %>% filter(ModName=="Reference") %>% select(Region,Ind,Y,Value,order)  %>% arrange(order)%>% filter(Y<=2015)
+      XX3 <- allmodel %>% filter(ModName==MD & SCENARIO==SC & Var %in% as.vector(areamappara$lineVar[areamappara$Class==AreaItem]) & ModName!="Reference") %>% select(Region,Var,Y,Value)
+          if(nrow(XX)>0){      
+        numitem <- length(as.vector(unique(Data4plot$Region))) #Get number of items
+        plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
+        plot3 <- plot1 + facet_wrap( ~ Region,scales="free_y",ncol=mergecolnum) + ggtitle(paste(AreaItem,sep=" "))
+        outname <- paste0(outdir,"multiReg/merge/",SC,"_",MD,"_",AreaItem,".png")
+        ggsave(plot3, file=outname, width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,limitsize=FALSE)
       }
     }
   }

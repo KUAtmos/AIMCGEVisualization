@@ -227,5 +227,6 @@ Forcing	CH4	Frc_CH4	2	'#b4ebfa'
 Forcing	N2O	Frc_N2O	3	'#ff9900'
 Forcing	Montreol gas	Frc_Mon_Gas	10	'#35a16b'
 Forcing	F-Gas	Frc_F_G	4	'#cbf266'
-
-
+FoodCons	Crop	Foo_Ene_Sup_Cro_Per_Cap	1	'#cbf266'
+FoodCons	Livestock	Foo_Ene_Sup_Liv_Per_Cap	2	'#0041ff'
+FoodCons	ArtMeat	Foo_Ene_Sup_Art_Mea_Per_Cap	3	'#b4ebfa'
