@@ -56,9 +56,9 @@ if(submodule==1){
     Itename <- "Iteon"
     VisualizationScenarioFile <- "VisualizationScenariomapIte"
   }
-  outdir <- paste0("../../../../../../IntTool/output/fig_",args[8],"/") #Output directory 
+  outdir <- paste0("../../../../../../output/fig_",args[8],"/") #Output directory 
   AIMHubdir <- "../../../" 
-	VarListPath <- paste0(outdir,"../../define/iamctemp/VariableFullList.txt")
+	VarListPath <- paste0(outdir,"../../IntTool/define/iamctemp/VariableFullList.txt")
 }
 outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GDX file
 filename <- args[7] # filename should be "global_17","CHN","JPN"....
