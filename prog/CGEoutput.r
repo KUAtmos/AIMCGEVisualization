@@ -151,10 +151,10 @@ if(submodule!=2){
     scenariomap <- cbind(scenariomap_load,scenariomap_load)
     names(scenariomap) <- c("SCENARIO","Name")
   }else{
-    scenariomap <- read.table(paste0(outdir,'../../define/iamctemp/VisualizationScenariomap.map'),sep='\t',header=T)
+    scenariomap <- read.table(paste0(outdir,'../../IntTool/define/iamctemp/VisualizationScenariomap.map'),sep='\t',header=T)
   }
   CGEload0 <- rgdx.param(paste0(outdir,'/../iamc/',filename,'.gdx'),'MergedIAMC') 
-  CGEload1 <- CGEload0 %>% rename("Value"=mergedIAMC,"Var"=VIAMC,Region="RIAMC",ModName="Modelset") %>% left_join(scenariomap,by="SCENARIO") %>% select(Region,Var,Y,Value,SCENARIO,ModName)
+  CGEload1 <- CGEload0 %>% rename("Value"=mergedIAMC,"Var"=VIAMC,Region="RIAMC",ModName="Modelset") %>% inner_join(scenariomap,by="SCENARIO") %>% select(Region,Var,Y,Value,SCENARIO,ModName)
 }
 Getregion <- as.vector(unique(CGEload1$Region))
 if(length(Getregion)==1){region <- Getregion}else{region <- R17p5R}
