@@ -13,7 +13,8 @@ TFC_Com	Final Energy|commercial	EJ/year	Fin_Ene_Com
 Investment	Investment	bil US$/year	Inv_Ene
 AnnualInvest	Annialized Investment	Billion US$/year	Inv_Ann
 EmissionsCO2	CO2 emissions	MtCO2/year	Emi_CO2
-CarbonSeqestration	Carbon sequestration	MtCO2/year	Car_Seq
+CarbonSeqestration	Carbon sequestration	MtCO2/year	Car_Seq_CCS
+CDR	Carbon dioxide removal	MtCO2/year	Car_Seq_CDR
 TFC_Tra_Roa	Final Energy|Road Transport	EJ/year	Fin_Ene_Tra_Roa
 TFC_Tra_Rai	Final Energy|Railway Transport	EJ/year	Fin_Ene_Tra_Rai
 TFC_Tra_Shi	Final Energy|Navigation Transport	EJ/year	Fin_Ene_Tra_Shi
