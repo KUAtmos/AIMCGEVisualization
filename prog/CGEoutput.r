@@ -71,11 +71,9 @@ RegSpec <- 0 #Regional specification if turned into 1, the regional list is load
 #---------------End of switches to specify the run condition -----
 
 OrRdPal <- brewer.pal(9, "OrRd")
-set2Pal <- brewer.pal(8, "Set2")
 YlGnBupal <- brewer.pal(9, "YlGnBu")
 Redspal <- brewer.pal(9, "Reds")
-pastelpal <- brewer.pal(9, "Pastel1")
-pastelpal <- brewer.pal(8, "Set1")
+pastelpal <- c(brewer.pal(9, "Set1"),brewer.pal(8, "Set2"),brewer.pal(12, "Set3"),brewer.pal(9, "Pastel1"),brewer.pal(8, "Dark2"),brewer.pal(8, "Accent"))
 
 MyThemeLine <- theme_bw() +
   theme(
@@ -104,7 +102,7 @@ for(dd in dirlist){
 
 file.copy(paste0(AIMHubdir,"data/AIMHubData/main/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
 
-linepalette <- c("#4DAF4A","#FF7F00","#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33","black")
+linepalette <- pastelpal
 landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
 #linepalette <- c("Baseline"="#4DAF4A","GlobalOptimalZero"="#FF7F00","NDC+Zero"="#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
 
@@ -183,6 +181,9 @@ ExtData <- filter(allmodel0,Var %in% varlist$V1) %>% left_join(unique(varlist %>
   spread(value=Value,key=Year)
 write.csv(x = ExtData, row.names = FALSE,file = paste0(outdir,"/data/exportdata.csv"))
 ExtData <- 0
+
+#Data4plot
+allmodelline <- filter(allmodel,Var %in% varlist$V1)
 #---End of IAMC tempalte loading and data merge
 
 
@@ -190,7 +191,7 @@ ExtData <- 0
 #function for regional figure generation
 funcplotgen <- function(rr,progr){
   progr(message='region figures')
-  Data4plot0 <- filter(allmodel,Region==rr)
+  Data4plot0 <- filter(allmodelline,Region==rr)
   #---Line figures
 #  for (rr in region_spe){ Data4plot0 <- filter(allmodel,Region==rr) #For debug
   for (i in 1:nrow(varlist)){
@@ -204,7 +205,7 @@ funcplotgen <- function(rr,progr){
         geom_line(data=filter(Data4plot,ModName!="Reference"),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
         geom_point(data=filter(Data4plot,ModName!="Reference"),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=1.5,fill="white") +
         MyThemeLine + scale_color_manual(values=linepalettewName1) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
-        scale_shape_manual(values = 1:length(unique(allmodel$ModName))) +
+        scale_shape_manual(values = 1:length(unique(allmodelline$ModName))) +
         xlab("year") + ylab(paste0(varlist$V2.y[i],"(",varlist$V3[i],")") ) +  ggtitle(paste0(rr,expression("\n"),varlist$V2.y[i])) +
         annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
         theme(legend.title=element_blank()) 
@@ -325,7 +326,7 @@ funcAreaPlotSpe <- function(ZZ,ZZ2,ZZ3,AreaItem){
 }
 
 funcAreaPlotGen <- function(rr,progr){
-  Data4plot <- filter(allmodel,Region==rr)
+  Data4plot <- filter(allmodel_area,Region==rr)
 #  for( rr in as.vector(region_load)){
   for(AreaItem in as.vector(areamappara$Class)){
     XX <- Data4plot %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
@@ -347,14 +348,14 @@ funcAreaPlotGen <- function(rr,progr){
     }
     #Final energy consumption area
     pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
-    ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/merge/tfc_",rr,".png"), width=9*2, height=(floor(length(unique(allmodel$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
+    ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/merge/tfc_",rr,".png"), width=9*2, height=(floor(length(unique(allmodel_area$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
   }
 }
 
 # making cross regional figure
 plotXregion <-function(InputX,ii,rr){
 #  for(ii in lst$varlist){
-  InputX <- filter(allmodel,Region %in% rr)
+  InputX <- filter(allmodelline,Region %in% rr)
   linepalettewName1 <- linepalette[1:length(unique(filter(InputX,Var==ii)$SCENARIO))]
   names(linepalettewName1) <- unique(filter(InputX,Var==ii)$SCENARIO)
   Data4Plot <- filter(InputX,Var==ii)
@@ -376,13 +377,13 @@ plotXregion <-function(InputX,ii,rr){
 mergefigGen <- function(ii,progr){
   progr(message='merge figures')
 #  for(ii in lst$varlist){
-  if(nrow(filter(allmodel,Var==ii  & ModName!="Reference"))>0){
-    plot.reg <- plotXregion(filter(allmodel,Region %in% R17R),ii,R17R)
+  if(nrow(filter(allmodelline,Var==ii  & ModName!="Reference"))>0){
+    plot.reg <- plotXregion(filter(allmodelline,Region %in% R17R),ii,R17R)
     outname <- paste0(outdir,"multiReg/png/",ii,"_R17.png")
     ggsave(plot.reg, file=outname, dpi = 150, width=15, height=12,limitsize=FALSE)
   }
-  if(nrow(filter(allmodel,Var==ii & Region %in% R5R & ModName!="Reference"))>0){
-    plot.reg <- plotXregion(filter(allmodel,Region %in% R5R),ii,R5R)
+  if(nrow(filter(allmodelline,Var==ii & Region %in% R5R & ModName!="Reference"))>0){
+    plot.reg <- plotXregion(filter(allmodelline,Region %in% R5R),ii,R5R)
     outname <- paste0(outdir,"multiRegR5/png/",ii,"_R5.png")
     ggsave(plot.reg, file=outname, dpi = 150, width=12, height=7.5,limitsize=FALSE)
   }
@@ -399,7 +400,7 @@ funcAreaXregionPlotGen <- function(AreaItem,progr){
     for(MD in ModelList){
       XX <- Data4plot %>% filter(ModName==MD & SCENARIO==SC) %>% select(Region,Ind,Y,Value,order)
       XX2 <- Data4plot %>% filter(ModName=="Reference") %>% select(Region,Ind,Y,Value,order)  %>% arrange(order)%>% filter(Y<=2015)
-      XX3 <- allmodel %>% filter(ModName==MD & SCENARIO==SC & Var %in% as.vector(areamappara$lineVar[areamappara$Class==AreaItem]) & ModName!="Reference") %>% select(Region,Var,Y,Value)
+      XX3 <- allmodel_area %>% filter(ModName==MD & SCENARIO==SC & Var %in% as.vector(areamappara$lineVar[areamappara$Class==AreaItem]) & ModName!="Reference") %>% select(Region,Var,Y,Value)
           if(nrow(XX)>0){      
         numitem <- length(as.vector(unique(Data4plot$Region))) #Get number of items
         plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
@@ -466,16 +467,20 @@ for(rr in lst$region){
 ffff <- 1
 if(ffff==1){
 #regional figure generation execution
+  print("generating regional line figures")
   exe_fig_make(lst$region,funcplotgen)
 #regional area figure generation execution
+  allmodel_area <- filter(allmodel, Var %in% c(as.vector(areamap$Var),as.vector(areamappara$lineVar))) 
+  print("generating regional area figures")
   exe_fig_make(lst$region,funcAreaPlotGen)
 
 #cross-regional figure generation execution
   if(length(Getregion)!=1){
+    print("generating cross-regional line figures")
     exe_fig_make(lst$varlist,mergefigGen)
 #X regional for area figure
     print(as.vector(scenariomap$SCENARIO))
-    allmodel_area <- filter(allmodel, Var %in% as.vector(areamap$Var)) 
+    print("generating cross-regional area figures")
     exe_fig_make(lst$Area,funcAreaXregionPlotGen)
   }
 }
