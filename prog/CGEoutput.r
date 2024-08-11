@@ -184,6 +184,10 @@ ExtData <- 0
 
 #Data4plot
 allmodelline <- filter(allmodel,Var %in% varlist$V1)
+symDim <- 6
+attr(allmodel, "symName") <- "allmodel"
+lst3 <- wgdx.reshape(allmodel,symDim)
+wgdx.lst(gdxName = paste0(outdir,"/data/allcombine.gdx"),lst3)
 #---End of IAMC tempalte loading and data merge
 
 
@@ -209,10 +213,8 @@ funcplotgen <- function(rr,progr){
         xlab("year") + ylab(paste0(varlist$V2.y[i],"(",varlist$V3[i],")") ) +  ggtitle(paste0(rr,expression("\n"),varlist$V2.y[i])) +
         annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
         theme(legend.title=element_blank()) 
-      if(length(scenariomap$SCENARIO)<40){
-        plot.0 <- plot.0 +
-        geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
-      }
+      plot.0 <- plot.0 +
+      geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
       outname <- paste0(outdir,"byRegion/",rr,"/png/",varlist$V1[i],"_",rr,".png")
       ggsave(plot.0, file=outname, dpi = 150, width=max(10,numitem*0.3), height=max(7,numitem*0.2),limitsize=FALSE)
       allplot[[nalist[i]]] <- plot.0
