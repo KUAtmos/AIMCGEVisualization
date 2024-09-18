@@ -3,6 +3,7 @@ TPES	Primary energy	EJ/year	Prm_Ene
 Power	Power generation	EJ/year	Sec_Ene_Ele
 Power_heat	Power and heat generation	EJ/year	Sec_Ene_Ele_Heat
 Hydrogen	Hydrogen generation	EJ/year	Sec_Ene_Hyd
+Liquids	Liquids transformation	EJ/year	Sec_Ene_Liq
 TFC_fuel	Final energy|Fuel	EJ/year	Fin_Ene
 Landuse	Land use	Mha	Lan_Cov
 TFC_Sector	Final Energy|Sectors	EJ/year	Fin_Ene

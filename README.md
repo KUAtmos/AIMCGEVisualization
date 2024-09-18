@@ -57,3 +57,37 @@ The following files should be edited
 
 The first file identifies the list of indicators, units and y axis label.
 The second file describes what indicators are assigned to each area plot, order of them and color schemes.
+
+
+#Required R packages
+- reshape2
+- cowplot
+- ggplot2
+- RColorBrewer
+- dplyr
+- sp
+- maptools
+- maps
+- ggradar
+- fmsb
+- tidyr
+- stringr
+- rJava
+- Rcpp
+- ReporteRsjars
+- ReporteRs
+- xlsx
+- officer
+- furrr
+- purrr
+- progressr
+- gdxrrw
+
+
+  liblist <- c("reshape2","cowplot","ggplot2","RColorBrewer","dplyr","sp","maps","fmsb","tidyr","stringr","rJava","Rcpp","ReporteRs","xlsx","officer","furrr","purrr","progressr","ncdf4","openxlsx","gdata","haven","reldist","foreign","plyr","tidyverse","readxl","raster","foreach","doParallel","gdxrrw")
+for(j in liblist){
+  eval(parse(text=paste0("library(",j,")")))
+}
+
+"maptools",ggradar
+ReporteRsjars
