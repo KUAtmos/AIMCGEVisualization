@@ -14,16 +14,17 @@ if(insflag==1){
   #install.packages("gdxrrw", dependencies = TRUE)
 }
 
-libloadlist <- c("gdxrrw","ggplot2","dplyr","reshape2","tidyr","maps","grid","RColorBrewer","cowplot","hms","purrr","furrr","progressr")
+libloadlist <- c("gdxrrw","ggplot2","dplyr","reshape2","tidyr","maps","grid","RColorBrewer","cowplot","hms","purrr","furrr","progressr","readr")
 for(j in libloadlist){
   eval(parse(text=paste0("library(",j,")")))
 }
 args <- commandArgs(trailingOnly = TRUE)
-#arguments are: 1:gams sys,2:number of CPU, 3:visualizaton scenario name specification auto or not, 4:file location, 5:submodule switch, 6:enduse iteration switch, 7: GDX file name, 8: region code/global
-default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","0","global_17_IAMC","global")   # Default value but gams path should be modified if GUI based R is used
-#default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "country/CHN","2","1","IAMCTemplate_Iteon_CHN","CHN")   # Default value but gams path should be modified if GUI based R is used
+#arguments are: 1:gams sys,2:number of CPU, 3:visualizaton scenario name specification auto or not, 4:file location, 5:submodule switch, 6:enduse iteration switch, 7: GDX file name, 8: region code/global, 9: AR6 consideration, 10: IntTool project name
+default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","0","global_17_IAMC","global","on","non")   # Default value but gams path should be modified if GUI based R is used
+#default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "country/CHN","2","1","IAMCTemplate_Iteon_CHN","CHN","off","non")   # Default value but gams path should be modified if GUI based R is used
+default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24),"off","global/global_17","2","0","IAMCTemplate_Iteoff_global","global","on","scenarioMIP")
 
-default_flg <- is.na(args[1:8])
+default_flg <- is.na(args[1:10])
 args[default_flg] <- default_args[default_flg]
 gams_sys_dir <- as.character(args[1])
 AscenarionameAuto <- as.character(args[3])
@@ -31,6 +32,8 @@ igdx(gams_sys_dir)
 Iterationflag <- as.numeric(args[6])   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
 decompositionflag <- 0  #if you would like to run decomposition analysis turn on 1, otherwise 0.
 threadsnum <-  as.numeric(args[2])
+AR6option <-  as.character(args[9])
+IntToolproj <-  as.character(args[10])
 sizememory <- 1000*1024^2 
 options(future.globals.maxSize= sizememory)
 
@@ -70,10 +73,12 @@ mergecolnum <- 6 #merge figure facet number of columns
 RegSpec <- 0 #Regional specification if turned into 1, the regional list is loaded for the regional plot
 #---------------End of switches to specify the run condition -----
 
+#Color specification and other figure settings
 OrRdPal <- brewer.pal(9, "OrRd")
 YlGnBupal <- brewer.pal(9, "YlGnBu")
 Redspal <- brewer.pal(9, "Reds")
 pastelpal <- c(brewer.pal(9, "Set1"),brewer.pal(8, "Set2"),brewer.pal(12, "Set3"),brewer.pal(9, "Pastel1"),brewer.pal(8, "Dark2"),brewer.pal(8, "Accent"))
+linepalette <- pastelpal
 
 MyThemeLine <- theme_bw() +
   theme(
@@ -99,12 +104,6 @@ for(dd in dirlist){
   if(file.exists(dd)){}else{dir.create(dd)}
 }
 
-
-file.copy(paste0(AIMHubdir,"data/AIMHubData/main/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
-
-linepalette <- pastelpal
-landusepalette <- c("#8DD3C7","#FF7F00","#377EB8","#4DAF4A","#A65628")
-#linepalette <- c("Baseline"="#4DAF4A","GlobalOptimalZero"="#FF7F00","NDC+Zero"="#377EB8","#E41A1C","#984EA3","#F781BF","#8DD3C7","#FB8072","#80B1D3","#FDB462","#B3DE69","#FCCDE5","#D9D9D9","#BC80BD","#CCEBC5","#FFED6F","#7f878f","#A65628","#FFFF33")
 
 #File loading and parameter configuration
 varalllist <- read.table(VarListPath, sep="\t",header=F, stringsAsFactors=F)
@@ -149,7 +148,7 @@ if(submodule!=2){
     scenariomap <- cbind(scenariomap_load,scenariomap_load)
     names(scenariomap) <- c("SCENARIO","Name")
   }else{
-    scenariomap <- read.table(paste0(outdir,'../../IntTool/define/iamctemp/VisualizationScenariomap.map'),sep='\t',header=T)
+    scenariomap <- read.table(paste0(outdir,'../../IntTool/define/iamctemp/scenario/',IntToolproj,'/VisualizationScenariomap.map'),sep='\t',header=T)
   }
   CGEload0 <- rgdx.param(paste0(outdir,'/../iamc/',filename,'.gdx'),'MergedIAMC') 
   CGEload1 <- CGEload0 %>% rename("Value"=mergedIAMC,"Var"=VIAMC,Region="RIAMC",ModName="Modelset") %>% inner_join(scenariomap,by="SCENARIO") %>% select(Region,Var,Y,Value,SCENARIO,ModName)
@@ -162,33 +161,48 @@ allmodel0 <- CGEload1
 
 
 #IEA energy balance information
+file.copy(paste0(AIMHubdir,"data/AIMHubData/main/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
 IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Var"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
   select(Region,Var,Y,Value,SCENARIO) %>% filter(Region %in% c(R5R,R17R)) %>% mutate(ModName="Reference")
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
 IEAEB1 <- filter(IEAEB0,Y<=2020 & Y>=1990)
 
+#Merging IEA energy balance table
 allmodel <- rbind(allmodel0,IEAEB1) %>% select(ModName,Region,Var,SCENARIO,Y,Value) 
 maxy <- max(allmodel$Y)
 #maxy <- 2050
 linepalettewName <- linepalette[1:length(unique(allmodel$SCENARIO))]
 names(linepalettewName) <- unique(allmodel$SCENARIO)
 allmodel <- filter(allmodel,Y <= maxy)
+allmodelline <- filter(allmodel,Var %in% varlist$V1)
+allmodel_area <- filter(allmodel, Var %in% c(as.vector(areamap$Var),as.vector(areamappara$lineVar))) 
 
 #Extract data
+#Unloading Data4plot which can be used for data availability in papers
 ExtData <- filter(allmodel0,Var %in% varlist$V1) %>% left_join(unique(varlist %>% rename(Var=V1,Variable=V2.y,Unit=V3) %>% select(Var,Variable,Unit))) %>% 
   select(-Var) %>% rename(Model=ModName,Year=Y) %>%
   select(Model,SCENARIO,Region,Variable,Unit,Year,Value) %>% 
   spread(value=Value,key=Year)
 write.csv(x = ExtData, row.names = FALSE,file = paste0(outdir,"/data/exportdata.csv"))
 ExtData <- 0
-
-#Data4plot
-allmodelline <- filter(allmodel,Var %in% varlist$V1)
 symDim <- 6
 attr(allmodel, "symName") <- "allmodel"
 lst3 <- wgdx.reshape(allmodel,symDim)
 wgdx.lst(gdxName = paste0(outdir,"/data/allcombine.gdx"),lst3)
-#---End of IAMC tempalte loading and data merge
+#---End of IAMC template loading and data merge
+
+#---AR6 database load
+#If Ar6 database needs to be updated uncomment the following source program. THis procedure needs AR6 data preparation for 
+#source("AR6.r")
+AR6col <- c("C1"="#87CEEB","C2"="#87CEEB","C3"="#6B76BC","C4"="#6B76BC","C6"="#F9DA93","C7"="#F9DA93","C8"="#F9DA93","C1-C2"="#87CEEB","C3-C4"="#6B76BC","C5-C6"="#F9DA93","C7-C8"="#F9DA93")
+CategorySub <- c("C1-C2","C3-C4","C7-C8")
+if(AR6option=="on"){
+  AR6excl <- as.vector(read.table('../data/AR6exclusionList.txt',sep='\t',header=F))$V1
+  AR6DBIndload <- read_csv(file="../data/AR6Slected.csv") %>% mutate(Y=as.numeric(Y)) %>% filter(Category %in% CategorySub) %>% filter(!Var %in% AR6excl) 
+}else{
+  AR6DBIndload <- 0
+}
+#---End of AR6 database load
 
 
 #---functions
@@ -200,23 +214,34 @@ funcplotgen <- function(rr,progr){
 #  for (rr in region_spe){ Data4plot0 <- filter(allmodel,Region==rr) #For debug
   for (i in 1:nrow(varlist)){
     Data4plot <- filter(Data4plot0,Var==varlist$V1[i])
+    Data4plotAR6 <- filter(AR6DBIndload,Var==varlist$V1[i],Region==rr)
     if(nrow(filter(Data4plot,ModName!="Reference"))>0){
       miny <- min(Data4plot$Y) 
       linepalettewName1 <- linepalette[1:length(unique(Data4plot$SCENARIO))]
       names(linepalettewName1) <- unique(Data4plot$SCENARIO)
       numitem <- length(as.vector(unique(Data4plot$SCENARIO)))*length(as.vector(unique(Data4plot$ModName))) #Get number of items
-      plot.0 <- ggplot() + 
+      #AR6 data insert
+      if(nrow(Data4plotAR6)>0){
+        plot.0 <- ggplot() +
+          geom_ribbon(data=Data4plotAR6, mapping=aes(x=Y, ymin=`10p`,ymax=`90p`,fill=Category,group=Category),stat="identity",alpha=0.2)  + scale_fill_manual(values=AR6col,name="AR6 10-90%")
+      }else{
+        plot.0 <- ggplot()
+      }
+      #Main plot 
+      plot.0 <- plot.0 + 
         geom_line(data=filter(Data4plot,ModName!="Reference"),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
         geom_point(data=filter(Data4plot,ModName!="Reference"),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=1.5,fill="white") +
-        MyThemeLine + scale_color_manual(values=linepalettewName1) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
+        MyThemeLine + scale_color_manual(values=linepalettewName1,name="SCENARIO") + scale_x_continuous(breaks=seq(miny,maxy,10)) +
         scale_shape_manual(values = 1:length(unique(allmodelline$ModName))) +
         xlab("year") + ylab(paste0(varlist$V2.y[i],"(",varlist$V3[i],")") ) +  ggtitle(paste0(rr,expression("\n"),varlist$V2.y[i])) +
         annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
         theme(legend.title=element_blank()) 
-      plot.0 <- plot.0 +
-      geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
+      #Referece of statistics plot 
+      if(length(scenariomap$SCENARIO)<20){
+        plot.0 <- plot.0 +  geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
+      }
       outname <- paste0(outdir,"byRegion/",rr,"/png/",varlist$V1[i],"_",rr,".png")
-      ggsave(plot.0, file=outname, dpi = 150, width=max(10,numitem*0.3), height=max(7,numitem*0.2),limitsize=FALSE)
+      ggsave(plot.0, file=outname, dpi = 150, width=max(7,numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE)
       allplot[[nalist[i]]] <- plot.0
       allplot_nonleg[[nalist[i]]] <- plot.0+ theme(legend.position="none")
     }
@@ -355,14 +380,22 @@ funcAreaPlotGen <- function(rr,progr){
 }
 
 # making cross regional figure
-plotXregion <-function(InputX,ii,rr){
+plotXregion <-function(InputX,ii,rr,InputAR6){
 #  for(ii in lst$varlist){
   InputX <- filter(allmodelline,Region %in% rr)
   linepalettewName1 <- linepalette[1:length(unique(filter(InputX,Var==ii)$SCENARIO))]
   names(linepalettewName1) <- unique(filter(InputX,Var==ii)$SCENARIO)
   Data4Plot <- filter(InputX,Var==ii)
+  Data4plotAR6 <- filter(InputAR6,Var==ii)
   miny <- min(Data4Plot$Y,2010) 
-  plot.0 <- ggplot() + 
+  #AR6 data insert
+  if(nrow(Data4plotAR6)>0){
+    plot.0 <- ggplot() +
+      geom_ribbon(data=Data4plotAR6, mapping=aes(x=Y, ymin=`10p`,ymax=`90p`,fill=Category,group=Category),stat="identity",alpha=0.2)  + scale_fill_manual(values=AR6col,name="AR6 10-90%")
+  }else{
+    plot.0 <- ggplot()
+  }
+  plot.0 <- plot.0 + 
     geom_line(data=filter(Data4Plot, ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
     geom_point(data=filter(Data4Plot, ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=1.5,fill="white") +
     MyThemeLine + scale_color_manual(values=linepalettewName1) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
@@ -380,12 +413,12 @@ mergefigGen <- function(ii,progr){
   progr(message='merge figures')
 #  for(ii in lst$varlist){
   if(nrow(filter(allmodelline,Var==ii  & ModName!="Reference"))>0){
-    plot.reg <- plotXregion(filter(allmodelline,Region %in% R17R),ii,R17R)
+    plot.reg <- plotXregion(filter(allmodelline,Region %in% R17R),ii,R17R,filter(AR6DBIndload,Region %in% R5R))
     outname <- paste0(outdir,"multiReg/png/",ii,"_R17.png")
     ggsave(plot.reg, file=outname, dpi = 150, width=15, height=12,limitsize=FALSE)
   }
   if(nrow(filter(allmodelline,Var==ii & Region %in% R5R & ModName!="Reference"))>0){
-    plot.reg <- plotXregion(filter(allmodelline,Region %in% R5R),ii,R5R)
+    plot.reg <- plotXregion(filter(allmodelline,Region %in% R5R),ii,R5R,filter(AR6DBIndload,Region %in% R5R))
     outname <- paste0(outdir,"multiRegR5/png/",ii,"_R5.png")
     ggsave(plot.reg, file=outname, dpi = 150, width=12, height=7.5,limitsize=FALSE)
   }
@@ -472,7 +505,6 @@ if(ffff==1){
   print("generating regional line figures")
   exe_fig_make(lst$region,funcplotgen)
 #regional area figure generation execution
-  allmodel_area <- filter(allmodel, Var %in% c(as.vector(areamap$Var),as.vector(areamappara$lineVar))) 
   print("generating regional area figures")
   exe_fig_make(lst$region,funcAreaPlotGen)
 

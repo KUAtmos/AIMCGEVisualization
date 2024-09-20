@@ -40,8 +40,9 @@ CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file
 
 
 # Location:
-This tool can be used in the same folder as AIM/CGE,
+This tool can be used in the directory of AIMHub/tools/,
 but you can also use it in the independent folder which requires folder specification to copy the above CGE results GDX files.
+This tool can be also used in IntTool framework.
 
 # Output:
 outout of this tool is in /output directory where you see regional names and "merge". The latter combine the regional resutls and the coverage of the regions should be specified in data/region.txt
@@ -82,12 +83,4 @@ The second file describes what indicators are assigned to each area plot, order 
 - purrr
 - progressr
 - gdxrrw
-
-
-  liblist <- c("reshape2","cowplot","ggplot2","RColorBrewer","dplyr","sp","maps","fmsb","tidyr","stringr","rJava","Rcpp","ReporteRs","xlsx","officer","furrr","purrr","progressr","ncdf4","openxlsx","gdata","haven","reldist","foreign","plyr","tidyverse","readxl","raster","foreach","doParallel","gdxrrw")
-for(j in liblist){
-  eval(parse(text=paste0("library(",j,")")))
-}
-
-"maptools",ggradar
-ReporteRsjars
+- readxl
