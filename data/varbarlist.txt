@@ -1,0 +1,4 @@
+V1	V2
+Pol_Cos_Cns_Los_rat_NPV_5pc	1
+Pol_Cos_GDP_Los_rat_NPV_5pc	1
+Emi_CO2_Cum	1

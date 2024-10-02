@@ -249,3 +249,4 @@ Prc_Lan_Ren_Ind	1
 Prc_Cap_Ind	1
 Prc_Wag_Ind	1
 Prc_Sec_Ene_Ele	1
+Emi_CO2_Cum	1

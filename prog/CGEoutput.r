@@ -22,7 +22,7 @@ args <- commandArgs(trailingOnly = TRUE)
 #arguments are: 1:gams sys,2:number of CPU, 3:visualizaton scenario name specification auto or not, 4:file location, 5:submodule switch, 6:enduse iteration switch, 7: GDX file name, 8: region code/global, 9: AR6 consideration, 10: IntTool project name
 default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","0","global_17_IAMC","global","on","non")   # Default value but gams path should be modified if GUI based R is used
 #default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "country/CHN","2","1","IAMCTemplate_Iteon_CHN","CHN","off","non")   # Default value but gams path should be modified if GUI based R is used
-default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24),"off","global/global_17","2","0","IAMCTemplate_Iteoff_global","global","on","scenarioMIP")
+#default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24),"off","global/global_17","2","0","IAMCTemplate_Iteoff_global","global","on","scenarioMIP")
 
 default_flg <- is.na(args[1:10])
 args[default_flg] <- default_args[default_flg]
@@ -99,7 +99,7 @@ MyThemeLine <- theme_bw() +
   )
 
 #-- data load
-dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdirmd),paste0(outdir,"multiReg"),paste0(outdir,"multiRegR5"),paste0(outdir,"multiReg/png"),paste0(outdir,"multiRegR5/png"),paste0(outdir,"ppt"),paste0(outdir,"misc"),paste0(outdir,"data"))
+dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdirmd),paste0(outdir,"multiReg"),paste0(outdir,"multiRegR5"),paste0(outdir,"multiRegR2"),paste0(outdir,"multiReg/png"),paste0(outdir,"multiRegR5/png"),paste0(outdir,"multiRegR2/png"),paste0(outdir,"ppt"),paste0(outdir,"misc"),paste0(outdir,"data"))
 for(dd in dirlist){
   if(file.exists(dd)){}else{dir.create(dd)}
 }
@@ -108,16 +108,20 @@ for(dd in dirlist){
 #File loading and parameter configuration
 varalllist <- read.table(VarListPath, sep="\t",header=F, stringsAsFactors=F)
 varlist_load <- read.table('../data/varlist.txt',sep='\t',header=T)
+varbarlist_load <- read.table('../data/varbarlist.txt',sep='\t',header=T)
 areamap <- read.table('../data/Areafigureorder.txt',sep='\t',header=T)
 areamappara <- read.table('../data/area.map',sep='\t',header=T)
+R2R_load <- read.table('../data/regionR2.txt',sep='\t',header=F)
 R5R_load <- read.table('../data/regionR5.txt',sep='\t',header=F)
 R17R_load <- read.table('../data/regionR17.txt',sep='\t',header=F)
 region_load <- as.vector(read.table("../data/region.txt", sep="\t",header=F, stringsAsFactors=F)$V1)
 region <- region_load
+R2R <- as.vector(R2R_load$V1)
 R5R <- as.vector(R5R_load$V1)
 R17R <- as.vector(R17R_load$V1)
-R17p5R <- c(R5R,R17R[-18])
+R17pR5pR2 <- c(R5R,R17R[-18],R2R[-3])
 varlist <- left_join(varlist_load,varalllist,by=c("V1"))
+varbarlist <- left_join(varbarlist_load,varalllist,by=c("V1"))
 Ylist <- seq(2010,2100,by=5)
 
 areapaletteload <- select(areamap,Class,Ind,color) %>% rename(V0=Class,V1=Ind,V2=color) 
@@ -154,7 +158,7 @@ if(submodule!=2){
   CGEload1 <- CGEload0 %>% rename("Value"=mergedIAMC,"Var"=VIAMC,Region="RIAMC",ModName="Modelset") %>% inner_join(scenariomap,by="SCENARIO") %>% select(Region,Var,Y,Value,SCENARIO,ModName)
 }
 Getregion <- as.vector(unique(CGEload1$Region))
-if(length(Getregion)==1){region <- Getregion}else{region <- R17p5R}
+if(length(Getregion)==1){region <- Getregion}else{region <- R17pR5pR2}
 CGEload1$Y <- as.numeric(levels(CGEload1$Y))[CGEload1$Y]
 CGEload0 <- 0
 allmodel0 <- CGEload1
@@ -163,7 +167,7 @@ allmodel0 <- CGEload1
 #IEA energy balance information
 file.copy(paste0(AIMHubdir,"data/AIMHubData/main/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
 IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Var"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
-  select(Region,Var,Y,Value,SCENARIO) %>% filter(Region %in% c(R5R,R17R)) %>% mutate(ModName="Reference")
+  select(Region,Var,Y,Value,SCENARIO) %>% filter(Region %in% c(R5R,R17R,R2R)) %>% mutate(ModName="Reference")
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
 IEAEB1 <- filter(IEAEB0,Y<=2020 & Y>=1990)
 
@@ -176,7 +180,7 @@ names(linepalettewName) <- unique(allmodel$SCENARIO)
 allmodel <- filter(allmodel,Y <= maxy)
 allmodelline <- filter(allmodel,Var %in% varlist$V1)
 allmodel_area <- filter(allmodel, Var %in% c(as.vector(areamap$Var),as.vector(areamappara$lineVar))) 
-
+allmodel_bar <- filter(allmodel,Var %in% varbarlist$V1)
 #Extract data
 #Unloading Data4plot which can be used for data availability in papers
 ExtData <- filter(allmodel0,Var %in% varlist$V1) %>% left_join(unique(varlist %>% rename(Var=V1,Variable=V2.y,Unit=V3) %>% select(Var,Variable,Unit))) %>% 
@@ -324,7 +328,7 @@ funcplotgen <- function(rr,progr){
     }
   }
 }
-#function for regional area figure generation
+#function for regional area figure generation (ZZ: data for figure, ZZ2: Reference data, ZZ3: data for total line)
 funcAreaPlotSpe <- function(ZZ,ZZ2,ZZ3,AreaItem){
   miny <- min(ZZ$Y,ZZ2$Y) 
   na.omit(ZZ$Value)
@@ -373,11 +377,40 @@ funcAreaPlotGen <- function(rr,progr){
       ggsave(plot3, file=outname, width=numcol*4, height=numcol*3,limitsize=FALSE)
       plotflag[[AreaItem]] <- nrow(XX)  
     }
-    #Final energy consumption area
-    pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
-    ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/merge/tfc_",rr,".png"), width=9*2, height=(floor(length(unique(allmodel_area$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
+  }
+  #Final energy consumption area
+  pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
+  ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/merge/tfc_",rr,".png"), width=9*2, height=(floor(length(unique(allmodel_area$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
+}
+
+funcBarPlotGen <- function(rr,progr){
+  Data4plot0 <- filter(allmodel_bar,Region==rr)
+#  for( rr in as.vector(region_load)){
+  for (i in 1:nrow(varbarlist)){
+    Data4plot <- filter(Data4plot0,Var==varbarlist$V1[i])
+#    Data4plotAR6 <- filter(AR6DBIndload,Var==varbarlist$V1[i],Region==rr)
+    miny <- min(Data4plot$Y) 
+    linepalettewName1 <- linepalette[1:length(unique(Data4plot$SCENARIO))]
+    names(linepalettewName1) <- unique(Data4plot$SCENARIO)
+    numitem <- length(as.vector(unique(Data4plot$SCENARIO)))*length(as.vector(unique(Data4plot$ModName))) #Get number of items
+      #AR6 data insert
+#      if(nrow(Data4plotAR6)>0){
+#        plot.0 <- ggplot() +
+#          geom_ribbon(data=Data4plotAR6, mapping=aes(x=Y, ymin=`10p`,ymax=`90p`,fill=Category,group=Category),stat="identity",alpha=0.2)  + scale_fill_manual(values=AR6col,name="AR6 10-90%")
+#      }else{
+        plot.0 <- ggplot()
+#      }
+      #Main plot 
+      plot.0 <- plot.0 + 
+        geom_bar(data=filter(Data4plot,Y %in% c(2030,2050,2100)),aes(x=interaction(SCENARIO,ModName), y = Value , color=SCENARIO, fill=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
+        MyThemeLine + scale_color_manual(values=linepalettewName1,name="SCENARIO")+scale_fill_manual(values=linepalettewName1,name="SCENARIO")+
+        xlab("Scenario") + ylab(paste0(varbarlist$V2.y[i],"(",varbarlist$V3[i],")") ) +  ggtitle(paste0(rr,expression("\n"),varbarlist$V2.y[i])) +
+        theme(legend.title=element_blank()) +facet_wrap(~Y,scales="free")
+      outname <- paste0(outdir,"byRegion/",rr,"/png/bar_",varbarlist$V1[i],"_",rr,".png")
+      ggsave(plot.0, file=outname, dpi = 150, width=max(7,numitem*0.5), height=max(7,numitem*0.2),limitsize=FALSE)
   }
 }
+
 
 # making cross regional figure
 plotXregion <-function(InputX,ii,rr,InputAR6){
@@ -386,6 +419,7 @@ plotXregion <-function(InputX,ii,rr,InputAR6){
   linepalettewName1 <- linepalette[1:length(unique(filter(InputX,Var==ii)$SCENARIO))]
   names(linepalettewName1) <- unique(filter(InputX,Var==ii)$SCENARIO)
   Data4Plot <- filter(InputX,Var==ii)
+  Data4Plot$Region <- factor(Data4Plot$Region,levels=rr)
   Data4plotAR6 <- filter(InputAR6,Var==ii)
   miny <- min(Data4Plot$Y,2010) 
   #AR6 data insert
@@ -421,6 +455,11 @@ mergefigGen <- function(ii,progr){
     plot.reg <- plotXregion(filter(allmodelline,Region %in% R5R),ii,R5R,filter(AR6DBIndload,Region %in% R5R))
     outname <- paste0(outdir,"multiRegR5/png/",ii,"_R5.png")
     ggsave(plot.reg, file=outname, dpi = 150, width=12, height=7.5,limitsize=FALSE)
+  }
+  if(nrow(filter(allmodelline,Var==ii & Region %in% R2R & ModName!="Reference"))>0){
+    plot.reg <- plotXregion(filter(allmodelline,Region %in% R2R),ii,R2R,filter(AR6DBIndload,Region %in% R2R))
+    outname <- paste0(outdir,"multiRegR2/png/",ii,"_R2.png")
+    ggsave(plot.reg, file=outname, dpi = 150, width=12, height=5,limitsize=FALSE)
   }
 }
 
@@ -480,7 +519,7 @@ plotflagmerge <- as.list(nalist)
 lst <- list()
 if(args[8]=="global"){
   if(RegSpec==0){
-    lst$region <- as.list(R17p5R)
+    lst$region <- as.list(R17pR5pR2)
   }else{
     lst$region <- as.list(region_load)
   }
@@ -489,6 +528,7 @@ if(args[8]=="global"){
 }
 lst$varlist <- as.list(as.vector(varlist$V1))
 lst$R5R <- as.list(R5R)
+lst$R2R <- as.list(R2R)
 lst$Area <- as.list(as.vector(unique(areamappara$Class)))
 
 #Creat directories
@@ -507,6 +547,10 @@ if(ffff==1){
 #regional area figure generation execution
   print("generating regional area figures")
   exe_fig_make(lst$region,funcAreaPlotGen)
+#regional bar figure generation execution
+  print("generating regional bar figures")
+  exe_fig_make(lst$region,funcBarPlotGen)
+
 
 #cross-regional figure generation execution
   if(length(Getregion)!=1){
