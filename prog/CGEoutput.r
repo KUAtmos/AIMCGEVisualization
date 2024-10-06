@@ -99,7 +99,7 @@ MyThemeLine <- theme_bw() +
   )
 
 #-- data load
-dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdirmd),paste0(outdir,"multiReg"),paste0(outdir,"multiRegR5"),paste0(outdir,"multiRegR2"),paste0(outdir,"multiReg/png"),paste0(outdir,"multiRegR5/png"),paste0(outdir,"multiRegR2/png"),paste0(outdir,"ppt"),paste0(outdir,"misc"),paste0(outdir,"data"))
+dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdirmd),paste0(outdir,"multiReg"),paste0(outdir,"multiRegR5"),paste0(outdir,"multiRegR2"),paste0(outdir,"multiReg/png"),paste0(outdir,"multiRegR5/png"),paste0(outdir,"multiRegR2/png"),paste0(outdir,"ppt"),paste0(outdir,"misc"),paste0(outdir,"data"),paste0(outdir,"byScenario"))
 for(dd in dirlist){
   if(file.exists(dd)){}else{dir.create(dd)}
 }
@@ -465,7 +465,7 @@ mergefigGen <- function(ii,progr){
 
 #function for area figure cross region
 funcAreaXregionPlotGen <- function(AreaItem,progr){
-  Data4plot <- allmodel_area %>% left_join(areamap,by="Var") %>% ungroup() %>% 
+  Data4plot <- allmodel_area.x %>% left_join(areamap,by="Var") %>% ungroup() %>% 
       filter(Class==AreaItem) %>% select(ModName,SCENARIO,Region,Ind,Y,Value,order)  %>% arrange(order)
   ModelList <- unique(as.vector(Data4plot$ModName))
   ScenarioList <- unique(as.vector(scenariomap$Name))
@@ -474,12 +474,12 @@ funcAreaXregionPlotGen <- function(AreaItem,progr){
     for(MD in ModelList){
       XX <- Data4plot %>% filter(ModName==MD & SCENARIO==SC) %>% select(Region,Ind,Y,Value,order)
       XX2 <- Data4plot %>% filter(ModName=="Reference") %>% select(Region,Ind,Y,Value,order)  %>% arrange(order)%>% filter(Y<=2015)
-      XX3 <- allmodel_area %>% filter(ModName==MD & SCENARIO==SC & Var %in% as.vector(areamappara$lineVar[areamappara$Class==AreaItem]) & ModName!="Reference") %>% select(Region,Var,Y,Value)
+      XX3 <- allmodel_area.x %>% filter(ModName==MD & SCENARIO==SC & Var %in% as.vector(areamappara$lineVar[areamappara$Class==AreaItem]) & ModName!="Reference") %>% select(Region,Var,Y,Value)
           if(nrow(XX)>0){      
         numitem <- length(as.vector(unique(Data4plot$Region))) #Get number of items
         plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
-        plot3 <- plot1 + facet_wrap( ~ Region,scales="free_y",ncol=mergecolnum) + ggtitle(paste(AreaItem,sep=" "))
-        outname <- paste0(outdir,"multiReg/merge/",SC,"_",MD,"_",AreaItem,".png")
+        plot3 <- plot1 + facet_wrap( ~ Region,scales="free_y",ncol=mergecolnum) + ggtitle(paste(AreaItem,SC,sep=" "))
+        outname <- paste0(outdir,"multiRegR5/merge/",SC,"_",MD,"_",AreaItem,".png")
         ggsave(plot3, file=outname, width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,limitsize=FALSE)
       }
     }
@@ -557,6 +557,7 @@ if(ffff==1){
     print("generating cross-regional line figures")
     exe_fig_make(lst$varlist,mergefigGen)
 #X regional for area figure
+    allmodel_area.x <- filter(allmodel_area,Region %in% R5R)
     print(as.vector(scenariomap$SCENARIO))
     print("generating cross-regional area figures")
     exe_fig_make(lst$Area,funcAreaXregionPlotGen)
