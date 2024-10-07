@@ -6,7 +6,7 @@ library(readr)
 AR6_data_file <- '../data/AR6_Scenarios_Database_World_v1.1.csv'
 AR6reg_data_file <- '../data/AR6_Scenarios_Database_R5_regions_v1.1.csv'
 AR6_meta_file <- '../data/AR6_Scenarios_Database_metadata_indicators_v1.1.xlsx'
-varalllist <- read.table(VarListPath, sep="\t",header=F, stringsAsFactors=F)
+varalllist <- read.table(paste0("../../iiasa_data_submission/data/all_list.txt"), sep="\t",header=F, stringsAsFactors=F)
 cmapping <- data.frame(Category=c("C1","C2","C3","C4","C5","C6","C7","C8"),Category4=c("C1-C2","C1-C2","C3-C4","C3-C4","C5-C6","C5-C6","C7-C8","C7-C8"))
 CategorySet <- c("C1","C2","C3","C4","C5","C6","C7","C8")
 
@@ -43,6 +43,8 @@ AR6Var <- as.vector(unique(AR6DB$Var))
 AR6Cat <- as.vector(unique(AR6DB$Category))
 AR6Varariable <- as.vector(unique(AR6DB.nat$Variable))
 
+
+
 #Extract median, min and max for each category, region and variables
 w <- 0
 for(j in AR6Reg){
@@ -75,3 +77,25 @@ write.csv(x = AR6DBall_inf2, row.names = FALSE,file = paste0("../data/AR6Slected
 #AR6DBIndload <- AR6DBall_inf2 %>% filter(Category %in% CategorySub)
 
 
+#ここからは試作
+variable_sets <- read.table("../data/AR6_calc_set.txt", sep=",",header=F, stringsAsFactors=F)
+colnames(variable_sets) <- c("Variable1", "Variable2", "Ratios")
+
+# 比率を計算する関数の定義
+calculate_ratios <- function(df, variable1, variable2, ratio_name) {
+  #  df %>%
+  a <-  AR6DB %>%
+    filter(Var %in% c(variable1, variable2)) %>%
+    pivot_wider(names_from = Var, values_from = Value) %>%
+    mutate(!!ratio_name := !!sym(variable1) / !!sym(variable2)) %>%
+    select(Model,SCENARIO,Region,Variable,Category,Var,Unit,Y, !!ratio_name)
+}
+
+# すべての変数セットに対して処理を行い、結果をリストに格納
+results_list <- lapply(1:nrow(variable_sets), function(i) {
+  variable_set <- variable_sets[i, ]
+  calculate_ratios(AR6DB, variable_set$Variable1, variable_set$Variable2, variable_set$Ratios)
+})
+
+# 結果を1つのデータフレームに統合
+AR6DB <- bind_rows(results_list)
