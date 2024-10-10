@@ -241,7 +241,7 @@ funcplotgen <- function(rr,progr){
         annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
         theme(legend.title=element_blank()) 
       #Referece of statistics plot 
-      if(length(scenariomap$SCENARIO)<20){
+      if(length(scenariomap$SCENARIO)<40){
         plot.0 <- plot.0 +  geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
       }
       outname <- paste0(outdir,"byRegion/",rr,"/png/",varlist$V1[i],"_",rr,".png")
@@ -437,7 +437,7 @@ plotXregion <-function(InputX,ii,rr,InputAR6){
     xlab("year") + ylab(paste0(varlist$V2.y[varlist$V1==ii],"(",varlist$V3[varlist$V1==ii],")"))  +  ggtitle(paste("Multi-regions",expression("\n"),varlist$V2.y[varlist$V1==ii],sep=" ")) +
     annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
     theme(legend.title=element_blank()) +facet_wrap(~Region,scales="free")
-  if(length(scenariomap$SCENARIO)<20){
+  if(length(scenariomap$SCENARIO)<40){
     plot.0 <- plot.0 +
       geom_point(data=filter(Data4Plot, ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
   }
