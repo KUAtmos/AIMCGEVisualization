@@ -88,6 +88,7 @@ MyThemeLine <- theme_bw() +
     panel.background=element_rect(fill = "white"),
     panel.grid.major=element_blank(),
     strip.background=element_rect(fill="white", colour="white"),
+    plot.background = element_rect(fill = "white", color = "white"),
     strip.text.x = element_text(size=10, colour = "black", angle = 0,face="bold"),
     axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, margin = unit(c(t = 0.3, r = 0, b = 0, l = 0), "cm")),
     axis.text.y=element_text(margin = unit(c(t = 0, r = 0.3, b = 0, l = 0), "cm")),
@@ -99,9 +100,12 @@ MyThemeLine <- theme_bw() +
   )
 
 #-- data load
-dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdirmd),paste0(outdir,"multiReg"),paste0(outdir,"multiRegR5"),paste0(outdir,"multiRegR2"),paste0(outdir,"multiReg/png"),paste0(outdir,"multiRegR5/png"),paste0(outdir,"multiRegR2/png"),paste0(outdir,"ppt"),paste0(outdir,"misc"),paste0(outdir,"data"),paste0(outdir,"byScenario"))
+dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdirmd),paste0(outdir,"multiReg/png/line"),paste0(outdir,"multiRegR5/png/line"),paste0(outdir,"multiRegR2/png/line"),
+paste0(outdir,"multiReg/png/merge"),paste0(outdir,"multiRegR5/png/merge"),paste0(outdir,"multiRegR2/png/merge"),paste0(outdir,"misc"),
+paste0(outdir,"multiReg/svg/line"),paste0(outdir,"multiRegR5/svg/line"),paste0(outdir,"multiRegR2/svg/line"),
+paste0(outdir,"multiReg/svg/merge"),paste0(outdir,"multiRegR5/svg/merge"),paste0(outdir,"multiRegR2/svg/merge"))
 for(dd in dirlist){
-  if(file.exists(dd)){}else{dir.create(dd)}
+  if(file.exists(dd)){}else{dir.create(dd,recursive = TRUE)}
 }
 
 
@@ -244,8 +248,8 @@ funcplotgen <- function(rr,progr){
       if(length(scenariomap$SCENARIO)<40){
         plot.0 <- plot.0 +  geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
       }
-      outname <- paste0(outdir,"byRegion/",rr,"/png/",varlist$V1[i],"_",rr,".png")
-      ggsave(plot.0, file=outname, dpi = 150, width=max(7,numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE)
+      ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/line/",varlist$V1[i],"_",rr,".png"), dpi = 72, width=max(7,numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE)
+      ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/svg/line/",varlist$V1[i],"_",rr,".svg"), width=max(7,numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE,device = "svg", units = "in")
       allplot[[nalist[i]]] <- plot.0
       allplot_nonleg[[nalist[i]]] <- plot.0+ theme(legend.position="none")
     }
@@ -266,7 +270,8 @@ funcplotgen <- function(rr,progr){
                          allplot_nonleg[["Fin_Ene_Tra"]],allplot_nonleg[["Fin_Ene_Tra_Ele"]],     allplot_nonleg[["Fin_Ene_Tra_Liq_and_Gas"]],
                            allplot_nonleg[["Fin_Ene_Tra_Gas"]],allplot_nonleg[["Fin_Ene_Tra_Liq_Bio"]],allplot_nonleg[["Fin_Ene_Tra_Liq_Oil"]],allplot_nonleg[["Fin_Ene_Tra_Hyd"]],p_legend1,
                          nrow=5,ncol=8,rel_widths =c(1,1,1,1,1,1,1,1),align = "hv")
-  ggsave(pp_tfcind, file=paste0(outdir,"byRegion/",rr,"/merge/tfcind_",rr,".png"), width=30, height=20,limitsize=FALSE)
+  ggsave(pp_tfcind, file=paste0(outdir,"byRegion/",rr,"/png/merge/tfcind_",rr,".png"), dpi = 72, width=30, height=20,limitsize=FALSE)
+  ggsave(pp_tfcind, file=paste0(outdir,"byRegion/",rr,"/svg/merge/tfcind_",rr,".svg"), width=30, height=20,device = "svg", units = "in")
   #Main indicators
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["GDP_MER"]]), pattern = "guide-box")
   if(nrow(filter(Data4plot0,Var=="Pol_Cos_GDP_Los_rat"))>0){
@@ -282,7 +287,8 @@ funcplotgen <- function(rr,progr){
                          allplot_nonleg[["Pop_Ris_of_Hun"]],allplot_nonleg[["Prc_Prm_Ene_Oil"]],allplot_nonleg[["Prc_Sec_Ene_Ele"]],p_legend1,
                          nrow=3,rel_widths =c(1,1,1,1.5),align = "hv")
   }
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/main_",rr,".png"), width=18, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/png/merge/main_",rr,".png"), dpi = 72, width=18, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/svg/merge/main_",rr,"svg"), width=18, height=15,device = "svg", units = "in")
 
 #Emissions
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Emi_CO2"]]), pattern = "guide-box")
@@ -291,7 +297,8 @@ funcplotgen <- function(rr,progr){
                        allplot_nonleg[["Emi_VOC"]],allplot_nonleg[["Emi_NH3"]],allplot_nonleg[["Emi_CO"]],allplot_nonleg[["Emi_Kyo_Gas"]],
                        allplot_nonleg[["Tem_Glo_Mea"]],allplot_nonleg[["Frc"]],p_legend1,
                        nrow=4,rel_widths =c(1,1,1,1),align = "hv")
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/Emissions_",rr,".png"), width=18, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/png/merge/Emissions_",rr,".png"), dpi = 72, width=18, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/svg/merge/Emissions_",rr,".svg"), width=18, height=15,device = "svg", units = "in")
 
 #Land use
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Lan_Cov_Pst"]]), pattern = "guide-box")
@@ -299,7 +306,8 @@ funcplotgen <- function(rr,progr){
                        allplot_nonleg[["Lan_Cov_Cro_Non_Ene_Cro"]],allplot_nonleg[["Lan_Cov_Frs"]],allplot_nonleg[["Lan_Cov_Frs_Nat_Frs"]],
                        allplot_nonleg[["Lan_Cov_Oth_Nat_Lan"]],allplot_nonleg[["Lan_Cov_Oth_Lan"]],allplot_nonleg[["Lan_Cov_Bui_Are"]],p_legend1,
                        nrow=3,rel_widths =c(1,1,1,1),align = "hv")
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/LanduseLine_",rr,".png"), width=15, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/png/merge/LanduseLine_",rr,".png"), dpi = 72, width=15, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/svg/merge/LanduseLine_",rr,"svg"), width=15, height=15,device = "svg", units = "in")
 
 #Price
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Prc_Prm_Ene_Oil"]]), pattern = "guide-box")
@@ -308,7 +316,8 @@ funcplotgen <- function(rr,progr){
                        allplot_nonleg[["Prc_Fin_Ene_Res_and_Com_Res"]],allplot_nonleg[["Prc_Fin_Ene_Res_and_Com_Res_Ele"]],allplot_nonleg[["Prc_Fin_Ene_Res_and_Com_Res_wo_car_pri"]],
                        allplot_nonleg[["Prc_Agr_NonEneCro_Ind"]],allplot_nonleg[["Prc_Agr_Liv_Ind"]],p_legend1,
                        nrow=4,rel_widths =c(1,1,1),align = "hv")
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/merge/Price_",rr,".png"), width=15, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/png/merge/Price_",rr,".png"), dpi = 72, width=15, height=15,limitsize=FALSE)
+  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/svg/merge/Price_",rr,".svg"), width=15, height=15,device = "svg", units = "in")
 
   #----r2ppt
   #The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
@@ -373,14 +382,15 @@ funcAreaPlotGen <- function(rr,progr){
       plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
       plot3 <- plot1 + ggtitle(paste(rr,AreaItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
       allplot[[AreaItem]] <- plot3 
-      outname <- paste0(outdir,"byRegion/",rr,"/merge/",AreaItem,"_",rr,".png")
-      ggsave(plot3, file=outname, width=numcol*4, height=numcol*3,limitsize=FALSE)
+      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/png/merge/",AreaItem,"_",rr,".png"), dpi = 72, width=numcol*4, height=numcol*3,limitsize=FALSE)
+      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",AreaItem,"_",rr,".svg"), width=numcol*4, height=numcol*3,device = "svg", units = "in")
       plotflag[[AreaItem]] <- nrow(XX)  
     }
   }
   #Final energy consumption area
   pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
-  ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/merge/tfc_",rr,".png"), width=9*2, height=(floor(length(unique(allmodel_area$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
+  ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/png/merge/tfc_",rr,".png"), dpi = 72, width=9*2, height=(floor(length(unique(allmodel_area$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
+  ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/svg/merge/tfc_",rr,".svg"), width=9*2, height=(floor(length(unique(allmodel_area$SCENARIO))/4+1)*3+2)*3,device = "svg", units = "in")
 }
 
 funcBarPlotGen <- function(rr,progr){
@@ -406,8 +416,8 @@ funcBarPlotGen <- function(rr,progr){
         MyThemeLine + scale_color_manual(values=linepalettewName1,name="SCENARIO")+scale_fill_manual(values=linepalettewName1,name="SCENARIO")+
         xlab("Scenario") + ylab(paste0(varbarlist$V2.y[i],"(",varbarlist$V3[i],")") ) +  ggtitle(paste0(rr,expression("\n"),varbarlist$V2.y[i])) +
         theme(legend.title=element_blank()) +facet_wrap(~Y,scales="free")
-      outname <- paste0(outdir,"byRegion/",rr,"/png/bar_",varbarlist$V1[i],"_",rr,".png")
-      ggsave(plot.0, file=outname, dpi = 150, width=max(7,numitem*0.5), height=max(7,numitem*0.2),limitsize=FALSE)
+      ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/line/bar_",varbarlist$V1[i],"_",rr,".png"), dpi = 72, width=max(7,numitem*0.5), height=max(7,numitem*0.2),limitsize=FALSE)
+      ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/svg/line/bar_",varbarlist$V1[i],"_",rr,".svg"), width=max(7,numitem*0.5), height=max(7,numitem*0.2),device = "svg", units = "in")
   }
 }
 
@@ -420,7 +430,7 @@ plotXregion <-function(InputX,ii,rr,InputAR6){
   names(linepalettewName1) <- unique(filter(InputX,Var==ii)$SCENARIO)
   Data4Plot <- filter(InputX,Var==ii)
   Data4Plot$Region <- factor(Data4Plot$Region,levels=rr)
-  Data4plotAR6 <- filter(InputAR6,Var==ii)
+  Data4plotAR6 <- filter(InputAR6,Var==ii & Region %in% rr)
   miny <- min(Data4Plot$Y,2010) 
   #AR6 data insert
   if(nrow(Data4plotAR6)>0){
@@ -448,18 +458,18 @@ mergefigGen <- function(ii,progr){
 #  for(ii in lst$varlist){
   if(nrow(filter(allmodelline,Var==ii  & ModName!="Reference"))>0){
     plot.reg <- plotXregion(filter(allmodelline,Region %in% R17R),ii,R17R,filter(AR6DBIndload,Region %in% R5R))
-    outname <- paste0(outdir,"multiReg/png/",ii,"_R17.png")
-    ggsave(plot.reg, file=outname, dpi = 150, width=15, height=12,limitsize=FALSE)
+    ggsave(plot.reg, file=paste0(outdir,"multiReg/png/line/",ii,"_R17.png"), dpi = 72, width=15, height=12,limitsize=FALSE)
+    ggsave(plot.reg, file=paste0(outdir,"multiReg/svg/line/",ii,"_R17.svg"), width=15, height=12,device = "svg", units = "in")
   }
   if(nrow(filter(allmodelline,Var==ii & Region %in% R5R & ModName!="Reference"))>0){
     plot.reg <- plotXregion(filter(allmodelline,Region %in% R5R),ii,R5R,filter(AR6DBIndload,Region %in% R5R))
-    outname <- paste0(outdir,"multiRegR5/png/",ii,"_R5.png")
-    ggsave(plot.reg, file=outname, dpi = 150, width=12, height=7.5,limitsize=FALSE)
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR5/png/line/",ii,"_R5.png"), dpi = 72, width=12, height=7.5,limitsize=FALSE)
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR5/svg/line/",ii,"_R5.svg"), width=12, height=7.5,device = "svg", units = "in")
   }
   if(nrow(filter(allmodelline,Var==ii & Region %in% R2R & ModName!="Reference"))>0){
     plot.reg <- plotXregion(filter(allmodelline,Region %in% R2R),ii,R2R,filter(AR6DBIndload,Region %in% R2R))
-    outname <- paste0(outdir,"multiRegR2/png/",ii,"_R2.png")
-    ggsave(plot.reg, file=outname, dpi = 150, width=12, height=5,limitsize=FALSE)
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR2/png/line/",ii,"_R2.png"), dpi = 72, width=12, height=5,limitsize=FALSE)
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR2/svg/line/",ii,"_R2.svg"), width=12, height=5,device = "svg", units = "in")
   }
 }
 
@@ -479,8 +489,8 @@ funcAreaXregionPlotGen <- function(AreaItem,progr){
         numitem <- length(as.vector(unique(Data4plot$Region))) #Get number of items
         plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
         plot3 <- plot1 + facet_wrap( ~ Region,scales="free_y",ncol=mergecolnum) + ggtitle(paste(AreaItem,SC,sep=" "))
-        outname <- paste0(outdir,"multiRegR5/merge/",SC,"_",MD,"_",AreaItem,".png")
-        ggsave(plot3, file=outname, width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,limitsize=FALSE)
+        ggsave(plot3, file=paste0(outdir,"multiRegR5/png/merge/",SC,"_",MD,"_",AreaItem,".png"), dpi = 72, width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,limitsize=FALSE)
+        ggsave(plot3, file=paste0(outdir,"multiRegR2/svg/merge/",SC,"_",MD,"_",AreaItem,".svg"), width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,device = "svg", units = "in")
       }
     }
   }
@@ -533,10 +543,9 @@ lst$Area <- as.list(as.vector(unique(areamappara$Class)))
 
 #Creat directories
 for(rr in lst$region){
-  regoutdir <- paste0(outdir,"byRegion/",rr)
-  dirlist <- c(regoutdir,paste0(regoutdir,"/png"),paste0(regoutdir,"/pngdet"),paste0(regoutdir,"/ppt"),paste0(regoutdir,"/merge"))
+  dirlist <- c(paste0(outdir,"byRegion/",rr,"/png/line"),paste0(outdir,"byRegion/",rr,"/png/merge"),paste0(outdir,"byRegion/",rr,"/svg/line"),paste0(outdir,"byRegion/",rr,"/svg/merge"))
   for(dd in dirlist){
-    if(file.exists(dd)){}else{dir.create(dd)}
+    if(file.exists(dd)){}else{dir.create(dd,recursive = TRUE)}
   }
 }
 ffff <- 1
@@ -600,7 +609,7 @@ if(decompositionflag>0){
       MyThemeLine + theme(legend.position="bottom", text=element_text(size=12))+
       guides(fill=guide_legend(ncol=5))+ggtitle(paste0(rr,expression("\n")," decomposition"))+
       facet_grid(Y~SCENARIO,scales="free_x") + annotate("segment",x=0,xend=6,y=0,yend=0,linetype="dashed",color="grey")
-    outname <- paste0(outdir,"byRegion/",rr,"/merge/",rr,"_decomp.png")
+    outname <- paste0(outdir,"byRegion/",rr,"/png/merge/",rr,"_decomp.png")
     ggsave(plotdec, file=outname, width=floor(length(unique(Decom2$SCENARIO))/2+1)*4, height=10,limitsize=FALSE)    
     }
   }
