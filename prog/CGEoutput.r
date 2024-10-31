@@ -489,8 +489,8 @@ funcAreaXregionPlotGen <- function(AreaItem,progr){
         numitem <- length(as.vector(unique(Data4plot$Region))) #Get number of items
         plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
         plot3 <- plot1 + facet_wrap( ~ Region,scales="free_y",ncol=mergecolnum) + ggtitle(paste(AreaItem,SC,sep=" "))
-        ggsave(plot3, file=paste0(outdir,"multiRegR5/png/merge/",SC,"_",MD,"_",AreaItem,".png"), dpi = 72, width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,limitsize=FALSE)
-        ggsave(plot3, file=paste0(outdir,"multiRegR2/svg/merge/",SC,"_",MD,"_",AreaItem,".svg"), width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,device = "svg", units = "in")
+        ggsave(plot3, file=paste0(outdir,"multiReg",RegC,"/png/merge/",SC,"_",MD,"_",AreaItem,".png"), dpi = 72, width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,limitsize=FALSE)
+        ggsave(plot3, file=paste0(outdir,"multiReg",RegC,"/svg/merge/",SC,"_",MD,"_",AreaItem,".svg"), width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,device = "svg", units = "in")
       }
     }
   }
@@ -559,16 +559,23 @@ if(ffff==1){
 #regional bar figure generation execution
   print("generating regional bar figures")
   exe_fig_make(lst$region,funcBarPlotGen)
-
+  }
 
 #cross-regional figure generation execution
+if(ffff==1){
   if(length(Getregion)!=1){
     print("generating cross-regional line figures")
     exe_fig_make(lst$varlist,mergefigGen)
 #X regional for area figure
+    RegC <- "R5"
     allmodel_area.x <- filter(allmodel_area,Region %in% R5R)
     print(as.vector(scenariomap$SCENARIO))
-    print("generating cross-regional area figures")
+    print("generating cross-regional area figures for R5")
+    exe_fig_make(lst$Area,funcAreaXregionPlotGen)
+    RegC <- "R2"
+    allmodel_area.x <- filter(allmodel_area,Region %in% R2R)
+    print(as.vector(scenariomap$SCENARIO))
+    print("generating cross-regional area figures for R2")
     exe_fig_make(lst$Area,funcAreaXregionPlotGen)
   }
 }
