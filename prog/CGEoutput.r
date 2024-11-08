@@ -170,13 +170,32 @@ allmodel0 <- CGEload1
 
 #IEA energy balance information
 file.copy(paste0(AIMHubdir,"data/AIMHubData/main/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
-IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Var"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
-  select(Region,Var,Y,Value,SCENARIO) %>% filter(Region %in% c(R5R,R17R,R2R)) %>% mutate(ModName="Reference")
+if(args[8]=="global"){
+  ieaparaname <- c("IAMCtemp17","Sr17")  
+  edgarparaname <- c("EDGAR_GAMS_Format_R17","R17")  
+}else{
+  ieaparaname <- c("IAMCtemp106","Sr106")  
+  edgarparaname <- c("EDGAR_GAMS_Format_R106","R106")  
+}
+eval(parse(text=paste0()))
+eval(parse(text=paste0("IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','",ieaparaname[1],"') %>% rename('Value'=",ieaparaname[1],",'Var'=VEMF,'Y'=St,'Region'=",ieaparaname[2],",'SCENARIO'=SceEneMod) %>%
+  select(Region,Var,Y,Value,SCENARIO) %>% filter(Region %in% c(R5R,R17R,R2R)) %>% mutate(ModName='Reference')")))
+#IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Var"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
+#  select(Region,Var,Y,Value,SCENARIO) %>% filter(Region %in% c(R5R,R17R,R2R)) %>% mutate(ModName="Reference")
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
 IEAEB1 <- filter(IEAEB0,Y<=2020 & Y>=1990)
 
-#Merging IEA energy balance table
-allmodel <- rbind(allmodel0,IEAEB1) %>% select(ModName,Region,Var,SCENARIO,Y,Value) 
+#EDGAR emissions
+file.copy(paste0(AIMHubdir,"data/AIMHubData/EDGAR/output/gdx/aggregation/EDGARv8_0_summary.gdx"), paste0("../data/EDGARv8_0_summary.gdx"),overwrite = TRUE)
+eval(parse(text=paste0("EDGAR0 <- rgdx.param('../data/EDGARv8_0_summary.gdx','",edgarparaname[1],"') %>% rename('Value'=",edgarparaname[1],",'Var'=VEMF,'Region'=",edgarparaname[2],") %>%
+  select(Region,Var,Y,Value) %>% filter(Region %in% c(R5R,R17R,R2R)) %>% mutate(ModName='Reference',SCENARIO='EDGAR8.0')")))
+#EDGAR0 <- rgdx.param('../data/EDGARv8_0_summary.gdx','EDGAR_GAMS_Format_R17') %>% rename("Value"=EDGAR_GAMS_Format_R17,"Var"=VEMF,"Region"=R17) %>%
+#  select(Region,Var,Y,Value) %>% filter(Region %in% c(R5R,R17R,R2R)) %>% mutate(ModName="Reference",SCENARIO="EDGAR8.0")
+EDGAR0$Y <- as.numeric(levels(EDGAR0$Y))[EDGAR0$Y]
+EDGAR1 <- filter(EDGAR0,Y<=2020 & Y>=1990)
+
+#Merging IEA energy balance table and EDGAR emissions
+allmodel <- rbind(allmodel0,IEAEB1,EDGAR1) %>% select(ModName,Region,Var,SCENARIO,Y,Value) 
 maxy <- max(allmodel$Y)
 #maxy <- 2050
 linepalettewName <- linepalette[1:length(unique(allmodel$SCENARIO))]
@@ -227,7 +246,7 @@ funcplotgen <- function(rr,progr){
       miny <- min(Data4plot$Y) 
       linepalettewName1 <- linepalette[1:length(unique(Data4plot$SCENARIO))]
       names(linepalettewName1) <- unique(Data4plot$SCENARIO)
-      numitem <- length(as.vector(unique(Data4plot$SCENARIO)))*length(as.vector(unique(Data4plot$ModName))) #Get number of items
+      numitem <- nrow(unique(select(Data4plot,c(SCENARIO,ModName)))) #Get number of items
       #AR6 data insert
       if(nrow(Data4plotAR6)>0){
         plot.0 <- ggplot() +
@@ -248,7 +267,7 @@ funcplotgen <- function(rr,progr){
       if(length(scenariomap$SCENARIO)<40){
         plot.0 <- plot.0 +  geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
       }
-      ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/line/",varlist$V1[i],"_",rr,".png"), dpi = 72, width=max(7,numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE)
+      ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/line/",varlist$V1[i],"_",rr,".png"), dpi = 72, width=max(7,5+numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE)
       ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/svg/line/",varlist$V1[i],"_",rr,".svg"), width=max(7,numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE,device = "svg", units = "in")
       allplot[[nalist[i]]] <- plot.0
       allplot_nonleg[[nalist[i]]] <- plot.0+ theme(legend.position="none")
@@ -402,7 +421,7 @@ funcBarPlotGen <- function(rr,progr){
     miny <- min(Data4plot$Y) 
     linepalettewName1 <- linepalette[1:length(unique(Data4plot$SCENARIO))]
     names(linepalettewName1) <- unique(Data4plot$SCENARIO)
-    numitem <- length(as.vector(unique(Data4plot$SCENARIO)))*length(as.vector(unique(Data4plot$ModName))) #Get number of items
+    numitem <- nrow(unique(select(Data4plot,c(SCENARIO,ModName)))) #Get number of items
       #AR6 data insert
 #      if(nrow(Data4plotAR6)>0){
 #        plot.0 <- ggplot() +
