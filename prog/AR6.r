@@ -6,7 +6,7 @@ library(readr)
 AR6_data_file <- '../data/AR6_Scenarios_Database_World_v1.1.csv'
 AR6reg_data_file <- '../data/AR6_Scenarios_Database_R5_regions_v1.1.csv'
 AR6_meta_file <- '../data/AR6_Scenarios_Database_metadata_indicators_v1.1.xlsx'
-varalllist <- read.table(paste0("../../iiasa_data_submission/data/all_list.txt"), sep="\t",header=F, stringsAsFactors=F)
+varalllist <- read.table(paste0(outdir,"../include_code/IAMCTemp/all_list.txt"), sep="\t",header=F, stringsAsFactors=F)
 cmapping <- data.frame(Category=c("C1","C2","C3","C4","C5","C6","C7","C8"),Category4=c("C1-C2","C1-C2","C3-C4","C3-C4","C5-C6","C5-C6","C7-C8","C7-C8"))
 CategorySet <- c("C1","C2","C3","C4","C5","C6","C7","C8")
 

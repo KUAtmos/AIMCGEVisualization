@@ -44,12 +44,12 @@ if(submodule==1){
 	maindirloc <- "../../"
 	outdir <- paste0("../../../../output/fig_",args[8],"/") #Output directory 
 	AIMHubdir <- "../../../" 
-	VarListPath <- paste0(AIMHubdir,"tools/iiasa_data_submission/data/all_list.txt")
+	VarListPath <- paste0(outdir,"../include_code/IAMCTemp/all_list.txt")
 }else if(submodule==0){
 	maindirloc <- ""
 	outdir <- "../output/" 
 	AIMHubdir <- "../../" 
-	VarListPath <- paste0(AIMHubdir,"tools/iiasa_data_submission/data/all_list.txt")
+	VarListPath <- paste0(outdir,"../include_code/IAMCTemp/all_list.txt")
 }else if(submodule==2){
   maindirloc <- "../../"
   if(Iterationflag==0){
@@ -61,7 +61,7 @@ if(submodule==1){
   }
   outdir <- paste0("../../../../../../output/fig_",args[8],"/") #Output directory 
   AIMHubdir <- "../../../" 
-	VarListPath <- paste0(outdir,"../../IntTool/define/iamctemp/VariableFullList.txt")
+	VarListPath <- paste0(outdir,"../include_code/IAMCTemp/VariableFullList.txt")
 }
 outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GDX file
 filename <- args[7] # filename should be "global_17","CHN","JPN"....
@@ -177,7 +177,6 @@ if(args[8]=="global"){
   ieaparaname <- c("IAMCtemp106","Sr106")  
   edgarparaname <- c("EDGAR_GAMS_Format_R106","R106")  
 }
-eval(parse(text=paste0()))
 eval(parse(text=paste0("IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','",ieaparaname[1],"') %>% rename('Value'=",ieaparaname[1],",'Var'=VEMF,'Y'=St,'Region'=",ieaparaname[2],",'SCENARIO'=SceEneMod) %>%
   select(Region,Var,Y,Value,SCENARIO) %>% filter(Region %in% c(R5R,R17R,R2R)) %>% mutate(ModName='Reference')")))
 #IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Var"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
@@ -264,9 +263,7 @@ funcplotgen <- function(rr,progr){
         annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
         theme(legend.title=element_blank()) 
       #Referece of statistics plot 
-      if(length(scenariomap$SCENARIO)<40){
-        plot.0 <- plot.0 +  geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
-      }
+      plot.0 <- plot.0 +  geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
       ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/line/",varlist$V1[i],"_",rr,".png"), dpi = 72, width=max(7,5+numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE)
       ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/svg/line/",varlist$V1[i],"_",rr,".svg"), width=max(7,numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE,device = "svg", units = "in")
       allplot[[nalist[i]]] <- plot.0

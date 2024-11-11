@@ -104,6 +104,7 @@ Fin_Ene_Com_Hyd	1
 Fin_Ene_Ind_Hyd	1
 Emi_CO2_Ene_and_Ind_Pro	1
 Emi_CO2	1
+Emi_CO2_Ene	1
 Emi_CO2_AFO	1
 Emi_CO2_Lan_Use_Flo_Pos_Emi	1
 Emi_CO2_Lan_Use_Flo_Neg_Seq	1
@@ -157,9 +158,11 @@ Tem_Glo_Mea	1
 Frc_Aer_Oth	1
 Frc_Aer_Clo_Ind	1
 Emi_CH4	1
-Emi_CH4_AFO_Agr	1
+Emi_CH4_Ene	1
+Emi_CH4_AFO	1
 Emi_CH4_AFO_Agr_Liv	1
 Emi_CH4_AFO_Agr_Ric	1
+Emi_CH4_Was	1
 Emi_N2O	1
 Emi_N2O_AFO_Agr	1
 Emi_N2O_AFO_Agr_Liv_Man_Man	1
