@@ -1,7 +1,7 @@
 
 
 Varass <- c("Fin_Ene", "Fin_Ene_Ele_Heat", "Fin_Ene_Liq_and_Gas", "Fin_Ene_SolidsCoa", "Fin_Ene_SolidsBio", "Fin_Ene_Hyd", "Fin_Ene_Ind", "Fin_Ene_Com", "Fin_Ene_Res", "Fin_Ene_Tra",
-            "Sec_Ene_Ele_Heat","Sec_Ene_Ele_Heat_Coa","Sec_Ene_Ele_Heat_Gas","Sec_Ene_Ele_Heat_Nuc","Sec_Ene_Ele_Hyd","Sec_Ene_Ele_Solar","Sec_Ene_Ele_Win","Sec_Ene_Ele_Heat_Bio","Sec_Ene_Ele_Heat_Geo",
+            "Sec_Ene_Ele_Heat","Sec_Ene_Ele_Heat_Coa","Sec_Ene_Ele_Heat_Gas","Sec_Ene_Ele_Heat_Nuc","Sec_Ene_Ele_Hyp","Sec_Ene_Ele_Solar","Sec_Ene_Ele_Win","Sec_Ene_Ele_Heat_Bio","Sec_Ene_Ele_Heat_Geo",
             "Sec_Ene_Hyd","Sec_Ene_Hyd_Gas","Sec_Ene_Hyd_Bio","Sec_Ene_Hyd_Ele"
 #            ,"Fin_Ene_Ind_Ele_Heat", "Fin_Ene_Ind_Liq_and_Gas", "Fin_Ene_Ind_SolidsCoa", "Fin_Ene_Ind_SolidsBio", "Fin_Ene_Ind_Hyd", "Fin_Ene_Com_Ele_Heat", "Fin_Ene_Com_Liq_and_Gas", "Fin_Ene_Com_SolidsCoa", "Fin_Ene_Com_SolidsBio", "Fin_Ene_Com_Hyd", "Fin_Ene_Res_Ele_Heat", "Fin_Ene_Res_Liq_and_Gas", "Fin_Ene_Res_SolidsCoa", "Fin_Ene_Res_SolidsBio", "Fin_Ene_Res_Hyd", "Fin_Ene_Tra_Ele", "Fin_Ene_Tra_Liq_and_Gas", "Fin_Ene_Tra_Liq_Bio", "Fin_Ene_Tra_Liq_Oil", "Fin_Ene_Tra_Hyd"
 )

@@ -1,8 +1,7 @@
 /output
-
 prog/.Rproj.user
 prog/.Rhistory
 /modeloutput/*.gdx
-
 .Rproj.user
 prog/Rplots.pdf
+./data/AR6Slected.csv

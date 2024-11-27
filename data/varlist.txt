@@ -68,7 +68,7 @@ Sec_Ene_Ele_Fos_wo_CCS	2
 Sec_Ene_Ele_Gas	1
 Sec_Ene_Ele_Gas_wo_CCS	2
 Sec_Ene_Ele_Geo	1
-Sec_Ene_Ele_Hyd	1
+Sec_Ene_Ele_Hyp	1
 Sec_Ene_Ele_NonBioRen	1
 Sec_Ene_Ele_Nuc	1
 Sec_Ene_Ele_Oil	1
@@ -133,7 +133,7 @@ Prm_Ene_Coa_wo_CCS	1
 Prm_Ene_Gas_w_CCS	1
 Prm_Ene_Gas_wo_CCS	1
 Prm_Ene_Geo	1
-Prm_Ene_Hyd	1
+Prm_Ene_Hyp	1
 Prm_Ene_Oil_w_CCS	1
 Prm_Ene_Oil_wo_CCS	1
 Prm_Ene_Solar	1
