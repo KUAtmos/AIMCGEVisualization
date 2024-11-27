@@ -4,4 +4,7 @@ prog/.Rhistory
 /modeloutput/*.gdx
 .Rproj.user
 prog/Rplots.pdf
-./data/AR6Slected.csv
+/data/AR6Slected.csv
+/data/AR6_Scenarios_Database_R5_regions_v1.1.csv
+/data/AR6_Scenarios_Database_World_v1.1.csv
+prog/*lst
