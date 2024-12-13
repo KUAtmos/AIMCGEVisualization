@@ -254,6 +254,7 @@ Prc_Wag_Ind	1
 Prc_Sec_Ene_Ele	1
 Emi_CO2_Cum	1
 GDP_per_cap	1
+Car_Rem	1
 Trd_Emi_All_Val	2
 Trd_Emi_All_Vol	2
 Trd_Emi_All_Val_GDP	2
