@@ -39,25 +39,20 @@ options(future.globals.maxSize= sizememory)
 
 
 #---------------switches to specify the run condition -----
-submodule <- as.numeric(args[5]) #0 if this repository cloned to the AIMHub dir
+submodule <- as.numeric(args[5]) #1: AIMHub, 2: IntTool
 if(submodule==1){
 	maindirloc <- "../../"
 	outdir <- paste0("../../../../output/fig_",args[8],"/") #Output directory 
 	AIMHubdir <- "../../../" 
 	VarListPath <- paste0(outdir,"../include_code/IAMCTemp/all_list.txt")
-}else if(submodule==0){
-	maindirloc <- ""
-	outdir <- "../output/" 
-	AIMHubdir <- "../../" 
-	VarListPath <- paste0(outdir,"../include_code/IAMCTemp/all_list.txt")
 }else if(submodule==2){
   maindirloc <- "../../"
   if(Iterationflag==0){
     Itename <- "Iteoff"
-    VisualizationScenarioFile <- "VisualizationScenariomap"
+    ParaGDXName <- "mergedIAMC4AIM"
   }else{
     Itename <- "Iteon"
-    VisualizationScenarioFile <- "VisualizationScenariomapIte"
+    ParaGDXName <- "mergedIAMC"
   }
   outdir <- paste0("../../../../../../output/fig_",args[8],"/") #Output directory 
   AIMHubdir <- "../../../" 
@@ -140,7 +135,6 @@ if(submodule!=2){
   }else{
     scenariomap <- read.table('../data/scenariomap.map',sep='\t',header=T)
   }
-  
   if(CGEgdxcopy==1){ # Data file loading
     file.copy(paste0(dirCGEoutput,filename,".gdx"), paste0(outdirmd,filename,".gdx"),overwrite = TRUE)
     CGEload0 <- rgdx.param(paste0(outdirmd ,filename,".gdx"),'IAMC_Template') 
@@ -158,7 +152,8 @@ if(submodule!=2){
   }else{
     scenariomap <- read.table(paste0(outdir,'../../IntTool/define/iamctemp/scenario/',IntToolproj,'/VisualizationScenariomap.map'),sep='\t',header=T)
   }
-  CGEload0 <- rgdx.param(paste0(outdir,'/../iamc/',filename,'.gdx'),'MergedIAMC') 
+
+  CGEload0 <- rgdx.param(paste0(outdir,'/../iamc/',filename,'.gdx'),ParaGDXName) %>% rename("mergedIAMC"=ParaGDXName)
   CGEload1 <- CGEload0 %>% rename("Value"=mergedIAMC,"Var"=VIAMC,Region="RIAMC",ModName="Modelset") %>% inner_join(scenariomap,by="SCENARIO") %>% select(Region,Var,Y,Value,SCENARIO,ModName)
 }
 Getregion <- as.vector(unique(CGEload1$Region))
