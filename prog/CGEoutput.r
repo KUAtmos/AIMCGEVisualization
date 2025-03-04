@@ -72,7 +72,8 @@ RegSpec <- 0 #Regional specification if turned into 1, the regional list is load
 OrRdPal <- brewer.pal(9, "OrRd")
 YlGnBupal <- brewer.pal(9, "YlGnBu")
 Redspal <- brewer.pal(9, "Reds")
-pastelpal <- c(brewer.pal(9, "Set1"),brewer.pal(8, "Set2"),brewer.pal(12, "Set3"),brewer.pal(9, "Pastel1"),brewer.pal(8, "Dark2"),brewer.pal(8, "Accent"))
+pastelpal <- c(brewer.pal(9, "Set1"),brewer.pal(8, "Set2"),brewer.pal(12, "Set3"),brewer.pal(8, "Dark2"),brewer.pal(8, "Accent"),brewer.pal(9, "Pastel1"))
+pastelpal <- pastelpal[!pastelpal %in% c("#FFFF33", "#FFD92F", "#FFFFB3", "#FFED6F", "#FFFF99", "#FFFFCC")] #To avoid yellowish color
 linepalette <- pastelpal
 
 MyThemeLine <- theme_bw() +
@@ -95,9 +96,12 @@ MyThemeLine <- theme_bw() +
   )
 
 #-- data load
-dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdirmd),paste0(outdir,"multiReg/png/line"),paste0(outdir,"multiRegR5/png/line"),paste0(outdir,"multiRegR2/png/line"),
-paste0(outdir,"multiReg/png/merge"),paste0(outdir,"multiRegR5/png/merge"),paste0(outdir,"multiRegR2/png/merge"),paste0(outdir,"misc"),
+dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdirmd),paste0(outdir,"misc"),
+paste0(outdir,"multiReg/png/line"),paste0(outdir,"multiRegR5/png/line"),paste0(outdir,"multiRegR2/png/line"),
+paste0(outdir,"multiReg/png/bar"),paste0(outdir,"multiRegR5/png/bar"),paste0(outdir,"multiRegR2/png/bar"),
+paste0(outdir,"multiReg/png/merge"),paste0(outdir,"multiRegR5/png/merge"),paste0(outdir,"multiRegR2/png/merge"),
 paste0(outdir,"multiReg/svg/line"),paste0(outdir,"multiRegR5/svg/line"),paste0(outdir,"multiRegR2/svg/line"),
+paste0(outdir,"multiReg/svg/bar"),paste0(outdir,"multiRegR5/svg/bar"),paste0(outdir,"multiRegR2/svg/bar"),
 paste0(outdir,"multiReg/svg/merge"),paste0(outdir,"multiRegR5/svg/merge"),paste0(outdir,"multiRegR2/svg/merge"))
 for(dd in dirlist){
   if(file.exists(dd)){}else{dir.create(dd,recursive = TRUE)}
@@ -427,8 +431,8 @@ funcBarPlotGen <- function(rr,progr){
         MyThemeLine + scale_color_manual(values=linepalettewName1,name="SCENARIO")+scale_fill_manual(values=linepalettewName1,name="SCENARIO")+
         xlab("Scenario") + ylab(paste0(varbarlist$V2.y[i],"(",varbarlist$V3[i],")") ) +  ggtitle(paste0(rr,expression("\n"),varbarlist$V2.y[i])) +
         theme(legend.title=element_blank()) +facet_wrap(~Y,scales="free")
-      ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/line/bar_",varbarlist$V1[i],"_",rr,".png"), dpi = 72, width=max(7,numitem*0.5), height=max(7,numitem*0.2),limitsize=FALSE)
-      ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/svg/line/bar_",varbarlist$V1[i],"_",rr,".svg"), width=max(7,numitem*0.5), height=max(7,numitem*0.2),device = "svg",limitsize = FALSE, units = "in")
+      ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/bar/",varbarlist$V1[i],"_",rr,".png"), dpi = 72, width=max(7,numitem*1), height=max(7,numitem*0.3),limitsize=FALSE)
+      ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/svg/bar/",varbarlist$V1[i],"_",rr,".svg"), width=max(7,numitem*1), height=max(7,numitem*0.3),device = "svg",limitsize = FALSE, units = "in")
   }
 }
 
@@ -466,21 +470,22 @@ plotXregion <-function(InputX,ii,rr,InputAR6){
 }
 mergefigGen <- function(ii,progr){
   progr(message='merge figures')
+  colwidth <- floor(length(as.vector(unique(allmodelline$SCENARIO)))/14)+1
 #  for(ii in lst$varlist){
   if(nrow(filter(allmodelline,Var==ii  & ModName!="Reference"))>0){
     plot.reg <- plotXregion(filter(allmodelline,Region %in% R17R),ii,R17R,filter(AR6DBIndload,Region %in% R5R))
-    ggsave(plot.reg, file=paste0(outdir,"multiReg/png/line/",ii,"_R17.png"), dpi = 72, width=15, height=12,limitsize=FALSE)
-    ggsave(plot.reg, file=paste0(outdir,"multiReg/svg/line/",ii,"_R17.svg"), width=15, height=12,device = "svg",limitsize = FALSE, units = "in")
+    ggsave(plot.reg, file=paste0(outdir,"multiReg/png/line/",ii,"_R17.png"), dpi = 72, width=12+colwidth*4, height=12,limitsize=FALSE)
+    ggsave(plot.reg, file=paste0(outdir,"multiReg/svg/line/",ii,"_R17.svg"), width=12+colwidth*4, height=12,device = "svg",limitsize = FALSE, units = "in")
   }
   if(nrow(filter(allmodelline,Var==ii & Region %in% R5R & ModName!="Reference"))>0){
     plot.reg <- plotXregion(filter(allmodelline,Region %in% R5R),ii,R5R,filter(AR6DBIndload,Region %in% R5R))
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR5/png/line/",ii,"_R5.png"), dpi = 72, width=12, height=7.5,limitsize=FALSE)
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR5/svg/line/",ii,"_R5.svg"), width=12, height=7.5,device = "svg",limitsize = FALSE, units = "in")
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR5/png/line/",ii,"_R5.png"), dpi = 72, width=colwidth*4+10, height=7.5,limitsize=FALSE)
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR5/svg/line/",ii,"_R5.svg"), width=colwidth*4+10, height=7.5,device = "svg",limitsize = FALSE, units = "in")
   }
   if(nrow(filter(allmodelline,Var==ii & Region %in% R2R & ModName!="Reference"))>0){
     plot.reg <- plotXregion(filter(allmodelline,Region %in% R2R),ii,R2R,filter(AR6DBIndload,Region %in% R2R))
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR2/png/line/",ii,"_R2.png"), dpi = 72, width=12, height=5,limitsize=FALSE)
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR2/svg/line/",ii,"_R2.svg"), width=12, height=5,device = "svg",limitsize = FALSE, units = "in")
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR2/png/line/",ii,"_R2.png"), dpi = 72, width=colwidth*4+10, height=5,limitsize=FALSE)
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR2/svg/line/",ii,"_R2.svg"), width=colwidth*4+10, height=5,device = "svg",limitsize = FALSE, units = "in")
   }
 }
 
@@ -554,7 +559,8 @@ lst$Area <- as.list(as.vector(unique(areamappara$Class)))
 
 #Creat directories
 for(rr in lst$region){
-  dirlist <- c(paste0(outdir,"byRegion/",rr,"/png/line"),paste0(outdir,"byRegion/",rr,"/png/merge"),paste0(outdir,"byRegion/",rr,"/svg/line"),paste0(outdir,"byRegion/",rr,"/svg/merge"))
+  dirlist <- c(paste0(outdir,"byRegion/",rr,"/png/line"),paste0(outdir,"byRegion/",rr,"/png/bar"),paste0(outdir,"byRegion/",rr,"/png/merge"),
+               paste0(outdir,"byRegion/",rr,"/svg/line"),paste0(outdir,"byRegion/",rr,"/svg/bar"),paste0(outdir,"byRegion/",rr,"/svg/merge"))
   for(dd in dirlist){
     if(file.exists(dd)){}else{dir.create(dd,recursive = TRUE)}
   }
