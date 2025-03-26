@@ -258,3 +258,9 @@ Car_Rem	1
 Trd_Emi_All_Val	2
 Trd_Emi_All_Vol	2
 Trd_Emi_All_Val_GDP	2
+Car_Rem_Dir_Air_Cap_wit_CCS	1
+Car_Rem_Enh_Wea	1
+Car_Rem_Frs	1
+Car_Rem_Soi_Car_Seq	1
+Car_Rem_Bio	1
+Car_Rem_Lan_Use_Bio	1

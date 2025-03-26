@@ -20,16 +20,16 @@ for(j in libloadlist){
 }
 args <- commandArgs(trailingOnly = TRUE)
 #arguments are: 1:gams sys,2:number of CPU, 3:visualizaton scenario name specification auto or not, 4:file location, 5:submodule switch, 6:enduse iteration switch, 7: GDX file name, 8: region code/global, 9: AR6 consideration, 10: IntTool project name
-default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","0","global_17_IAMC","global","on","non")   # Default value but gams path should be modified if GUI based R is used
-#default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "country/CHN","2","1","IAMCTemplate_Iteon_CHN","CHN","off","non")   # Default value but gams path should be modified if GUI based R is used
-#default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24),"off","global/global_17","2","0","IAMCTemplate_Iteoff_global","global","on","scenarioMIP")
+default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","off","global_17_IAMC","global","on","non")   # Default value but gams path should be modified if GUI based R is used
+#default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "country/CHN","2","on","IAMCTemplate_Iteon_CHN","CHN","off","non")   # Default value but gams path should be modified if GUI based R is used
+#default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24),"off","global/global_17","2","on","IAMCTemplate_Iteoff_global","global","on","scenarioMIP")
 
 default_flg <- is.na(args[1:10])
 args[default_flg] <- default_args[default_flg]
 gams_sys_dir <- as.character(args[1])
 AscenarionameAuto <- as.character(args[3])
 igdx(gams_sys_dir)
-Iterationflag <- as.numeric(args[6])   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.
+Iterationflag <- as.character(args[6])   # If you would like to display model iteration outputs, make this parameter 1 otherwise 0.
 decompositionflag <- 0  #if you would like to run decomposition analysis turn on 1, otherwise 0.
 threadsnum <-  as.numeric(args[2])
 AR6option <-  as.character(args[9])
@@ -47,14 +47,15 @@ if(submodule==1){
 	VarListPath <- paste0(outdir,"../include_code/IAMCTemp/all_list.txt")
 }else if(submodule==2){
   maindirloc <- "../../"
-  if(Iterationflag==0){
+  if(Iterationflag=="off"){
     Itename <- "Iteoff"
     ParaGDXName <- "mergedIAMC4AIM"
+    outdir <- paste0("../../../../../../output/fig_Iteoff",args[8],"/") #Output directory 
   }else{
     Itename <- "Iteon"
     ParaGDXName <- "mergedIAMC"
+    outdir <- paste0("../../../../../../output/fig_Iteon",args[8],"/") #Output directory 
   }
-  outdir <- paste0("../../../../../../output/fig_",args[8],"/") #Output directory 
   AIMHubdir <- "../../../" 
 	VarListPath <- paste0(outdir,"../include_code/IAMCTemp/VariableFullList.txt")
 }
@@ -600,7 +601,7 @@ if(ffff==1){
 #regional Decomposition figure generation execution
 #Decomposition analysis data load
 
-if(Iterationflag>0){
+if(Iterationflag=="off"){
   symDim <- 6
   attr(allmodel, "symName") <- "allmodel"
   lst3 <- wgdx.reshape(allmodel,symDim)
