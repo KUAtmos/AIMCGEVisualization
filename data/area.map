@@ -32,3 +32,4 @@ EmissionsTraNOx	Emissions NOx	Mt NO/yr	Emi_NOx_Ene_Dem_Tra
 EmissionsVOC	Emissions VOC	Mt VOC/yr	Emi_VOC
 Forcing	Forcing	W/m2	Frc
 FoodCons	Food consumption	kcal/day/capita	Foo_Ene_Sup_Per_Cap
+TFC_CarMan	Final energy for carbon management	EJ/yr	Fin_Ene_Car_Man
