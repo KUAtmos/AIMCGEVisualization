@@ -97,15 +97,17 @@ MyThemeLine <- theme_bw() +
   )
 
 #-- data load
-dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdirmd),paste0(outdir,"misc"),
-paste0(outdir,"multiReg/png/line"),paste0(outdir,"multiRegR5/png/line"),paste0(outdir,"multiRegR2/png/line"),
-paste0(outdir,"multiReg/png/bar"),paste0(outdir,"multiRegR5/png/bar"),paste0(outdir,"multiRegR2/png/bar"),
-paste0(outdir,"multiReg/png/merge"),paste0(outdir,"multiRegR5/png/merge"),paste0(outdir,"multiRegR2/png/merge"),
-paste0(outdir,"multiReg/svg/line"),paste0(outdir,"multiRegR5/svg/line"),paste0(outdir,"multiRegR2/svg/line"),
-paste0(outdir,"multiReg/svg/bar"),paste0(outdir,"multiRegR5/svg/bar"),paste0(outdir,"multiRegR2/svg/bar"),
-paste0(outdir,"multiReg/svg/merge"),paste0(outdir,"multiRegR5/svg/merge"),paste0(outdir,"multiRegR2/svg/merge"))
+dirlist <- c(outdir,paste0(outdir,"data"),paste0(outdir,"byRegion"),paste0(outdirmd),paste0(outdir,"misc"))
 for(dd in dirlist){
   if(file.exists(dd)){}else{dir.create(dd,recursive = TRUE)}
+}
+for(i in c("multiReg","multiRegR10","multiRegR5","multiRegR2")){
+  for(j in c("png","svg")){
+    for(k in c("line","bar","merge")){
+      dd <- paste0(outdir,i,"/",j,"/",k)
+      if(file.exists(dd)){}else{dir.create(dd,recursive = TRUE)}
+    }
+  }
 }
 
 
@@ -115,15 +117,14 @@ varlist_load <- read.table('../data/varlist.txt',sep='\t',header=T)
 varbarlist_load <- read.table('../data/varbarlist.txt',sep='\t',header=T)
 areamap <- read.table('../data/Areafigureorder.txt',sep='\t',header=T)
 areamappara <- read.table('../data/area.map',sep='\t',header=T)
-R2R_load <- read.table('../data/regionR2.txt',sep='\t',header=F)
-R5R_load <- read.table('../data/regionR5.txt',sep='\t',header=F)
-R17R_load <- read.table('../data/regionR17.txt',sep='\t',header=F)
+
+for(i in c("R5","R17","R10","R2")){
+  eval(parse(text=paste0(i,"R_load <- read.table('../data/region",i,".txt',sep='\t',header=F)")))
+  eval(parse(text=paste0(i,"R <- as.vector(",i,"R_load$V1)")))
+}
 region_load <- as.vector(read.table("../data/region.txt", sep="\t",header=F, stringsAsFactors=F)$V1)
 region <- region_load
-R2R <- as.vector(R2R_load$V1)
-R5R <- as.vector(R5R_load$V1)
-R17R <- as.vector(R17R_load$V1)
-R17pR5pR2 <- c(R5R,R17R[-18],R2R[-3])
+R17pR5pR2 <- c(R5R,R10R[-11],R17R[-18],R2R[-3])
 varlist <- left_join(varlist_load,varalllist,by=c("V1"))
 varbarlist <- left_join(varbarlist_load,varalllist,by=c("V1"))
 Ylist <- seq(2010,2100,by=5)
@@ -155,7 +156,7 @@ if(submodule!=2){
     scenariomap <- cbind(scenariomap_load,scenariomap_load)
     names(scenariomap) <- c("SCENARIO","Name")
   }else{
-    scenariomap <- read.table(paste0(outdir,'../../IntTool/define/iamctemp/scenario/',IntToolproj,'/VisualizationScenariomap.map'),sep='\t',header=T)
+    scenariomap <- read.table(paste0(outdir,'/../data/ScenarioSet/',IntToolproj,'/VisualizationScenariomap.map'),sep='\t',header=T)
   }
 
   CGEload0 <- rgdx.param(paste0(outdir,'/../iamc/',filename,'.gdx'),ParaGDXName) %>% rename("mergedIAMC"=ParaGDXName)
@@ -178,18 +179,14 @@ if(args[8]=="global"){
   edgarparaname <- c("EDGAR_GAMS_Format_R106","R106")  
 }
 eval(parse(text=paste0("IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','",ieaparaname[1],"') %>% rename('Value'=",ieaparaname[1],",'Var'=VEMF,'Y'=St,'Region'=",ieaparaname[2],",'SCENARIO'=SceEneMod) %>%
-  select(Region,Var,Y,Value,SCENARIO) %>% filter(Region %in% c(R5R,R17R,R2R)) %>% mutate(ModName='Reference')")))
-#IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','IAMCtemp17') %>% rename("Value"=IAMCtemp17,"Var"=VEMF,"Y"=St,"Region"=Sr17,"SCENARIO"=SceEneMod) %>%
-#  select(Region,Var,Y,Value,SCENARIO) %>% filter(Region %in% c(R5R,R17R,R2R)) %>% mutate(ModName="Reference")
+  select(Region,Var,Y,Value,SCENARIO) %>% filter(Region %in% c(R5R,R10R,R17R,R2R)) %>% mutate(ModName='Reference')")))
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
 IEAEB1 <- filter(IEAEB0,Y<=2020 & Y>=1990)
 
 #EDGAR emissions
 file.copy(paste0(AIMHubdir,"data/AIMHubData/EDGAR/output/gdx/aggregation/EDGARv8_0_summary.gdx"), paste0("../data/EDGARv8_0_summary.gdx"),overwrite = TRUE)
 eval(parse(text=paste0("EDGAR0 <- rgdx.param('../data/EDGARv8_0_summary.gdx','",edgarparaname[1],"') %>% rename('Value'=",edgarparaname[1],",'Var'=VEMF,'Region'=",edgarparaname[2],") %>%
-  select(Region,Var,Y,Value) %>% filter(Region %in% c(R5R,R17R,R2R)) %>% mutate(ModName='Reference',SCENARIO='EDGAR8.0')")))
-#EDGAR0 <- rgdx.param('../data/EDGARv8_0_summary.gdx','EDGAR_GAMS_Format_R17') %>% rename("Value"=EDGAR_GAMS_Format_R17,"Var"=VEMF,"Region"=R17) %>%
-#  select(Region,Var,Y,Value) %>% filter(Region %in% c(R5R,R17R,R2R)) %>% mutate(ModName="Reference",SCENARIO="EDGAR8.0")
+  select(Region,Var,Y,Value) %>% filter(Region %in% c(R5R,R10R,R17R,R2R)) %>% mutate(ModName='Reference',SCENARIO='EDGAR8.0')")))
 EDGAR0$Y <- as.numeric(levels(EDGAR0$Y))[EDGAR0$Y]
 EDGAR1 <- filter(EDGAR0,Y<=2020 & Y>=1990)
 
@@ -473,20 +470,13 @@ mergefigGen <- function(ii,progr){
   progr(message='merge figures')
   colwidth <- floor(length(as.vector(unique(allmodelline$SCENARIO)))/14)+1
 #  for(ii in lst$varlist){
-  if(nrow(filter(allmodelline,Var==ii  & ModName!="Reference"))>0){
-    plot.reg <- plotXregion(filter(allmodelline,Region %in% R17R),ii,R17R,filter(AR6DBIndload,Region %in% R5R))
-    ggsave(plot.reg, file=paste0(outdir,"multiReg/png/line/",ii,"_R17.png"), dpi = 72, width=12+colwidth*4, height=12,limitsize=FALSE)
-    ggsave(plot.reg, file=paste0(outdir,"multiReg/svg/line/",ii,"_R17.svg"), width=12+colwidth*4, height=12,device = "svg",limitsize = FALSE, units = "in")
-  }
-  if(nrow(filter(allmodelline,Var==ii & Region %in% R5R & ModName!="Reference"))>0){
-    plot.reg <- plotXregion(filter(allmodelline,Region %in% R5R),ii,R5R,filter(AR6DBIndload,Region %in% R5R))
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR5/png/line/",ii,"_R5.png"), dpi = 72, width=colwidth*4+10, height=7.5,limitsize=FALSE)
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR5/svg/line/",ii,"_R5.svg"), width=colwidth*4+10, height=7.5,device = "svg",limitsize = FALSE, units = "in")
-  }
-  if(nrow(filter(allmodelline,Var==ii & Region %in% R2R & ModName!="Reference"))>0){
-    plot.reg <- plotXregion(filter(allmodelline,Region %in% R2R),ii,R2R,filter(AR6DBIndload,Region %in% R2R))
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR2/png/line/",ii,"_R2.png"), dpi = 72, width=colwidth*4+10, height=5,limitsize=FALSE)
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR2/svg/line/",ii,"_R2.svg"), width=colwidth*4+10, height=5,device = "svg",limitsize = FALSE, units = "in")
+  for(r in c("R2","R5","R10","R17")){
+    eval(parse(text=paste0("Regvar <- ",r,)))
+    if(nrow(filter(allmodelline,Var==ii & Region %in% Regvar & ModName!="Reference"))>0){
+      eval(parse(text=paste0("plot.reg <- plotXregion(filter(allmodelline,Region %in% ",r,"R),ii,R",",filter(AR6DBIndload,Region %in% ",r,"R)")))
+      ggsave(plot.reg, file=paste0(outdir,"multiReg/png/line/",ii,"_",r,".png"), dpi = 72, width=12+colwidth*4, height=12,limitsize=FALSE)
+      ggsave(plot.reg, file=paste0(outdir,"multiReg/svg/line/",ii,"_",r,".svg"), width=12+colwidth*4, height=12,device = "svg",limitsize = FALSE, units = "in")
+    }
   }
 }
 
@@ -554,6 +544,7 @@ if(args[8]=="global"){
   lst$region <-as.list(args[8])
 }
 lst$varlist <- as.list(as.vector(varlist$V1))
+lst$R10R <- as.list(R10R)
 lst$R5R <- as.list(R5R)
 lst$R2R <- as.list(R2R)
 lst$Area <- as.list(as.vector(unique(areamappara$Class)))
@@ -585,16 +576,13 @@ if(ffff==1){
     print("generating cross-regional line figures")
     exe_fig_make(lst$varlist,mergefigGen)
 #X regional for area figure
-    RegC <- "R5"
-    allmodel_area.x <- filter(allmodel_area,Region %in% R5R)
-    print(as.vector(scenariomap$SCENARIO))
-    print("generating cross-regional area figures for R5")
-    exe_fig_make(lst$Area,funcAreaXregionPlotGen)
-    RegC <- "R2"
-    allmodel_area.x <- filter(allmodel_area,Region %in% R2R)
-    print(as.vector(scenariomap$SCENARIO))
-    print("generating cross-regional area figures for R2")
-    exe_fig_make(lst$Area,funcAreaXregionPlotGen)
+    for(r in c("R10","R5","R2")){
+      RegC <- r
+      eval(parse(text=paste0("allmodel_area.x <- filter(allmodel_area,Region %in% ",r,"R)")))
+      print(as.vector(scenariomap$SCENARIO))
+      print(paste0("generating cross-regional area figures for ",r))
+      exe_fig_make(lst$Area,funcAreaXregionPlotGen)
+    }
   }
 }
 

@@ -1,6 +1,13 @@
 SCENARIO	Name	ModName
-SSP2_2020NDC_NZE_NoCC_No	NZE	SSP2
-SSP2_2020NDC_NZE_addDev_NoCC_No	NZE_1p5_OECDimm	SSP2
-SSP2_2020NDC_NZE_addDev70_NoCC_No	NZE_1p5_OECDdel	SSP2
-SSP2_2020NDC_NZE_addAll_2070_10_NoCC_No	NZE_1p5_World	SSP2
-SSP2_CurPol_NoCC_No	CurPol	SSP2
+SSP1_BaU_NoCC_scenarioMIP_global2	SSP1 - Medium Emissions	AIMHub
+SSP1_600C_2020NDC-high-Sus_NoCC_scenarioMIP_global2	SSP1 - Very Low Emissions	AIMHub
+SSP2_1100C_2020NDC-high_NoCC_scenarioMIP_global2	SSP2 - Low Emissions	AIMHub
+SSP2_700C_2020NDC_NoCC_scenarioMIP_global2	SSP2 - Low Overshoot_a	AIMHub
+SSP2_400C_2020NDC_NoCC_scenarioMIP_global2	SSP2 - Low Overshoot_b	AIMHub
+SSP2_400C_2020NDC-low_NoCC_scenarioMIP_global2	SSP2 - Low Overshoot_c	AIMHub
+SSP2_700C_2020NDC-low_NoCC_scenarioMIP_global2	SSP2 - Low Overshoot	AIMHub
+SSP2_BaU_NoCC_scenarioMIP_global2	SSP2 - Medium Emissions	AIMHub
+SSP2_400C_2020NDC-high-Sus_NoCC_scenarioMIP_global2	SSP2 - Very Low Emissions	AIMHub
+SSP3_BaU_NoCC_scenarioMIP_global2	SSP3 - High Emissions	AIMHub
+SSP5_BaU_NoCC_scenarioMIP_global2	SSP5 - High Emissions	AIMHub
+SSP2_1500C_2050CP-low_NoCC_scenarioMIP_global2	SSP2 - Medium-Low Emissions	AIMHub
