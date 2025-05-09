@@ -470,13 +470,25 @@ mergefigGen <- function(ii,progr){
   progr(message='merge figures')
   colwidth <- floor(length(as.vector(unique(allmodelline$SCENARIO)))/14)+1
 #  for(ii in lst$varlist){
-  for(r in c("R2","R5","R10","R17")){
-    eval(parse(text=paste0("Regvar <- ",r,)))
-    if(nrow(filter(allmodelline,Var==ii & Region %in% Regvar & ModName!="Reference"))>0){
-      eval(parse(text=paste0("plot.reg <- plotXregion(filter(allmodelline,Region %in% ",r,"R),ii,R",",filter(AR6DBIndload,Region %in% ",r,"R)")))
-      ggsave(plot.reg, file=paste0(outdir,"multiReg/png/line/",ii,"_",r,".png"), dpi = 72, width=12+colwidth*4, height=12,limitsize=FALSE)
-      ggsave(plot.reg, file=paste0(outdir,"multiReg/svg/line/",ii,"_",r,".svg"), width=12+colwidth*4, height=12,device = "svg",limitsize = FALSE, units = "in")
-    }
+  if(nrow(filter(allmodelline,Var==ii  & ModName!="Reference"))>0){
+    plot.reg <- plotXregion(filter(allmodelline,Region %in% R17R),ii,R17R,filter(AR6DBIndload,Region %in% R5R))
+    ggsave(plot.reg, file=paste0(outdir,"multiReg/png/line/",ii,"_R17.png"), dpi = 72, width=12+colwidth*4, height=12,limitsize=FALSE)
+    ggsave(plot.reg, file=paste0(outdir,"multiReg/svg/line/",ii,"_R17.svg"), width=12+colwidth*4, height=12,device = "svg",limitsize = FALSE, units = "in")
+  }
+  if(nrow(filter(allmodelline,Var==ii & Region %in% R5R & ModName!="Reference"))>0){
+    plot.reg <- plotXregion(filter(allmodelline,Region %in% R5R),ii,R5R,filter(AR6DBIndload,Region %in% R5R))
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR5/png/line/",ii,"_R5.png"), dpi = 72, width=colwidth*4+10, height=7.5,limitsize=FALSE)
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR5/svg/line/",ii,"_R5.svg"), width=colwidth*4+10, height=7.5,device = "svg",limitsize = FALSE, units = "in")
+  }
+  if(nrow(filter(allmodelline,Var==ii & Region %in% R2R & ModName!="Reference"))>0){
+    plot.reg <- plotXregion(filter(allmodelline,Region %in% R2R),ii,R2R,filter(AR6DBIndload,Region %in% R2R))
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR2/png/line/",ii,"_R2.png"), dpi = 72, width=colwidth*4+10, height=5,limitsize=FALSE)
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR2/svg/line/",ii,"_R2.svg"), width=colwidth*4+10, height=5,device = "svg",limitsize = FALSE, units = "in")
+  }
+  if(nrow(filter(allmodelline,Var==ii & Region %in% R10R & ModName!="Reference"))>0){
+    plot.reg <- plotXregion(filter(allmodelline,Region %in% R10R),ii,R10R,filter(AR6DBIndload,Region %in% R10R))
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR10/png/line/",ii,"_R10.png"), dpi = 72, width=colwidth*4+10, height=7.5,limitsize=FALSE)
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR10/svg/line/",ii,"_R10.svg"), width=colwidth*4+10, height=5,device = "svg",limitsize = FALSE, units = "in")
   }
 }
 
@@ -575,6 +587,7 @@ if(ffff==1){
   if(length(Getregion)!=1){
     print("generating cross-regional line figures")
     exe_fig_make(lst$varlist,mergefigGen)
+
 #X regional for area figure
     for(r in c("R10","R5","R2")){
       RegC <- r
