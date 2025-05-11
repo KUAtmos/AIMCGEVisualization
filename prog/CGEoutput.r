@@ -487,8 +487,8 @@ mergefigGen <- function(ii,progr){
   }
   if(nrow(filter(allmodelline,Var==ii & Region %in% R10R & ModName!="Reference"))>0){
     plot.reg <- plotXregion(filter(allmodelline,Region %in% R10R),ii,R10R,filter(AR6DBIndload,Region %in% R10R))
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR10/png/line/",ii,"_R10.png"), dpi = 72, width=colwidth*4+10, height=7.5,limitsize=FALSE)
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR10/svg/line/",ii,"_R10.svg"), width=colwidth*4+10, height=5,device = "svg",limitsize = FALSE, units = "in")
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR10/png/line/",ii,"_R10.png"), dpi = 72, width=colwidth*4+10, height=10,limitsize=FALSE)
+    ggsave(plot.reg, file=paste0(outdir,"multiRegR10/svg/line/",ii,"_R10.svg"), width=colwidth*4+10, height=10,device = "svg",limitsize = FALSE, units = "in")
   }
 }
 
