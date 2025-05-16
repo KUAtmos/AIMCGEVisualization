@@ -23,6 +23,7 @@ args <- commandArgs(trailingOnly = TRUE)
 default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","off","global_17_IAMC","global","on","non")   # Default value but gams path should be modified if GUI based R is used
 #default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "country/CHN","2","on","IAMCTemplate_Iteon_CHN","CHN","off","non")   # Default value but gams path should be modified if GUI based R is used
 #default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24),"off","global/global_17","2","on","IAMCTemplate_Iteoff_global","global","on","scenarioMIP")
+default_args <- c("/home/sfujimori/opt/gams/gams46.5_linux_x64_64_sfx","32","on","global/global_17","2","off","IAMCTemplate_Iteon_global","global","on","scenarioMIP")
 
 default_flg <- is.na(args[1:10])
 args[default_flg] <- default_args[default_flg]
@@ -160,6 +161,7 @@ if(submodule!=2){
   }
 
   CGEload0 <- rgdx.param(paste0(outdir,'/../iamc/',filename,'.gdx'),ParaGDXName) %>% rename("mergedIAMC"=ParaGDXName)
+  scenariomap <- filter(scenariomap,SCENARIO %in% as.vector(unique(CGEload0$SCENARIO)))
   CGEload1 <- CGEload0 %>% rename("Value"=mergedIAMC,"Var"=VIAMC,Region="RIAMC",ModName="Modelset") %>% inner_join(scenariomap,by="SCENARIO") %>% select(Region,Var,Y,Value,SCENARIO,ModName)
 }
 Getregion <- as.vector(unique(CGEload1$Region))
@@ -201,7 +203,7 @@ allmodelline <- filter(allmodel,Var %in% varlist$V1)
 allmodel_area <- filter(allmodel, Var %in% c(as.vector(areamap$Var),as.vector(areamappara$lineVar))) 
 allmodel_bar <- filter(allmodel,Var %in% varbarlist$V1)
 #Extract data
-#Unloading Data4plot which can be used for data availability in papers
+#Unloading Data4Plot which can be used for data availability in papers
 ExtData <- filter(allmodel0,Var %in% varlist$V1) %>% left_join(unique(varlist %>% rename(Var=V1,Variable=V2.y,Unit=V3) %>% select(Var,Variable,Unit))) %>% 
   select(-Var) %>% rename(Model=ModName,Year=Y) %>%
   select(Model,SCENARIO,Region,Variable,Unit,Year,Value) %>% 
@@ -229,44 +231,50 @@ if(AR6option=="on"){
 
 
 #---functions
+#function for default line plot
+funclinedef <- function(ii,plot.inp,Data4Plot){
+  linepalettewName1 <- linepalette[1:length(unique(Data4Plot$SCENARIO))]
+  names(linepalettewName1) <- unique(Data4Plot$SCENARIO)
+  miny <- min(Data4Plot$Y,2010) 
+  plot.X <- plot.inp + 
+    geom_line(data=filter(Data4Plot, ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
+    geom_point(data=filter(Data4Plot, ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=1.5,fill="white") +
+    MyThemeLine + scale_color_manual(values=linepalettewName1) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
+    scale_shape_manual(values = 1:length(unique(allmodelline$ModName))) +
+    xlab("year") + ylab(paste0(varlist$V2.y[varlist$V1==ii],"(",varlist$V3[varlist$V1==ii],")"))  +  ggtitle(varlist$V2.y[varlist$V1==ii]) +
+    annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+theme(legend.title=element_blank())
+      #Referece of statistics plot 
+  if(length(scenariomap$SCENARIO)<40){
+    plot.X <- plot.X +  geom_point(data=filter(Data4Plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
+  }
+  return(plot.X)
+} 
 #function for regional figure generation
 funcplotgen <- function(rr,progr){
   progr(message='region figures')
-  Data4plot0 <- filter(allmodelline,Region==rr)
+  Data4Plot0 <- filter(allmodelline,Region==rr)
   #---Line figures
-#  for (rr in region_spe){ Data4plot0 <- filter(allmodel,Region==rr) #For debug
+#  for (rr in region_spe){ Data4Plot0 <- filter(allmodel,Region==rr) #For debug
   for (i in 1:nrow(varlist)){
-    Data4plot <- filter(Data4plot0,Var==varlist$V1[i])
-    Data4plotAR6 <- filter(AR6DBIndload,Var==varlist$V1[i],Region==rr)
-    if(nrow(filter(Data4plot,ModName!="Reference"))>0){
-      miny <- min(Data4plot$Y) 
-      linepalettewName1 <- linepalette[1:length(unique(Data4plot$SCENARIO))]
-      names(linepalettewName1) <- unique(Data4plot$SCENARIO)
-      numitem <- nrow(unique(select(Data4plot,c(SCENARIO,ModName)))) #Get number of items
+    Data4Plot <- filter(Data4Plot0,Var==varlist$V1[i])
+    Data4PlotAR6 <- filter(AR6DBIndload,Var==varlist$V1[i],Region==rr)
+    if(nrow(filter(Data4Plot,ModName!="Reference"))>0){
+      numitem <- nrow(unique(select(Data4Plot,c(SCENARIO,ModName)))) #Get number of items
       #AR6 data insert
-      if(nrow(Data4plotAR6)>0){
-        plot.0 <- ggplot() +
-          geom_ribbon(data=Data4plotAR6, mapping=aes(x=Y, ymin=`10p`,ymax=`90p`,fill=Category,group=Category),stat="identity",alpha=0.2)  + scale_fill_manual(values=AR6col,name="AR6 10-90%")
+      if(nrow(Data4PlotAR6)>0){
+        plot.00 <- ggplot() +
+          geom_ribbon(data=Data4PlotAR6, mapping=aes(x=Y, ymin=`10p`,ymax=`90p`,fill=Category,group=Category),stat="identity",alpha=0.2)  + scale_fill_manual(values=AR6col,name="AR6 10-90%")
       }else{
-        plot.0 <- ggplot()
+        plot.00 <- ggplot()
       }
       #Main plot 
-      plot.0 <- plot.0 + 
-        geom_line(data=filter(Data4plot,ModName!="Reference"),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
-        geom_point(data=filter(Data4plot,ModName!="Reference"),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=1.5,fill="white") +
-        MyThemeLine + scale_color_manual(values=linepalettewName1,name="SCENARIO") + scale_x_continuous(breaks=seq(miny,maxy,10)) +
-        scale_shape_manual(values = 1:length(unique(allmodelline$ModName))) +
-        xlab("year") + ylab(paste0(varlist$V2.y[i],"(",varlist$V3[i],")") ) +  ggtitle(paste0(rr,expression("\n"),varlist$V2.y[i])) +
-        annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
-        theme(legend.title=element_blank()) 
-      #Referece of statistics plot 
-      plot.0 <- plot.0 +  geom_point(data=filter(Data4plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
+      plot.0 <- funclinedef(varlist$V1[i],plot.00,Data4Plot)
       ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/line/",varlist$V1[i],"_",rr,".png"), dpi = 72, width=max(7,5+numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE)
       ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/svg/line/",varlist$V1[i],"_",rr,".svg"), width=max(7,numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE,device = "svg", units = "in")
       allplot[[nalist[i]]] <- plot.0
       allplot_nonleg[[nalist[i]]] <- plot.0+ theme(legend.position="none")
     }
-    plotflag[[nalist[i]]] <- nrow(filter(Data4plot,ModName!="Reference"))
+    plotflag[[nalist[i]]] <- nrow(filter(Data4Plot,ModName!="Reference"))
   }
   #---merged figures
   #Final energy consumption by sectors and fuels
@@ -287,7 +295,7 @@ funcplotgen <- function(rr,progr){
   ggsave(pp_tfcind, file=paste0(outdir,"byRegion/",rr,"/svg/merge/tfcind_",rr,".svg"), width=30, height=20,device = "svg", units = "in",limitsize = FALSE)
   #Main indicators
   p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["GDP_MER"]]), pattern = "guide-box")
-  if(nrow(filter(Data4plot0,Var=="Pol_Cos_GDP_Los_rat"))>0){
+  if(nrow(filter(Data4Plot0,Var=="Pol_Cos_GDP_Los_rat"))>0){
     p_legend2 <- gtable::gtable_filter(ggplotGrob(allplot[["Pol_Cos_GDP_Los_rat"]]), pattern = "guide-box")
     pp_main <- plot_grid(allplot_nonleg[["GDP_MER"]],allplot_nonleg[["Pop"]],allplot_nonleg[["Tem_Glo_Mea"]],allplot_nonleg[["Frc"]],p_legend1,
                        allplot_nonleg[["Emi_CO2_Ene_and_Ind_Pro"]],allplot_nonleg[["Emi_CO2"]],allplot_nonleg[["Emi_Kyo_Gas"]],allplot_nonleg[["Prm_Ene"]],p_legend1,
@@ -379,18 +387,18 @@ funcAreaPlotSpe <- function(ZZ,ZZ2,ZZ3,AreaItem){
 }
 
 funcAreaPlotGen <- function(rr,progr){
-  Data4plot <- filter(allmodel_area,Region==rr)
+  Data4Plot <- filter(allmodel_area,Region==rr)
 #  for( rr in as.vector(region_load)){
   for(AreaItem in as.vector(areamappara$Class)){
-    XX <- Data4plot %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
+    XX <- Data4Plot %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
       filter(Class==AreaItem & ModName!="Reference") %>% select(ModName,SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
     if(nrow(XX)>0){
-      XX2 <- Data4plot %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
+      XX2 <- Data4Plot %>% filter(Var %in% as.vector(areamap$Var)) %>% left_join(areamap,by="Var") %>% ungroup() %>% 
         filter(Class==AreaItem & ModName=="Reference") %>% select(-SCENARIO,-ModName,Ind,Y,Value,order)  %>% arrange(order)%>%
         filter(Y<=2015)
-      XX3 <- Data4plot %>% filter(Var==areamappara$lineVar[areamappara$Class==AreaItem] & ModName!="Reference") %>% select(ModName,SCENARIO,Var,Y,Value)
-      numitem1 <- length(as.vector(unique(Data4plot$ModName))) #Get number of items
-      numitem2 <- length(as.vector(unique(Data4plot$SCENARIO))) #Get number of items
+      XX3 <- Data4Plot %>% filter(Var==areamappara$lineVar[areamappara$Class==AreaItem] & ModName!="Reference") %>% select(ModName,SCENARIO,Var,Y,Value)
+      numitem1 <- length(as.vector(unique(Data4Plot$ModName))) #Get number of items
+      numitem2 <- length(as.vector(unique(Data4Plot$SCENARIO))) #Get number of items
       numcol <- floor(sqrt(numitem1*numitem2))
       plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
       plot3 <- plot1 + ggtitle(paste(rr,AreaItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
@@ -407,25 +415,25 @@ funcAreaPlotGen <- function(rr,progr){
 }
 
 funcBarPlotGen <- function(rr,progr){
-  Data4plot0 <- filter(allmodel_bar,Region==rr)
+  Data4Plot0 <- filter(allmodel_bar,Region==rr)
 #  for( rr in as.vector(region_load)){
   for (i in 1:nrow(varbarlist)){
-    Data4plot <- filter(Data4plot0,Var==varbarlist$V1[i])
-#    Data4plotAR6 <- filter(AR6DBIndload,Var==varbarlist$V1[i],Region==rr)
-    miny <- min(Data4plot$Y) 
-    linepalettewName1 <- linepalette[1:length(unique(Data4plot$SCENARIO))]
-    names(linepalettewName1) <- unique(Data4plot$SCENARIO)
-    numitem <- nrow(unique(select(Data4plot,c(SCENARIO,ModName)))) #Get number of items
+    Data4Plot <- filter(Data4Plot0,Var==varbarlist$V1[i])
+#    Data4PlotAR6 <- filter(AR6DBIndload,Var==varbarlist$V1[i],Region==rr)
+    miny <- min(Data4Plot$Y) 
+    linepalettewName1 <- linepalette[1:length(unique(Data4Plot$SCENARIO))]
+    names(linepalettewName1) <- unique(Data4Plot$SCENARIO)
+    numitem <- nrow(unique(select(Data4Plot,c(SCENARIO,ModName)))) #Get number of items
       #AR6 data insert
-#      if(nrow(Data4plotAR6)>0){
+#      if(nrow(Data4PlotAR6)>0){
 #        plot.0 <- ggplot() +
-#          geom_ribbon(data=Data4plotAR6, mapping=aes(x=Y, ymin=`10p`,ymax=`90p`,fill=Category,group=Category),stat="identity",alpha=0.2)  + scale_fill_manual(values=AR6col,name="AR6 10-90%")
+#          geom_ribbon(data=Data4PlotAR6, mapping=aes(x=Y, ymin=`10p`,ymax=`90p`,fill=Category,group=Category),stat="identity",alpha=0.2)  + scale_fill_manual(values=AR6col,name="AR6 10-90%")
 #      }else{
         plot.0 <- ggplot()
 #      }
       #Main plot 
       plot.0 <- plot.0 + 
-        geom_bar(data=filter(Data4plot,Y %in% c(2030,2050,2100)),aes(x=interaction(SCENARIO,ModName), y = Value , color=SCENARIO, fill=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
+        geom_bar(data=filter(Data4Plot,Y %in% c(2030,2050,2100)),aes(x=interaction(SCENARIO,ModName), y = Value , color=SCENARIO, fill=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
         MyThemeLine + scale_color_manual(values=linepalettewName1,name="SCENARIO")+scale_fill_manual(values=linepalettewName1,name="SCENARIO")+
         xlab("Scenario") + ylab(paste0(varbarlist$V2.y[i],"(",varbarlist$V3[i],")") ) +  ggtitle(paste0(rr,expression("\n"),varbarlist$V2.y[i])) +
         theme(legend.title=element_blank()) +facet_wrap(~Y,scales="free")
@@ -436,34 +444,21 @@ funcBarPlotGen <- function(rr,progr){
 
 
 # making cross regional figure
-plotXregion <-function(InputX,ii,rr,InputAR6){
+plotXregion <-function(InputX0,ii,rr,InputAR6){
 #  for(ii in lst$varlist){
-  InputX <- filter(allmodelline,Region %in% rr)
-  linepalettewName1 <- linepalette[1:length(unique(filter(InputX,Var==ii)$SCENARIO))]
-  names(linepalettewName1) <- unique(filter(InputX,Var==ii)$SCENARIO)
+  InputX <- filter(InputX0,Region %in% rr)
   Data4Plot <- filter(InputX,Var==ii)
   Data4Plot$Region <- factor(Data4Plot$Region,levels=rr)
-  Data4plotAR6 <- filter(InputAR6,Var==ii & Region %in% rr)
-  miny <- min(Data4Plot$Y,2010) 
+  Data4PlotAR6 <- filter(InputAR6,Var==ii & Region %in% rr)
   #AR6 data insert
-  if(nrow(Data4plotAR6)>0){
-    plot.0 <- ggplot() +
-      geom_ribbon(data=Data4plotAR6, mapping=aes(x=Y, ymin=`10p`,ymax=`90p`,fill=Category,group=Category),stat="identity",alpha=0.2)  + scale_fill_manual(values=AR6col,name="AR6 10-90%")
+  if(nrow(Data4PlotAR6)>0){
+    plot.00 <- ggplot() +
+      geom_ribbon(data=Data4PlotAR6, mapping=aes(x=Y, ymin=`10p`,ymax=`90p`,fill=Category,group=Category),stat="identity",alpha=0.2)  + scale_fill_manual(values=AR6col,name="AR6 10-90%")
   }else{
-    plot.0 <- ggplot()
+    plot.00 <- ggplot()
   }
-  plot.0 <- plot.0 + 
-    geom_line(data=filter(Data4Plot, ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
-    geom_point(data=filter(Data4Plot, ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=1.5,fill="white") +
-    MyThemeLine + scale_color_manual(values=linepalettewName1) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
-    scale_shape_manual(values = 1:length(unique(InputX$ModName))) +
-    xlab("year") + ylab(paste0(varlist$V2.y[varlist$V1==ii],"(",varlist$V3[varlist$V1==ii],")"))  +  ggtitle(paste("Multi-regions",expression("\n"),varlist$V2.y[varlist$V1==ii],sep=" ")) +
-    annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+ 
-    theme(legend.title=element_blank()) +facet_wrap(~Region,scales="free")
-  if(length(scenariomap$SCENARIO)<40){
-    plot.0 <- plot.0 +
-      geom_point(data=filter(Data4Plot, ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
-  }
+  plot.0 <- funclinedef(ii,plot.00,Data4Plot)
+  plot.0 <- plot.0 +facet_wrap(~Region,scales="free")
   return(plot.0)
 }
 mergefigGen <- function(ii,progr){
@@ -494,18 +489,18 @@ mergefigGen <- function(ii,progr){
 
 #function for area figure cross region
 funcAreaXregionPlotGen <- function(AreaItem,progr){
-  Data4plot <- allmodel_area.x %>% left_join(areamap,by="Var") %>% ungroup() %>% 
+  Data4Plot <- allmodel_area.x %>% left_join(areamap,by="Var") %>% ungroup() %>% 
       filter(Class==AreaItem) %>% select(ModName,SCENARIO,Region,Ind,Y,Value,order)  %>% arrange(order)
-  ModelList <- unique(as.vector(Data4plot$ModName))
+  ModelList <- unique(as.vector(Data4Plot$ModName))
   ScenarioList <- unique(as.vector(scenariomap$Name))
   #scenario model loop
   for(SC in ScenarioList){
     for(MD in ModelList){
-      XX <- Data4plot %>% filter(ModName==MD & SCENARIO==SC) %>% select(Region,Ind,Y,Value,order)
-      XX2 <- Data4plot %>% filter(ModName=="Reference") %>% select(Region,Ind,Y,Value,order)  %>% arrange(order)%>% filter(Y<=2015)
+      XX <- Data4Plot %>% filter(ModName==MD & SCENARIO==SC) %>% select(Region,Ind,Y,Value,order)
+      XX2 <- Data4Plot %>% filter(ModName=="Reference") %>% select(Region,Ind,Y,Value,order)  %>% arrange(order)%>% filter(Y<=2015)
       XX3 <- allmodel_area.x %>% filter(ModName==MD & SCENARIO==SC & Var %in% as.vector(areamappara$lineVar[areamappara$Class==AreaItem]) & ModName!="Reference") %>% select(Region,Var,Y,Value)
           if(nrow(XX)>0){      
-        numitem <- length(as.vector(unique(Data4plot$Region))) #Get number of items
+        numitem <- length(as.vector(unique(Data4Plot$Region))) #Get number of items
         plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
         plot3 <- plot1 + facet_wrap( ~ Region,scales="free_y",ncol=mergecolnum) + ggtitle(paste(AreaItem,SC,sep=" "))
         ggsave(plot3, file=paste0(outdir,"multiReg",RegC,"/png/merge/",SC,"_",MD,"_",AreaItem,".png"), dpi = 72, width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,limitsize=FALSE)
