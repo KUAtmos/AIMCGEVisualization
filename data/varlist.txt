@@ -141,7 +141,9 @@ Prm_Ene_Win	1
 Agr_Dem	1
 Agr_Dem_Bio	1
 Foo_Ene_Sup_Per_Cap	1
-Yie_Cer	1
+Yie_Cro_Cer	1
+Yie_Cro_Sug_Cro	2
+Yie_Cro_Oil_Cro	2
 Agr_Yie_Ene_Cro	1
 Sec_Ene_Ele_Heat	1
 Sec_Ene_Ele_Heat_Bio	1
@@ -264,3 +266,10 @@ Car_Rem_Frs	1
 Car_Rem_Soi_Car_Seq	1
 Car_Rem_Bio	1
 Car_Rem_Lan_Use_Bio	1
+Cap_Ele_Coa	1
+Cap_Ele_Gas	1
+Cap_Ele_Bio	1
+Cap_Ele_Nuc	1
+Cap_Ele_Hyp	1
+Cap_Ele_SolarPV	1
+Cap_Ele_Win	1

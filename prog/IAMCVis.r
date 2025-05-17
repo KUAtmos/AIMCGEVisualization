@@ -249,6 +249,8 @@ funclinedef <- function(ii,plot.inp,Data4Plot){
   }
   return(plot.X)
 } 
+
+
 #function for regional figure generation
 funcplotgen <- function(rr,progr){
   progr(message='region figures')
@@ -277,68 +279,68 @@ funcplotgen <- function(rr,progr){
     plotflag[[nalist[i]]] <- nrow(filter(Data4Plot,ModName!="Reference"))
   }
   #---merged figures
-  #Final energy consumption by sectors and fuels
-  p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Fin_Ene"]]), pattern = "guide-box")
-  pp_tfcind <- plot_grid(
-                         allplot_nonleg[["Fin_Ene"]],    allplot_nonleg[["Fin_Ene_Ele_Heat"]],    allplot_nonleg[["Fin_Ene_Liq_and_Gas"]],
-                           allplot_nonleg[["Fin_Ene_Gas"]],allplot_nonleg[["Fin_Ene_Liq"]],allplot_nonleg[["Fin_Ene_SolidsCoa"]],allplot_nonleg[["Fin_Ene_SolidsBio"]],allplot_nonleg[["Fin_Ene_Hyd"]],
-                         allplot_nonleg[["Fin_Ene_Ind"]],allplot_nonleg[["Fin_Ene_Ind_Ele_Heat"]],allplot_nonleg[["Fin_Ene_Ind_Liq_and_Gas"]],
-                           allplot_nonleg[["Fin_Ene_Ind_Gas"]],allplot_nonleg[["Fin_Ene_Ind_Liq"]],allplot_nonleg[["Fin_Ene_Ind_SolidsCoa"]],allplot_nonleg[["Fin_Ene_Ind_SolidsBio"]],allplot_nonleg[["Fin_Ene_Ind_Hyd"]],
-                         allplot_nonleg[["Fin_Ene_Com"]],allplot_nonleg[["Fin_Ene_Com_Ele_Heat"]],allplot_nonleg[["Fin_Ene_Com_Liq_and_Gas"]],
-                           allplot_nonleg[["Fin_Ene_Com_Gas"]],allplot_nonleg[["Fin_Ene_Com_Liq"]],allplot_nonleg[["Fin_Ene_Com_SolidsCoa"]],allplot_nonleg[["Fin_Ene_Com_SolidsBio"]],allplot_nonleg[["Fin_Ene_Com_Hyd"]],
-                         allplot_nonleg[["Fin_Ene_Res"]],allplot_nonleg[["Fin_Ene_Res_Ele_Heat"]],allplot_nonleg[["Fin_Ene_Res_Liq_and_Gas"]],
-                           allplot_nonleg[["Fin_Ene_Res_Gas"]],allplot_nonleg[["Fin_Ene_Res_Liq"]],allplot_nonleg[["Fin_Ene_Res_SolidsCoa"]],allplot_nonleg[["Fin_Ene_Res_SolidsBio"]],allplot_nonleg[["Fin_Ene_Res_Hyd"]],
-                         allplot_nonleg[["Fin_Ene_Tra"]],allplot_nonleg[["Fin_Ene_Tra_Ele"]],     allplot_nonleg[["Fin_Ene_Tra_Liq_and_Gas"]],
-                           allplot_nonleg[["Fin_Ene_Tra_Gas"]],allplot_nonleg[["Fin_Ene_Tra_Liq_Bio"]],allplot_nonleg[["Fin_Ene_Tra_Liq_Oil"]],allplot_nonleg[["Fin_Ene_Tra_Hyd"]],p_legend1,
-                         nrow=5,ncol=8,rel_widths =c(1,1,1,1,1,1,1,1),align = "hv")
-  ggsave(pp_tfcind, file=paste0(outdir,"byRegion/",rr,"/png/merge/tfcind_",rr,".png"), dpi = 72, width=30, height=20,limitsize=FALSE)
-  ggsave(pp_tfcind, file=paste0(outdir,"byRegion/",rr,"/svg/merge/tfcind_",rr,".svg"), width=30, height=20,device = "svg", units = "in",limitsize = FALSE)
-  #Main indicators
-  p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["GDP_MER"]]), pattern = "guide-box")
-  if(nrow(filter(Data4Plot0,Var=="Pol_Cos_GDP_Los_rat"))>0){
-    p_legend2 <- gtable::gtable_filter(ggplotGrob(allplot[["Pol_Cos_GDP_Los_rat"]]), pattern = "guide-box")
-    pp_main <- plot_grid(allplot_nonleg[["GDP_MER"]],allplot_nonleg[["Pop"]],allplot_nonleg[["Tem_Glo_Mea"]],allplot_nonleg[["Frc"]],p_legend1,
-                       allplot_nonleg[["Emi_CO2_Ene_and_Ind_Pro"]],allplot_nonleg[["Emi_CO2"]],allplot_nonleg[["Emi_Kyo_Gas"]],allplot_nonleg[["Prm_Ene"]],p_legend1,
-                       allplot_nonleg[["Pop_Ris_of_Hun"]],allplot_nonleg[["Prc_Prm_Ene_Oil"]],allplot_nonleg[["Prc_Sec_Ene_Ele"]],allplot_nonleg[["Prc_Agr_NonEneCro_Ind"]],p_legend1,
-                       allplot_nonleg[["Pol_Cos_GDP_Los_rat"]],allplot_nonleg[["Pol_Cos_Cns_Los_rat"]],allplot_nonleg[["Prc_Car"]],allplot_nonleg[["Prc_Car"]],p_legend2,
-                       nrow=4,rel_widths =c(1,1,1,1,1.5),align = "hv")
-  }else{
-    pp_main <- plot_grid(allplot_nonleg[["GDP_MER"]],allplot_nonleg[["Pop"]],allplot_nonleg[["Tem_Glo_Mea"]],p_legend1,
-                         allplot_nonleg[["Emi_CO2_Ene_and_Ind_Pro"]],allplot_nonleg[["Emi_CO2"]],allplot_nonleg[["Emi_Kyo_Gas"]],p_legend1,
-                         allplot_nonleg[["Pop_Ris_of_Hun"]],allplot_nonleg[["Prc_Prm_Ene_Oil"]],allplot_nonleg[["Prc_Sec_Ene_Ele"]],p_legend1,
-                         nrow=3,rel_widths =c(1,1,1,1.5),align = "hv")
+  # Utility function to extract legend and save plot grid
+  save_plot_grid <- function(plot_keys, legend_key, filename_base, nrow, ncol = NULL, width, height, rel_widths = NULL) {
+    # Extract legend from specified key
+    p_legend <- gtable::gtable_filter(ggplotGrob(allplot[[legend_key]]), pattern = "guide-box")
+    # Get list of ggplot objects
+    plots <- lapply(plot_keys, function(k) allplot_nonleg[[k]])
+    # Append legend
+    plots <- c(plots, list(p_legend))
+    # Create plot grid
+    g <- plot_grid(plotlist = plots, nrow = nrow, ncol = ncol, align = "hv", rel_widths = rel_widths)
+    # Save PNG and SVG
+    ggsave(g, file = paste0(outdir, "byRegion/", rr, "/png/merge/", filename_base, "_", rr, ".png"),
+           dpi = 72, width = width, height = height, limitsize = FALSE)
+    ggsave(g, file = paste0(outdir, "byRegion/", rr, "/svg/merge/", filename_base, "_", rr, ".svg"),
+           device = "svg", width = width, height = height, units = "in", limitsize = FALSE)
   }
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/png/merge/main_",rr,".png"), dpi = 72, width=18, height=15,limitsize=FALSE)
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/svg/merge/main_",rr,"svg"), width=18, height=15,device = "svg",limitsize = FALSE, units = "in")
+  
+  #Final energy consumption by sectors and fuels
+  tfcind_keys <- c(
+    "Fin_Ene", "Fin_Ene_Ele_Heat", "Fin_Ene_Liq_and_Gas", "Fin_Ene_Gas", "Fin_Ene_Liq",
+    "Fin_Ene_SolidsCoa", "Fin_Ene_SolidsBio", "Fin_Ene_Hyd",
+    "Fin_Ene_Ind", "Fin_Ene_Ind_Ele_Heat", "Fin_Ene_Ind_Liq_and_Gas", "Fin_Ene_Ind_Gas", "Fin_Ene_Ind_Liq",
+    "Fin_Ene_Ind_SolidsCoa", "Fin_Ene_Ind_SolidsBio", "Fin_Ene_Ind_Hyd",
+    "Fin_Ene_Com", "Fin_Ene_Com_Ele_Heat", "Fin_Ene_Com_Liq_and_Gas", "Fin_Ene_Com_Gas", "Fin_Ene_Com_Liq",
+    "Fin_Ene_Com_SolidsCoa", "Fin_Ene_Com_SolidsBio", "Fin_Ene_Com_Hyd",
+    "Fin_Ene_Res", "Fin_Ene_Res_Ele_Heat", "Fin_Ene_Res_Liq_and_Gas", "Fin_Ene_Res_Gas", "Fin_Ene_Res_Liq",
+    "Fin_Ene_Res_SolidsCoa", "Fin_Ene_Res_SolidsBio", "Fin_Ene_Res_Hyd",
+    "Fin_Ene_Tra", "Fin_Ene_Tra_Ele", "Fin_Ene_Tra_Liq_and_Gas", "Fin_Ene_Tra_Gas", "Fin_Ene_Tra_Liq_Bio",
+    "Fin_Ene_Tra_Liq_Oil", "Fin_Ene_Tra_Hyd"
+  )
+  save_plot_grid(tfcind_keys, "Fin_Ene", "tfcind", nrow = 5, ncol = 8, width = 30, height = 20, rel_widths = rep(1, 8))
+  #Main indicators
+  main_keys <- c(
+    "GDP_MER", "Pop", "Emi_CO2_Ene_and_Ind_Pro","Emi_CO2", "Emi_Kyo_Gas", "Prm_Ene",
+    "Pop_Ris_of_Hun", "Prc_Prm_Ene_Oil", "Prc_Sec_Ene_Ele", "Prc_Agr_NonEneCro_Ind", 
+    "Pol_Cos_GDP_Los_rat", "Pol_Cos_Cns_Los_rat", "Prc_Car","Tem_Glo_Mea", "Frc"
+  )
+  save_plot_grid(main_keys, "GDP_MER", "main", nrow = 4, ncol = 5, width = 20, height = 15, rel_widths = rep(1, 5))
 
 #Emissions
-  p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Emi_CO2"]]), pattern = "guide-box")
-  pp_main <- plot_grid(allplot_nonleg[["Emi_CO2"]],allplot_nonleg[["Emi_CH4"]],allplot_nonleg[["Emi_N2O"]],allplot_nonleg[["Emi_F_G"]],
-                       allplot_nonleg[["Emi_Sul"]],allplot_nonleg[["Emi_NOx"]],allplot_nonleg[["Emi_BC"]],allplot_nonleg[["Emi_OC"]],
-                       allplot_nonleg[["Emi_VOC"]],allplot_nonleg[["Emi_NH3"]],allplot_nonleg[["Emi_CO"]],allplot_nonleg[["Emi_Kyo_Gas"]],
-                       allplot_nonleg[["Tem_Glo_Mea"]],allplot_nonleg[["Frc"]],p_legend1,
-                       nrow=4,rel_widths =c(1,1,1,1),align = "hv")
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/png/merge/Emissions_",rr,".png"), dpi = 72, width=18, height=15,limitsize=FALSE)
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/svg/merge/Emissions_",rr,".svg"), width=18, height=15,device = "svg",limitsize = FALSE, units = "in")
+  emissions_keys <- c(
+    "Emi_CO2", "Emi_CH4", "Emi_N2O", "Emi_F_G", "Emi_Sul", "Emi_NOx", "Emi_BC", "Emi_OC",
+    "Emi_VOC", "Emi_NH3", "Emi_CO", "Emi_Kyo_Gas", "Tem_Glo_Mea", "Frc"
+  )
+  save_plot_grid(emissions_keys, "Emi_CO2", "Emissions", nrow = 4, width = 18, height = 15, rel_widths = rep(1, 4))
 
 #Land use
-  p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Lan_Cov_Pst"]]), pattern = "guide-box")
-  pp_main <- plot_grid(allplot_nonleg[["Lan_Cov_Cro"]],allplot_nonleg[["Lan_Cov_Pst"]],allplot_nonleg[["Lan_Cov_Cro_Ene_Cro"]],allplot_nonleg[["Lan_Cov_Frs_Aff_and_Ref"]],
-                       allplot_nonleg[["Lan_Cov_Cro_Non_Ene_Cro"]],allplot_nonleg[["Lan_Cov_Frs"]],allplot_nonleg[["Lan_Cov_Frs_Nat_Frs"]],
-                       allplot_nonleg[["Lan_Cov_Oth_Nat_Lan"]],allplot_nonleg[["Lan_Cov_Oth_Lan"]],allplot_nonleg[["Lan_Cov_Bui_Are"]],p_legend1,
-                       nrow=3,rel_widths =c(1,1,1,1),align = "hv")
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/png/merge/LanduseLine_",rr,".png"), dpi = 72, width=15, height=15,limitsize=FALSE)
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/svg/merge/LanduseLine_",rr,"svg"), width=15, height=15,device = "svg",limitsize = FALSE, units = "in")
+  landuse_keys <- c(
+    "Lan_Cov_Cro", "Lan_Cov_Pst", "Lan_Cov_Cro_Ene_Cro", "Lan_Cov_Frs_Aff_and_Ref",
+    "Lan_Cov_Cro_Non_Ene_Cro", "Lan_Cov_Frs", "Lan_Cov_Frs_Nat_Frs",
+    "Lan_Cov_Oth_Nat_Lan", "Lan_Cov_Oth_Lan", "Lan_Cov_Bui_Are"
+  )
+  save_plot_grid(landuse_keys, "Lan_Cov_Pst", "LanduseLine", nrow = 3, width = 15, height = 15, rel_widths = rep(1, 4))
 
 #Price
-  p_legend1 <- gtable::gtable_filter(ggplotGrob(allplot[["Prc_Prm_Ene_Oil"]]), pattern = "guide-box")
-  pp_main <- plot_grid(allplot_nonleg[["Prc_Prm_Ene_Oil"]],allplot_nonleg[["Prc_Prm_Ene_Gas"]],allplot_nonleg[["Prc_Prm_Ene_Bio"]],
-                       allplot_nonleg[["Prc_Sec_Ene_Liq_Bio"]],allplot_nonleg[["Prc_Sec_Ene_Ele_MWh"]],allplot_nonleg[["Prc_Sec_Ene_Hyd"]],
-                       allplot_nonleg[["Prc_Fin_Ene_Res_and_Com_Res"]],allplot_nonleg[["Prc_Fin_Ene_Res_and_Com_Res_Ele"]],allplot_nonleg[["Prc_Fin_Ene_Res_and_Com_Res_wo_car_pri"]],
-                       allplot_nonleg[["Prc_Agr_NonEneCro_Ind"]],allplot_nonleg[["Prc_Agr_Liv_Ind"]],p_legend1,
-                       nrow=4,rel_widths =c(1,1,1),align = "hv")
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/png/merge/Price_",rr,".png"), dpi = 72, width=15, height=15,limitsize=FALSE)
-  ggsave(pp_main, file=paste0(outdir,"byRegion/",rr,"/svg/merge/Price_",rr,".svg"), width=15, height=15,device = "svg",limitsize = FALSE, units = "in")
+  price_keys <- c(
+    "Prc_Prm_Ene_Oil", "Prc_Prm_Ene_Gas", "Prc_Prm_Ene_Bio", "Prc_Sec_Ene_Liq_Bio",
+    "Prc_Sec_Ene_Ele_MWh", "Prc_Sec_Ene_Hyd", "Prc_Fin_Ene_Res_and_Com_Res",
+    "Prc_Fin_Ene_Res_and_Com_Res_Ele", "Prc_Fin_Ene_Res_and_Com_Res_wo_car_pri",
+    "Prc_Agr_NonEneCro_Ind", "Prc_Agr_Liv_Ind"
+  )
+  save_plot_grid(price_keys, "Prc_Prm_Ene_Oil", "Price", nrow = 4, width = 15, height = 15, rel_widths = rep(1, 3))
 
   #----r2ppt
   #The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
@@ -358,6 +360,7 @@ funcplotgen <- function(rr,progr){
     }
   }
 }
+
 #function for regional area figure generation (ZZ: data for figure, ZZ2: Reference data, ZZ3: data for total line)
 funcAreaPlotSpe <- function(ZZ,ZZ2,ZZ3,AreaItem){
   miny <- min(ZZ$Y,ZZ2$Y) 
@@ -465,25 +468,26 @@ mergefigGen <- function(ii,progr){
   progr(message='merge figures')
   colwidth <- floor(length(as.vector(unique(allmodelline$SCENARIO)))/14)+1
 #  for(ii in lst$varlist){
-  if(nrow(filter(allmodelline,Var==ii  & ModName!="Reference"))>0){
-    plot.reg <- plotXregion(filter(allmodelline,Region %in% R17R),ii,R17R,filter(AR6DBIndload,Region %in% R5R))
-    ggsave(plot.reg, file=paste0(outdir,"multiReg/png/line/",ii,"_R17.png"), dpi = 72, width=12+colwidth*4, height=12,limitsize=FALSE)
-    ggsave(plot.reg, file=paste0(outdir,"multiReg/svg/line/",ii,"_R17.svg"), width=12+colwidth*4, height=12,device = "svg",limitsize = FALSE, units = "in")
+# Function to create and save regional plots
+  save_region_plot <- function(region_code, region_vector, out_subdir, width, height) {
+    data_filtered <- filter(allmodelline, Var == ii, Region %in% region_vector, ModName != "Reference")
+    if (nrow(data_filtered) > 0) {
+      # Generate the regional plot
+      plot.reg <- plotXregion(data_filtered, ii, region_vector,filter(AR6DBIndload, Region %in% region_vector))
+      # Construct the output base path (PNG and SVG will use this)
+      ggsave(plot.reg, file = paste0(outdir, out_subdir, "png/line/", ii, "_", region_code, ".png"), dpi = 72,width = width, height = height, limitsize = FALSE)    
+      ggsave(plot.reg, file = paste0(outdir, out_subdir, "svg/line/", ii, "_", region_code, ".svg"), device = "svg",width = width, height = height, units = "in", limitsize = FALSE)
+    }
   }
-  if(nrow(filter(allmodelline,Var==ii & Region %in% R5R & ModName!="Reference"))>0){
-    plot.reg <- plotXregion(filter(allmodelline,Region %in% R5R),ii,R5R,filter(AR6DBIndload,Region %in% R5R))
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR5/png/line/",ii,"_R5.png"), dpi = 72, width=colwidth*4+10, height=7.5,limitsize=FALSE)
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR5/svg/line/",ii,"_R5.svg"), width=colwidth*4+10, height=7.5,device = "svg",limitsize = FALSE, units = "in")
-  }
-  if(nrow(filter(allmodelline,Var==ii & Region %in% R2R & ModName!="Reference"))>0){
-    plot.reg <- plotXregion(filter(allmodelline,Region %in% R2R),ii,R2R,filter(AR6DBIndload,Region %in% R2R))
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR2/png/line/",ii,"_R2.png"), dpi = 72, width=colwidth*4+10, height=5,limitsize=FALSE)
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR2/svg/line/",ii,"_R2.svg"), width=colwidth*4+10, height=5,device = "svg",limitsize = FALSE, units = "in")
-  }
-  if(nrow(filter(allmodelline,Var==ii & Region %in% R10R & ModName!="Reference"))>0){
-    plot.reg <- plotXregion(filter(allmodelline,Region %in% R10R),ii,R10R,filter(AR6DBIndload,Region %in% R10R))
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR10/png/line/",ii,"_R10.png"), dpi = 72, width=colwidth*4+10, height=10,limitsize=FALSE)
-    ggsave(plot.reg, file=paste0(outdir,"multiRegR10/svg/line/",ii,"_R10.svg"), width=colwidth*4+10, height=10,device = "svg",limitsize = FALSE, units = "in")
+# Plot settings for each region group
+  region_plot_settings <- list(
+    list(code = "R17", vec = R17R, subdir = "multiReg/",   height = 12),
+    list(code = "R5",  vec = R5R,  subdir = "multiRegR5/", height = 7.5),
+    list(code = "R2",  vec = R2R,  subdir = "multiRegR2/", height = 5),
+    list(code = "R10", vec = R10R, subdir = "multiRegR10/", height = 10)
+  )
+  for (setting in region_plot_settings) {
+    save_region_plot(setting$code, setting$vec, setting$subdir, colwidth * 4 + 10, setting$height)
   }
 }
 
