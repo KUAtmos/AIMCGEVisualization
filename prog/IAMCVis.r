@@ -174,26 +174,42 @@ allmodel0 <- CGEload1
 #IEA energy balance information
 file.copy(paste0(AIMHubdir,"data/AIMHubData/main/IEAEBIAMCTemplate.gdx"), paste0("../data/IEAEBIAMCTemplate.gdx"),overwrite = TRUE)
 if(args[8]=="global"){
-  ieaparaname <- c("IAMCtemp17","Sr17")  
-  edgarparaname <- c("EDGAR_GAMS_Format_R17","R17")  
+  IEAparaname <- c("IAMCtemp17","Sr17","VEMF")  
+  EDGARparaname <- c("EDGAR_GAMS_Format_R17","R17","VEMF")  
+  CEDSparaname <- c("EmisCEDSIAMC","RIAMC","VIAMC")  
 }else{
-  ieaparaname <- c("IAMCtemp106","Sr106")  
-  edgarparaname <- c("EDGAR_GAMS_Format_R106","R106")  
+  IEAparaname <- c("IAMCtemp106","Sr106","VEMF")  
+  EDGARparaname <- c("EDGAR_GAMS_Format_R106","R106","VEMF")  
+  CEDSparaname <- c("EmisCEDSIAMCR106","RIAMC","VIAMC")  
 }
-eval(parse(text=paste0("IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','",ieaparaname[1],"') %>% rename('Value'=",ieaparaname[1],",'Var'=VEMF,'Y'=St,'Region'=",ieaparaname[2],",'SCENARIO'=SceEneMod) %>%
-  select(Region,Var,Y,Value,SCENARIO) %>% filter(Region %in% c(R5R,R10R,R17R,R2R)) %>% mutate(ModName='Reference')")))
+eval(parse(text=paste0("IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','",IEAparaname[1],"') %>% rename('Value'=",IEAparaname[1],",'Var'=",IEAparaname[3],",'Y'=St,'Region'=",IEAparaname[2],",'SCENARIO'=SceEneMod) %>%
+  select(Region,Var,Y,Value,SCENARIO) %>% mutate(ModName='Reference')")))
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
 IEAEB1 <- filter(IEAEB0,Y<=2020 & Y>=1990)
 
 #EDGAR emissions
 file.copy(paste0(AIMHubdir,"data/AIMHubData/EDGAR/output/gdx/aggregation/EDGARv8_0_summary.gdx"), paste0("../data/EDGARv8_0_summary.gdx"),overwrite = TRUE)
-eval(parse(text=paste0("EDGAR0 <- rgdx.param('../data/EDGARv8_0_summary.gdx','",edgarparaname[1],"') %>% rename('Value'=",edgarparaname[1],",'Var'=VEMF,'Region'=",edgarparaname[2],") %>%
-  select(Region,Var,Y,Value) %>% filter(Region %in% c(R5R,R10R,R17R,R2R)) %>% mutate(ModName='Reference',SCENARIO='EDGAR8.0')")))
+eval(parse(text=paste0("EDGAR0 <- rgdx.param('../data/EDGARv8_0_summary.gdx','",EDGARparaname[1],"') %>% rename('Value'=",EDGARparaname[1],",'Var'=",EDGARparaname[3],",'Region'=",EDGARparaname[2],") %>%
+  select(Region,Var,Y,Value) %>% mutate(ModName='Reference',SCENARIO='EDGAR8.0')")))
 EDGAR0$Y <- as.numeric(levels(EDGAR0$Y))[EDGAR0$Y]
 EDGAR1 <- filter(EDGAR0,Y<=2020 & Y>=1990)
 
+#CEDS emissions
+file.copy(paste0(AIMHubdir,"data/AIMHubData/main/CEDS_2025.gdx"), paste0("../data/CEDS2025.gdx"),overwrite = TRUE)
+eval(parse(text=paste0("CEDS0 <- rgdx.param('../data/CEDS2025.gdx','",CEDSparaname[1],"') %>% rename('Value'=",CEDSparaname[1],",'Var'=",CEDSparaname[3],",'Region'=",CEDSparaname[2],") %>%
+  select(Region,Var,Y,Value) %>% mutate(ModName='Reference',SCENARIO='CEDS2025')")))
+CEDS0$Y <- as.numeric(levels(CEDS0$Y))[CEDS0$Y]
+CEDS1 <- filter(CEDS0,Y<=2023 & Y>=1990)
+
+if(args[8]=="global"){
+  EDGAR1 <- filter(EDGAR1,Region %in% c(R5R,R10R,R17R,R2R))
+  IEAEB1 <- filter(IEAEB1,Region %in% c(R5R,R10R,R17R,R2R))
+  CEDS1 <- filter(CEDS1,Region %in% c(R5R,R10R,R17R,R2R))
+}
+
+
 #Merging IEA energy balance table and EDGAR emissions
-allmodel <- rbind(allmodel0,IEAEB1,EDGAR1) %>% select(ModName,Region,Var,SCENARIO,Y,Value) 
+allmodel <- rbind(allmodel0,IEAEB1,EDGAR1,CEDS1) %>% select(ModName,Region,Var,SCENARIO,Y,Value) 
 maxy <- max(allmodel$Y)
 #maxy <- 2050
 linepalettewName <- linepalette[1:length(unique(allmodel$SCENARIO))]
@@ -243,8 +259,8 @@ funclinedef <- function(ii,plot.inp,Data4Plot){
     scale_shape_manual(values = 1:length(unique(allmodelline$ModName))) +
     xlab("year") + ylab(paste0(varlist$V2.y[varlist$V1==ii],"(",varlist$V3[varlist$V1==ii],")"))  +  ggtitle(varlist$V2.y[varlist$V1==ii]) +
     annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+theme(legend.title=element_blank())
-      #Referece of statistics plot 
-  if(length(scenariomap$SCENARIO)<40){
+      #Reference of statistics plot 
+  if(length(scenariomap$SCENARIO)<70){
     plot.X <- plot.X +  geom_point(data=filter(Data4Plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
   }
   return(plot.X)
@@ -271,10 +287,12 @@ funcplotgen <- function(rr,progr){
       }
       #Main plot 
       plot.0 <- funclinedef(varlist$V1[i],plot.00,Data4Plot)
-      ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/line/",varlist$V1[i],"_",rr,".png"), dpi = 72, width=max(7,5+numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE)
-      ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/svg/line/",varlist$V1[i],"_",rr,".svg"), width=max(7,numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE,device = "svg", units = "in")
       allplot[[nalist[i]]] <- plot.0
       allplot_nonleg[[nalist[i]]] <- plot.0+ theme(legend.position="none")
+      if(varlist$V2.x[i]<=2){
+        ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/line/",varlist$V1[i],"_",rr,".png"), dpi = 72, width=max(7,5+numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE)
+        ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/svg/line/",varlist$V1[i],"_",rr,".svg"), width=max(7,numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE,device = "svg", units = "in")
+      }
     }
     plotflag[[nalist[i]]] <- nrow(filter(Data4Plot,ModName!="Reference"))
   }
@@ -324,6 +342,24 @@ funcplotgen <- function(rr,progr){
     "Emi_VOC", "Emi_NH3", "Emi_CO", "Emi_Kyo_Gas", "Tem_Glo_Mea", "Frc"
   )
   save_plot_grid(emissions_keys, "Emi_CO2", "Emissions", nrow = 4, width = 18, height = 15, rel_widths = rep(1, 4))
+
+  emissions_keys <- c(
+"Emi_BC_CEDS_Nat_Agr","Emi_BC_CEDS_Nat_Avi","Emi_BC_CEDS_Nat_Ene","Emi_BC_CEDS_Nat_Ind","Emi_BC_CEDS_Nat_Int_Shi","Emi_BC_CEDS_Nat_Res_and_Com","Emi_BC_CEDS_Nat_Sol","Emi_BC_CEDS_Nat_Tra","Emi_BC_CEDS_Nat_Was",
+"Emi_CH4_CEDS_Nat_Agr","Emi_CH4_CEDS_Nat_Avi","Emi_CH4_CEDS_Nat_Ene","Emi_CH4_CEDS_Nat_Ind","Emi_CH4_CEDS_Nat_Int_Shi","Emi_CH4_CEDS_Nat_Res_and_Com","Emi_CH4_CEDS_Nat_Sol","Emi_CH4_CEDS_Nat_Tra","Emi_CH4_CEDS_Nat_Was",
+"Emi_CO_CEDS_Nat_Agr","Emi_CO_CEDS_Nat_Avi","Emi_CO_CEDS_Nat_Ene","Emi_CO_CEDS_Nat_Ind","Emi_CO_CEDS_Nat_Int_Shi","Emi_CO_CEDS_Nat_Res_and_Com","Emi_CO_CEDS_Nat_Sol","Emi_CO_CEDS_Nat_Tra","Emi_CO_CEDS_Nat_Was",
+"Emi_CO2_CEDS_Nat_Agr","Emi_CO2_CEDS_Nat_Avi","Emi_CO2_CEDS_Nat_Ene","Emi_CO2_CEDS_Nat_Ind","Emi_CO2_CEDS_Nat_Int_Shi","Emi_CO2_CEDS_Nat_Res_and_Com","Emi_CO2_CEDS_Nat_Sol","Emi_CO2_CEDS_Nat_Tra","Emi_CO2_CEDS_Nat_Was",
+"Emi_N2O_CEDS_Nat_Agr","Emi_N2O_CEDS_Nat_Avi","Emi_N2O_CEDS_Nat_Ene","Emi_N2O_CEDS_Nat_Ind","Emi_N2O_CEDS_Nat_Int_Shi","Emi_N2O_CEDS_Nat_Res_and_Com","Emi_N2O_CEDS_Nat_Sol","Emi_N2O_CEDS_Nat_Tra","Emi_N2O_CEDS_Nat_Was"
+)
+  save_plot_grid(emissions_keys, "Emi_CO2", "CEDSComparison_1", nrow = 6, ncol = 9, width = 40, height = 30, rel_widths = rep(1, 9))
+
+  emissions_keys <- c(
+"Emi_NH3_CEDS_Nat_Agr","Emi_NH3_CEDS_Nat_Avi","Emi_NH3_CEDS_Nat_Ene","Emi_NH3_CEDS_Nat_Ind","Emi_NH3_CEDS_Nat_Int_Shi","Emi_NH3_CEDS_Nat_Res_and_Com","Emi_NH3_CEDS_Nat_Sol","Emi_NH3_CEDS_Nat_Tra","Emi_NH3_CEDS_Nat_Was",
+"Emi_NOx_CEDS_Nat_Agr","Emi_NOx_CEDS_Nat_Avi","Emi_NOx_CEDS_Nat_Ene","Emi_NOx_CEDS_Nat_Ind","Emi_NOx_CEDS_Nat_Int_Shi","Emi_NOx_CEDS_Nat_Res_and_Com","Emi_NOx_CEDS_Nat_Sol","Emi_NOx_CEDS_Nat_Tra","Emi_NOx_CEDS_Nat_Was",
+"Emi_OC_CEDS_Nat_Agr","Emi_OC_CEDS_Nat_Avi","Emi_OC_CEDS_Nat_Ene","Emi_OC_CEDS_Nat_Ind","Emi_OC_CEDS_Nat_Int_Shi","Emi_OC_CEDS_Nat_Res_and_Com","Emi_OC_CEDS_Nat_Sol","Emi_OC_CEDS_Nat_Tra","Emi_OC_CEDS_Nat_Was",
+"Emi_Sul_CEDS_Nat_Agr","Emi_Sul_CEDS_Nat_Avi","Emi_Sul_CEDS_Nat_Ene","Emi_Sul_CEDS_Nat_Ind","Emi_Sul_CEDS_Nat_Int_Shi","Emi_Sul_CEDS_Nat_Res_and_Com","Emi_Sul_CEDS_Nat_Sol","Emi_Sul_CEDS_Nat_Tra","Emi_Sul_CEDS_Nat_Was",
+"Emi_VOC_CEDS_Nat_Agr","Emi_VOC_CEDS_Nat_Avi","Emi_VOC_CEDS_Nat_Ene","Emi_VOC_CEDS_Nat_Ind","Emi_VOC_CEDS_Nat_Int_Shi","Emi_VOC_CEDS_Nat_Res_and_Com","Emi_VOC_CEDS_Nat_Sol","Emi_VOC_CEDS_Nat_Tra","Emi_VOC_CEDS_Nat_Was"
+)
+  save_plot_grid(emissions_keys, "Emi_CO2", "CEDSComparison_2", nrow = 6, ncol = 9, width = 40, height = 30, rel_widths = rep(1, 9))
 
 #Land use
   landuse_keys <- c(
@@ -470,7 +506,7 @@ mergefigGen <- function(ii,progr){
 #  for(ii in lst$varlist){
 # Function to create and save regional plots
   save_region_plot <- function(region_code, region_vector, out_subdir, width, height) {
-    data_filtered <- filter(allmodelline, Var == ii, Region %in% region_vector, ModName != "Reference")
+    data_filtered <- filter(allmodelline, Var == ii, Region %in% region_vector)
     if (nrow(data_filtered) > 0) {
       # Generate the regional plot
       plot.reg <- plotXregion(data_filtered, ii, region_vector,filter(AR6DBIndload, Region %in% region_vector))
@@ -481,7 +517,7 @@ mergefigGen <- function(ii,progr){
   }
 # Plot settings for each region group
   region_plot_settings <- list(
-    list(code = "R17", vec = R17R, subdir = "multiReg/",   height = 12),
+    list(code = "R17", vec = R17R, subdir = "multiReg/",   height = 15),
     list(code = "R5",  vec = R5R,  subdir = "multiRegR5/", height = 7.5),
     list(code = "R2",  vec = R2R,  subdir = "multiRegR2/", height = 5),
     list(code = "R10", vec = R10R, subdir = "multiRegR10/", height = 10)
