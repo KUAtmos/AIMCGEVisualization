@@ -37,7 +37,7 @@ AR6option <-  as.character(args[9])
 IntToolproj <-  as.character(args[10])
 sizememory <- 1000*1024^2 
 options(future.globals.maxSize= sizememory)
-
+options(bitmapType = 'cairo')
 
 #---------------switches to specify the run condition -----
 submodule <- as.numeric(args[5]) #1: AIMHub, 2: IntTool
@@ -560,11 +560,18 @@ exe_fig_make <- function(ListIte,Xfunc){
     handlers('progress')
     with_progress({
       progr <- progressor(along=ListIte)
-      ListIte %>% future_map(Xfunc,progr=progr)
+      wrapped_func <- function(x) {
+        options(bitmapType = 'cairo')
+        Xfunc(x, progr = progr)
+      }
+      ListIte %>% future_map(wrapped_func)
     })
   }else{
     progr <- progressor(along=ListIte)
-    lapply(ListIte,Xfunc)  
+    lapply(ListIte, function(x) {
+        options(bitmapType = 'cairo')
+        Xfunc(x, progr = progr)
+    })
   }
   print(Sys.time())
 }
