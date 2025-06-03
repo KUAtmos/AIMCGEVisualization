@@ -185,14 +185,14 @@ if(args[8]=="global"){
 eval(parse(text=paste0("IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','",IEAparaname[1],"') %>% rename('Value'=",IEAparaname[1],",'Var'=",IEAparaname[3],",'Y'=St,'Region'=",IEAparaname[2],",'SCENARIO'=SceEneMod) %>%
   select(Region,Var,Y,Value,SCENARIO) %>% mutate(ModName='Reference')")))
 IEAEB0$Y <- as.numeric(levels(IEAEB0$Y))[IEAEB0$Y]
-IEAEB1 <- filter(IEAEB0,Y<=2020 & Y>=1990)
+IEAEB1 <- filter(IEAEB0,Y<=2022 & Y>=1990)
 
 #EDGAR emissions
 file.copy(paste0(AIMHubdir,"data/AIMHubData/EDGAR/output/gdx/aggregation/EDGARv8_0_summary.gdx"), paste0("../data/EDGARv8_0_summary.gdx"),overwrite = TRUE)
 eval(parse(text=paste0("EDGAR0 <- rgdx.param('../data/EDGARv8_0_summary.gdx','",EDGARparaname[1],"') %>% rename('Value'=",EDGARparaname[1],",'Var'=",EDGARparaname[3],",'Region'=",EDGARparaname[2],") %>%
   select(Region,Var,Y,Value) %>% mutate(ModName='Reference',SCENARIO='EDGAR8.0')")))
 EDGAR0$Y <- as.numeric(levels(EDGAR0$Y))[EDGAR0$Y]
-EDGAR1 <- filter(EDGAR0,Y<=2020 & Y>=1990)
+EDGAR1 <- filter(EDGAR0,Y<=2023 & Y>=1990)
 
 #CEDS emissions
 file.copy(paste0(AIMHubdir,"data/AIMHubData/main/CEDS_2025.gdx"), paste0("../data/CEDS2025.gdx"),overwrite = TRUE)
