@@ -14,7 +14,7 @@ if(insflag==1){
   #install.packages("gdxrrw", dependencies = TRUE)
 }
 
-libloadlist <- c("gdxrrw","ggplot2","dplyr","reshape2","tidyr","maps","grid","RColorBrewer","cowplot","hms","purrr","furrr","progressr","readr")
+libloadlist <- c("gdxrrw","ggplot2","dplyr","reshape2","tidyr","maps","grid","RColorBrewer","cowplot","hms","purrr","furrr","progressr","readr","forcats")
 for(j in libloadlist){
   eval(parse(text=paste0("library(",j,")")))
 }
@@ -118,6 +118,7 @@ varlist_load <- read.table('../data/varlist.txt',sep='\t',header=T)
 varbarlist_load <- read.table('../data/varbarlist.txt',sep='\t',header=T)
 areamap <- read.table('../data/Areafigureorder.txt',sep='\t',header=T)
 areamappara <- read.table('../data/area.map',sep='\t',header=T)
+Multilinemap <- read.table('../data/MultiVar.txt',sep='\t',header=T)
 
 for(i in c("R5","R17","R10","R2")){
   eval(parse(text=paste0(i,"R_load <- read.table('../data/region",i,".txt',sep='\t',header=F)")))
@@ -212,12 +213,13 @@ if(args[8]=="global"){
 allmodel <- rbind(allmodel0,IEAEB1,EDGAR1,CEDS1) %>% select(ModName,Region,Var,SCENARIO,Y,Value) 
 maxy <- max(allmodel$Y)
 #maxy <- 2050
-linepalettewName <- linepalette[1:length(unique(allmodel$SCENARIO))]
-names(linepalettewName) <- unique(allmodel$SCENARIO)
+scenariolistext <- as.vector(scenariomap$SCENARIO[scenariomap$SCENARIO %in% unique(allmodel$SCENARIO)])
 allmodel <- filter(allmodel,Y <= maxy)
 allmodelline <- filter(allmodel,Var %in% varlist$V1)
 allmodel_area <- filter(allmodel, Var %in% c(as.vector(areamap$Var),as.vector(areamappara$lineVar))) 
+allmodel_multiline <- filter(allmodel,Var %in% Multilinemap$Var)
 allmodel_bar <- filter(allmodel,Var %in% varbarlist$V1)
+target_mn <- unique(as.vector(allmodelline$ModName))[1]  # first element in col5 (can also hardcode e.g. "C1")
 #Extract data
 #Unloading Data4Plot which can be used for data availability in papers
 ExtData <- filter(allmodel0,Var %in% varlist$V1) %>% left_join(unique(varlist %>% rename(Var=V1,Variable=V2.y,Unit=V3) %>% select(Var,Variable,Unit))) %>% 
@@ -249,8 +251,8 @@ if(AR6option=="on"){
 #---functions
 #function for default line plot
 funclinedef <- function(ii,plot.inp,Data4Plot){
-  linepalettewName1 <- linepalette[1:length(unique(Data4Plot$SCENARIO))]
-  names(linepalettewName1) <- unique(Data4Plot$SCENARIO)
+  linepalettewName1 <- linepalette[seq_along(scenariolistext)]
+  names(linepalettewName1) <- scenariolistext
   miny <- min(Data4Plot$Y,2010) 
   plot.X <- plot.inp + 
     geom_line(data=filter(Data4Plot, ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
@@ -266,11 +268,47 @@ funclinedef <- function(ii,plot.inp,Data4Plot){
   return(plot.X)
 } 
 
+#Function for multi-variable line plot
+funcMultiVarLinePlotGen <- function(rr,progr){
+  for(MultiLineItem in as.vector(unique(Multilinemap$Class))){
+    MultiVarList <- Multilinemap[Multilinemap$Class==MultiLineItem,]
+    linepalettewName1 <- linepalette[1:length(MultiVarList$Var)]
+    names(linepalettewName1) <- MultiVarList$Ind
+    Data4Plot <- allmodel_multiline %>% filter(Region==rr & Var %in% MultiVarList$Var & Y<=maxy) %>% left_join(MultiVarList,by="Var") %>% ungroup() %>% 
+      filter(Class==MultiLineItem & ModName!="Reference") %>% select(ModName,SCENARIO,Ind,Var,Y,Value,order)  %>% arrange(order)
+    miny <- min(Data4Plot$Y,2010) 
+    if(nrow(Data4Plot)>0){
+      numitem1 <- length(as.vector(unique(Data4Plot$ModName))) #Get number of items
+      numitem2 <- length(as.vector(unique(Data4Plot$SCENARIO))) #Get number of items
+      numcol <- floor(sqrt(numitem1*numitem2))
+      plot1 <- ggplot() + 
+        geom_line(data=Data4Plot,aes(x=Y, y = Value , color=Ind),stat="identity") +
+        geom_point(data=Data4Plot,aes(x=Y, y = Value , color=Ind,shape=Ind),size=1.5,fill="white") +
+        MyThemeLine + scale_color_manual(values=linepalettewName1) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
+        xlab("year") + ylab("")  + ggtitle(paste(rr,MultiLineItem,sep=" "))+facet_wrap(ModName ~ SCENARIO,scales="free_y") +
+      annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+theme(legend.title=element_blank())
+      allplot[[MultiLineItem]] <- plot1 
+      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/png/merge/",MultiLineItem,"_",rr,".png"), dpi = 72, width=numcol*8, height=numcol*6,limitsize=FALSE)
+      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",MultiLineItem,"_",rr,".svg"), width=numcol*8, height=numcol*6,device = "svg",limitsize = FALSE, units = "in")
+    }
+  }
+}  
+
 
 #function for regional figure generation
 funcplotgen <- function(rr,progr){
   progr(message='region figures')
-  Data4Plot0 <- filter(allmodelline,Region==rr)
+  #Fill missing information
+  Data4Plot0 <- allmodelline %>% filter(Region==rr) %>% mutate(across(where(is.factor), fct_drop)) %>% 
+    group_by(ModName,Y,Region) %>%
+    complete(Var,SCENARIO=scenariolistext) %>%            #create missing Y × Var with NA
+    ungroup() %>%
+    mutate(Value = if_else(Y %in% c("2020") & ModName %in% target_mn & Region==rr  & is.na(Value),0, Value))  %>%
+    filter(                               # keep 0-completed rows only for target groups
+      (Y %in% c("2020") & ModName==target_mn & Region==rr) |
+        !is.na(Value)                     # outside target, drop rows created by complete()
+    )
+  
   #---Line figures
 #  for (rr in region_spe){ Data4Plot0 <- filter(allmodel,Region==rr) #For debug
   for (i in 1:nrow(varlist)){
@@ -616,6 +654,10 @@ if(ffff==1){
 #regional figure generation execution
   print("generating regional line figures")
   exe_fig_make(lst$region,funcplotgen)
+  
+  print("generating regional line figures with multiple varabels")
+  exe_fig_make(lst$region,funcMultiVarLinePlotGen)
+  
 #regional area figure generation execution
   print("generating regional area figures")
   exe_fig_make(lst$region,funcAreaPlotGen)

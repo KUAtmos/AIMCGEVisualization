@@ -1,4 +1,7 @@
 V1	V2
+Gro_Emi_CO2	1
+Gro_Rem_CO2	1
+Gro_Emi_CO2_Ene_and_Ind_Pro	1
 Pol_Cos_Cns_Los_rat	1
 Fin_Ene	1
 Fin_Ene_Ele	1
@@ -403,3 +406,4 @@ Emi_NH3_CEDS_Nat_Int_Shi	3
 Emi_VOC_CEDS_Nat_Int_Shi	3
 Emi_N2O_CEDS_Nat_Int_Shi	3
 Emi_Sul_CEDS_Nat_Int_Shi	3
+Ter_Bio_Bio_Int_Ind	2
