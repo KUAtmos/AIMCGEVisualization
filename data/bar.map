@@ -1,0 +1,5 @@
+Class	Var	Unit	lineVar
+Emi_Ene	CO2 emissions	MtCO2/year	Emi_CO2_Ene_and_Ind_Pro
+Emi_AFO	CO2 emissions	MtCO2/year	Emi_CO2_AFO
+Gros_Emi_Ene	CO2 emissions	MtCO2/year	Gro_Emi_CO2_Ene_and_Ind_Pro
+Gros_Emi_AFO	CO2 emissions	MtCO2/year	Gro_Emi_CO2_AFO

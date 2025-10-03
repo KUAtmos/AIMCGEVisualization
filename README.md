@@ -13,7 +13,7 @@ This tool is for the standarized visualization of AIMCGE(AIMHub) output.
 # Input
 ## Specification by files
 
-In /data/ folder, there are input files
+In ./data/ folder, there are input files
 
 - region.txt : region set
 - varlist.txt : variable list (using AIM IIASA coding system)
@@ -53,14 +53,54 @@ outout of this tool is in /output directory where you see regional names and "me
 
 The following files should be edited
 
-- ../data/Areafigureorder.txt
-- ../data/Area.map
+- ./data/Areafigureorder.txt
+- ./data/Area.map
 
 The first file identifies the list of indicators, units and y axis label.
 The second file describes what indicators are assigned to each area plot, order of them and color schemes.
 
+## Multi-variable line figure
 
-#Required R packages
+The `MultiVar.txt` file specifies the settings for multi-variable line figures.  
+Each row in this file defines a set of variables to be plotted together in a single figure, along with their display order and other relevant options.
+
+Typical items to specify include:
+- The list of variables to be shown in the figure.
+- The order in which variables appear.
+- Labels, units, and colors for each variable (if applicable).
+
+By editing this file, you can customize which variables are visualized together and how they are presented in multi-variable line plots.
+
+## Multi-variable bar figure
+
+The `./data/bar.map` file defines the settings for multi-variable bar figures.  
+It specifies which indicators are assigned to each bar plot, their order, and the color schemes to be used.  
+Each row typically corresponds to a specific bar figure, listing the variables to be included and their display properties.
+
+The `./data/Barfigureorder.txt` file provides the list of indicators, units, and y-axis labels for bar figures.  
+It determines the order in which indicators appear in the bar plots and sets the appropriate labels and units for each variable.
+
+By editing these files, you can customize the composition, appearance, and labeling of multi-variable bar figures in your visualizations.
+
+## making ppt
+Based on the following file's information, ppt will be made using ./prog/r2ppt.r
+- ./data/pptlist.txt
+
+### About ./data/pptlist.txt
+
+The `pptlist.txt` file specifies the contents and layout of figures and tables to be exported to PowerPoint.  
+Each row represents one figure or table, with the following columns:
+
+1. **name**: The file name or figure identifier to be displayed.
+2. **region**: The region for which the figure is generated.
+3. **left**: The left coordinate (position) of the figure on the slide.
+4. **top**: The top coordinate (position) of the figure on the slide.
+5. **scale**: The size ratio of the figure.
+6. **newslide**: Whether to place the figure on a new slide (`1`) or on the same slide as the previous figure (`0`).
+
+By editing this file, you can customize which figures are included in the PowerPoint, their order, and their layout.
+
+# Required R packages
 - reshape2
 - cowplot
 - ggplot2

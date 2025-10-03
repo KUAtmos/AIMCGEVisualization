@@ -119,6 +119,8 @@ varbarlist_load <- read.table('../data/varbarlist.txt',sep='\t',header=T)
 areamap <- read.table('../data/Areafigureorder.txt',sep='\t',header=T)
 areamappara <- read.table('../data/area.map',sep='\t',header=T)
 Multilinemap <- read.table('../data/MultiVar.txt',sep='\t',header=T)
+barmap <- read.table('../data/Barfigureorder.txt',sep='\t',header=T)
+barmappara <- read.table('../data/bar.map',sep='\t',header=T)
 
 for(i in c("R5","R17","R10","R2")){
   eval(parse(text=paste0(i,"R_load <- read.table('../data/region",i,".txt',sep='\t',header=F)")))
@@ -132,6 +134,7 @@ varbarlist <- left_join(varbarlist_load,varalllist,by=c("V1"))
 Ylist <- seq(2010,2100,by=5)
 
 areapaletteload <- select(areamap,Class,Ind,color) %>% rename(V0=Class,V1=Ind,V2=color) 
+barpaletteload <- select(barmap,Class,Ind,color) %>% rename(V0=Class,V1=Ind,V2=color) 
 
 #---IAMC tempalte loading and data merge
 dirCGEoutput <- paste0(maindirloc,"../../output/iiasa_database/gdx/")  # directory where the CGE output is located 
@@ -219,6 +222,7 @@ allmodelline <- filter(allmodel,Var %in% varlist$V1)
 allmodel_area <- filter(allmodel, Var %in% c(as.vector(areamap$Var),as.vector(areamappara$lineVar))) 
 allmodel_multiline <- filter(allmodel,Var %in% Multilinemap$Var)
 allmodel_bar <- filter(allmodel,Var %in% varbarlist$V1)
+allmodel_barstack <- filter(allmodel,Var %in% c(as.vector(barmap$Var),as.vector(barmappara$lineVar)))
 target_mn <- unique(as.vector(allmodelline$ModName))[1]  # first element in col5 (can also hardcode e.g. "C1")
 #Extract data
 #Unloading Data4Plot which can be used for data availability in papers
@@ -288,8 +292,8 @@ funcMultiVarLinePlotGen <- function(rr,progr){
         xlab("year") + ylab("")  + ggtitle(paste(rr,MultiLineItem,sep=" "))+facet_wrap(ModName ~ SCENARIO,scales="free_y") +
       annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+theme(legend.title=element_blank())
       allplot[[MultiLineItem]] <- plot1 
-      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/png/merge/",MultiLineItem,"_",rr,".png"), dpi = 72, width=numcol*8, height=numcol*6,limitsize=FALSE)
-      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",MultiLineItem,"_",rr,".svg"), width=numcol*8, height=numcol*6,device = "svg",limitsize = FALSE, units = "in")
+      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/png/merge/",MultiLineItem,"_",rr,".png"), dpi = 72, width=numcol*4, height=numcol*3,limitsize=FALSE)
+      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",MultiLineItem,"_",rr,".svg"), width=numcol*4, height=numcol*3,device = "svg",limitsize = FALSE, units = "in")
     }
   }
 }  
@@ -491,6 +495,43 @@ funcAreaPlotGen <- function(rr,progr){
   ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/svg/merge/tfc_",rr,".svg"), width=9*2, height=(floor(length(unique(allmodel_area$SCENARIO))/4+1)*3+2)*3,device = "svg",limitsize = FALSE, units = "in")
 }
 
+funcBarStackPlotGen <- function(rr,progr){
+  Data4Plot <- filter(allmodel_barstack,Region==rr)
+  #  for( rr in as.vector(region_load)){
+  for(barItem in as.vector(barmappara$Class)){
+    XX <- Data4Plot %>% filter(Var %in% as.vector(barmap$Var)) %>% left_join(barmap,by="Var") %>% ungroup() %>% 
+      filter(Class==barItem & ModName!="Reference") %>% select(ModName,SCENARIO,Ind,Y,Value,order)  %>% arrange(order)
+    if(nrow(XX)>0){
+      numitem1 <- length(as.vector(unique(XX$ModName))) #Get number of items
+      numitem2 <- length(as.vector(unique(XX$SCENARIO))) #Get number of items
+      numcol <- floor(sqrt(numitem1*numitem2))
+      XX3 <- Data4Plot %>% filter(Var==barmappara$lineVar[barmappara$Class==barItem] & ModName!="Reference") %>% select(ModName,SCENARIO,Var,Y,Value)
+      
+      miny <- min(XX$Y) 
+      many <- max(XX$Y) 
+      na.omit(XX$Value)
+      ylab1 <- paste0(barmappara$Var[barmappara$Class==barItem], " (", barmappara$Unit[barmappara$Class==barItem], ")")
+      xlab1 <- barmappara$Var[barmappara$Class==barItem]
+      barpaletteArea <- filter(barpaletteload,V0==barItem & V1 %in% unique(XX$Ind))$V2
+      names(barpaletteArea) <- filter(barpaletteload,V0==barItem & V1 %in% unique(XX$Ind))$V1
+
+      plotX <- ggplot() + 
+        geom_bar(data=filter(XX,Y<=maxy),aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity") + 
+        ylab(ylab1) + xlab(xlab1) +labs(fill="")+ guides(fill=guide_legend(reverse=TRUE)) + MyThemeLine +
+        theme(legend.position="bottom", text=element_text(size=12),  
+              axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, size = 12)) +
+        guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10)) + scale_fill_manual(values=barpaletteArea) +
+        annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')+
+        geom_line(data=filter(XX3,Y<=maxy),aes(x=Y, y = Value ), color="black",linetype="dashed",size=1.2) +
+        ggtitle(paste(rr,barItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
+      allplot[[barItem]] <- plotX 
+      ggsave(plotX, file=paste0(outdir,"byRegion/",rr,"/png/merge/",barItem,"_",rr,".png"), dpi = 72, width=numcol*8, height=numcol*6,limitsize=FALSE)
+      ggsave(plotX, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",barItem,"_",rr,".svg"), width=numcol*8, height=numcol*6,device = "svg",limitsize = FALSE, units = "in")
+      plotflag[[barItem]] <- nrow(XX)  
+    }
+  }
+}
+
 funcBarPlotGen <- function(rr,progr){
   Data4Plot0 <- filter(allmodel_bar,Region==rr)
 #  for( rr in as.vector(region_load)){
@@ -640,6 +681,7 @@ lst$R10R <- as.list(R10R)
 lst$R5R <- as.list(R5R)
 lst$R2R <- as.list(R2R)
 lst$Area <- as.list(as.vector(unique(areamappara$Class)))
+lst$Bar <- as.list(as.vector(unique(barmappara$Class)))
 
 #Creat directories
 for(rr in lst$region){
@@ -661,6 +703,9 @@ if(ffff==1){
 #regional area figure generation execution
   print("generating regional area figures")
   exe_fig_make(lst$region,funcAreaPlotGen)
+
+  print("generating regional stacked barfigures")
+  exe_fig_make(lst$region,funcBarStackPlotGen)
 #regional bar figure generation execution
   print("generating regional bar figures")
   exe_fig_make(lst$region,funcBarPlotGen)
@@ -725,3 +770,7 @@ if(decompositionflag>0){
   }
   exe_fig_make(lst$region,funcDecGen)
 }
+
+#----r2ppt
+#The figure should be prearranged before going this ppt process.
+if(args[8]=="global"){source("r2ppt.r")}
