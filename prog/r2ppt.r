@@ -82,7 +82,7 @@ for (i in seq_len(nrow(df))) {
   # Build SVG filepath from base name
   base   <- df$name[i]
   if(df$region[i]=="World"){svgf <- paste0(outdir,"byRegion/World/svg/",df$name[i], "_World.svg")}
-  if(df$region[i]=="R5"){svgf <- paste0(outdir,"MultiRegR5/svg/",df$name[i], "_R5.svg")}
+  if(df$region[i]=="R5"){svgf <- paste0(outdir,"multiRegR5/svg/",df$name[i], "_R5.svg")}
   # Output pptx file
   pptx_out <- paste0(outdir,"iamc.pptx")
   
