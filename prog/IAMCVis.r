@@ -269,7 +269,8 @@ funclinedef <- function(ii,plot.inp,Data4Plot){
   if(length(scenariomap$SCENARIO)<70){
     plot.X <- plot.X +  geom_point(data=filter(Data4Plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
   }
-  if(varlist$HolAx[varlist$V1==ii]==1){
+  if(as.vector(varlist$HolAx[varlist$V1==ii])==1){
+#    print(ii,varlist$HolAx[varlist$V1==ii])
     plot.X <- plot.X +  annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey") 
   }
   
