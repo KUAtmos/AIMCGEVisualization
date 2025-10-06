@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="aimcgevisualization">AIMCGEVisualization</h1>
+<p>Visualizing AIMCGE output</p>
+<p>Date: 2018/7/17 updated in 2020/6/1 (2021/10/01)</p>
+<p>Name: Shinichiro Fujimori</p>
+<h1 id="overview">Overview</h1>
+<p>This tool is for the standarized visualization of AIMCGE(AIMHub) output.</p>
+<h1 id="input">Input</h1>
+<h2 id="specification-by-files">Specification by files</h2>
+<p>In ./data/ folder, there are input files</p>
+<ul>
+<li>./region/region.txt : region set</li>
+<li>./variable/varlist.txt : variable list (using AIM IIASA coding system)</li>
+</ul>
+<ol>
+<li><strong>V1</strong>: The identifier or code for the variable (using the AIM IIASA coding system).</li>
+<li><strong>V2</strong>: Priority.</li>
+<li><strong>Horizontal Axis</strong>: Horizontal axis flag. 1 means Y=0 line is added and 0 means X-axis is not guarantted to be displayed</li>
+</ol>
+<p>By editing this file, you can manage which variables are included in the analysis and how they are presented in the visualizations.</p>
+<ul>
+<li>scenariomap.map :scenario list and its names</li>
+<li>scenariomap2.map :scenario list and its names for Endduse (loading process)</li>
+<li>specify whether AIM/Enduse results are included in the analysis or not by &quot;enduseflag&quot;</li>
+</ul>
+<p>In /modeloutput/ folder, the model output should be included. This is automated by the program but may be better double check.</p>
+<ul>
+<li>global_17_iamc.gdx : input file</li>
+</ul>
+<h1 id="spepecification-by-parameters">Spepecification by parameters</h1>
+<p>In the main program there is a location to specifies key parameters which tag is below<br>
+#---------------switches to specify the run condition -----<br>
+filename &lt;- &quot;global_17&quot; # filename should be &quot;global_17&quot;,&quot;CHN&quot;,&quot;JPN&quot;....<br>
+enduseflag &lt;- 0   # If you would like to display AIM/Enduse outputs, make this parameter 1 otherwise 0.<br>
+dirCGEoutput &lt;-&quot;../../anls_output/iiasa_database/gdx/&quot;  # directory where the CGE output is located<br>
+parallelmode &lt;- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.<br>
+threadsnum &lt;- min(floor(availableCores()/2),24)<br>
+r2ppt &lt;- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.<br>
+mergecolnum &lt;- 6 #merge figure facet number of columns<br>
+CGEgdxcopy &lt;- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.</p>
+<h1 id="location">Location:</h1>
+<p>This tool can be used in the directory of AIMHub/tools/,
+but you can also use it in the independent folder which requires folder specification to copy the above CGE results GDX files.
+This tool can be also used in IntTool framework.</p>
+<h1 id="output">Output:</h1>
+<p>outout of this tool is in /output directory where you see regional names and &quot;merge&quot;. The latter combine the regional resutls and the coverage of the regions should be specified in data/region.txt</p>
+<h1 id="notes-on-changing-the-code">Notes on changing the code</h1>
+<h2 id="add-new-area-figure">Add new area figure</h2>
+<p>The following files should be edited</p>
+<ul>
+<li><code>./data/variable/Areafigureorder.txt</code></li>
+<li><code>./data/variable/Area.map</code></li>
+</ul>
+<p>The first file identifies the list of indicators, units and y axis label.
+The second file describes what indicators are assigned to each area plot, order of them and color schemes.</p>
+<h2 id="multi-variable-line-figure">Multi-variable line figure</h2>
+<p>The <code>./data/variable/MultiVar.txt</code> file specifies the settings for multi-variable line figures.<br>
+Each row in this file defines a set of variables to be plotted together in a single figure, along with their display order and other relevant options.</p>
+<p>Typical items to specify include:</p>
+<ul>
+<li>The list of variables to be shown in the figure.</li>
+<li>The order in which variables appear.</li>
+<li>Labels, units, and colors for each variable (if applicable).</li>
+</ul>
+<p>By editing this file, you can customize which variables are visualized together and how they are presented in multi-variable line plots.</p>
+<h2 id="multi-variable-bar-figure">Multi-variable bar figure</h2>
+<p>The <code>./data/variable/bar.map</code> file defines the settings for multi-variable bar figures.<br>
+It specifies which indicators are assigned to each bar plot, their order, and the color schemes to be used.<br>
+Each row typically corresponds to a specific bar figure, listing the variables to be included and their display properties.</p>
+<p>The <code>./data/variable/Barfigureorder.txt</code> file provides the list of indicators, units, and y-axis labels for bar figures.<br>
+It determines the order in which indicators appear in the bar plots and sets the appropriate labels and units for each variable.</p>
+<p>By editing these files, you can customize the composition, appearance, and labeling of multi-variable bar figures in your visualizations.</p>
+<h2 id="making-ppt">making ppt</h2>
+<p>Based on the following file's information, ppt will be made using ./prog/r2ppt.r</p>
+<ul>
+<li>./data/pptlist.txt</li>
+</ul>
+<h3 id="about-datapptlisttxt">About ./data/pptlist.txt</h3>
+<p>The <code>pptlist.txt</code> file specifies the contents and layout of figures and tables to be exported to PowerPoint.<br>
+Each row represents one figure or table, with the following columns:</p>
+<ol>
+<li><strong>name</strong>: The file name or figure identifier to be displayed.</li>
+<li><strong>region</strong>: The region for which the figure is generated.</li>
+<li><strong>left</strong>: The left coordinate (position) of the figure on the slide.</li>
+<li><strong>top</strong>: The top coordinate (position) of the figure on the slide.</li>
+<li><strong>scale</strong>: The size ratio of the figure.</li>
+<li><strong>newslide</strong>: Whether to place the figure on a new slide (<code>1</code>) or on the same slide as the previous figure (<code>0</code>).</li>
+</ol>
+<p>By editing this file, you can customize which figures are included in the PowerPoint, their order, and their layout.</p>
+<h1 id="required-r-packages">Required R packages</h1>
+<ul>
+<li>reshape2</li>
+<li>cowplot</li>
+<li>ggplot2</li>
+<li>RColorBrewer</li>
+<li>dplyr</li>
+<li>sp</li>
+<li>maptools</li>
+<li>maps</li>
+<li>ggradar</li>
+<li>fmsb</li>
+<li>tidyr</li>
+<li>stringr</li>
+<li>rJava</li>
+<li>Rcpp</li>
+<li>ReporteRsjars</li>
+<li>ReporteRs</li>
+<li>xlsx</li>
+<li>officer</li>
+<li>furrr</li>
+<li>purrr</li>
+<li>progressr</li>
+<li>gdxrrw</li>
+<li>readxl</li>
+<li>rsvg</li>
+</ul>
+
+</body>
+</html>

@@ -15,11 +15,16 @@ This tool is for the standarized visualization of AIMCGE(AIMHub) output.
 
 In ./data/ folder, there are input files
 
-- region.txt : region set
-- varlist.txt : variable list (using AIM IIASA coding system)
+- ./region/region.txt : region set
+- ./variable/varlist.txt : variable list (using AIM IIASA coding system)
+1. **V1**: The identifier or code for the variable (using the AIM IIASA coding system).
+2. **V2**: Priority.
+3. **Horizontal Axis**: Horizontal axis flag. 1 means Y=0 line is added and 0 means X-axis is not guarantted to be displayed
+
+By editing this file, you can manage which variables are included in the analysis and how they are presented in the visualizations.
+
 - scenariomap.map :scenario list and its names
 - scenariomap2.map :scenario list and its names for Endduse (loading process)
-- EnduseScenarioMap.map :scenario list and its names for Endduse (final presetation)
 - specify whether AIM/Enduse results are included in the analysis or not by "enduseflag"
 
 In /modeloutput/ folder, the model output should be included. This is automated by the program but may be better double check.
@@ -53,15 +58,15 @@ outout of this tool is in /output directory where you see regional names and "me
 
 The following files should be edited
 
-- ./data/Areafigureorder.txt
-- ./data/Area.map
+- `./data/variable/Areafigureorder.txt`
+- `./data/variable/Area.map`
 
 The first file identifies the list of indicators, units and y axis label.
 The second file describes what indicators are assigned to each area plot, order of them and color schemes.
 
 ## Multi-variable line figure
 
-The `MultiVar.txt` file specifies the settings for multi-variable line figures.  
+The `./data/variable/MultiVar.txt` file specifies the settings for multi-variable line figures.  
 Each row in this file defines a set of variables to be plotted together in a single figure, along with their display order and other relevant options.
 
 Typical items to specify include:
@@ -73,11 +78,11 @@ By editing this file, you can customize which variables are visualized together 
 
 ## Multi-variable bar figure
 
-The `./data/bar.map` file defines the settings for multi-variable bar figures.  
+The `./data/variable/bar.map` file defines the settings for multi-variable bar figures.  
 It specifies which indicators are assigned to each bar plot, their order, and the color schemes to be used.  
 Each row typically corresponds to a specific bar figure, listing the variables to be included and their display properties.
 
-The `./data/Barfigureorder.txt` file provides the list of indicators, units, and y-axis labels for bar figures.  
+The `./data/variable/Barfigureorder.txt` file provides the list of indicators, units, and y-axis labels for bar figures.  
 It determines the order in which indicators appear in the bar plots and sets the appropriate labels and units for each variable.
 
 By editing these files, you can customize the composition, appearance, and labeling of multi-variable bar figures in your visualizations.
@@ -124,3 +129,4 @@ By editing this file, you can customize which figures are included in the PowerP
 - progressr
 - gdxrrw
 - readxl
+- rsvg

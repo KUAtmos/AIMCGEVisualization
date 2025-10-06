@@ -114,19 +114,19 @@ for(i in c("multiReg","multiRegR10","multiRegR5","multiRegR2")){
 
 #File loading and parameter configuration
 varalllist <- read.table(VarListPath, sep="\t",header=F, stringsAsFactors=F)
-varlist_load <- read.table('../data/varlist.txt',sep='\t',header=T)
-varbarlist_load <- read.table('../data/varbarlist.txt',sep='\t',header=T)
-areamap <- read.table('../data/Areafigureorder.txt',sep='\t',header=T)
-areamappara <- read.table('../data/area.map',sep='\t',header=T)
-Multilinemap <- read.table('../data/MultiVar.txt',sep='\t',header=T)
-barmap <- read.table('../data/Barfigureorder.txt',sep='\t',header=T)
-barmappara <- read.table('../data/bar.map',sep='\t',header=T)
+varlist_load <- read.table('../data/variable/varlist.txt',sep='\t',header=T)
+varbarlist_load <- read.table('../data/variable/varbarlist.txt',sep='\t',header=T)
+areamap <- read.table('../data/variable/Areafigureorder.txt',sep='\t',header=T)
+areamappara <- read.table('../data/variable/area.map',sep='\t',header=T)
+Multilinemap <- read.table('../data/variable/MultiVar.txt',sep='\t',header=T)
+barmap <- read.table('../data/variable/Barfigureorder.txt',sep='\t',header=T)
+barmappara <- read.table('../data/variable/bar.map',sep='\t',header=T)
 
 for(i in c("R5","R17","R10","R2")){
-  eval(parse(text=paste0(i,"R_load <- read.table('../data/region",i,".txt',sep='\t',header=F)")))
+  eval(parse(text=paste0(i,"R_load <- read.table('../data/region/region",i,".txt',sep='\t',header=F)")))
   eval(parse(text=paste0(i,"R <- as.vector(",i,"R_load$V1)")))
 }
-region_load <- as.vector(read.table("../data/region.txt", sep="\t",header=F, stringsAsFactors=F)$V1)
+region_load <- as.vector(read.table("../data/region/region.txt", sep="\t",header=F, stringsAsFactors=F)$V1)
 region <- region_load
 R17pR5pR2 <- c(R5R,R10R[-11],R17R[-18],R2R[-3])
 varlist <- left_join(varlist_load,varalllist,by=c("V1"))
@@ -264,11 +264,15 @@ funclinedef <- function(ii,plot.inp,Data4Plot){
     MyThemeLine + scale_color_manual(values=linepalettewName1) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
     scale_shape_manual(values = 1:length(unique(allmodelline$ModName))) +
     xlab("year") + ylab(paste0(varlist$V2.y[varlist$V1==ii],"(",varlist$V3[varlist$V1==ii],")"))  +  ggtitle(varlist$V2.y[varlist$V1==ii]) +
-    annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+theme(legend.title=element_blank())
+    theme(legend.title=element_blank())
       #Reference of statistics plot 
   if(length(scenariomap$SCENARIO)<70){
     plot.X <- plot.X +  geom_point(data=filter(Data4Plot,ModName=="Reference"),aes(x=Y, y = Value) , color="black",shape=0,size=1.5,fill="grey") 
   }
+  if(varlist$HolAx[varlist$V1==ii]==1){
+    plot.X <- plot.X +  annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey") 
+  }
+  
   return(plot.X)
 } 
 
@@ -728,6 +732,10 @@ if(ffff==1){
   }
 }
 
+#----r2ppt
+#The figure should be prearranged before going this ppt process.
+if(args[8]=="global"){source("r2ppt.r")}
+
 #regional Decomposition figure generation execution
 #Decomposition analysis data load
 
@@ -771,6 +779,3 @@ if(decompositionflag>0){
   exe_fig_make(lst$region,funcDecGen)
 }
 
-#----r2ppt
-#The figure should be prearranged before going this ppt process.
-if(args[8]=="global"){source("r2ppt.r")}

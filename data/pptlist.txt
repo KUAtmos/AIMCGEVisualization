@@ -27,3 +27,5 @@ line/Prc_Agr_NonEneCro_and_Liv_Ind	World	7	1.25	0.75	0
 line/Ter_Bio_Bio_Int_Ind	R5	1	1.25	0.8	1
 line/Cum_Car_Seq_CDR	World	1	1.25	0.75	1
 line/Cum_Car_Seq_CCS	World	7	1.25	0.75	0
+line/Ter_Bio_Bio_Int_Ind	World	1	1.25	0.75	1
+line/Lan_Cov_Frs	World	7	1.25	0.75	0
