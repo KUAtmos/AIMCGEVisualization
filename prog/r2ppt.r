@@ -66,7 +66,7 @@ svg_nominal_size_in <- function(svg_path) {
 df <- read.table(txt_file, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
 # Basic validation
-required_cols <- c("name","region", "left", "top", "scale","newslide")
+required_cols <- c("name","title","regionflag","region", "left", "top", "scale","newslide")
 missing_cols <- setdiff(required_cols, names(df))
 if (length(missing_cols) > 0) stop("../data/pptlist.txt: ", paste(missing_cols, collapse = ", "))
 
@@ -81,11 +81,13 @@ doc <- read_pptx(tpl_path)
 for (i in seq_len(nrow(df))) {
   # Build SVG filepath from base name
   base   <- df$name[i]
-  if(df$region[i]=="World"){svgf <- paste0(outdir,"byRegion/World/svg/",df$name[i], "_World.svg")}
-  if(df$region[i]=="R5"){svgf <- paste0(outdir,"multiRegR5/svg/",df$name[i], "_R5.svg")}
+  if(df$regionflag[i]=="Single"){
+    svgf <- paste0(outdir,"byRegion/",df$region[i],"/svg/",df$name[i], "_",df$region[i],".svg")}
+  if(df$regionflag[i]=="Multi"){
+    svgf <- paste0(outdir,"multiReg",df$region[i],"/svg/",df$name[i], "_",df$region[i],".svg")}
   # Output pptx file
   pptx_out <- paste0(outdir,"iamc.pptx")
-  
+
   # Extract geometry (inches)
   left   <- df$left[i]
   top    <- df$top[i]
@@ -97,7 +99,7 @@ for (i in seq_len(nrow(df))) {
   
   if(df$newslide[i]==1){
     doc <- add_slide(doc, layout = layout_nm, master = master_nm)
-    doc <- ph_with(doc, base, location = ph_location_type(type = "title"))
+    doc <- ph_with(doc, paste0(df$title[i]," ",df$region[i]), location = ph_location_type(type = "title"))
     #Add text box
     nbsp <- "\u00A0"  # non-breaking space
     doc <- ph_with(

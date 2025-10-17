@@ -425,6 +425,15 @@ funcplotgen <- function(rr,progr){
   )
   save_plot_grid(price_keys, "Prc_Prm_Ene_Oil", "Price", nrow = 4, width = 15, height = 15, rel_widths = rep(1, 3))
 
+  #Primary energy and final energy consumption by sectors and fuels mainly for comparison with statistics
+  PrmTfc_keys <- c(
+    "Prm_Ene", "Prm_Ene_Coa", "Prm_Ene_Oil", "Prm_Ene_Gas", "Prm_Ene_Nuc",
+    "Prm_Ene_Bio","Prm_Ene_Hyp", "Prm_Ene_Win", "Prm_Ene_Solar", "Prm_Ene_Geo",  
+    "Fin_Ene", "Fin_Ene_Ele_Heat", "Fin_Ene_Liq_and_Gas", "Fin_Ene_SolidsCoa", "Fin_Ene_SolidsBio", 
+    "Fin_Ene_Ind", "Fin_Ene_Com","Fin_Ene_Res","Fin_Ene_Tra","Emi_CO2_Ene_and_Ind_Pro"
+  )
+  save_plot_grid(PrmTfc_keys, "Fin_Ene", "PrmFin", nrow = 4, ncol = 5, width = 30, height = 20, rel_widths = rep(1, 5))
+
   #----r2ppt
   #The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
   #If you really needs ppt slide, you first output png and then paste it.

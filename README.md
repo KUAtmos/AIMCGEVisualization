@@ -97,11 +97,13 @@ The `pptlist.txt` file specifies the contents and layout of figures and tables t
 Each row represents one figure or table, with the following columns:
 
 1. **name**: The file name or figure identifier to be displayed.
-2. **region**: The region for which the figure is generated.
-3. **left**: The left coordinate (position) of the figure on the slide.
-4. **top**: The top coordinate (position) of the figure on the slide.
-5. **scale**: The size ratio of the figure.
-6. **newslide**: Whether to place the figure on a new slide (`1`) or on the same slide as the previous figure (`0`).
+2. **title**: The tile of slide
+3. **regionflag**: The region or multi regionls [Single, Multi]
+4. **region**: The region for which the figure is generated.
+5. **left**: The left coordinate (position) of the figure on the slide.
+6. **top**: The top coordinate (position) of the figure on the slide.
+7. **scale**: The size ratio of the figure.
+8. **newslide**: Whether to place the figure on a new slide (`1`) or on the same slide as the previous figure (`0`).
 
 By editing this file, you can customize which figures are included in the PowerPoint, their order, and their layout.
 

@@ -1,31 +1,44 @@
-name	region	left	top	scale	newslide
-line/Emi_CO2	World	1	1.25	0.75	1
-line/Gro_Emi_CO2_Ene_and_Ind_Pro	World	6	1.25	0.5	0
-line/Gro_Rem_CO2	World	6	4	0.5	0
-line/Gro_Emi_CO2_AFO	World	9.25	1.25	0.5	0
-line/Car_Seq_CCS	World	9.25	4	0.5	0
-line/Emi_CO2_Ene_and_Ind_Pro	World	1	1.25	1.25	1
-merge/CDR	World	1	1.25	0.67	1
-merge/Gros_Emi_AFO	World	1	1.25	0.5	1
-merge/Gros_Emi_Ene	World	1	1.25	0.5	1
-merge/Energy	World	1	1.25	1	1
-merge/CO2	World	1	1.25	1	1
-merge/CarbonSeqestration	World	1	1.25	0.67	1
-line/Car_Seq_CCS	R5	1	1.25	0.8	1
-merge/TPES	World	1	1.25	0.67	1
-merge/TFC_fuel	World	1	1.25	0.67	1
-merge/TFC_Ind	World	1	1.25	0.67	1
-merge/TFC_Tra_Shi	World	1	1.25	0.67	1
-merge/TFC_Tra_Avi	World	1	1.25	0.67	1
-line/Sec_Ene_Hyd	R5	1	1.25	0.8	1
-line/Pol_Cos_GDP_Los_rat	World	1	1.25	0.75	1
-line/Pol_Cos_Cns_Los_rat	World	7	1.25	0.75	0
-line/Emi_CO2	World	1	1.25	0.75	1
-line/Emi_CO2_Cum	World	7	1.25	0.75	0
-line/Pop_Ris_of_Hun	World	1	1.25	0.75	1
-line/Prc_Agr_NonEneCro_and_Liv_Ind	World	7	1.25	0.75	0
-line/Ter_Bio_Bio_Int_Ind	R5	1	1.25	0.8	1
-line/Cum_Car_Seq_CDR	World	1	1.25	0.75	1
-line/Cum_Car_Seq_CCS	World	7	1.25	0.75	0
-line/Ter_Bio_Bio_Int_Ind	World	1	1.25	0.75	1
-line/Lan_Cov_Frs	World	7	1.25	0.75	0
+name	title	regionflag	region	left	top	scale	newslide
+line/Emi_CO2	Emission CO2	Single	World	1	1.25	0.75	1
+line/Gro_Emi_CO2_Ene_and_Ind_Pro	Gross FFI CO2 emissions	Single	World	6	1.25	0.5	0
+line/Gro_Rem_CO2	CDR	Single	World	6	4	0.5	0
+line/Gro_Emi_CO2_AFO	Gross AFO CO2 emissions	Single	World	9.25	1.25	0.5	0
+line/Car_Seq_CCS	CCS	Single	World	9.25	4	0.5	0
+line/Emi_CO2_Ene_and_Ind_Pro	Net FFI CO2 emissions	Single	World	1	1.25	1.25	1
+merge/CDR	CDR	Single	World	1	1.25	0.67	1
+merge/Gros_Emi_AFO	Gross AFO CO2 emissions	Single	World	1	1.25	0.5	1
+merge/Gros_Emi_Ene	Gross FFI CO2 emissions	Single	World	1	1.25	0.5	1
+merge/Energy	Energy	Single	World	1	1.25	1	1
+merge/CO2	CO2	Single	World	1	1.25	1	1
+merge/CarbonSeqestration	CCS	Single	World	1	1.25	0.67	1
+line/Car_Seq_CCS	CCS	Multi	R5	1	1.25	0.8	1
+merge/TPES	Primary energy	Single	World	1	1.25	0.67	1
+merge/TFC_fuel	Final Energy Consumption	Single	World	1	1.25	0.67	1
+merge/TFC_Ind	Final Energy Consumption in industry	Single	World	1	1.25	0.67	1
+merge/TFC_Tra_Shi	Final Energy Consumption in shipping	Single	World	1	1.25	0.67	1
+merge/TFC_Tra_Avi	Final Energy Consumption in aviation	Single	World	1	1.25	0.67	1
+line/Sec_Ene_Hyd	Hydrogen	Multi	R5	1	1.25	0.8	1
+line/Pol_Cos_GDP_Los_rat	GDP loss	Single	World	1	1.25	0.75	1
+line/Pol_Cos_Cns_Los_rat	Consumption loss	Single	World	7	1.25	0.75	0
+line/Emi_CO2	CO2 Emissions	Single	World	1	1.25	0.75	1
+line/Emi_CO2_Cum	Cumulative CO2 emissions	Single	World	7	1.25	0.75	0
+line/Pop_Ris_of_Hun	Risk of hunger	Single	World	1	1.25	0.75	1
+line/Prc_Agr_NonEneCro_and_Liv_Ind	Agricultural price	Single	World	7	1.25	0.75	0
+line/Ter_Bio_Bio_Int_Ind	BII	Multi	R5	1	1.25	0.8	1
+line/Cum_Car_Seq_CDR	Cumulative CDR	Single	World	1	1.25	0.75	1
+line/Cum_Car_Seq_CCS	Cumulative CCS	Single	World	7	1.25	0.75	0
+line/Ter_Bio_Bio_Int_Ind	BII	Single	World	1	1.25	0.75	1
+line/Lan_Cov_Frs	Forest area	Single	World	7	1.25	0.75	0
+line/Tem_Glo_Mea	Global mean temperature	Single	World	1	1.25	0.75	1
+line/Prm_Ene_Bio	Primary energy biomass	Single	World	7	1.25	0.75	1
+merge/PrmFin	Primary energy and final energy	Single	World	1	1.25	0.3	1
+merge/PrmFin	Primary energy and final energy	Single	R10LATIN_AM	1	1.25	0.3	1
+merge/PrmFin	Primary energy and final energy	Single	R10NORTH_AM	1	1.25	0.3	1
+merge/PrmFin	Primary energy and final energy	Single	R10CHINA+	1	1.25	0.3	1
+merge/PrmFin	Primary energy and final energy	Single	R10REF_ECON	1	1.25	0.3	1
+merge/PrmFin	Primary energy and final energy	Single	R10INDIA+	1	1.25	0.3	1
+merge/PrmFin	Primary energy and final energy	Single	R10PAC_OECD	1	1.25	0.3	1
+merge/PrmFin	Primary energy and final energy	Single	R10EUROPE	1	1.25	0.3	1
+merge/PrmFin	Primary energy and final energy	Single	R10AFRICA	1	1.25	0.3	1
+merge/PrmFin	Primary energy and final energy	Single	R10MIDDLE_EAST	1	1.25	0.3	1
+merge/PrmFin	Primary energy and final energy	Single	R10REST_ASIA	1	1.25	0.3	1
