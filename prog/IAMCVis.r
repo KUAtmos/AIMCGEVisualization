@@ -20,12 +20,12 @@ for(j in libloadlist){
 }
 args <- commandArgs(trailingOnly = TRUE)
 #arguments are: 1:gams sys,2:number of CPU, 3:visualizaton scenario name specification auto or not, 4:file location, 5:submodule switch, 6:enduse iteration switch, 7: GDX file name, 8: region code/global, 9: AR6 consideration, 10: IntTool project name
-default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","off","global_17_IAMC","global","on","non")   # Default value but gams path should be modified if GUI based R is used
+default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","off","global_17_IAMC","global","on","non","off")   # Default value but gams path should be modified if GUI based R is used
 #default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "country/CHN","2","on","IAMCTemplate_Iteon_CHN","CHN","off","non")   # Default value but gams path should be modified if GUI based R is used
 #default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24),"off","global/global_17","2","on","IAMCTemplate_Iteoff_global","global","on","scenarioMIP")
-default_args <- c("/home/sfujimori/opt/gams/gams46.5_linux_x64_64_sfx","32","on","global/global_17","2","off","IAMCTemplate_Iteon_global","global","on","scenarioMIP")
+default_args <- c("/home/sfujimori/opt/gams/gams46.5_linux_x64_64_sfx","32","on","global/global_17","2","off","IAMCTemplate_Iteon_global","global","on","scenarioMIP","scenarioMIP") # Default value for sfujimori
 
-default_flg <- is.na(args[1:10])
+default_flg <- is.na(args[1:11])
 args[default_flg] <- default_args[default_flg]
 gams_sys_dir <- as.character(args[1])
 AscenarionameAuto <- as.character(args[3])
@@ -34,7 +34,7 @@ Iterationflag <- as.character(args[6])   # If you would like to display model it
 decompositionflag <- 0  #if you would like to run decomposition analysis turn on 1, otherwise 0.
 threadsnum <-  as.numeric(args[2])
 AR6option <-  as.character(args[9])
-IntToolproj <-  as.character(args[10])
+IntToolproj <-  as.character(args[11])
 sizememory <- 1000*1024^2 
 options(future.globals.maxSize= sizememory)
 options(bitmapType = 'cairo')
@@ -43,7 +43,7 @@ options(bitmapType = 'cairo')
 submodule <- as.numeric(args[5]) #1: AIMHub, 2: IntTool
 if(submodule==1){
 	maindirloc <- "../../"
-	outdir <- paste0("../../../../output/fig_",args[8],"/") #Output directory 
+	outdir <- paste0("../../../../output/fig_",args[8],args[10],"/") #Output directory 
 	AIMHubdir <- "../../../" 
 	VarListPath <- paste0(outdir,"../include_code/IAMCTemp/all_list.txt")
 }else if(submodule==2){
@@ -51,11 +51,11 @@ if(submodule==1){
   if(Iterationflag=="off"){
     Itename <- "Iteoff"
     ParaGDXName <- "mergedIAMC4AIM"
-    outdir <- paste0("../../../../../../output/fig_Iteoff",args[8],"/") #Output directory 
+    outdir <- paste0("../../../../../../output/fig_Iteoff",args[8],args[10],"/") #Output directory 
   }else{
     Itename <- "Iteon"
     ParaGDXName <- "mergedIAMC"
-    outdir <- paste0("../../../../../../output/fig_Iteon",args[8],"/") #Output directory 
+    outdir <- paste0("../../../../../../output/fig_Iteon",args[8],args[10],"/") #Output directory 
   }
   AIMHubdir <- "../../../" 
 	VarListPath <- paste0(outdir,"../include_code/IAMCTemp/VariableFullList.txt")
@@ -297,8 +297,8 @@ funcMultiVarLinePlotGen <- function(rr,progr){
         xlab("year") + ylab("")  + ggtitle(paste(rr,MultiLineItem,sep=" "))+facet_wrap(ModName ~ SCENARIO,scales="free_y") +
       annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+theme(legend.title=element_blank())
       allplot[[MultiLineItem]] <- plot1 
-      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/png/merge/",MultiLineItem,"_",rr,".png"), dpi = 72, width=numcol*4, height=numcol*3,limitsize=FALSE)
-      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",MultiLineItem,"_",rr,".svg"), width=numcol*4, height=numcol*3,device = "svg",limitsize = FALSE, units = "in")
+      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/png/merge/",MultiLineItem,"_",rr,".png"), dpi = 150, width=numcol*4, height=numcol*2,limitsize=FALSE)
+      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",MultiLineItem,"_",rr,".svg"), width=numcol*4, height=numcol*2,device = "svg",limitsize = FALSE, units = "in")
     }
   }
 }  
@@ -498,8 +498,8 @@ funcAreaPlotGen <- function(rr,progr){
       plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
       plot3 <- plot1 + ggtitle(paste(rr,AreaItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
       allplot[[AreaItem]] <- plot3 
-      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/png/merge/",AreaItem,"_",rr,".png"), dpi = 72, width=numcol*4, height=numcol*3,limitsize=FALSE)
-      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",AreaItem,"_",rr,".svg"), width=numcol*4, height=numcol*3,device = "svg",limitsize = FALSE, units = "in")
+      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/png/merge/",AreaItem,"_",rr,".png"), dpi = 72, width=numcol*4, height=numcol*2,limitsize=FALSE)
+      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",AreaItem,"_",rr,".svg"), width=numcol*4, height=numcol*2,device = "svg",limitsize = FALSE, units = "in")
       plotflag[[AreaItem]] <- nrow(XX)  
     }
   }
