@@ -34,6 +34,7 @@ Iterationflag <- as.character(args[6])   # If you would like to display model it
 decompositionflag <- 0  #if you would like to run decomposition analysis turn on 1, otherwise 0.
 threadsnum <-  as.numeric(args[2])
 AR6option <-  as.character(args[9])
+Figureproj <-  as.character(args[10])
 IntToolproj <-  as.character(args[11])
 sizememory <- 1000*1024^2 
 options(future.globals.maxSize= sizememory)
@@ -43,7 +44,7 @@ options(bitmapType = 'cairo')
 submodule <- as.numeric(args[5]) #1: AIMHub, 2: IntTool
 if(submodule==1){
 	maindirloc <- "../../"
-	outdir <- paste0("../../../../output/fig_",args[8],args[10],"/") #Output directory 
+	outdir <- paste0("../../../../output/fig_",args[8],Figureproj,"/") #Output directory 
 	AIMHubdir <- "../../../" 
 	VarListPath <- paste0(outdir,"../include_code/IAMCTemp/all_list.txt")
 }else if(submodule==2){
@@ -51,11 +52,11 @@ if(submodule==1){
   if(Iterationflag=="off"){
     Itename <- "Iteoff"
     ParaGDXName <- "mergedIAMC4AIM"
-    outdir <- paste0("../../../../../../output/fig_Iteoff",args[8],args[10],"/") #Output directory 
+    outdir <- paste0("../../../../../../output/fig_Iteoff",args[8],Figureproj,"/") #Output directory 
   }else{
     Itename <- "Iteon"
     ParaGDXName <- "mergedIAMC"
-    outdir <- paste0("../../../../../../output/fig_Iteon",args[8],args[10],"/") #Output directory 
+    outdir <- paste0("../../../../../../output/fig_Iteon",args[8],Figureproj,"/") #Output directory 
   }
   AIMHubdir <- "../../../" 
 	VarListPath <- paste0(outdir,"../include_code/IAMCTemp/VariableFullList.txt")
@@ -161,7 +162,7 @@ if(submodule!=2){
     scenariomap <- cbind(scenariomap_load,scenariomap_load)
     names(scenariomap) <- c("SCENARIO","Name")
   }else{
-    scenariomap <- read.table(paste0(outdir,'/../data/ScenarioSet/',IntToolproj,'/VisualizationScenariomap.map'),sep='\t',header=T)
+    scenariomap <- read.table(paste0(outdir,'/../data/ScenarioSet/',IntToolproj,'/',Figureproj,'_VisualizationScenariomap.map'),sep='\t',header=T)
   }
 
   CGEload0 <- rgdx.param(paste0(outdir,'/../iamc/',filename,'.gdx'),ParaGDXName) %>% rename("mergedIAMC"=ParaGDXName)
