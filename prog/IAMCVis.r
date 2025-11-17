@@ -298,8 +298,8 @@ funcMultiVarLinePlotGen <- function(rr,progr){
         xlab("year") + ylab("")  + ggtitle(paste(rr,MultiLineItem,sep=" "))+facet_wrap(ModName ~ SCENARIO,scales="free_y") +
       annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+theme(legend.title=element_blank())
       allplot[[MultiLineItem]] <- plot1 
-      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/png/merge/",MultiLineItem,"_",rr,".png"), dpi = 150, width=numcol*4, height=numcol*2,limitsize=FALSE)
-      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",MultiLineItem,"_",rr,".svg"), width=numcol*4, height=numcol*2,device = "svg",limitsize = FALSE, units = "in")
+      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/png/merge/",MultiLineItem,"_",rr,".png"), dpi = 150, width=numcol*6, height=numcol*4,limitsize=FALSE)
+      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",MultiLineItem,"_",rr,".svg"), width=numcol*6, height=numcol*4,device = "svg",limitsize = FALSE, units = "in")
     }
   }
 }  
@@ -339,7 +339,7 @@ funcplotgen <- function(rr,progr){
       allplot_nonleg[[nalist[i]]] <- plot.0+ theme(legend.position="none")
       if(varlist$V2.x[i]<=2){
         ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/line/",varlist$V1[i],"_",rr,".png"), dpi = 72, width=max(7,5+numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE)
-        ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/svg/line/",varlist$V1[i],"_",rr,".svg"), width=max(7,numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE,device = "svg", units = "in")
+        ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/svg/line/",varlist$V1[i],"_",rr,".svg"), width=max(7,numitem*0.25), height=max(5,numitem*0.15),limitsize=FALSE,device = "svg", units = "in")
       }
     }
     plotflag[[nalist[i]]] <- nrow(filter(Data4Plot,ModName!="Reference"))
@@ -499,8 +499,8 @@ funcAreaPlotGen <- function(rr,progr){
       plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
       plot3 <- plot1 + ggtitle(paste(rr,AreaItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
       allplot[[AreaItem]] <- plot3 
-      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/png/merge/",AreaItem,"_",rr,".png"), dpi = 72, width=numcol*4, height=numcol*2,limitsize=FALSE)
-      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",AreaItem,"_",rr,".svg"), width=numcol*4, height=numcol*2,device = "svg",limitsize = FALSE, units = "in")
+      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/png/merge/",AreaItem,"_",rr,".png"), dpi = 72, width=numcol*4, height=numcol*2+4,limitsize=FALSE)
+      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",AreaItem,"_",rr,".svg"), width=numcol*4, height=numcol*2+4,device = "svg",limitsize = FALSE, units = "in")
       plotflag[[AreaItem]] <- nrow(XX)  
     }
   }

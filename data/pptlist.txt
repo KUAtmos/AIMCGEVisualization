@@ -6,8 +6,8 @@ line/Gro_Emi_CO2_AFO	Gross AFO CO2 emissions	Single	World	9.25	1.25	0.5	0
 line/Car_Seq_CCS	CCS	Single	World	9.25	4	0.5	0
 line/Emi_CO2_Ene_and_Ind_Pro	Net FFI CO2 emissions	Single	World	1	1.25	1.25	1
 merge/CDR	CDR	Single	World	1	1.25	0.67	1
-merge/Gros_Emi_AFO	Gross AFO CO2 emissions	Single	World	1	1.25	0.5	1
-merge/Gros_Emi_Ene	Gross FFI CO2 emissions	Single	World	1	1.25	0.5	1
+merge/Gros_Emi_AFO	Gross AFO CO2 emissions	Single	World	1	1.25	0.67	1
+merge/Gros_Emi_Ene	Gross FFI CO2 emissions	Single	World	1	1.25	0.67	1
 merge/Energy	Energy	Single	World	1	1.25	1	1
 merge/CO2	CO2	Single	World	1	1.25	1	1
 merge/CarbonSeqestration	CCS	Single	World	1	1.25	0.67	1
