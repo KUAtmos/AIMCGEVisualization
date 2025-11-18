@@ -86,7 +86,7 @@ for (i in seq_len(nrow(df))) {
   if(df$regionflag[i]=="Multi"){
     svgf <- paste0(outdir,"multiReg",df$region[i],"/svg/",df$name[i], "_",df$region[i],".svg")}
   # Output pptx file
-  pptx_out <- paste0(outdir,"iamc.pptx")
+  pptx_out <- paste0(outdir,"iamc",Figureproj,".pptx")
 
   # Extract geometry (inches)
   left   <- df$left[i]

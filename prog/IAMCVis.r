@@ -66,7 +66,6 @@ filename <- args[7] # filename should be "global_17","CHN","JPN"....
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
 parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
 print(threadsnum) 
-r2ppt <- 0 #Switch for ppt export. if you would like to export as ppt then assign 1 otherwise 0.
 mergecolnum <- 6 #merge figure facet number of columns
 RegSpec <- 0 #Regional specification if turned into 1, the regional list is loaded for the regional plot
 #---------------End of switches to specify the run condition -----
@@ -288,9 +287,9 @@ funcMultiVarLinePlotGen <- function(rr,progr){
       filter(Class==MultiLineItem & ModName!="Reference") %>% select(ModName,SCENARIO,Ind,Var,Y,Value,order)  %>% arrange(order)
     miny <- min(Data4Plot$Y,2010) 
     if(nrow(Data4Plot)>0){
-      numitem1 <- length(as.vector(unique(Data4Plot$ModName))) #Get number of items
-      numitem2 <- length(as.vector(unique(Data4Plot$SCENARIO))) #Get number of items
-      numcol <- floor(sqrt(numitem1*numitem2))
+      numitem1 <- length(as.vector(unique(Data4Plot$ModName))) * length(as.vector(unique(Data4Plot$SCENARIO))) #Get total number of items
+      numcol <- ceiling(sqrt(numitem1))
+      numrow <- ceiling(numitem1/numcol)      
       plot1 <- ggplot() + 
         geom_line(data=Data4Plot,aes(x=Y, y = Value , color=Ind),stat="identity") +
         geom_point(data=Data4Plot,aes(x=Y, y = Value , color=Ind,shape=Ind),size=1.5,fill="white") +
@@ -298,8 +297,8 @@ funcMultiVarLinePlotGen <- function(rr,progr){
         xlab("year") + ylab("")  + ggtitle(paste(rr,MultiLineItem,sep=" "))+facet_wrap(ModName ~ SCENARIO,scales="free_y") +
       annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+theme(legend.title=element_blank())
       allplot[[MultiLineItem]] <- plot1 
-      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/png/merge/",MultiLineItem,"_",rr,".png"), dpi = 150, width=numcol*6, height=numcol*4,limitsize=FALSE)
-      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",MultiLineItem,"_",rr,".svg"), width=numcol*6, height=numcol*4,device = "svg",limitsize = FALSE, units = "in")
+      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/png/merge/",MultiLineItem,"_",rr,".png"), dpi = 150, width=numcol*3+2, height=numrow*3,limitsize=FALSE)
+      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",MultiLineItem,"_",rr,".svg"), width=numcol*3+2, height=numrow*3,device = "svg",limitsize = FALSE, units = "in")
     }
   }
 }  
@@ -434,29 +433,11 @@ funcplotgen <- function(rr,progr){
     "Fin_Ene_Ind", "Fin_Ene_Com","Fin_Ene_Res","Fin_Ene_Tra","Emi_CO2_Ene_and_Ind_Pro"
   )
   save_plot_grid(PrmTfc_keys, "Fin_Ene", "PrmFin", nrow = 4, ncol = 5, width = 30, height = 20, rel_widths = rep(1, 5))
-
-  #----r2ppt
-  #The figure should be prearranged before going this ppt process since emf file type does not accept size changes. 
-  #If you really needs ppt slide, you first output png and then paste it.
-  pptlist <- c("Fin_Ene","Fin_Ene_Ele_Heat","Fin_Ene_Gas","Fin_Ene_Liq","Fin_Ene_Solids","Fin_Ene_Res","Fin_Ene_Com","Fin_Ene_Tra","Fin_Ene_Ind","Emi_CO2_Ene_and_Ind_Pro","Pol_Cos_GDP_Los_rat","Prc_Car")
-  TorF <- 0
-  if (r2ppt==1){
-    for (i in pptlist){
-      if(plotflag[[i]]>0){
-        TorF = TorF + 1
-        if(TorF>1){
-          graph2ppt(allplot[[i]], file = paste0("../output/",rr,"/ppt/",rr,"comparison.pptx"),width = 10, height = 10, append = TRUE)
-        }else{
-          graph2ppt(allplot[[i]], file = paste0("../output/",rr,"/ppt/",rr,"comparison.pptx"),width = 10, height = 10, append = FALSE)
-        }
-      }
-    }
-  }
 }
 
-#function for regional area figure generation (ZZ: data for figure, ZZ2: Reference data, ZZ3: data for total line)
-funcAreaPlotSpe <- function(ZZ,ZZ2,ZZ3,AreaItem){
-  miny <- min(ZZ$Y,ZZ2$Y) 
+#function for regional area figure generation (ZZ: data for figure, AreaReference: Reference data, AreaTotalLine: data for total line)
+funcAreaPlotSpe <- function(ZZ,AreaReference,AreaTotalLine,AreaItem){
+  miny <- min(ZZ$Y,AreaReference$Y) 
   na.omit(ZZ$Value)
   ylab1 <- paste0(areamappara$Var[areamappara$Class==AreaItem], " (", areamappara$Unit[areamappara$Class==AreaItem], ")")
   xlab1 <- areamappara$Var[areamappara$Class==AreaItem]
@@ -472,9 +453,9 @@ funcAreaPlotSpe <- function(ZZ,ZZ2,ZZ3,AreaItem){
           axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, size = 12)) +
     guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10)) + scale_fill_manual(values=colorpal) +
     annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')+
-    geom_line(data=filter(ZZ3,Y<=maxy),aes(x=Y, y = Value ), color="black",linetype="dashed",size=1.2)
-  if(nrow(ZZ2)>=1){
-    plotY <- plotX +    geom_area(data=ZZ2,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity", alpha=0.7)
+    geom_line(data=filter(AreaTotalLine,Y<=maxy),aes(x=Y, y = Value ), color="black",linetype="dashed",size=1.2)
+  if(nrow(AreaReference)>=1){
+    plotY <- plotX +    geom_area(data=AreaReference,aes(x=Y, y = Value , fill=reorder(Ind,-order)), stat="identity", alpha=0.7)
   }else{
     plotY <- plotX
   }
@@ -493,21 +474,17 @@ funcAreaPlotGen <- function(rr,progr){
         filter(Class==AreaItem & ModName=="Reference") %>% select(-SCENARIO,-ModName,Ind,Y,Value,order)  %>% arrange(order)%>%
         filter(Y<=2015)
       XX3 <- Data4Plot %>% filter(Var==areamappara$lineVar[areamappara$Class==AreaItem] & ModName!="Reference") %>% select(ModName,SCENARIO,Var,Y,Value)
-      numitem1 <- length(as.vector(unique(Data4Plot$ModName))) #Get number of items
-      numitem2 <- length(as.vector(unique(Data4Plot$SCENARIO))) #Get number of items
-      numcol <- floor(sqrt(numitem1*numitem2))
+      numitem1 <- length(as.vector(unique(Data4Plot$ModName))) * length(as.vector(unique(Data4Plot$SCENARIO))) #Get total number of items
+      numcol <- ceiling(sqrt(numitem1)) + 1
+      numrow <- ceiling(numitem1/numcol)      
       plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
       plot3 <- plot1 + ggtitle(paste(rr,AreaItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
       allplot[[AreaItem]] <- plot3 
-      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/png/merge/",AreaItem,"_",rr,".png"), dpi = 72, width=numcol*4, height=numcol*2+4,limitsize=FALSE)
-      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",AreaItem,"_",rr,".svg"), width=numcol*4, height=numcol*2+4,device = "svg",limitsize = FALSE, units = "in")
+      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/png/merge/",AreaItem,"_",rr,".png"), dpi = 72, width=numcol*2, height=numrow*2+2,limitsize=FALSE)
+      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",AreaItem,"_",rr,".svg"), width=numcol*2, height=numrow*2+2,device = "svg",limitsize = FALSE, units = "in")
       plotflag[[AreaItem]] <- nrow(XX)  
     }
   }
-  #Final energy consumption area
-  pp_tfc <- plot_grid(allplot[["TFC_Ind"]],allplot[["TFC_Tra"]],allplot[["TFC_Res"]],allplot[["TFC_Com"]],ncol=2,align = "hv")
-  ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/png/merge/tfc_",rr,".png"), dpi = 72, width=9*2, height=(floor(length(unique(allmodel_area$SCENARIO))/4+1)*3+2)*3,limitsize=FALSE)
-  ggsave(pp_tfc, file=paste0(outdir,"byRegion/",rr,"/svg/merge/tfc_",rr,".svg"), width=9*2, height=(floor(length(unique(allmodel_area$SCENARIO))/4+1)*3+2)*3,device = "svg",limitsize = FALSE, units = "in")
 }
 
 funcBarStackPlotGen <- function(rr,progr){
