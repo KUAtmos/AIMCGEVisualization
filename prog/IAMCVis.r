@@ -7,7 +7,7 @@ if(insflag==1){
   library(devtools)
   devtools::install_github("tomwenseleers/export")
   install.packages('RDCOMClient', repos = 'http://www.omegahat.net/R/')
-  liblist <- c("reshape2","cowplot","ggplot2","RColorBrewer","dplyr","sp","maptools","maps","ggradar","fmsb","tidyr","stringr","rJava","Rcpp","ReporteRsjars","ReporteRs","xlsx","officer","furrr","purrr","progressr")
+  liblist <- c("reshape2","cowplot","ggplot2","RColorBrewer","dplyr","sp","maptools","maps","ggradar","fmsb","tidyr","stringr","rJava","Rcpp","ReporteRsjars","ReporteRs","xlsx","officer","furrr","purrr","progressr","tidyverse")
   for(j in liblist){
     install.packages(j, dependencies = TRUE)
   }
@@ -64,7 +64,7 @@ if(submodule==1){
 outdirmd <- paste0(outdir,"modeloutput/") #output direcotry to save temporary GDX file
 filename <- args[7] # filename should be "global_17","CHN","JPN"....
 CGEgdxcopy <- 0 # if you would like to copy and store the CGE IAMC template file make this parameter 1, otherwise 0.
-parallelmode <- 1 #Switch for parallel process. if you would like to use multi-processors assign 1 otherwise 0.
+parallelmode <- 1 #Switch for parallel process. Set 1 for multi-processors, 0 for single-process (more stable).
 print(threadsnum) 
 mergecolnum <- 6 #merge figure facet number of columns
 RegSpec <- 0 #Regional specification if turned into 1, the regional list is loaded for the regional plot
@@ -141,7 +141,7 @@ dirCGEoutput <- paste0(maindirloc,"../../output/iiasa_database/gdx/")  # directo
 if(submodule!=2){
   if(AscenarionameAuto=="on"){  #scenario mapping specification
     scenariomap_load <- read.table(paste0(dirCGEoutput,'../../',args[4],'/txt/scenario_list.txt'), header=F,stringsAsFactors=F)
-    scenariomap <- cbind(scenariomap_load,scenariomap_load,"CGE")
+    scenariomap <- cbind(scenariomap_load,scenariomap_load,"AIMHub")
     names(scenariomap) <- c("SCENARIO","Name","ModName")
   }else{
     scenariomap <- read.table('../data/scenariomap.map',sep='\t',header=T)
@@ -236,15 +236,27 @@ target_mn <- unique(as.vector(allmodelline$ModName))[1]  # first element in col5
 #Extract data
 #Unloading Data4Plot which can be used for data availability in papers
 ExtData <- filter(allmodel0,Var %in% varlist$V1) %>% left_join(unique(varlist %>% rename(Var=V1,Variable=V2.y,Unit=V3) %>% select(Var,Variable,Unit))) %>% 
-  select(-Var) %>% rename(Model=ModName,Year=Y) %>%
-  select(Model,SCENARIO,Region,Variable,Unit,Year,Value) %>% 
-  spread(value=Value,key=Year)
-write.csv(x = ExtData, row.names = FALSE,file = paste0(outdir,"/data/exportdata.csv"))
-ExtData <- 0
+  select(-Var) %>% rename(Model=ModName,Year=Y) %>% mutate(
+    run_id =  format(Sys.time(), "%Y-%m-%d-%H-%M")  ) %>%
+  select(run_id,Model,SCENARIO,Region,Variable,Unit,Year,Value) 
+
+#Saving combined GDX file
 symDim <- 6
 attr(allmodel, "symName") <- "allmodel"
 lst3 <- wgdx.reshape(allmodel,symDim)
 wgdx.lst(gdxName = paste0(outdir,"/data/allcombine.gdx"),lst3)
+
+#Exporting data for validation
+ExtData2 <- ExtData %>% 
+  spread(value=Value,key=Year)
+write.csv(x = ExtData, row.names = FALSE,file = paste0(outdir,"/data/validation_", format(Sys.time(), "%Y-%m-%d-%H-%M"), ".csv"))
+ExtData2_no_year <- ExtData %>%  select(-Year,-Value,-Unit) %>%  distinct()
+header_df <- setNames(data.frame(matrix(ncol=13, nrow=0)), c("run_id","model","scenario","region","variable","flag","issue_type","severity","reason_text","reviewer","reviewed_at","evidence_ref","notes_private"))
+csvfile2 <- paste0(outdir,"/data/validation_woheader_", format(Sys.time(), "%Y-%m-%d-%H-%M"), ".csv")
+write.table(x = header_df,row.names = FALSE,file = csvfile2,sep=",")
+write.table(x = ExtData2_no_year, col.names = FALSE,row.names = FALSE,file = csvfile2, append = TRUE,sep=",")
+ExtData2 <- 0
+ExtData <- 0
 #---End of IAMC template loading and data merge
 
 #---AR6 database load
@@ -306,7 +318,7 @@ funcMultiVarLinePlotGen <- function(rr,progr){
         xlab("year") + ylab("")  + ggtitle(paste(rr,MultiLineItem,sep=" "))+facet_wrap(ModName ~ SCENARIO,scales="free_y") +
       annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="dashed",color="grey")+theme(legend.title=element_blank())
       allplot[[MultiLineItem]] <- plot1 
-      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/png/merge/",MultiLineItem,"_",rr,".png"), dpi = 150, width=numcol*3+2, height=numrow*3,limitsize=FALSE)
+      ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/png/merge/",MultiLineItem,"_",rr,".png"), device = "png", dpi = 150, width=numcol*3+2, height=numrow*3,limitsize=FALSE)
       ggsave(plot1, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",MultiLineItem,"_",rr,".svg"), width=numcol*3+2, height=numrow*3,device = "svg",limitsize = FALSE, units = "in")
     }
   }
@@ -346,7 +358,7 @@ funcplotgen <- function(rr,progr){
       allplot[[nalist[i]]] <- plot.0
       allplot_nonleg[[nalist[i]]] <- plot.0+ theme(legend.position="none")
       if(varlist$V2.x[i]<=2){
-        ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/line/",varlist$V1[i],"_",rr,".png"), dpi = 72, width=max(7,5+numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE)
+        ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/line/",varlist$V1[i],"_",rr,".png"), device = "png", dpi = 72, width=max(7,5+numitem*0.3), height=max(5,numitem*0.2),limitsize=FALSE)
         ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/svg/line/",varlist$V1[i],"_",rr,".svg"), width=max(7,numitem*0.25), height=max(5,numitem*0.15),limitsize=FALSE,device = "svg", units = "in")
       }
     }
@@ -364,8 +376,8 @@ funcplotgen <- function(rr,progr){
     # Create plot grid
     g <- plot_grid(plotlist = plots, nrow = nrow, ncol = ncol, align = "hv", rel_widths = rel_widths)
     # Save PNG and SVG
-    ggsave(g, file = paste0(outdir, "byRegion/", rr, "/png/merge/", filename_base, "_", rr, ".png"),
-           dpi = 72, width = width, height = height, limitsize = FALSE)
+        ggsave(g, file = paste0(outdir, "byRegion/", rr, "/png/merge/", filename_base, "_", rr, ".png"),
+          device = "png", dpi = 72, width = width, height = height, limitsize = FALSE)
     ggsave(g, file = paste0(outdir, "byRegion/", rr, "/svg/merge/", filename_base, "_", rr, ".svg"),
            device = "svg", width = width, height = height, units = "in", limitsize = FALSE)
   }
@@ -489,7 +501,7 @@ funcAreaPlotGen <- function(rr,progr){
       plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
       plot3 <- plot1 + ggtitle(paste(rr,AreaItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
       allplot[[AreaItem]] <- plot3 
-      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/png/merge/",AreaItem,"_",rr,".png"), dpi = 72, width=numcol*2, height=numrow*2+2,limitsize=FALSE)
+      ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/png/merge/",AreaItem,"_",rr,".png"), device = "png", dpi = 72, width=numcol*2, height=numrow*2+2,limitsize=FALSE)
       ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",AreaItem,"_",rr,".svg"), width=numcol*2, height=numrow*2+2,device = "svg",limitsize = FALSE, units = "in")
       plotflag[[AreaItem]] <- nrow(XX)  
     }
@@ -526,7 +538,7 @@ funcBarStackPlotGen <- function(rr,progr){
         geom_line(data=filter(XX3,Y<=maxy),aes(x=Y, y = Value ), color="black",linetype="dashed",size=1.2) +
         ggtitle(paste(rr,barItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
       allplot[[barItem]] <- plotX 
-      ggsave(plotX, file=paste0(outdir,"byRegion/",rr,"/png/merge/",barItem,"_",rr,".png"), dpi = 72, width=numcol*8, height=numcol*6,limitsize=FALSE)
+      ggsave(plotX, file=paste0(outdir,"byRegion/",rr,"/png/merge/",barItem,"_",rr,".png"), device = "png", dpi = 72, width=numcol*8, height=numcol*6,limitsize=FALSE)
       ggsave(plotX, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",barItem,"_",rr,".svg"), width=numcol*8, height=numcol*6,device = "svg",limitsize = FALSE, units = "in")
       plotflag[[barItem]] <- nrow(XX)  
     }
@@ -556,7 +568,7 @@ funcBarPlotGen <- function(rr,progr){
         MyThemeLine + scale_color_manual(values=linepalettewName1,name="SCENARIO")+scale_fill_manual(values=linepalettewName1,name="SCENARIO")+
         xlab("Scenario") + ylab(paste0(varbarlist$V2.y[i],"(",varbarlist$V3[i],")") ) +  ggtitle(paste0(rr,expression("\n"),varbarlist$V2.y[i])) +
         theme(legend.title=element_blank()) +facet_wrap(~Y,scales="free")
-      ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/bar/",varbarlist$V1[i],"_",rr,".png"), dpi = 72, width=max(7,numitem*1), height=max(7,numitem*0.3),limitsize=FALSE)
+      ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/bar/",varbarlist$V1[i],"_",rr,".png"), device = "png", dpi = 72, width=max(7,numitem*1), height=max(7,numitem*0.3),limitsize=FALSE)
       ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/svg/bar/",varbarlist$V1[i],"_",rr,".svg"), width=max(7,numitem*1), height=max(7,numitem*0.3),device = "svg",limitsize = FALSE, units = "in")
   }
 }
@@ -591,7 +603,7 @@ mergefigGen <- function(ii,progr){
       # Generate the regional plot
       plot.reg <- plotXregion(data_filtered, ii, region_vector,filter(AR6DBIndload, Region %in% region_vector))
       # Construct the output base path (PNG and SVG will use this)
-      ggsave(plot.reg, file = paste0(outdir, out_subdir, "png/line/", ii, "_", region_code, ".png"), dpi = 72,width = width, height = height, limitsize = FALSE)    
+      ggsave(plot.reg, file = paste0(outdir, out_subdir, "png/line/", ii, "_", region_code, ".png"), device = "png", dpi = 72,width = width, height = height, limitsize = FALSE)    
       ggsave(plot.reg, file = paste0(outdir, out_subdir, "svg/line/", ii, "_", region_code, ".svg"), device = "svg",width = width, height = height, units = "in", limitsize = FALSE)
     }
   }
@@ -623,7 +635,7 @@ funcAreaXregionPlotGen <- function(AreaItem,progr){
         numitem <- length(as.vector(unique(Data4Plot$Region))) #Get number of items
         plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
         plot3 <- plot1 + facet_wrap( ~ Region,scales="free_y",ncol=mergecolnum) + ggtitle(paste(AreaItem,SC,sep=" "))
-        ggsave(plot3, file=paste0(outdir,"multiReg",RegC,"/png/merge/",SC,"_",MD,"_",AreaItem,".png"), dpi = 72, width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,limitsize=FALSE)
+        ggsave(plot3, file=paste0(outdir,"multiReg",RegC,"/png/merge/",SC,"_",MD,"_",AreaItem,".png"), device = "png", dpi = 72, width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,limitsize=FALSE)
         ggsave(plot3, file=paste0(outdir,"multiReg",RegC,"/svg/merge/",SC,"_",MD,"_",AreaItem,".svg"), width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,device = "svg",limitsize=FALSE, units = "in")
       }
     }
@@ -770,7 +782,7 @@ if(decompositionflag>0){
       guides(fill=guide_legend(ncol=5))+ggtitle(paste0(rr,expression("\n")," decomposition"))+
       facet_grid(Y~SCENARIO,scales="free_x") + annotate("segment",x=0,xend=6,y=0,yend=0,linetype="dashed",color="grey")
     outname <- paste0(outdir,"byRegion/",rr,"/png/merge/",rr,"_decomp.png")
-    ggsave(plotdec, file=outname, width=floor(length(unique(Decom2$SCENARIO))/2+1)*4, height=10,limitsize=FALSE)    
+    ggsave(plotdec, file=outname, device = "png", width=floor(length(unique(Decom2$SCENARIO))/2+1)*4, height=10,limitsize=FALSE)    
     }
   }
   exe_fig_make(lst$region,funcDecGen)
