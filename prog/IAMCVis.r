@@ -235,10 +235,13 @@ allmodel_barstack <- filter(allmodel,Var %in% c(as.vector(barmap$Var),as.vector(
 target_mn <- unique(as.vector(allmodelline$ModName))[1]  # first element in col5 (can also hardcode e.g. "C1")
 #Extract data
 #Unloading Data4Plot which can be used for data availability in papers
+timestamp <- format(Sys.time(), "%Y-%m-%d-%H-%M")
 ExtData <- filter(allmodel0,Var %in% varlist$V1) %>% left_join(unique(varlist %>% rename(Var=V1,Variable=V2.y,Unit=V3) %>% select(Var,Variable,Unit))) %>% 
   select(-Var) %>% rename(Model=ModName,Year=Y) %>% mutate(
-    run_id =  format(Sys.time(), "%Y-%m-%d-%H-%M")  ) %>%
-  select(run_id,Model,SCENARIO,Region,Variable,Unit,Year,Value) 
+    run_id =  timestamp  ) %>%
+    filter(Region %in% R17R) %>%
+  select(run_id,Model,SCENARIO,Region,Variable,Unit,Year,Value) %>%
+  filter(Year != 2005)
 
 #Saving combined GDX file
 symDim <- 6
@@ -252,7 +255,7 @@ ExtData2 <- ExtData %>%
 write.csv(x = ExtData, row.names = FALSE,file = paste0(outdir,"/data/validation_", format(Sys.time(), "%Y-%m-%d-%H-%M"), ".csv"))
 ExtData2_no_year <- ExtData %>%  select(-Year,-Value,-Unit) %>%  distinct()
 header_df <- setNames(data.frame(matrix(ncol=13, nrow=0)), c("run_id","model","scenario","region","variable","flag","issue_type","severity","reason_text","reviewer","reviewed_at","evidence_ref","notes_private"))
-csvfile2 <- paste0(outdir,"/data/validation_woheader_", format(Sys.time(), "%Y-%m-%d-%H-%M"), ".csv")
+csvfile2 <- paste0(outdir,"/data/validation_woheader_", timestamp, ".csv")
 write.table(x = header_df,row.names = FALSE,file = csvfile2,sep=",")
 write.table(x = ExtData2_no_year, col.names = FALSE,row.names = FALSE,file = csvfile2, append = TRUE,sep=",")
 ExtData2 <- 0
