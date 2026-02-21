@@ -36,7 +36,7 @@ threadsnum <-  as.numeric(args[2])
 AR6option <-  as.character(args[9])
 Figureproj <-  as.character(args[10])
 IntToolproj <-  as.character(args[11])
-sizememory <- 1000*1024^2 
+sizememory <- 5*1000*1024^2 
 options(future.globals.maxSize= sizememory)
 options(bitmapType = 'cairo')
 

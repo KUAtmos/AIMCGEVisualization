@@ -88,29 +88,31 @@ for (i in seq_len(nrow(df))) {
   # Output pptx file
   pptx_out <- paste0(outdir,"iamc",Figureproj,".pptx")
 
-  # Extract geometry (inches)
-  left   <- df$left[i]
-  top    <- df$top[i]
-  scale  <- df$scale[i]  
-  # Keep aspect ratio by uniform scaling
-  sz    <- svg_nominal_size_in(svgf)  # c(w,h) in inches
-  w_out <- sz[1] * scale
-  h_out <- sz[2] * scale
+  if (file.exists(svgf)) {
+    # Extract geometry (inches)
+    left   <- df$left[i]
+    top    <- df$top[i]
+    scale  <- df$scale[i]  
+    # Keep aspect ratio by uniform scaling
+    sz    <- svg_nominal_size_in(svgf)  # c(w,h) in inches
+    w_out <- sz[1] * scale
+    h_out <- sz[2] * scale
   
-  if(df$newslide[i]==1){
-    doc <- add_slide(doc, layout = layout_nm, master = master_nm)
-    doc <- ph_with(doc, paste0(df$title[i]," ",df$region[i]), location = ph_location_type(type = "title"))
-    #Add text box
-    nbsp <- "\u00A0"  # non-breaking space
-    doc <- ph_with(
-      doc, value = nbsp,
-      location = ph_location(left = 1, top = 5, width = 10, height = 2)
-    )
+    if(df$newslide[i]==1){
+      doc <- add_slide(doc, layout = layout_nm, master = master_nm)
+      doc <- ph_with(doc, paste0(df$title[i]," ",df$region[i]), location = ph_location_type(type = "title"))
+      #Add text box
+      nbsp <- "\u00A0"  # non-breaking space
+      doc <- ph_with(
+        doc, value = nbsp,
+        location = ph_location(left = 1, top = 5, width = 10, height = 2)
+      )
     }
-  doc <- ph_with(
-    doc, external_img(svgf),
-    location = ph_location(left = left, top = top, width = w_out, height = h_out)
-  )
+    doc <- ph_with(
+      doc, external_img(svgf),
+      location = ph_location(left = left, top = top, width = w_out, height = h_out)
+    )
+  }
 }
 
 # Save the pptx
