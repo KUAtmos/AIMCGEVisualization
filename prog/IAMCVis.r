@@ -21,9 +21,9 @@ for(j in libloadlist){
 args <- commandArgs(trailingOnly = TRUE)
 #arguments are: 1:gams sys,2:number of CPU, 3:visualizaton scenario name specification auto or not, 4:file location, 5:submodule switch, 6:enduse iteration switch, 7: GDX file name, 8: region code/global, 9: AR6 consideration, 10: IntTool project name
 default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "global/global_17","1","off","global_17_IAMC","global","on","non","off")   # Default value but gams path should be modified if GUI based R is used
-#default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24), "on", "country/CHN","2","on","IAMCTemplate_Iteon_CHN","CHN","off","non")   # Default value but gams path should be modified if GUI based R is used
 #default_args <- c("/opt/gams/gams37.1_linux_x64_64_sfx", min(floor(availableCores()/2),24),"off","global/global_17","2","on","IAMCTemplate_Iteoff_global","global","on","scenarioMIP")
 default_args <- c("/home/sfujimori/opt/gams/gams46.5_linux_x64_64_sfx","32","off","global/global_17","2","off","IAMCTemplate_Iteon_global","global","on","BTC2_def2","BTC2") # Default value for sfujimori
+#default_args <- c("/home/sfujimori/opt/gams/gams46.5_linux_x64_64_sfx","32","on","country/JPN","2","off","IAMCTemplate_Iteon_JPN","JPN","on","scenarioMIP","jstlcs")
  
 default_flg <- is.na(args[1:11])
 args[default_flg] <- default_args[default_flg]
@@ -185,8 +185,8 @@ if(args[8]=="global"){
 }else{
   IEAparaname <- c("IAMCtemp106","Sr106","VEMF")  
   EDGARparaname <- c("EDGAR_GAMS_Format_R106","R106","VEMF")  
-  CEDSparaname <- c("EmisCEDSIAMCR106","RIAMC","VIAMC")  
-  FAOparaname <- c("IAMC_Template_ISO","IAMC_REGION","IAMC_VAR")  
+  CEDSparaname <- c("EmisCEDSIAMC106","R","VIAMC")  
+  FAOparaname <- c("IAMC_Template_ISO","IAMC_ISO","IAMC_VAR")  
 }
 eval(parse(text=paste0("IEAEB0 <- rgdx.param('../data/IEAEBIAMCTemplate.gdx','",IEAparaname[1],"') %>% rename('Value'=",IEAparaname[1],",'Var'=",IEAparaname[3],",'Y'=St,'Region'=",IEAparaname[2],",'SCENARIO'=SceEneMod) %>%
   select(Region,Var,Y,Value,SCENARIO) %>% mutate(ModName='Reference')")))
@@ -220,9 +220,24 @@ if(args[8]=="global"){
   FAOSTAT1 <- filter(FAOSTAT1,Region %in% c(R5R,R10R,R17R,R2R))
 }
 
+IEAEB1 <- IEAEB1 %>% mutate(Source = "IEAEB")
+EDGAR1 <- EDGAR1 %>% mutate(Source = "EDGAR")
+CEDS1  <- CEDS1  %>% mutate(Source = "CEDS")
+FAOSTAT1 <- FAOSTAT1 %>% mutate(Source = "FAOSTAT")
 
-#Merging IEA energy balance table and EDGAR emissions
-allmodel <- rbind(allmodel0,IEAEB1,EDGAR1,CEDS1,FAOSTAT1) %>% select(ModName,Region,Var,SCENARIO,Y,Value) 
+priority <- c("IEAEB","EDGAR","CEDS","FAOSTAT")
+
+ref_collapsed <- bind_rows(IEAEB1, EDGAR1, CEDS1, FAOSTAT1) %>%
+  mutate(Source = factor(Source, levels = priority)) %>%
+  arrange(Region, Var, Y, Source) %>%
+  group_by(Region, Var, Y) %>%
+  slice_head(n = 1) %>%   # prioritize by source and keep the first entry for each Region-Var-Y combination
+  ungroup() %>%
+  select(ModName, Region, Var, SCENARIO, Y, Value)  # allmodel column order
+
+# Merging model results and statistics
+allmodel <- bind_rows(allmodel0, ref_collapsed) %>%
+  select(ModName, Region, Var, SCENARIO, Y, Value)
 maxy <- max(allmodel$Y)
 #maxy <- 2050
 scenariolistext <- as.vector(scenariomap$SCENARIO[scenariomap$SCENARIO %in% unique(allmodel$SCENARIO)])
