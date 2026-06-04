@@ -14,7 +14,7 @@ if(insflag==1){
   #install.packages("gdxrrw", dependencies = TRUE)
 }
 
-libloadlist <- c("gdxrrw","ggplot2","dplyr","reshape2","tidyr","maps","grid","RColorBrewer","cowplot","hms","purrr","furrr","progressr","readr","forcats")
+libloadlist <- c("gdxrrw","ggplot2","dplyr","reshape2","tidyr","maps","grid","RColorBrewer","cowplot","hms","purrr","furrr","progressr","readr","forcats","stringr")
 for(j in libloadlist){
   eval(parse(text=paste0("library(",j,")")))
 }
@@ -80,6 +80,7 @@ linepalette <- pastelpal
 
 MyThemeLine <- theme_bw() +
   theme(
+    text = element_text(size = 16),
     panel.border=element_rect(fill=NA),
     panel.grid.minor = element_line(color = NA), 
     axis.line=element_line(colour="black"),
@@ -87,13 +88,19 @@ MyThemeLine <- theme_bw() +
     panel.grid.major=element_blank(),
     strip.background=element_rect(fill="white", colour="white"),
     plot.background = element_rect(fill = "white", color = "white"),
-    strip.text.x = element_text(size=10, colour = "black", angle = 0,face="bold"),
-    axis.text.x=element_text(angle=45, vjust=0.9, hjust=1, margin = unit(c(t = 0.3, r = 0, b = 0, l = 0), "cm")),
-    axis.text.y=element_text(margin = unit(c(t = 0, r = 0.3, b = 0, l = 0), "cm")),
-#    axis.text.x=element_text(size = 10,angle=45, vjust=0.9, hjust=1, margin = unit(c(t = 0.3, r = 0, b = 0, l = 0), "cm")),
-#    axis.text.y=element_text(size = 10,margin = unit(c(t = 0, r = 0.3, b = 0, l = 0), "cm")),
-#    legend.text = element_text(size = 10),
-#    legend.title = element_text(size = 10),
+    plot.title = element_text(size=18, face="bold"),
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 15),
+    strip.text.x = element_text(size=16, colour = "black", angle = 0,face="bold"),
+    axis.text.x=element_text(size = 14, angle=45, vjust=0.9, hjust=1, margin = unit(c(t = 0.3, r = 0, b = 0, l = 0), "cm")),
+    axis.text.y=element_text(size = 14, margin = unit(c(t = 0, r = 0.3, b = 0, l = 0), "cm")),
+    axis.title = element_text(size = 16),
+    legend.text = element_text(size = 10),
+    legend.title = element_text(size = 10),
+    legend.key.size = unit(0.4, "cm"),
+    legend.spacing.x = unit(0.2, "cm"),
+    legend.spacing.y = unit(0.1, "cm"),
+    legend.margin = margin(t = 2, r = 2, b = 2, l = 2),
+    legend.box.margin = margin(t = 0, r = 0, b = 0, l = 0),
     axis.ticks.length=unit(-0.15,"cm")
   )
 
@@ -302,7 +309,7 @@ funclinedef <- function(ii,plot.inp,Data4Plot){
     geom_point(data=filter(Data4Plot, ModName!="Reference" & Y<=maxy),aes(x=Y, y = Value , color=SCENARIO,shape=ModName),size=1.5,fill="white") +
     MyThemeLine + scale_color_manual(values=linepalettewName1) + scale_x_continuous(breaks=seq(miny,maxy,10)) +
     scale_shape_manual(values = 1:length(unique(allmodelline$ModName))) +
-    xlab("year") + ylab(paste0(varlist$V2.y[varlist$V1==ii],"(",varlist$V3[varlist$V1==ii],")"))  +  ggtitle(varlist$V2.y[varlist$V1==ii]) +
+    xlab("year") + ylab(str_wrap(paste0(varlist$V2.y[varlist$V1==ii]," (",varlist$V3[varlist$V1==ii],")"), width=40))  +  ggtitle(str_wrap(varlist$V2.y[varlist$V1==ii], width=50)) +
     theme(legend.title=element_blank())
       #Reference of statistics plot 
   if(length(scenariomap$SCENARIO)<70){
@@ -478,7 +485,7 @@ funcplotgen <- function(rr,progr){
 funcAreaPlotSpe <- function(ZZ,AreaReference,AreaTotalLine,AreaItem){
   miny <- min(ZZ$Y,AreaReference$Y) 
   na.omit(ZZ$Value)
-  ylab1 <- paste0(areamappara$Var[areamappara$Class==AreaItem], " (", areamappara$Unit[areamappara$Class==AreaItem], ")")
+  ylab1 <- str_wrap(paste0(areamappara$Var[areamappara$Class==AreaItem], " (", areamappara$Unit[areamappara$Class==AreaItem], ")"), width=40)
   xlab1 <- areamappara$Var[areamappara$Class==AreaItem]
 
   areapaletteArea <- filter(areapaletteload,V0==AreaItem & V1 %in% unique(ZZ$Ind))$V2
@@ -517,7 +524,7 @@ funcAreaPlotGen <- function(rr,progr){
       numcol <- ceiling(sqrt(numitem1)) + 1
       numrow <- ceiling(numitem1/numcol)      
       plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
-      plot3 <- plot1 + ggtitle(paste(rr,AreaItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
+      plot3 <- plot1 + ggtitle(str_wrap(paste(rr,AreaItem,sep=" "), width=50))+facet_wrap(ModName ~ SCENARIO)
       allplot[[AreaItem]] <- plot3 
       ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/png/merge/",AreaItem,"_",rr,".png"), device = "png", dpi = 72, width=numcol*2, height=numrow*2+2,limitsize=FALSE)
       ggsave(plot3, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",AreaItem,"_",rr,".svg"), width=numcol*2, height=numrow*2+2,device = "svg",limitsize = FALSE, units = "in")
@@ -541,7 +548,7 @@ funcBarStackPlotGen <- function(rr,progr){
       miny <- min(XX$Y) 
       many <- max(XX$Y) 
       na.omit(XX$Value)
-      ylab1 <- paste0(barmappara$Var[barmappara$Class==barItem], " (", barmappara$Unit[barmappara$Class==barItem], ")")
+      ylab1 <- str_wrap(paste0(barmappara$Var[barmappara$Class==barItem], " (", barmappara$Unit[barmappara$Class==barItem], ")"), width=40)
       xlab1 <- barmappara$Var[barmappara$Class==barItem]
       barpaletteArea <- filter(barpaletteload,V0==barItem & V1 %in% unique(XX$Ind))$V2
       names(barpaletteArea) <- filter(barpaletteload,V0==barItem & V1 %in% unique(XX$Ind))$V1
@@ -554,7 +561,7 @@ funcBarStackPlotGen <- function(rr,progr){
         guides(fill=guide_legend(ncol=5)) + scale_x_continuous(breaks=seq(miny,maxy,10)) + scale_fill_manual(values=barpaletteArea) +
         annotate("segment",x=miny,xend=maxy,y=0,yend=0,linetype="solid",color="grey") + theme(legend.position='bottom')+
         geom_line(data=filter(XX3,Y<=maxy),aes(x=Y, y = Value ), color="black",linetype="dashed",size=1.2) +
-        ggtitle(paste(rr,barItem,sep=" "))+facet_wrap(ModName ~ SCENARIO)
+        ggtitle(str_wrap(paste(rr,barItem,sep=" "), width=50))+facet_wrap(ModName ~ SCENARIO)
       allplot[[barItem]] <- plotX 
       ggsave(plotX, file=paste0(outdir,"byRegion/",rr,"/png/merge/",barItem,"_",rr,".png"), device = "png", dpi = 72, width=numcol*8, height=numcol*6,limitsize=FALSE)
       ggsave(plotX, file=paste0(outdir,"byRegion/",rr,"/svg/merge/",barItem,"_",rr,".svg"), width=numcol*8, height=numcol*6,device = "svg",limitsize = FALSE, units = "in")
@@ -584,7 +591,7 @@ funcBarPlotGen <- function(rr,progr){
       plot.0 <- plot.0 + 
         geom_bar(data=filter(Data4Plot,Y %in% c(2030,2050,2100)),aes(x=interaction(SCENARIO,ModName), y = Value , color=SCENARIO, fill=SCENARIO,group=interaction(SCENARIO,ModName)),stat="identity") +
         MyThemeLine + scale_color_manual(values=linepalettewName1,name="SCENARIO")+scale_fill_manual(values=linepalettewName1,name="SCENARIO")+
-        xlab("Scenario") + ylab(paste0(varbarlist$V2.y[i],"(",varbarlist$V3[i],")") ) +  ggtitle(paste0(rr,expression("\n"),varbarlist$V2.y[i])) +
+        xlab("Scenario") + ylab(str_wrap(paste0(varbarlist$V2.y[i]," (",varbarlist$V3[i],")"), width=40) ) +  ggtitle(str_wrap(paste0(rr," ",varbarlist$V2.y[i]), width=50)) +
         theme(legend.title=element_blank()) +facet_wrap(~Y,scales="free")
       ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/png/bar/",varbarlist$V1[i],"_",rr,".png"), device = "png", dpi = 72, width=max(7,numitem*1), height=max(7,numitem*0.3),limitsize=FALSE)
       ggsave(plot.0, file=paste0(outdir,"byRegion/",rr,"/svg/bar/",varbarlist$V1[i],"_",rr,".svg"), width=max(7,numitem*1), height=max(7,numitem*0.3),device = "svg",limitsize = FALSE, units = "in")
@@ -652,7 +659,7 @@ funcAreaXregionPlotGen <- function(AreaItem,progr){
           if(nrow(XX)>0){      
         numitem <- length(as.vector(unique(Data4Plot$Region))) #Get number of items
         plot1 <- funcAreaPlotSpe(XX,XX2,XX3,AreaItem)
-        plot3 <- plot1 + facet_wrap( ~ Region,scales="free_y",ncol=mergecolnum) + ggtitle(paste(AreaItem,SC,sep=" "))
+        plot3 <- plot1 + facet_wrap( ~ Region,scales="free_y",ncol=mergecolnum) + ggtitle(str_wrap(paste(AreaItem,SC,sep=" "), width=50))
         ggsave(plot3, file=paste0(outdir,"multiReg",RegC,"/png/merge/",SC,"_",MD,"_",AreaItem,".png"), device = "png", dpi = 72, width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,limitsize=FALSE)
         ggsave(plot3, file=paste0(outdir,"multiReg",RegC,"/svg/merge/",SC,"_",MD,"_",AreaItem,".svg"), width=mergecolnum*3, height=max(1,floor(numitem/mergecolnum))*5+2,device = "svg",limitsize=FALSE, units = "in")
       }
@@ -797,7 +804,7 @@ if(decompositionflag>0){
       ylab(flabel[1]) + xlab(flabel[2]) +labs(fill="") +
       guides(fill=guide_legend(reverse=TRUE)) + 
       MyThemeLine + theme(legend.position="bottom", text=element_text(size=12))+
-      guides(fill=guide_legend(ncol=5))+ggtitle(paste0(rr,expression("\n")," decomposition"))+
+      guides(fill=guide_legend(ncol=5))+ggtitle(str_wrap(paste0(rr," decomposition"), width=50))+
       facet_grid(Y~SCENARIO,scales="free_x") + annotate("segment",x=0,xend=6,y=0,yend=0,linetype="dashed",color="grey")
     outname <- paste0(outdir,"byRegion/",rr,"/png/merge/",rr,"_decomp.png")
     ggsave(plotdec, file=outname, device = "png", width=floor(length(unique(Decom2$SCENARIO))/2+1)*4, height=10,limitsize=FALSE)    
