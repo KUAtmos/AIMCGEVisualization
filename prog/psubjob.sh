@@ -1,6 +1,6 @@
 #!/bin/sh
 #PBS -l ncpus=32,mpiprocs=32,mem=500gb,host=hpc_c11
-#PBS -M fujimori.shinichiro.8a@kyoto-u.ac.jp
+#PBS -M taiki@st.kyoto-u.ac.jp
 #PBS -m abe
 #PBS -N AIMHub-vis
 #PBS -e ../../../../output/jobreport
